@@ -49,7 +49,7 @@ function Comanda() {
         'mode': 'no-cors'
       }
     };
-    axios.get('http://10.10.10.6/api_comanda/?api=index', config)
+    axios.get('http://10.10.10.6/api_comanda/?api=getProdutos', config)
       .then((res) => {
        var vl = res.data;
          
@@ -64,7 +64,7 @@ function Comanda() {
   }, [setData]);
 
   return (
-    <div className="App">
+    <div className=" animate__animated animate__fadeIn">
 
       <main class="container">
         <div class="alert alert-danger text-start" style={{ display: "none" }} role="alert">

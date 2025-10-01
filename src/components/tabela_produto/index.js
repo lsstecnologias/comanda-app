@@ -1,4 +1,29 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 const TabelaProduto = () => {
+    const [data,setData] = useState([]);
+    useEffect(() => {
+
+        let config = {
+
+            method: "get",
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Allow-Credentials': 'true',
+                'mode': 'no-cors'
+            }
+        };
+        axios.get('http://10.10.10.6/api_comanda/?api=getProdutos', config)
+            .then((res) => {
+                var vl = res.data;
+
+                setData(vl);
+                console.log(vl)
+            }).catch((error) => { alert(error); });
+
+    }, [setData]);
+
     return (
         <div class="table-responsive mt-4">
             <table class="table caption-top">
@@ -6,9 +31,9 @@ const TabelaProduto = () => {
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Nome </th>
+                        <th scope="col">Quantidade</th>
+                        <th scope="col">Preço unit.</th>
                     </tr>
                 </thead>
                 <tbody>

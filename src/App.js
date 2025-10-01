@@ -5,8 +5,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Produto from './components/produtos';
 import Header from './components/header';
 import { useEffect, useState } from 'react';
-
+import 'animate.css';
 const $ = require("jquery");
+
 function App() {
 
   const [statusTela, setStatusTela] = useState();
@@ -19,16 +20,16 @@ function App() {
 */
 
 
-  
-    window.addEventListener('load', () => {
-      setStatusTela("none");
-      $('#preloader').delay(500)
-    });
-   
-  
+
+  window.addEventListener('load', () => {
+    setStatusTela("none");
+    $('#preloader').delay(500)
+  });
+
+
   return (
-    <div id="preloader">
-      <div class="container" style={{ display: statusTela }}>
+    <div class="" >
+      <div id="preloader"  style={{ display: statusTela }}>
 
         <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>

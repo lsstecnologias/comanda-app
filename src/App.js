@@ -10,7 +10,7 @@ const $ = require("jquery");
 
 function App() {
 
-  const [statusTela, setStatusTela] = useState();
+  const [statusTela, setStatusTela] = useState('');
   /*
    const domain = window.location.hostname;
   const protocolo = window.location.protocol;
@@ -22,14 +22,14 @@ function App() {
 
 
   window.addEventListener('load', () => {
-    setStatusTela("none");
-    $('#preloader').delay(500)
+    setStatusTela("block");
+    $('#preloader').hide(500)
   });
 
 
   return (
-    <div class="" >
-      <div id="preloader"  style={{ display: statusTela }}>
+    <div class="container" >
+      <div id="preloader" style={{ display: statusTela }}>
 
         <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>

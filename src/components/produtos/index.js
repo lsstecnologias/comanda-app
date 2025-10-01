@@ -4,15 +4,13 @@ import { useEffect, useState } from 'react';
 import axios from "axios";
 const $ = require("jquery");
 
-
-
 const Produto = () => {
     const [valorPreco, setPreco] = useState();
     const [valorNome, setNome] = useState();
     const [valorDesc, setDesc] = useState();
     const [valorQt, setQuant] = useState();
-    const [statusMsgErro,setStatusMsgErro] = useState("none");
-     const [statusMsgSuccess,setStatusMsgSuccess] = useState("none");
+    const [statusMsgErro, setStatusMsgErro] = useState("none");
+    const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
     const [formProduto, setFormProd] = useState({});
 
     const addNovoProduto = (e) => {
@@ -62,16 +60,16 @@ const Produto = () => {
         }
         $.post('http://10.10.10.6/api_comanda/index.php?api=setProduto', objProduto, (res, status) => {
             if (status === "success") {
-                console.log(res)
-                if(res === "null"){
-                   setStatusMsgErro("block");
-                }else{
+             
+                if (res === "null") {
+                    setStatusMsgErro("block");
+                } else {
                     setStatusMsgErro("none");
                 }
-                if(res == 1){
-                     setStatusMsgSuccess("block");
-                }else{
-                     setStatusMsgSuccess("none");
+                if (res == 1) {
+                    setStatusMsgSuccess("block");
+                } else {
+                    setStatusMsgSuccess("none");
                 }
             } else {
                 alert("Error");
@@ -79,7 +77,7 @@ const Produto = () => {
 
         })
     }
-    const fecharModal = ()=>{
+    const fecharModal = () => {
         window.location.reload();
     }
     return (
@@ -94,13 +92,13 @@ const Produto = () => {
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="staticnvProduto">Produto</h1>
-                            <button type="button" onClick={()=>{fecharModal()}} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" onClick={() => { fecharModal() }} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="alert alert-danger" style={{display:statusMsgErro}} role="alert">
+                            <div class="alert alert-danger" style={{ display: statusMsgErro }} role="alert">
                                 Preencha os campo(s)!
                             </div>
-                            <div class="alert alert-success" style={{display:statusMsgSuccess}} role="alert">
+                            <div class="alert alert-success" style={{ display: statusMsgSuccess }} role="alert">
                                 Produto <strong> {valorNome ?? valorNome} </strong> registrado!
                             </div>
                             <div class="mb-3">

@@ -1,7 +1,8 @@
 import TabelaProduto from "../tabela_produto";
+
+
 import { NumericFormat } from 'react-number-format';
 import { useEffect, useState } from 'react';
-import axios from "axios";
 const $ = require("jquery");
 
 const Produto = () => {
@@ -82,7 +83,7 @@ const Produto = () => {
     }
     return (
         <div className="container ">
-            <div className="container">
+            <div className="container p-0">
                 <button type="button" class="btn w-100 btn-primary" data-bs-toggle="modal" data-bs-target="#nvProduto">
                     <i class="bi bi-plus-circle-dotted fs-4"></i> <p>Novo Produto</p>
                 </button>
@@ -135,7 +136,7 @@ const Produto = () => {
                     </div>
                 </div>
             </div>
-            <TabelaProduto />
+            <TabelaProduto  />
         </div>
     )
 }

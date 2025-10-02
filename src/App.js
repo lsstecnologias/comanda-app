@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import 'animate.css';
 const $ = require("jquery");
 
+
 function App() {
 
   const [statusTela, setStatusTela] = useState('');

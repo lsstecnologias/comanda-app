@@ -7,23 +7,15 @@ const $ = require("jquery");
 const TabelaProduto = () => {
     const [data, setData] = useState([]);
     const [id, setId] = useState();
-    const [statusMsgErro, setStatusMsgErro] = useState("block");
-    const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
     const [msg, setMsg] = useState("none");
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
-    const paramApi_lista_produto = '?api=getProdutos';
+    
     const paramApi_delete_item = '?api=deleteItem';
-
-
     const deleteItem = (id) => {
         if (id !== null || id !== undefined) {
             let objId = { "id": id };
-
-            $.post(urlApi + nameApi + paramApi_delete_item, objId, (req, res) => {
-
-                window.location.reload()
-            })
+            $.post(urlApi + nameApi + paramApi_delete_item, objId, (req, res) => {  window.location.reload()  })
         }
     }
 
@@ -31,7 +23,7 @@ const TabelaProduto = () => {
         setId(id);
     }
     useEffect(() => {
-
+        const paramApi_lista_produto = '?api=getProdutos';
         let config = {
 
             method: "get",
@@ -50,7 +42,7 @@ const TabelaProduto = () => {
             }).catch((error) => { alert(error); });
 
     }, [setData]);
-    console.log(data)
+
     return (
         <div class="table-responsive mt-4">
 
@@ -73,11 +65,13 @@ const TabelaProduto = () => {
                                 <td>{val.nome}</td>
                                 <td>{val.quantidade}</td>
                                 <td>{val.preco}</td>
-                                <td><button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square"></button> <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button></td>
+                                <td>
+                                    <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
+                                    <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button>
+                                </td>
                             </tr>
                         )
-                    })
-                    }
+                    })}
 
                 </tbody>
             </table>

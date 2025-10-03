@@ -13,9 +13,14 @@ const Produto = () => {
     const [statusMsgErro, setStatusMsgErro] = useState("none");
     const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
     const [formProduto, setFormProd] = useState({});
+    
+    const urlApi = 'http://10.10.10.6/';
+    const nameApi = 'api_comanda/';
+    const paramApi_save_produto ="?api=setProduto";
 
     const addNovoProduto = (e) => {
         e.preventDefault();
+       
         let nome = $("#nomeItemInput");
         let desc = $("#descItemInput");
         let qtd = $("#qtItemInput");
@@ -50,30 +55,34 @@ const Produto = () => {
         if (valorQt !== undefined && valorQt !== "") {
             qtd.addClass("is-valid").removeClass("is-invalid");
             objProduto.qtd = valorQt;
+
         } else {
             qtd.addClass("is-invalid").removeClass("is-valid");
             objProduto.qtd = null;
+            
         }
         let data_atual = new Date();
         let dataCriacao = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
         if (objProduto.data_criacao == "") {
             objProduto.data_criacao = dataCriacao;
         }
-        $.post('http://10.10.10.6/api_comanda/index.php?api=setProduto', objProduto, (res, status) => {
+        $.post(urlApi+nameApi+paramApi_save_produto, objProduto, (res, status) => {
             if (status === "success") {
              
                 if (res === "null") {
                     setStatusMsgErro("block");
+                    $('#btnAdicionar').attr({"disabled":"disabled"});
                 } else {
                     setStatusMsgErro("none");
                 }
                 if (res == 1) {
                     setStatusMsgSuccess("block");
+                     $('#btnAdicionar').attr({"disabled":"disabled"});
                 } else {
                     setStatusMsgSuccess("none");
                 }
             } else {
-                alert("Error");
+                alert("API Error");
             }
 
         })
@@ -92,7 +101,7 @@ const Produto = () => {
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticnvProduto">Produto</h1>
+                            <h1 class="modal-title fs-5" id="staticnvProduto">Novo Produto</h1>
                             <button type="button" onClick={() => { fecharModal() }} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -100,7 +109,7 @@ const Produto = () => {
                                 Preencha os campo(s)!
                             </div>
                             <div class="alert alert-success" style={{ display: statusMsgSuccess }} role="alert">
-                                Produto <strong> {valorNome ?? valorNome} </strong> registrado!
+                                Produto <strong> {valorNome ?? valorNome}  </strong> registrado!
                             </div>
                             <div class="mb-3">
                                 <label for="nomeItemInput" class="form-label">Nome item</label>
@@ -131,7 +140,7 @@ const Produto = () => {
                         </div>
                         <div class="modal-footer">
 
-                            <button type="button" onClick={(e) => { addNovoProduto(e) }} class="btn w-100 btn-primary"> <i class="bi bi-plus-circle"></i> Adicionar</button>
+                            <button type="button" onClick={(e) => { addNovoProduto(e) }} class="btn w-100 btn-primary" id="btnAdicionar" > <i class="bi bi-plus-circle"></i> Adicionar</button>
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Produto from './components/produtos';
 import Header from './components/header';
 import Usuarios from './components/usuarios';
+import Imagens from './components/Imagens';
 import { useEffect, useState } from 'react';
 import 'animate.css';
 const $ = require("jquery");
@@ -43,6 +44,7 @@ function App() {
           <Route path="/" element={<Comanda />} />
           <Route path="/produtos" element={<Produto />} />
           <Route path="/usuarios" element={<Usuarios />} />
+          <Route path='/imagens' element={<Imagens />} />
         </Routes>
       </BrowserRouter>
     </div>

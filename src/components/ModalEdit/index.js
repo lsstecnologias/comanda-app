@@ -13,123 +13,122 @@ const ModalEdit = (data_id) => {
     const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
     const [dataFilter, setDataFilter] = useState([]);
     const [edit, setEdit] = useState([]);
+    
+    const fecharModal = () => {
+        window.location.reload();
+    }
 
-        const fecharModal = () => {
-            window.location.reload();
-        }   
+    var data = { data_id };
+    var id = data.data_id;
+    var idEdit = id.data_id;
 
-        var data = { data_id };
-        var id = data.data_id;
-        var idEdit = id.data_id;
+    const urlApi = 'http://10.10.10.6/';
+    const nameApi = 'api_comanda/';
+    const vlFilter = dataFilter.filter(e => { return e.id === idEdit });
 
-        const urlApi = 'http://10.10.10.6/';
-        const nameApi = 'api_comanda/';
-        const paramApi_edit_produto = "?api=updateItem";
-
-        const editNovoProduto = (e) => {
-            e.preventDefault();
-            let nome = $("#nomeItemInputEdit");
-            let desc = $("#descItemInputEdit");
-            let qtd = $("#qtItemInputEdit");
-            let preco = $("#precoUnitInputEdit");
-            let data_criacao = "";
-            var objProduto = {id:idEdit, nome, desc, qtd, preco, data_criacao };
-
-            if (valorPreco !== undefined && valorPreco !== "") {
-                preco.addClass("is-valid").removeClass("is-invalid");
-                objProduto.preco = valorPreco;
-            } else {
-                preco.addClass("is-invalid").removeClass("is-valid");
-                objProduto.preco = null;
-            }
-
-            if (valorNome !== undefined && valorNome !== "") {
-                nome.addClass("is-valid").removeClass("is-invalid");
-                objProduto.nome = valorNome;
-            } else {
-                nome.addClass("is-invalid").removeClass("is-valid");
-                objProduto.nome = null;
-            }
-
-            if (valorDesc !== undefined && valorDesc !== "") {
-                desc.addClass("is-valid").removeClass("is-invalid");
-                objProduto.desc = valorDesc;
-            } else {
-                desc.addClass("is-invalid").removeClass("is-valid");
-                objProduto.desc = null;
-            }
-
-            if (valorQt !== undefined && valorQt !== "") {
-                qtd.addClass("is-valid").removeClass("is-invalid");
-                objProduto.qtd = valorQt;
-            } else {
-                qtd.addClass("is-invalid").removeClass("is-valid");
-                objProduto.qtd = null;
-            }
-            let data_atual = new Date();
-            let dataCriacao = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
-            if (objProduto.data_criacao == "") {
-                objProduto.data_criacao = dataCriacao;
-            }
-            console.log(objProduto)
-            $.post(urlApi + nameApi + paramApi_edit_produto,  objProduto, (res, status) => {
-                if (status === "success") {
-                
-                    if (res === "null") {
-                        setStatusMsgErro("block");
-                        $('#btnAdicionar').attr({"disabled":"disabled"});
-                    } else {
-                        setStatusMsgErro("none");
-                    }
-                    if (res == 1) {
-                        setStatusMsgSuccess("block");
-                        $('#btnAdicionar').attr({"disabled":"disabled"});
-                    } else {
-                        setStatusMsgSuccess("none");
-                    }
-                } else {
-                    alert("API Error");
-                }
-
-            })
+    const editNovoProduto = (e) => {
+        e.preventDefault();
+       // let nome = $("#nomeItemInputEdit");
+        //let desc = $("#descItemInputEdit");
+        //let qtd = $("#qtItemInputEdit");
+       // let preco = $("#precoUnitInputEdit");
+      
+        var objProduto = { id: idEdit, nome:"", desc :"", qtd :"", preco :"", data_criacao:"" };
+   
+       
+        if (valorPreco !== undefined && valorPreco !== "") {
+            //preco.addClass("is-valid").removeClass("is-invalid");
+            objProduto.preco = valorPreco;
+        } else {
+           // preco.addClass("is-invalid").removeClass("is-valid");
+            objProduto.preco = vlFilter[0].preco;
         }
-        useEffect(() => {
-            const paramApi_lista_produto = '?api=getProdutos';
-            let config = {
 
-                method: "get",
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': '*',
-                    'Access-Control-Allow-Credentials': 'true',
-                    'mode': 'no-cors'
+        if (valorNome !== undefined && valorNome !== "") {
+           // nome.addClass("is-valid").removeClass("is-invalid");
+            objProduto.nome = valorNome;
+
+        } else {
+           // nome.addClass("is-invalid").removeClass("is-valid");
+            objProduto.nome = vlFilter[0].nome;
+        }
+
+        if (valorDesc !== undefined && valorDesc !== "") {
+           // desc.addClass("is-valid").removeClass("is-invalid");
+            objProduto.desc = valorDesc;
+        } else {
+          //  desc.addClass("is-invalid").removeClass("is-valid");
+            objProduto.desc =  vlFilter[0].descricao;
+        }
+
+        if (valorQt !== undefined && valorQt !== "") {
+          //  qtd.addClass("is-valid").removeClass("is-invalid");
+            objProduto.qtd = valorQt;
+        } else {
+           // qtd.addClass("is-invalid").removeClass("is-valid");
+            objProduto.qtd = vlFilter[0].quantidade;
+        }
+
+        let data_atual = new Date();
+        let dataCriacao = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
+        if (objProduto.data_criacao == "") {
+            objProduto.data_criacao = dataCriacao;
+        }
+        
+        const paramApi_edit_produto = "?api=updateItem";
+        $.post(urlApi + nameApi + paramApi_edit_produto, objProduto, (res, status) => {
+            if (status === "success") {
+
+                if (res === "null") {
+                    setStatusMsgErro("block");
+                    $('#btnEditar').attr({ "disabled": "disabled" });
+                } else {
+                    setStatusMsgErro("none");
                 }
-            };
-            axios.get(urlApi + nameApi + paramApi_lista_produto, config)
+                if (res == 1) {
+                    setStatusMsgSuccess("block");
+                    $('#btnEditar').attr({ "disabled": "disabled" });
+                } else {
+                    setStatusMsgSuccess("none");
+                }
+            } else {
+                alert("API Error");
+            }
+
+        })
+    }
+    useEffect(() => {
+        const paramApi_lista_produto = '?api=getProdutos';
+        let config = {
+
+            method: "get",
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Allow-Credentials': 'true',
+                'mode': 'no-cors'
+            }
+        };
+        axios.get(urlApi + nameApi + paramApi_lista_produto, config)
             .then((res) => {
                 var vl = res.data;
                 setDataFilter(vl)
             }).catch((error) => { alert(error); });
 
 
-        }, [setDataFilter, setEdit]);
+    }, [setDataFilter, setEdit]);
 
-    const vlFilter = dataFilter.filter(e => { return e.id === idEdit });
+
     return (
         <div class="modal fade" id={"editProduto-" + idEdit} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticeditProduto" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="staticnvProduto">Edit Produto {idEdit}</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"   onClick={() => { fecharModal() }}></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
                     </div>
                     <div class="modal-body">
-                        <div class="alert alert-danger" style={{ display: statusMsgErro }} role="alert">
-                            Preencha os campo(s)!
-                        </div>
-                        <div class="alert alert-success" style={{ display: statusMsgSuccess }} role="alert">
-                            Produto <strong>s </strong> atualizado!
-                        </div>
+                       
 
                         {vlFilter && vlFilter.map(e => {
 
@@ -138,7 +137,7 @@ const ModalEdit = (data_id) => {
 
                                     <div class="mb-3">
                                         <label for="nomeItemInput" class="form-label">Nome item</label>
-                                        <input type="text" class="form-control " id="nomeItemInputEdit" autocomplete="off"  onChange={(e) => { setNome(e.target.value) }} placeholder={e.nome} />
+                                        <input type="text" class="form-control " id="nomeItemInputEdit" autocomplete="off" onChange={(e) => { setNome(e.target.value) }} placeholder={e.nome} />
                                     </div>
                                     <div class="mb-3">
                                         <label for="descItemInput" class="form-label">Descrição item</label>
@@ -146,7 +145,7 @@ const ModalEdit = (data_id) => {
                                     </div>
                                     <div class="mb-3">
                                         <label for="qtItemInput" class="form-label">Quantidade</label>
-                                        <input type="number" min="1" class="form-control" id="qtItemInputEdit" autocomplete="off" onChange={(e) => { setQuant(e.target.value) }} placeholder={e.quantidade} />
+                                        <input type="number" min="1" class="form-control" id="qtItemInputEdit" autocomplete="off" onChange={(e) => { setQuant(e.target.value); }} placeholder={e.quantidade} />
                                     </div>
                                     <div class="mb-3">
                                         <label for="precoUnitInput" class="form-label">Preço unitário</label>
@@ -168,7 +167,7 @@ const ModalEdit = (data_id) => {
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" onClick={(e)=>{editNovoProduto(e)}} class="btn w-100 btn-primary " id="btnEditar"> <i class="bi bi-plus-circle"></i> Editar</button>
+                        <button type="button" onClick={(e) => { editNovoProduto(e) }} class="btn w-100 btn-primary" id="btnEditar"> <i class="bi bi-plus-circle"></i> Editar</button>
                     </div>
                 </div>
 

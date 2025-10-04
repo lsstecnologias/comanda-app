@@ -16,7 +16,7 @@ const Produto = () => {
     
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
-    const paramApi_save_produto ="?api=setProduto";
+   
 
     const addNovoProduto = (e) => {
         e.preventDefault();
@@ -39,6 +39,7 @@ const Produto = () => {
         if (valorNome !== undefined && valorNome !== "") {
             nome.addClass("is-valid").removeClass("is-invalid");
             objProduto.nome = valorNome;
+            
         } else {
             nome.addClass("is-invalid").removeClass("is-valid");
             objProduto.nome = null;
@@ -66,6 +67,8 @@ const Produto = () => {
         if (objProduto.data_criacao == "") {
             objProduto.data_criacao = dataCriacao;
         }
+
+        const paramApi_save_produto ="?api=setProduto";
         $.post(urlApi+nameApi+paramApi_save_produto, objProduto, (res, status) => {
             if (status === "success") {
              

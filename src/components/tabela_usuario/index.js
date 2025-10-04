@@ -32,6 +32,6 @@ const TabelaUsuario = () => {
 
 
         </div>
-    )
+    );
 }
 export default TabelaUsuario;

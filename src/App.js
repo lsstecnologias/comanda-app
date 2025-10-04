@@ -47,6 +47,7 @@ function App() {
           <Route path='/imagens' element={<Imagens />} />
         </Routes>
       </BrowserRouter>
+      
     </div>
   )
 

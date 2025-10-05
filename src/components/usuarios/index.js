@@ -9,8 +9,8 @@ const Usuarios = () => {
     const [emailLoginUser, setEmailLoginUser] = useState("");
     const [senhaUser, setSenhaUser] = useState("");
     const [selectedFileUser, setSelectedFileUser] = useState(null);
-    const [perfilUser,setPerfilUser] = useState("");
-    const [senhaUserConfirm,setSenhaUserConfirm] = useState();
+    const [perfilUser, setPerfilUser] = useState("");
+    const [senhaUserConfirm, setSenhaUserConfirm] = useState("");
 
     const [statusMsgErro, setStatusMsgErro] = useState("none");
     const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
@@ -21,14 +21,14 @@ const Usuarios = () => {
     const addNovoUsuario = (e) => {
         e.preventDefault();
 
-        let nome         = $("#nomeInput");
-        let senha        = $("#senhaInput");
+        let nome = $("#nomeInput");
+        let senha = $("#senhaInput");
         let confirmSenha = $("#confirmSenha");
-        let loginEmail   = $("#loginEmailInput");
-        let perfil     = $("#perfilUser");
-        let inputFoto    = $("#inputFoto");
+        let loginEmail = $("#loginEmailInput");
+        let perfil = $("#perfilUser");
+        let inputFoto = $("#inputFoto");
 
-        var objUsuario = { nome_user:"", senha_user:"", login_email:"",perfil_user:"",perfil_foto:"", data_criacao:"" };
+        var objUsuario = { nome_user: "", senha_user: "", confirm_senha: "", senha: "", login_email: "", perfil_user: "", data_criacao: "" };
 
         if (nomeUser !== undefined && nomeUser !== "") {
             nome.addClass("is-valid").removeClass("is-invalid");
@@ -46,6 +46,15 @@ const Usuarios = () => {
             objUsuario.login_email = null;
         }
 
+        if (senhaUserConfirm !== undefined && senhaUserConfirm !== "") {
+
+            objUsuario.confirm_senha = senhaUserConfirm;
+            confirmSenha.addClass("is-valid").removeClass("is-invalid");
+        } else {
+            confirmSenha.addClass("is-invalid").removeClass("is-valid");
+            objUsuario.confirm_senha = null;
+        }
+
         if (senhaUser !== undefined && senhaUser !== "") {
             senha.addClass("is-valid").removeClass("is-invalid");
             objUsuario.senha_user = senhaUser;
@@ -54,15 +63,10 @@ const Usuarios = () => {
             objUsuario.senha_user = null;
         }
 
-        if (selectedFileUser !== undefined && selectedFileUser !== "") {
-            console.log(selectedFileUser)
-            inputFoto.addClass("is-valid").removeClass("is-invalid");
-            objUsuario.perfil_foto = selectedFileUser;
-        } else {
+        if (selectedFileUser === null) {
             inputFoto.addClass("is-invalid").removeClass("is-valid");
-            objUsuario.perfil_foto = null;
-        }
 
+        }
 
         if (perfilUser !== undefined && perfilUser !== "") {
             perfil.addClass("is-valid").removeClass("is-invalid");
@@ -73,15 +77,25 @@ const Usuarios = () => {
             objUsuario.perfil_user = null;
 
         }
+
         let data_atual = new Date();
         let dataCriacao = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
+
         if (objUsuario.data_criacao == "") {
             objUsuario.data_criacao = dataCriacao;
         }
-        console.log(objUsuario)
 
-        /*const paramApi_save_usuario = "";
-        $.post(urlApi + nameApi + paramApi_save_usuario, objProduto, (res, status) => {
+        if (objUsuario.confirm_senha == objUsuario.senha_user) {
+            senha.addClass("is-valid").removeClass("is-invalid");
+            confirmSenha.addClass("is-valid").removeClass("is-invalid");
+        } else {
+            senha.addClass("is-invalid").removeClass("is-valid");
+            confirmSenha.addClass("is-invalid").removeClass("is-valid");
+        }
+
+
+        const paramApi_save_usuario = "?api=setUsuarios";
+        $.post(urlApi + nameApi + paramApi_save_usuario, objUsuario, (res, status) => {
             if (status === "success") {
 
                 if (res === "null") {
@@ -100,12 +114,36 @@ const Usuarios = () => {
                 alert("API Error");
             }
 
-        })*/
+        })
     }
     const fecharModal = () => {
         window.location.reload();
     }
+    const carregarImagens = () => {
+        const paramApi_save_img = "?api=setUploadFile";
+        let inputFoto = $("#inputFoto");
 
+        if (selectedFileUser !== null) {
+            var formData = new FormData();
+            formData.append("arquivo", selectedFileUser);
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    var resposta = xhr.responseText;
+                    console.log(resposta)
+                    inputFoto.addClass("is-valid").removeClass("is-invalid");
+                }
+            }
+
+            //fazer o envio do nosso request
+            xhr.open("POST", urlApi + nameApi + paramApi_save_img);
+            xhr.send(formData);
+
+        }
+
+
+    }
     useEffect(() => {
         // $('#rgInput').mask('00.000.000-00');
         // $('#cepInput').mask('0000000');
@@ -130,6 +168,7 @@ const Usuarios = () => {
                             <h1 class="modal-title fs-5" id="novoUsuario">Novo usuário <i class="bi bi-person-fill-add"></i></h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
                         </div>
+
                         <div class="modal-body">
                             <div class="alert alert-danger" style={{ display: statusMsgErro }} role="alert">
                                 Preencha os campo(s)!
@@ -137,14 +176,16 @@ const Usuarios = () => {
                             <div class="alert alert-success" style={{ display: statusMsgSuccess }} role="alert">
                                 Usuário <strong> {nomeUser ?? nomeUser}  </strong> registrado!
                             </div>
+
                             <div class="mb-3">
                                 <label for="nomeInput" class="form-label">Nome</label>
                                 <input type="text" class="form-control" id="nomeInput" onChange={(e) => { setNomeUser(e.target.value) }} placeholder="Seu nome" autocomplete="off" />
                             </div>
                             <div class="mb-3">
-                                <label for="perfilUser" class="form-label">Perfil:</label>
-                                <select id="perfilUser" onChange={(e)=>{setPerfilUser(e.target.value)}} class="form-select">
-                                    <option value="u" selected>Usuário</option>
+                                <label for="perfilUser" class="form-label">Perfil</label>
+                                <select id="perfilUser" onChange={(e) => { setPerfilUser(e.target.value) }} class="form-select">
+                                    <option >Selecione</option>
+                                    <option value="u">Usuário</option>
                                     <option value="a">Administrador</option>
                                 </select>
                             </div>
@@ -163,22 +204,25 @@ const Usuarios = () => {
 
                             </div>
                             <div class="mb-3">
-                                <label for="inputFoto" class="form-label">Sua foto</label>
+                                <label for="inputFoto" class="form-label">Inserir imagem</label>
                                 <input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileUser(e.target.files[0]) }} placeholder="Another input placeholder" />
+                                <button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={carregarImagens}>Carregar imagem</button>
                             </div>
-
                         </div>
-                        <div class="modal-footer">
 
+                        <div class="modal-footer">
 
                             <button type="button" class="btn btn-primary w-100" id="btnAdicionar" onClick={(e) => { addNovoUsuario(e) }}>Salvar</button>
                         </div>
+
+
+
                     </div>
                 </div>
             </div>
             <TabelaUsuario />
 
-        </div>
+        </div >
     )
 
 }

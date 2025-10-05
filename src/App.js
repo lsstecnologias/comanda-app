@@ -14,21 +14,11 @@ const $ = require("jquery");
 function App() {
 
   const [statusTela, setStatusTela] = useState('');
-  /*
-   const domain = window.location.hostname;
-  const protocolo = window.location.protocol;
-  const path = window.location.pathname;
-  const port = 8080;
-  const dns = (protocolo + path + path + domain + ':' + port);
-*/
-
-
-
+  
   window.addEventListener('load', () => {
+    $('#preloader').hide(500);
     setStatusTela("block");
-    $('#preloader').hide(500)
   });
-
 
   return (
     <div class="container" >

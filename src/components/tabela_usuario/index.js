@@ -21,7 +21,7 @@ const TabelaUsuario = () => {
                         <td>{"val.preco"}</td>
                         <td>
                             <button data-bs-toggle="modal"  data-bs-target={"#editProduto-"} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
-                                    <button  class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button>
+                            <button  class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button>
                         </td>
 
                     </tr>

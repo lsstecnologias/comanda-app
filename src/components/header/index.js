@@ -1,7 +1,6 @@
 const Header = () => {
     return (
-        <div className="container-fluid bg-body-tertiary mb-4">
-           
+        <div className="container bg-body-tertiary mb-4">
 
             <nav class=" navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid">
@@ -15,9 +14,7 @@ const Header = () => {
                                 <a class="nav-link active" aria-current="page" href="#">Home</a>
                             </li>
                             <li class="nav-item">
-
                                 <a href="/" class="nav-link ">Comanda</a>
-
                             </li>
                             <li class="nav-item">
                                 <a href="/produtos" class="nav-link ">produtos</a>
@@ -39,13 +36,7 @@ const Header = () => {
 
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                            </li>
-
-                        </ul>
-                        <form class="d-flex" role="search">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                            <div class="dropdown text-end">
+                                <a class="nav-link" aria-disabled="true">  <div class="dropdown text-left">
                                 <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle" />
                                 </a>
@@ -56,7 +47,13 @@ const Header = () => {
                                     <li></li>
                                     <li><a class="dropdown-item" href="#">Sign out</a></li>
                                 </ul>
-                            </div>
+                            </div></a>
+                            </li>
+
+                        </ul>
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                          
                         </form>
 
                     </div>

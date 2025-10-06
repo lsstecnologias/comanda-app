@@ -22,7 +22,7 @@ function App() {
   });
 
   return (
-    <div class="container" >
+    <div class="container " >
       <div id="preloader" style={{ display: statusTela }}>
 
         <div class="spinner-border" role="status">

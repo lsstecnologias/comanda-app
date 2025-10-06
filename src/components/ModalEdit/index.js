@@ -5,7 +5,7 @@ const $ = require("jquery");
 
 const ModalEdit = (data_id) => {
     const [valorPreco, setPreco] = useState();
-    const [valorNome, setNome] = useState();
+    const [valorItem, setItem] = useState();
     const [valorDesc, setDesc] = useState();
     const [valorQt, setQuant] = useState();
 
@@ -33,7 +33,7 @@ const ModalEdit = (data_id) => {
         //let qtd = $("#qtItemInputEdit");
        // let preco = $("#precoUnitInputEdit");
       
-        var objProduto = { id: idEdit, nome:"", desc :"", qtd :"", preco :"", data_criacao:"" };
+        var objProduto = { id: idEdit, item:"", desc :"", qtd :"", preco :"", data_criacao:"" };
    
        
         if (valorPreco !== undefined && valorPreco !== "") {
@@ -44,13 +44,13 @@ const ModalEdit = (data_id) => {
             objProduto.preco = vlFilter[0].preco;
         }
 
-        if (valorNome !== undefined && valorNome !== "") {
+        if (valorItem !== undefined && valorItem !== "") {
            // nome.addClass("is-valid").removeClass("is-invalid");
-            objProduto.nome = valorNome;
+            objProduto.item = valorItem;
 
         } else {
            // nome.addClass("is-invalid").removeClass("is-valid");
-            objProduto.nome = vlFilter[0].nome;
+            objProduto.item = vlFilter[0].item;
         }
 
         if (valorDesc !== undefined && valorDesc !== "") {
@@ -137,7 +137,7 @@ const ModalEdit = (data_id) => {
 
                                     <div class="mb-3">
                                         <label for="nomeItemInput" class="form-label">Nome item</label>
-                                        <input type="text" class="form-control " id="nomeItemInputEdit" autocomplete="off" onChange={(e) => { setNome(e.target.value) }} placeholder={e.nome} />
+                                        <input type="text" class="form-control " id="nomeItemInputEdit" autocomplete="off" onChange={(e) => { setItem(e.target.value) }} placeholder={e.item} />
                                     </div>
                                     <div class="mb-3">
                                         <label for="descItemInput" class="form-label">Descrição item</label>

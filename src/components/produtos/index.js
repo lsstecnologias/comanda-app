@@ -8,7 +8,7 @@ const $ = require("jquery");
 
 const Produto = () => {
     const [valorPreco, setPreco] = useState();
-    const [valorNome, setNome] = useState();
+    const [valorItem, setItem] = useState();
     const [valorDesc, setDesc] = useState();
     const [valorQt, setQuant] = useState();
     const [valorCateg, setCategorias] = useState();
@@ -58,8 +58,16 @@ const Produto = () => {
         let desc = $("#descItemInput");
         let qtd = $("#qtItemInput");
         let preco = $("#precoUnitInput");
-        let data_criacao = "";
-        var objProduto = { nome, desc, qtd, preco, data_criacao };
+
+        var objProduto = { item: "", desc: "", qtd: "", preco: "", data_criacao: "", categoria_id: "" };
+
+        if (valorCateg !== undefined && valorCateg !== "") {
+            preco.addClass("is-valid").removeClass("is-invalid");
+            objProduto.categoria_id = valorCateg;
+        } else {
+            preco.addClass("is-invalid").removeClass("is-valid");
+            objProduto.categoria_id = null;
+        }
 
         if (valorPreco !== undefined && valorPreco !== "") {
             preco.addClass("is-valid").removeClass("is-invalid");
@@ -69,13 +77,13 @@ const Produto = () => {
             objProduto.preco = null;
         }
 
-        if (valorNome !== undefined && valorNome !== "") {
+        if (valorItem !== undefined && valorItem !== "") {
             nome.addClass("is-valid").removeClass("is-invalid");
-            objProduto.nome = valorNome;
+            objProduto.item = valorItem;
 
         } else {
             nome.addClass("is-invalid").removeClass("is-valid");
-            objProduto.nome = null;
+            objProduto.item = null;
         }
 
         if (valorDesc !== undefined && valorDesc !== "") {
@@ -151,7 +159,7 @@ const Produto = () => {
         const param_api_save_categoria = "?api=setCategoria";
         $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
             if (status === "success") {
-                
+
                 setStatusFormAddCateg("none");
                 $("#addCategorias").val("");
                 let categ_input = $("#addCategorias");
@@ -203,11 +211,11 @@ const Produto = () => {
                                 Preencha os campo(s)!
                             </div>
                             <div class="alert alert-success" style={{ display: statusMsgSuccess }} role="alert">
-                                Produto <strong> {valorNome ?? valorNome}  </strong> registrado!
+                                Produto <strong> {valorItem ?? valorItem}  </strong> registrado!
                             </div>
                             <div class="mb-3">
                                 <label for="nomeItemInput" class="form-label">Nome item</label>
-                                <input type="text" class="form-control " id="nomeItemInput" autocomplete="off" onChange={(e) => { setNome(e.target.value) }} placeholder="Nome item" />
+                                <input type="text" class="form-control " id="nomeItemInput" autocomplete="off" onChange={(e) => { setItem(e.target.value) }} placeholder="Nome item" />
                             </div>
                             <div class="mb-3">
                                 <label for="descItemInput" class="form-label">Descrição item</label>
@@ -219,7 +227,6 @@ const Produto = () => {
                                     <option >Selecione</option>
                                     {listCateg && listCateg.map((e) => {
                                         return (<option key={e.id} value={e.cod}>{e.nome}</option>)
-
                                     })}
                                     {listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}
 

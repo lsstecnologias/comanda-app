@@ -59,7 +59,7 @@ const TabelaProduto = () => {
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nome </th>
-                        <th scope="col">Qtd.</th>
+                        <th scope="col">Categ.</th>
                         <th scope="col">Preço unit.</th>
                         <th scope="col">Ações</th>
                     </tr>
@@ -69,8 +69,8 @@ const TabelaProduto = () => {
                         return (
                             <tr key={val.id}>
                                 <th scope="row">{val.id}</th>
+                                <td className='lh-1 fw-light'>{val.item}</td>
                                 <td className='lh-1 fw-light'>{val.nome}</td>
-                                <td className='lh-1 fw-light'>{val.quantidade}</td>
                                 <td className='lh-1 fw-light'>{val.preco}</td>
                                 <td>
                                     <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>

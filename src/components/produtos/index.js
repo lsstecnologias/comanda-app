@@ -3,6 +3,7 @@ import TabelaProduto from "../tabela_produto";
 
 import { NumericFormat } from 'react-number-format';
 import { useEffect, useState } from 'react';
+import axios from "axios";
 const $ = require("jquery");
 
 const Produto = () => {
@@ -10,18 +11,49 @@ const Produto = () => {
     const [valorNome, setNome] = useState();
     const [valorDesc, setDesc] = useState();
     const [valorQt, setQuant] = useState();
-    const [valorCateg,setCategorias] = useState();
+    const [valorCateg, setCategorias] = useState();
+    const [nvCateg, setNvCateg] = useState();
+    const [listCateg, setListCateg] = useState(null);
     const [statusMsgErro, setStatusMsgErro] = useState("none");
     const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
+    const [statusFormAddCateg, setStatusFormAddCateg] = useState("none");
     const [formProduto, setFormProd] = useState({});
-    
+
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
-   
+
+    useEffect(() => {
+        const param_api_get_categoria = "?api=getCategoria";
+        let config = {
+
+            method: "get",
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Allow-Credentials': 'true',
+                'mode': 'no-cors'
+            }
+        }
+
+
+
+        const listCategoria = () => {
+            axios.get(urlApi + nameApi + param_api_get_categoria, config)
+                .then((res) => {
+                    var vl = res.data;
+                    setListCateg(vl);
+
+                }).catch((error) => { alert(error); });
+
+        };
+        listCategoria();
+
+    }, [setListCateg]);
+
 
     const addNovoProduto = (e) => {
         e.preventDefault();
-       
+
         let nome = $("#nomeItemInput");
         let desc = $("#descItemInput");
         let qtd = $("#qtItemInput");
@@ -40,7 +72,7 @@ const Produto = () => {
         if (valorNome !== undefined && valorNome !== "") {
             nome.addClass("is-valid").removeClass("is-invalid");
             objProduto.nome = valorNome;
-            
+
         } else {
             nome.addClass("is-invalid").removeClass("is-valid");
             objProduto.nome = null;
@@ -61,7 +93,7 @@ const Produto = () => {
         } else {
             qtd.addClass("is-invalid").removeClass("is-valid");
             objProduto.qtd = null;
-            
+
         }
         let data_atual = new Date();
         let dataCriacao = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
@@ -69,19 +101,19 @@ const Produto = () => {
             objProduto.data_criacao = dataCriacao;
         }
 
-        const paramApi_save_produto ="?api=setProduto";
-        $.post(urlApi+nameApi+paramApi_save_produto, objProduto, (res, status) => {
+        const paramApi_save_produto = "?api=setProduto";
+        $.post(urlApi + nameApi + paramApi_save_produto, objProduto, (res, status) => {
             if (status === "success") {
-             
+
                 if (res === "null") {
                     setStatusMsgErro("block");
-                    $('#btnAdicionar').attr({"disabled":"disabled"});
+                    $('#btnAdicionar').attr({ "disabled": "disabled" });
                 } else {
                     setStatusMsgErro("none");
                 }
                 if (res == 1) {
                     setStatusMsgSuccess("block");
-                     $('#btnAdicionar').attr({"disabled":"disabled"});
+                    $('#btnAdicionar').attr({ "disabled": "disabled" });
                 } else {
                     setStatusMsgSuccess("none");
                 }
@@ -90,6 +122,64 @@ const Produto = () => {
             }
 
         })
+    }
+    const addNvCategoria = (e) => {
+        e.preventDefault();
+
+        let categ_input = $("#addCategorias");
+
+
+        let data_atual = new Date();
+        let dataCriacao = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
+
+        const obj_categoria = { data_criacao: "", cod: "", nome: "", data_criacao: "" };
+
+        if (obj_categoria.data_criacao == "" && obj_categoria.cod == "") {
+            obj_categoria.data_criacao = dataCriacao;
+            obj_categoria.cod = Math.floor(Math.random() * (777 - 0)) + 0;
+        }
+
+
+        if (nvCateg !== undefined && nvCateg !== "") {
+            categ_input.addClass("is-valid").removeClass("is-invalid");
+            obj_categoria.nome = nvCateg;
+        } else {
+            categ_input.addClass("is-invalid").removeClass("is-valid");
+            obj_categoria.nome = null;
+        }
+
+        const param_api_save_categoria = "?api=setCategoria";
+        $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
+            if (status === "success") {
+                
+                setStatusFormAddCateg("none");
+                $("#addCategorias").val("");
+                let categ_input = $("#addCategorias");
+                categ_input.addClass("is-invalid").removeClass("is-valid");
+
+                if (res === "null") {
+                    setStatusMsgErro("block");
+                    //$('#btnAdicionar').attr({ "disabled": "disabled" });
+                } else {
+                    setStatusMsgErro("none");
+                }
+                if (res == 1) {
+                    setStatusMsgSuccess("block");
+
+                    // $('#btnAdicionar').attr({ "disabled": "disabled" });
+                } else {
+                    setStatusMsgSuccess("none");
+                }
+            } else {
+                alert("API Error");
+            }
+
+        })
+    }
+    const exibeFormAddCateg = (e) => {
+        e.preventDefault();
+        setStatusFormAddCateg("inline-flex");
+
     }
     const fecharModal = () => {
         window.location.reload();
@@ -123,17 +213,28 @@ const Produto = () => {
                                 <label for="descItemInput" class="form-label">Descrição item</label>
                                 <input type="text" class="form-control" id="descItemInput" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder="Detalhes" />
                             </div>
-                            <div class="mb-3">
-                                <label for="categorias" class="form-label">Categorias</label>
+                            <div class="input-group mb-3" id="categorias">
+
                                 <select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">
                                     <option >Selecione</option>
-                                    <option value=""></option>
-                                    <option value=""></option>
+                                    {listCateg && listCateg.map((e) => {
+                                        return (<option key={e.id} value={e.cod}>{e.nome}</option>)
+
+                                    })}
+                                    {listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}
+
                                 </select>
+
+                                <button class="btn btn-outline-secondary" onClick={(e) => { exibeFormAddCateg(e) }} type="button" >Nova categoria</button>
+                            </div>
+                            <div class="input-group mb-3" style={{ display: statusFormAddCateg }}>
+                                <input type="text" class="form-control" id="addCategorias" autocomplete="off" onChange={(e) => { setNvCateg(e.target.value) }} placeholder="Categoria do produto" aria-label="Categoria do produto" aria-describedby="button-addon2" />
+                                <button class="btn btn-primary" type="button" onClick={(e) => { addNvCategoria(e) }} ><i class="bi bi-plus-circle-fill"></i> Adicionar</button>
                             </div>
                             <div class="mb-3">
                                 <label for="qtItemInput" class="form-label">Quantidade</label>
                                 <input type="number" min="1" class="form-control" id="qtItemInput" onChange={(e) => { setQuant(e.target.value) }} autocomplete="off" placeholder="0" />
+
                             </div>
                             <div class="mb-3">
                                 <label for="precoUnitInput" class="form-label">Preço unitário</label>
@@ -157,7 +258,7 @@ const Produto = () => {
                     </div>
                 </div>
             </div>
-            <TabelaProduto  />
+            <TabelaProduto />
         </div>
     )
 }

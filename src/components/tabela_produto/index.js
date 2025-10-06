@@ -69,9 +69,9 @@ const TabelaProduto = () => {
                         return (
                             <tr key={val.id}>
                                 <th scope="row">{val.id}</th>
-                                <td>{val.nome}</td>
-                                <td>{val.quantidade}</td>
-                                <td>{val.preco}</td>
+                                <td className='lh-1 fw-light'>{val.nome}</td>
+                                <td className='lh-1 fw-light'>{val.quantidade}</td>
+                                <td className='lh-1 fw-light'>{val.preco}</td>
                                 <td>
                                     <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                                     <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button>

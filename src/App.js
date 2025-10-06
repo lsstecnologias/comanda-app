@@ -6,6 +6,7 @@ import Produto from './components/produtos';
 import Header from './components/header';
 import Usuarios from './components/usuarios';
 import Imagens from './components/Imagens';
+import ReactPaginate from 'react-paginate';
 import { useEffect, useState } from 'react';
 import 'animate.css';
 const $ = require("jquery");

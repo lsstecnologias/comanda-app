@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import ModalEdit from '../ModalEdit';
+
+import ReactPaginate from 'react-paginate';
 const $ = require("jquery");
 
 
@@ -8,21 +10,26 @@ const TabelaProduto = () => {
     const [data, setData] = useState([]);
     const [id, setId] = useState();
     const [msg, setMsg] = useState("none");
+    
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
-    
+
     const paramApi_delete_item = '?api=deleteItem';
     const deleteItem = (id) => {
         if (id !== null || id !== undefined) {
             let objId = { "id": id };
-            $.post(urlApi + nameApi + paramApi_delete_item, objId, (req, res) => {  window.location.reload()  })
+            $.post(urlApi + nameApi + paramApi_delete_item, objId, (req, res) => { window.location.reload() })
         }
     }
 
     const editItem = (id) => {
         setId(id);
     }
+
+
     useEffect(() => {
+
+      
         const paramApi_lista_produto = '?api=getProdutos';
         let config = {
 
@@ -81,7 +88,10 @@ const TabelaProduto = () => {
                 </div>
             }
             <ModalEdit data_id={id} />
+
+           
         </div>
+
     )
 
 }

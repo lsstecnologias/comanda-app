@@ -10,6 +10,7 @@ const Produto = () => {
     const [valorNome, setNome] = useState();
     const [valorDesc, setDesc] = useState();
     const [valorQt, setQuant] = useState();
+    const [valorCateg,setCategorias] = useState();
     const [statusMsgErro, setStatusMsgErro] = useState("none");
     const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
     const [formProduto, setFormProd] = useState({});
@@ -121,6 +122,14 @@ const Produto = () => {
                             <div class="mb-3">
                                 <label for="descItemInput" class="form-label">Descrição item</label>
                                 <input type="text" class="form-control" id="descItemInput" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder="Detalhes" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="categorias" class="form-label">Categorias</label>
+                                <select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">
+                                    <option >Selecione</option>
+                                    <option value=""></option>
+                                    <option value=""></option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="qtItemInput" class="form-label">Quantidade</label>

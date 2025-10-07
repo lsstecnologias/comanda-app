@@ -133,9 +133,9 @@ const Usuarios = () => {
 
     return (
         <div>
-            <h3 className="mb-3">Logo</h3>
+            <h4 className="mb-3">Logo <i class="bi bi-images"></i></h4>
             <Imagens />
-            <h3 className="mb-3 mt-3">Usuarios</h3>
+            <h4 className="mb-3 mt-3">Usuários <i class="bi bi-person-fill"></i></h4>
 
             <button type="button" class="btn  w-100 btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#novoUsuario">
                 <i class="bi bi-person-fill-add"></i> Novo
@@ -164,7 +164,7 @@ const Usuarios = () => {
                             <div class="mb-3">
                                 <label for="perfilUser" class="form-label">Perfil</label>
                                 <select id="perfilUser" onChange={(e) => { setPerfilUser(e.target.value) }} class="form-select">
-                                    <option >Selecione</option>
+                                    <option>Selecione</option>
                                     <option value="u">Usuário</option>
                                     <option value="a">Administrador</option>
                                 </select>

@@ -14,6 +14,7 @@ const Imagens = () => {
 
         if (selectedFileUser !== null) {
             var formData = new FormData();
+            console.log(selectedFileUser)
             formData.append("arquivo", selectedFileUser);
 
             var xhr = new XMLHttpRequest();
@@ -39,9 +40,9 @@ const Imagens = () => {
     }
     return (
         <div class="mb-3">
-            <label for="inputFoto" class="form-label">Inserir imagem</label>
+           
             <input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileUser(e.target.files[0]) }} placeholder="Another input placeholder" />
-            <button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={carregarImagens}>Carregar imagem</button>
+            <button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={carregarImagens}> <i class="bi fs-5 bi-cloud-arrow-up"></i> Carregar imagem</button>
      
         </div>
     )

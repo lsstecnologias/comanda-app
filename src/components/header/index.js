@@ -1,3 +1,4 @@
+import { Link, Outlet } from 'react-router-dom';
 const Header = () => {
     return (
         <div className="container bg-body-tertiary mb-4">
@@ -11,16 +12,22 @@ const Header = () => {
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                
+                                 <Link to="/home/produto" class="nav-link" >produtos</Link>
+                            </li>
+
+                            <li class="nav-item">
+                                <Link to="/home/comanda" class="nav-link" >Comanda</Link>
+                               
                             </li>
                             <li class="nav-item">
-                                <a href="/" class="nav-link ">Comanda</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/produtos" class="nav-link ">produtos</a>
+                                <a href="/produto" class="nav-link ">produtos</a>
                             </li>
                             <li class="nav-item">
                                 <a href="/imagens" class="nav-link ">Imagens</a>
+                            </li>
+                              <li class="nav-item">
+                                <a href="/usuario" class="nav-link ">Usuário</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -38,7 +45,7 @@ const Header = () => {
                             <li class="nav-item">
                               <a class="nav-link" aria-disabled="true">Link </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item ml-4">
                                 <div class="dropdown text-left">
                                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                         <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle" />
@@ -63,7 +70,7 @@ const Header = () => {
 
                 </div >
             </nav >
-
+            <Outlet /> 
         </div >
     )
 }

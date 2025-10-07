@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
+import $ from 'jquery';
 import Imagens from "../Imagens";
 import TabelaUsuario from "../tabela_usuario";
-import $ from 'jquery';
+
 import 'jquery-mask-plugin';
+var md5 = require('md5');
+ 
+
 const Usuarios = () => {
 
     const [nomeUser, setNomeUser] = useState("");
     const [emailLoginUser, setEmailLoginUser] = useState("");
     const [senhaUser, setSenhaUser] = useState("");
-    const [selectedFileUser, setSelectedFileUser] = useState(null);
     const [perfilUser, setPerfilUser] = useState("");
-    const [senhaUserConfirm, setSenhaUserConfirm] = useState("");
-
     const [statusMsgErro, setStatusMsgErro] = useState("none");
     const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
 
@@ -23,12 +24,11 @@ const Usuarios = () => {
 
         let nome = $("#nomeInput");
         let senha = $("#senhaInput");
-        let confirmSenha = $("#confirmSenha");
         let loginEmail = $("#loginEmailInput");
         let perfil = $("#perfilUser");
-        let inputFoto = $("#inputFoto");
+        let cod = Math.floor(Math.random() * (777 - 0)) + 0;
 
-        var objUsuario = { nome_user: "", senha_user: "", confirm_senha: "", senha: "", login_email: "", perfil_user: "", data_criacao: "" };
+        var objUsuario = {cod_user:cod, nome_user: "", senha_user: "",  login_email: "", perfil_user: "", data_criacao: "" };
 
         if (nomeUser !== undefined && nomeUser !== "") {
             nome.addClass("is-valid").removeClass("is-invalid");
@@ -45,27 +45,14 @@ const Usuarios = () => {
             loginEmail.addClass("is-invalid").removeClass("is-valid");
             objUsuario.login_email = null;
         }
-
-        if (senhaUserConfirm !== undefined && senhaUserConfirm !== "") {
-
-            objUsuario.confirm_senha = senhaUserConfirm;
-            confirmSenha.addClass("is-valid").removeClass("is-invalid");
-        } else {
-            confirmSenha.addClass("is-invalid").removeClass("is-valid");
-            objUsuario.confirm_senha = null;
-        }
+       
 
         if (senhaUser !== undefined && senhaUser !== "") {
             senha.addClass("is-valid").removeClass("is-invalid");
-            objUsuario.senha_user = senhaUser;
+            objUsuario.senha_user = md5(senhaUser);
         } else {
             senha.addClass("is-invalid").removeClass("is-valid");
             objUsuario.senha_user = null;
-        }
-
-        if (selectedFileUser === null) {
-            inputFoto.addClass("is-invalid").removeClass("is-valid");
-
         }
 
         if (perfilUser !== undefined && perfilUser !== "") {
@@ -84,15 +71,6 @@ const Usuarios = () => {
         if (objUsuario.data_criacao == "") {
             objUsuario.data_criacao = dataCriacao;
         }
-
-        if (objUsuario.confirm_senha == objUsuario.senha_user) {
-            senha.addClass("is-valid").removeClass("is-invalid");
-            confirmSenha.addClass("is-valid").removeClass("is-invalid");
-        } else {
-            senha.addClass("is-invalid").removeClass("is-valid");
-            confirmSenha.addClass("is-invalid").removeClass("is-valid");
-        }
-
 
         const paramApi_save_usuario = "?api=setUsuarios";
         $.post(urlApi + nameApi + paramApi_save_usuario, objUsuario, (res, status) => {
@@ -197,23 +175,16 @@ const Usuarios = () => {
                             </div>
                             <div class="mb-3">
                                 <label for="senhaInput" class="form-label">Senha</label>
-                                <input type="password" class="form-control w-20" id="senhaInput" onChange={(e) => { setSenhaUser(e.target.value) }} placeholder="Sua senha" autocomplete="off" />
+                                <input type="password" class="form-control w-20" id="senhaInput"  onChange={(e) => { setSenhaUser(e.target.value) }} placeholder="Sua senha" autocomplete="off" />
 
                             </div>
-                            <div class="mb-3">
-                                <label for="confirmSenha" class="form-label">Confirmar a sua senha</label>
-                                <input type="password" class="form-control " id="confirmSenha" onChange={(e) => { setSenhaUserConfirm(e.target.value) }} placeholder="Sua senha" autocomplete="off" />
-
-                            </div>
+                            
                            
                         </div>
 
                         <div class="modal-footer">
-
                             <button type="button" class="btn btn-primary w-100" id="btnAdicionar" onClick={(e) => { addNovoUsuario(e) }}>Salvar</button>
                         </div>
-
-
 
                     </div>
                 </div>

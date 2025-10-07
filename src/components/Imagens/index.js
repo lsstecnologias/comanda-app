@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from 'react';
 import ImageUploading from "react-images-uploading";
 import $ from 'jquery';
+import QRCode from "../qrcode";
 const Imagens = () => {
     const [selectedFileUser, setSelectedFileUser] = useState(null);
     const urlApi = 'http://10.10.10.6/';
@@ -41,6 +42,7 @@ const Imagens = () => {
             <label for="inputFoto" class="form-label">Inserir imagem</label>
             <input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileUser(e.target.files[0]) }} placeholder="Another input placeholder" />
             <button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={carregarImagens}>Carregar imagem</button>
+     
         </div>
     )
 

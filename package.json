@@ -12,6 +12,7 @@
     "bootstrap": "^5.3.8",
     "jquery": "^3.7.1",
     "jquery-mask-plugin": "^1.14.16",
+    "md5": "^2.3.0",
     "primereact": "^10.9.7",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -21,7 +22,8 @@
     "react-paginate": "^8.3.0",
     "react-router-dom": "^7.9.3",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "wifi-qr-code-generator": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

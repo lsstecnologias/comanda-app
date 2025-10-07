@@ -3,7 +3,7 @@ const TabelaUsuario = () => {
         <div class="table-responsive mt-4 m-3">
 
             <table class="table caption-top ">
-                <caption>Lista de produtos</caption>
+               
                 <thead>
                     <tr>
                         <th scope="col">#</th>

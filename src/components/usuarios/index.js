@@ -119,12 +119,14 @@ const Usuarios = () => {
     const fecharModal = () => {
         window.location.reload();
     }
-    const carregarImagens = () => {
+  /*  const carregarImagens = () => {
         const paramApi_save_img = "?api=setUploadFile";
         let inputFoto = $("#inputFoto");
 
         if (selectedFileUser !== null) {
             var formData = new FormData();
+           
+            
             formData.append("arquivo", selectedFileUser);
 
             var xhr = new XMLHttpRequest();
@@ -143,7 +145,7 @@ const Usuarios = () => {
         }
 
 
-    }
+    }*/
     useEffect(() => {
         // $('#rgInput').mask('00.000.000-00');
         // $('#cepInput').mask('0000000');
@@ -203,11 +205,7 @@ const Usuarios = () => {
                                 <input type="password" class="form-control " id="confirmSenha" onChange={(e) => { setSenhaUserConfirm(e.target.value) }} placeholder="Sua senha" autocomplete="off" />
 
                             </div>
-                            <div class="mb-3">
-                                <label for="inputFoto" class="form-label">Inserir imagem</label>
-                                <input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileUser(e.target.files[0]) }} placeholder="Another input placeholder" />
-                                <button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={carregarImagens}>Carregar imagem</button>
-                            </div>
+                           
                         </div>
 
                         <div class="modal-footer">

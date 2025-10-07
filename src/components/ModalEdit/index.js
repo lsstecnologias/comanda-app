@@ -8,12 +8,16 @@ const ModalEdit = (data_id) => {
     const [valorItem, setItem] = useState();
     const [valorDesc, setDesc] = useState();
     const [valorQt, setQuant] = useState();
+    const [valorCateg, setCategorias] = useState();
+    const [listCateg, setListCateg] = useState(null);
+
+    // const [listCateg, setListCateg] = useState(null);
 
     const [statusMsgErro, setStatusMsgErro] = useState("none");
     const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
     const [dataFilter, setDataFilter] = useState([]);
     const [edit, setEdit] = useState([]);
-    
+
     const fecharModal = () => {
         window.location.reload();
     }
@@ -25,47 +29,54 @@ const ModalEdit = (data_id) => {
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
     const vlFilter = dataFilter.filter(e => { return e.id === idEdit });
-
+    console.log(vlFilter)
     const editNovoProduto = (e) => {
         e.preventDefault();
-       // let nome = $("#nomeItemInputEdit");
+        // let nome = $("#nomeItemInputEdit");
         //let desc = $("#descItemInputEdit");
         //let qtd = $("#qtItemInputEdit");
-       // let preco = $("#precoUnitInputEdit");
-      
-        var objProduto = { id: idEdit, item:"", desc :"", qtd :"", preco :"", data_criacao:"" };
-   
-       
+        // let preco = $("#precoUnitInputEdit");
+
+        var objProduto = { id: idEdit, item: "", desc: "", id_categoria: "", qtd: "", preco: "", data_criacao: "" };
+
+        if (valorCateg !== undefined && valorCateg !== "") {
+            //preco.addClass("is-valid").removeClass("is-invalid");
+            objProduto.id_categoria = valorCateg;
+        } else {
+            // preco.addClass("is-invalid").removeClass("is-valid");
+            objProduto.id_categoria = vlFilter[0].cod;
+        }
+
         if (valorPreco !== undefined && valorPreco !== "") {
             //preco.addClass("is-valid").removeClass("is-invalid");
             objProduto.preco = valorPreco;
         } else {
-           // preco.addClass("is-invalid").removeClass("is-valid");
+            // preco.addClass("is-invalid").removeClass("is-valid");
             objProduto.preco = vlFilter[0].preco;
         }
 
         if (valorItem !== undefined && valorItem !== "") {
-           // nome.addClass("is-valid").removeClass("is-invalid");
+            // nome.addClass("is-valid").removeClass("is-invalid");
             objProduto.item = valorItem;
 
         } else {
-           // nome.addClass("is-invalid").removeClass("is-valid");
+            // nome.addClass("is-invalid").removeClass("is-valid");
             objProduto.item = vlFilter[0].item;
         }
 
         if (valorDesc !== undefined && valorDesc !== "") {
-           // desc.addClass("is-valid").removeClass("is-invalid");
+            // desc.addClass("is-valid").removeClass("is-invalid");
             objProduto.desc = valorDesc;
         } else {
-          //  desc.addClass("is-invalid").removeClass("is-valid");
-            objProduto.desc =  vlFilter[0].descricao;
+            //  desc.addClass("is-invalid").removeClass("is-valid");
+            objProduto.desc = vlFilter[0].descricao;
         }
 
         if (valorQt !== undefined && valorQt !== "") {
-          //  qtd.addClass("is-valid").removeClass("is-invalid");
+            //  qtd.addClass("is-valid").removeClass("is-invalid");
             objProduto.qtd = valorQt;
         } else {
-           // qtd.addClass("is-invalid").removeClass("is-valid");
+            // qtd.addClass("is-invalid").removeClass("is-valid");
             objProduto.qtd = vlFilter[0].quantidade;
         }
 
@@ -74,7 +85,7 @@ const ModalEdit = (data_id) => {
         if (objProduto.data_criacao == "") {
             objProduto.data_criacao = dataCriacao;
         }
-        
+
         const paramApi_edit_produto = "?api=updateItem";
         $.post(urlApi + nameApi + paramApi_edit_produto, objProduto, (res, status) => {
             if (status === "success") {
@@ -98,7 +109,8 @@ const ModalEdit = (data_id) => {
         })
     }
     useEffect(() => {
-        const paramApi_lista_produto = '?api=getProdutos';
+        const param_api_lista_produto = '?api=getProdutos';
+        const param_api_get_categoria = "?api=getCategoria";
         let config = {
 
             method: "get",
@@ -109,15 +121,26 @@ const ModalEdit = (data_id) => {
                 'mode': 'no-cors'
             }
         };
-        axios.get(urlApi + nameApi + paramApi_lista_produto, config)
+        axios.get(urlApi + nameApi + param_api_lista_produto, config)
             .then((res) => {
                 var vl = res.data;
+
                 setDataFilter(vl)
             }).catch((error) => { alert(error); });
 
 
-    }, [setDataFilter, setEdit]);
+        const listCategoria = () => {
+            axios.get(urlApi + nameApi + param_api_get_categoria, config)
+                .then((res) => {
+                    var vl = res.data;
+                    setListCateg(vl);
 
+                }).catch((error) => { alert(error); });
+
+        };
+        listCategoria();
+
+    }, [setDataFilter, setEdit, setListCateg]);
 
     return (
         <div class="modal fade" id={"editProduto-" + idEdit} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticeditProduto" aria-hidden="true">
@@ -128,7 +151,7 @@ const ModalEdit = (data_id) => {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
                     </div>
                     <div class="modal-body">
-                       
+
 
                         {vlFilter && vlFilter.map(e => {
 
@@ -143,6 +166,20 @@ const ModalEdit = (data_id) => {
                                         <label for="descItemInput" class="form-label">Descrição item</label>
                                         <input type="text" class="form-control" id="descItemInputEdit" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder={e.descricao} />
                                     </div>
+                                    <label for="descItemInput" class="form-label">Selecione item</label>
+                                    <div class="input-group mb-3" id="categorias">
+
+                                        <select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">
+
+                                            <option value={e.cod} selected>{e.nome}</option>
+                                            { listCateg && listCateg.map((e) => {
+                                                return (<option key={e.id} value={e.cod}>{e.nome}</option>)
+                                            })}
+                                            {listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}
+                                        </select>
+
+                                    </div>
+
                                     <div class="mb-3">
                                         <label for="qtItemInput" class="form-label">Quantidade</label>
                                         <input type="number" min="1" class="form-control" id="qtItemInputEdit" autocomplete="off" onChange={(e) => { setQuant(e.target.value); }} placeholder={e.quantidade} />

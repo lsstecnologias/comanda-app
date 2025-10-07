@@ -1,14 +1,57 @@
 import React from "react";
+import { useEffect, useState } from 'react';
 import ImageUploading from "react-images-uploading";
+import $ from 'jquery';
 const Imagens = () => {
-    const [images, setImages] = React.useState([]);
+    const [selectedFileUser, setSelectedFileUser] = useState(null);
+    const urlApi = 'http://10.10.10.6/';
+    const nameApi = 'api_comanda/';
+
+    const carregarImagens = () => {
+        const paramApi_save_img = "?api=setUploadFile";
+        let inputFoto = $("#inputFoto");
+
+        if (selectedFileUser !== null) {
+            var formData = new FormData();
+            formData.append("arquivo", selectedFileUser);
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    var resposta = xhr.responseText;
+                    if(resposta){
+                        inputFoto.addClass("is-valid").removeClass("is-invalid").val(null);
+                    
+                    }
+                }
+            }
+
+            //fazer o envio do nosso request
+            xhr.open("POST", urlApi + nameApi + paramApi_save_img);
+            xhr.send(formData);
+            inputFoto.addClass("is-valid").removeClass("is-invalid");
+        }else{
+            inputFoto.addClass("is-invalid").removeClass("is-valid");
+        }
+
+
+    }
+    return (
+        <div class="mb-3">
+            <label for="inputFoto" class="form-label">Inserir imagem</label>
+            <input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileUser(e.target.files[0]) }} placeholder="Another input placeholder" />
+            <button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={carregarImagens}>Carregar imagem</button>
+        </div>
+    )
+
+    /* const [images, setImages] = React.useState([]);
     const maxNumber = 69;
     const onChange = (imageList, addUpdateIndex) => {
         // data for submit
         console.log(imageList, addUpdateIndex);
         setImages(imageList);
     };
-    return (
+   return (
         <div className="container">
             <ImageUploading
                 multiple
@@ -51,6 +94,6 @@ const Imagens = () => {
                 )}
             </ImageUploading>
         </div>
-    );
+    );*/
 }
 export default Imagens;

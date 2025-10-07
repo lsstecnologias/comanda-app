@@ -23,7 +23,7 @@ const Produto = () => {
     const nameApi = 'api_comanda/';
 
     useEffect(() => {
-        const param_api_get_categoria = "?api=getCategoria";
+       
         let config = {
 
             method: "get",
@@ -36,7 +36,7 @@ const Produto = () => {
         }
 
 
-
+ const param_api_get_categoria = "?api=getCategoria";
         const listCategoria = () => {
             axios.get(urlApi + nameApi + param_api_get_categoria, config)
                 .then((res) => {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import $ from 'jquery';
 import Imagens from "../Imagens";
 import TabelaUsuario from "../tabela_usuario";
-
+import Header from '../header';
 import 'jquery-mask-plugin';
 var md5 = require('md5');
  
@@ -132,7 +132,8 @@ const Usuarios = () => {
 
 
     return (
-        <div>
+        <div  className="container">
+        
             <h4 className="mb-3">Logo <i class="bi bi-images"></i></h4>
             <Imagens />
             <h4 className="mb-3 mt-3">Usuários <i class="bi bi-person-fill"></i></h4>

@@ -1,5 +1,8 @@
+import { Outlet } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Header from '../header';
+
 const $ = require("jquery");
 
 function Comanda() {
@@ -65,7 +68,7 @@ function Comanda() {
 
   return (
     <div className=" animate__animated animate__fadeIn">
-
+    
       <main class="container">
         <div class="alert alert-danger text-start" style={{ display: "none" }} role="alert">
           A simple danger alert—check it out!
@@ -129,6 +132,7 @@ function Comanda() {
           </table>
         </article>
       </main>
+       
     </div>
   )
 

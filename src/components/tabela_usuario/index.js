@@ -12,16 +12,14 @@ const TabelaUsuario = () => {
         const param_api_list_usuario = "?api=getUsuarios";
         const getUsuarios = () => {
             fetch(urlApi + nameApi + param_api_list_usuario)
-                .then((e) => {
-                    return e.json();
-                }).then(res => {
-                    setUsuarios(res);
-                    console.log(res);
-                   sessionStorage.setItem("usuario",JSON.stringify(res));
-
-                }).catch(error => {
-                    alert(error)
-                })
+            .then((e) => {
+                return e.json();
+            }).then(res => {
+                setUsuarios(res);
+            
+            }).catch(error => {
+                alert(error)
+            })
         }
         getUsuarios();
 

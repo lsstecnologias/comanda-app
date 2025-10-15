@@ -1,5 +1,5 @@
 import TabelaProduto from "../tabela_produto";
-
+import Header from '../header';
 
 import { NumericFormat } from 'react-number-format';
 import { useEffect, useState } from 'react';
@@ -193,8 +193,10 @@ const Produto = () => {
         window.location.reload();
     }
     return (
-        <div className="container ">
+        <div className="container">
+        
             <div className="container p-0">
+                
                 <button type="button" class="btn w-100 btn-primary" data-bs-toggle="modal" data-bs-target="#nvProduto">
                     <i class="bi bi-plus-circle-dotted fs-4"></i> <p>Novo Produto</p>
                 </button>

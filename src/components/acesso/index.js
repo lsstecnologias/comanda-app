@@ -1,6 +1,6 @@
 import './style.css';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import md5 from 'md5';
 const Acesso = () => {
     const [emailLogin, setEmailLogin] = useState(null);
     const [senha, setSenha] = useState(null);
@@ -10,6 +10,12 @@ const Acesso = () => {
     const [msgError, setMsgError] = useState(null);
     const [msgSuccess, setMsgSuccess] = useState(null);
 
+    var ObjSessao = { email_login: "", senha: "" };
+
+    const urlApi = 'http://10.10.10.6/';
+    const nameApi = 'api_comanda/';
+    const param_api_get_usuarios = "?api=getUsuarios";
+
     const validarForm = (e) => {
         e.preventDefault();
 
@@ -18,30 +24,65 @@ const Acesso = () => {
             setDisplayError('none');
             setDisplaySuccess("block");
             setMsgSuccess("Aguarde...");
+            ObjSessao.email_login = emailLogin;
+            ObjSessao.senha = md5(senha);
+            console.log(emailLogin)
         } else {
             setDisplayError("block");
             setMsgError("Verifique email e senha!");
             setDisplaySuccess("none");
+            setSenha(null);
+            setEmailLogin(null);
+            ObjSessao.email_login = "";
+            ObjSessao.senha = "";
             return;
         }
 
+        fetch(urlApi + nameApi + param_api_get_usuarios)
+        .then(async (e) => {
+            return await e.json();
+        }).then(res => {
 
 
+
+            var dataSession = res.filter((x) => { return x.senha === ObjSessao.senha && x.email === ObjSessao.email_login });
+            if (Array.isArray(dataSession) && dataSession.length === 0) {
+                setDisplayError("block");
+                setMsgError("Email ou Senha incorreto!");
+                setDisplaySuccess("none");
+                setMsgSuccess(null);
+            } else {
+
+                let host = window.location.hostname;
+                let porta = window.location.port;
+                let protocolo = window.location.protocol;
+                let pathDir = window.location.pathname;
+                let url = protocolo + "//" + host + ':' + porta + pathDir + 'admin';
+                sessionStorage.setItem("user_admin", JSON.stringify(dataSession))
+                window.location.href = url;
+            }
+
+
+        }).catch(error => {
+            alert("ERRO: verificar os serviços ou recursos API" + error)
+        });
     }
+
+
 
     return (
         <div id="login">
             <main class="form-signin w-100 m-auto">
                 <form >
 
-                    <h1 class="h3 mb-3 fw-normal">Login</h1>
+                    <h1 class="h1 mb-3 fw-normal">Login</h1>
                     <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-
+                        <i class="bi bi-check-circle p-2"></i>
                         {msgSuccess !== null && msgSuccess}
 
                     </div>
                     <div class="alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
-
+                        <i class="bi bi-exclamation-triangle p-2"></i>
                         {msgError !== null && msgError}
 
                     </div>

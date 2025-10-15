@@ -7,20 +7,27 @@
 
 .form-signin .form-floating:focus-within {
     z-index: 2;
+    
 }
 
 .form-signin input[type="email"] {
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
+     
 }
-
+.form-signin input[type="email"]:focus{
+     outline: none !important
+}
 .form-signin input[type="password"] {
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+     
 }
-
+.form-signin input[type="password"]:focus{
+     outline: none !important
+}
 .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
@@ -49,7 +56,9 @@
     width: 1.5rem;
     height: 100vh
 }
-
+input:focus {
+  outline: none !important/* or outline: 0; */
+}
 .bi {
     vertical-align: -.125em;
     fill: currentColor

@@ -70,7 +70,7 @@ function App() {
      
       <BrowserRouter>
         <Routes>
-          <Route path="/acesso" element={<Acesso />} />
+          <Route path="/" element={<Acesso />} />
            <Route path="/admin" element={<AppComponent  />} >   
                <Route path="produto" element={<Produto />} /> 
                <Route path="usuario" element={<Usuarios />} /> 

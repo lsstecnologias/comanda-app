@@ -23,7 +23,7 @@ function App() {
     $('#preloader').hide(500);
     setStatusTela("block");
   });
-  const urlApi = 'http://10.10.10.6/';
+ /* const urlApi = 'http://10.10.10.6/';
   const nameApi = 'api_comanda/';
   useEffect(() => {
 
@@ -55,11 +55,11 @@ function App() {
 
     var session_user = getSessionUser();
     console.log(session_user);
-  }, []);
+  }, []);*/
  
   return (
 
-    <div class="container-fluid">
+    <div class="container-fluid " >
       <div id="preloader" style={{ display: statusTela }}>
 
         <div class="spinner-border" role="status">

@@ -21,7 +21,7 @@ function AppComponent() {
         $('#preloader').hide(500);
         setStatusTela("block");
     });
-    const urlApi = 'http://10.10.10.6/';
+  /*  const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
     useEffect(() => {
 
@@ -53,7 +53,7 @@ function AppComponent() {
 
         var session_user = getSessionUser();
         console.log(session_user);
-    }, []);
+    }, []);*/
 
     return (
 

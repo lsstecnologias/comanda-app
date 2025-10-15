@@ -1,0 +1,17 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Users\Leonardo S\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.8.1
+2 info using node@v22.2.0
+3 silly config load:file:C:\Users\Leonardo S\AppData\Roaming\npm\node_modules\npm\npmrc
+4 silly config load:file:C:\laragon\www\encarte_admin\.npmrc
+5 silly config load:file:C:\Users\Leonardo S\.npmrc
+6 silly config load:file:C:\Users\Leonardo S\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm
+8 verbose argv "--cache" "clean"
+9 verbose logfile logs-max:10 dir:C:\laragon\www\encarte_admin\clean\_logs\2025-10-15T20_36_25_686Z-
+10 verbose logfile C:\laragon\www\encarte_admin\clean\_logs\2025-10-15T20_36_25_686Z-debug-0.log
+11 verbose cwd C:\laragon\www\encarte_admin
+12 verbose os Windows_NT 10.0.19045
+13 verbose node v22.2.0
+14 verbose npm  v10.8.1
+15 verbose exit 1
+16 verbose code 1

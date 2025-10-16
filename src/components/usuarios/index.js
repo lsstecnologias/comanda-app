@@ -146,7 +146,7 @@ const Usuarios = () => {
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="novoUsuario">Novo usuário <i class="bi bi-person-fill-add"></i></h1>
+                            <h1 class="modal-title fs-5" id="novoUsuario"><i class="bi bi-person-fill-add"></i> Novo usuário</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
                         </div>
 

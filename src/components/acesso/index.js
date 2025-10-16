@@ -42,17 +42,14 @@ const Acesso = () => {
         .then(async (e) => {
             return await e.json();
         }).then(res => {
-
-
-
             var dataSession = res.filter((x) => { return x.senha === ObjSessao.senha && x.email === ObjSessao.email_login });
             if (Array.isArray(dataSession) && dataSession.length === 0) {
                 setDisplayError("block");
                 setMsgError("Email ou Senha incorreto!");
                 setDisplaySuccess("none");
                 setMsgSuccess(null);
-            } else {
 
+            } else {
                 let host = window.location.hostname;
                 let porta = window.location.port;
                 let protocolo = window.location.protocol;
@@ -60,6 +57,7 @@ const Acesso = () => {
                 let url = protocolo + "//" + host + ':' + porta + pathDir + 'admin';
                 sessionStorage.setItem("user_admin", JSON.stringify(dataSession))
                 window.location.href = url;
+                
             }
 
 

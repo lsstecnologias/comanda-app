@@ -13,8 +13,11 @@ const ModalEdit = (data_id) => {
 
     // const [listCateg, setListCateg] = useState(null);
 
-    const [statusMsgErro, setStatusMsgErro] = useState("none");
-    const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
+    const [displayError, setDisplayError] = useState('none');
+    const [displaySuccess, setDisplaySuccess] = useState('none');
+    const [msgError, setMsgError] = useState(null);
+    const [msgSuccess, setMsgSuccess] = useState(null);
+
     const [dataFilter, setDataFilter] = useState([]);
     const [edit, setEdit] = useState([]);
 
@@ -29,7 +32,7 @@ const ModalEdit = (data_id) => {
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
     const vlFilter = dataFilter.filter(e => { return e.id === idEdit });
-    console.log(vlFilter)
+
     const editNovoProduto = (e) => {
         e.preventDefault();
         // let nome = $("#nomeItemInputEdit");
@@ -87,23 +90,29 @@ const ModalEdit = (data_id) => {
         }
 
         const paramApi_edit_produto = "?api=updateItem";
+
         $.post(urlApi + nameApi + paramApi_edit_produto, objProduto, (res, status) => {
+
             if (status === "success") {
 
                 if (res === "null") {
-                    setStatusMsgErro("block");
+                    setMsgError("Erro ao atualizar o item!");
+                    setDisplayError("block");
                     $('#btnEditar').attr({ "disabled": "disabled" });
                 } else {
-                    setStatusMsgErro("none");
+                    setDisplayError("none");
+                    setMsgError(null);
                 }
                 if (res == 1) {
-                    setStatusMsgSuccess("block");
+                    setMsgSuccess("O item foi atualizado!");
+                    setDisplaySuccess("block");
                     $('#btnEditar').attr({ "disabled": "disabled" });
                 } else {
-                    setStatusMsgSuccess("none");
+                    setDisplaySuccess("none");
+                    setMsgSuccess(null);
                 }
             } else {
-                alert("API Error");
+                alert("Error: modal, parametros API")
             }
 
         })
@@ -150,8 +159,17 @@ const ModalEdit = (data_id) => {
                         <h1 class="modal-title fs-5" id="staticnvProduto">Edit Produto {idEdit}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="m-3 alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+                        <i class="bi bi-check-circle p-2"></i>
+                        {msgSuccess !== null && msgSuccess}
 
+                    </div>
+                    <div class="m-3 alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+                        <i class="bi bi-exclamation-triangle p-2"></i>
+                        {msgError !== null && msgError}
+
+                    </div>
+                    <div class="modal-body">
 
                         {vlFilter && vlFilter.map(e => {
 
@@ -172,7 +190,7 @@ const ModalEdit = (data_id) => {
                                         <select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">
 
                                             <option value={e.cod} selected>{e.nome}</option>
-                                            { listCateg && listCateg.map((e) => {
+                                            {listCateg && listCateg.map((e) => {
                                                 return (<option key={e.id} value={e.cod}>{e.nome}</option>)
                                             })}
                                             {listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}

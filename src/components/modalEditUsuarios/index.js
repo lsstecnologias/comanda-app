@@ -6,14 +6,17 @@ const ModalEditUsuarios = (data_id) => {
     var data = { data_id };
     var id = data.data_id;
     var idEdit = id.data_id;
-    
+
 
     const [nomeUser, setNomeUser] = useState("");
     const [emailLoginUser, setEmailLoginUser] = useState("");
     const [senhaUser, setSenhaUser] = useState("");
     const [perfilUser, setPerfilUser] = useState("");
-    const [statusMsgErro, setStatusMsgErro] = useState("none");
-    const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
+
+    const [displayError, setDisplayError] = useState('none');
+    const [displaySuccess, setDisplaySuccess] = useState('none');
+    const [msgError, setMsgError] = useState(null);
+    const [msgSuccess, setMsgSuccess] = useState(null);
 
     const [dataFilter, setDataFilter] = useState([]);
     const [edit, setEdit] = useState([]);
@@ -30,7 +33,7 @@ const ModalEditUsuarios = (data_id) => {
         let senha = $("#senhaInput");
         let loginEmail = $("#loginEmailInput");
         let perfil = $("#perfilUser");
-        let cod = Math.floor(Math.random() * (777 - 0)) + 0;
+        let cod = Math.floor(Math.random() * (7777 - 0)) + 0;
 
         var objUsuario = { cod_user: cod, nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_criacao: "" };
 
@@ -78,20 +81,20 @@ const ModalEditUsuarios = (data_id) => {
 
         const param_api_update_usuario = "?api=updateUsuarios";
         $.post(urlApi + nameApi + param_api_update_usuario, objUsuario, (res, status) => {
-            
+
             if (status === "success") {
 
-                if (res === "null") {
-                    setStatusMsgErro("block");
-                    $('#btnAdicionar').attr({ "disabled": "disabled" });
+                if (res === "null" || res === null) {
+
+                    $('#btnAdicionar').attr({ "disabled": false });
                 } else {
-                    setStatusMsgErro("none");
+                    // setStatusMsgErro("none");
                 }
                 if (res == 1) {
-                    setStatusMsgSuccess("block");
+
                     $('#btnAdicionar').attr({ "disabled": "disabled" });
                 } else {
-                    setStatusMsgSuccess("none");
+                    // setStatusMsgSuccess("none");
                 }
             } else {
                 alert("API Error");
@@ -103,8 +106,8 @@ const ModalEditUsuarios = (data_id) => {
         window.location.reload();
     }
     useEffect(() => {
-        const param_api_lista_usuario ='?api=getUsuarios';
-        
+        const param_api_lista_usuario = '?api=getUsuarios';
+
         let config = {
             method: "get",
             headers: {
@@ -114,17 +117,17 @@ const ModalEditUsuarios = (data_id) => {
                 'mode': 'no-cors'
             }
         };
-        axios.get(urlApi + nameApi +param_api_lista_usuario, config)
-        .then((res) => {
-            if(res.data !== ""){
-                var vl = res.data;
-                setDataFilter(vl);
-                
-            }else{
-                alert("Error: modal, parametros API")
-            }
-           
-        }).catch((error) => { alert("Error:"+error); });
+        axios.get(urlApi + nameApi + param_api_lista_usuario, config)
+            .then((res) => {
+                if (res.data !== "") {
+                    var vl = res.data;
+                    setDataFilter(vl);
+
+                } else {
+                    alert("Error: modal, parametros API")
+                }
+
+            }).catch((error) => { alert("Error:" + error); });
 
     }, [setDataFilter, setEdit]);
 
@@ -138,13 +141,16 @@ const ModalEditUsuarios = (data_id) => {
                     </div>
 
                     <div class="modal-body">
-                        <div class="alert alert-danger" style={{ display: statusMsgErro }} role="alert">
-                            Preencha os campo(s)!
-                        </div>
-                        <div class="alert alert-success" style={{ display: statusMsgSuccess }} role="alert">
-                            Usuário <strong> {nomeUser ?? nomeUser}  </strong> registrado!
-                        </div>
+                        <div class="m-3 alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+                            <i class="bi bi-check-circle p-2"></i>
+                            {msgSuccess !== null && msgSuccess}
 
+                        </div>
+                        <div class="m-3 alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+                            <i class="bi bi-exclamation-triangle p-2"></i>
+                            {msgError !== null && msgError}
+
+                        </div>
                         <div class="mb-3">
                             <label for="nomeInput" class="form-label">Nome</label>
                             <input type="text" class="form-control" id="nomeInput" onChange={(e) => { setNomeUser(e.target.value) }} placeholder="Seu nome" autocomplete="off" />

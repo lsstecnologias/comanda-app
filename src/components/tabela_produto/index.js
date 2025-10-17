@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import ModalEdit from '../ModalEdit';
+import ModalEditProdutos from '../ModalEditProdutos';
 
 import ReactPaginate from 'react-paginate';
 const $ = require("jquery");
@@ -87,7 +87,7 @@ const TabelaProduto = () => {
                     Nenhum produto!
                 </div>
             }
-            <ModalEdit data_id={id} />
+            <ModalEditProdutos data_id={id} />
 
            
         </div>

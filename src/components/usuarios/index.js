@@ -26,7 +26,7 @@ const Usuarios = () => {
         let senha = $("#senhaInput");
         let loginEmail = $("#loginEmailInput");
         let perfil = $("#perfilUser");
-        let cod = Math.floor(Math.random() * (777 - 0)) + 0;
+        let cod = Math.floor(Math.random() * (7777 - 0)) + 0;
 
         var objUsuario = {cod_user:cod, nome_user: "", senha_user: "",  login_email: "", perfil_user: "", data_criacao: "" };
 

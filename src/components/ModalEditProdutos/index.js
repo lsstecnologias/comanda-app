@@ -3,7 +3,7 @@ import { NumericFormat } from 'react-number-format';
 import axios from "axios";
 const $ = require("jquery");
 
-const ModalEdit = (data_id) => {
+const ModalEditProdutos = (data_id) => {
     const [valorPreco, setPreco] = useState();
     const [valorItem, setItem] = useState();
     const [valorDesc, setDesc] = useState();
@@ -13,6 +13,7 @@ const ModalEdit = (data_id) => {
 
     // const [listCateg, setListCateg] = useState(null);
 
+    //HOOK MSG ERROS
     const [displayError, setDisplayError] = useState('none');
     const [displaySuccess, setDisplaySuccess] = useState('none');
     const [msgError, setMsgError] = useState(null);
@@ -231,4 +232,4 @@ const ModalEdit = (data_id) => {
 
     )
 }
-export default ModalEdit;
+export default ModalEditProdutos;

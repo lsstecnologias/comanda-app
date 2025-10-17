@@ -144,7 +144,7 @@ const Produto = () => {
 
         if (obj_categoria.data_criacao == "" && obj_categoria.cod == "") {
             obj_categoria.data_criacao = dataCriacao;
-            obj_categoria.cod = Math.floor(Math.random() * (777 - 0)) + 0;
+            obj_categoria.cod = Math.floor(Math.random() * (7777 - 0)) + 0;
         }
 
 

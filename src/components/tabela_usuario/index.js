@@ -31,7 +31,7 @@ const TabelaUsuario = () => {
 
                 }).then(res => {
                     if (Array.isArray(res) && res.length === 0) {
-                        alert("Error: erro de parametros API")
+                        alert("Error: parametros API");
                     } else {
                         setUsuarios(res);
                     }

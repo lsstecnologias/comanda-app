@@ -35,7 +35,7 @@ const Acesso = () => {
             setEmailLogin(null);
             ObjSessao.email_login = "";
             ObjSessao.senha = "";
-            return;
+            
         }
 
         fetch(urlApi + nameApi + param_api_get_usuarios)
@@ -43,6 +43,7 @@ const Acesso = () => {
             return await e.json();
         }).then(res => {
             var dataSession = res.filter((x) => { return x.senha === ObjSessao.senha && x.email === ObjSessao.email_login });
+      
             if (Array.isArray(dataSession) && dataSession.length === 0) {
                 setDisplayError("block");
                 setMsgError("Email ou Senha incorreto!");
@@ -86,7 +87,7 @@ const Acesso = () => {
                     </div>
                     <div class="form-floating">
                         <input type="email" name="login" class="form-control" id="inpt_email_login" value={emailLogin} onChange={e => setEmailLogin(e.target.value)} autocomplete="off" placeholder="login" />
-                        <label for="inpt_emailLogin">Login ou Email</label>
+                        <label for="inpt_emailLogin">Email</label>
                     </div>
                     <div class="form-floating">
                         <input type="password" name="pass" class="form-control" id="inpt_senha" value={senha} onChange={e => setSenha(e.target.value)} autocomplete="off" placeholder="Password" />

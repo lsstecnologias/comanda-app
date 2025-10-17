@@ -26,9 +26,9 @@ const Usuarios = () => {
         let senha = $("#senhaInput");
         let loginEmail = $("#loginEmailInput");
         let perfil = $("#perfilUser");
-        let cod = Math.floor(Math.random() * (7777 - 0)) + 0;
+        let cod = Math.floor(Math.random() * (777 + 0)) - 1;
 
-        var objUsuario = {cod_user:cod, nome_user: "", senha_user: "",  login_email: "", perfil_user: "", data_criacao: "" };
+        var objUsuario = {cod_user:cod, nome_user: "", senha_user: "",  login_email: "", perfil_user: "", data_post: "" };
 
         if (nomeUser !== undefined && nomeUser !== "") {
             nome.addClass("is-valid").removeClass("is-invalid");
@@ -47,7 +47,7 @@ const Usuarios = () => {
         }
        
 
-        if (senhaUser !== undefined && senhaUser !== "") {
+        if (senhaUser !== undefined && senhaUser !== "" && senhaUser.length >= 6) {
             senha.addClass("is-valid").removeClass("is-invalid");
             objUsuario.senha_user = md5(senhaUser);
         } else {
@@ -66,30 +66,30 @@ const Usuarios = () => {
         }
 
         let data_atual = new Date();
-        let dataCriacao = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
+        let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 
-        if (objUsuario.data_criacao == "") {
-            objUsuario.data_criacao = dataCriacao;
+        if (objUsuario.data_post == "") {
+            objUsuario.data_post = data_post;
         }
 
         const paramApi_save_usuario = "?api=setUsuarios";
         $.post(urlApi + nameApi + paramApi_save_usuario, objUsuario, (res, status) => {
             if (status === "success") {
 
-                if (res === "null") {
+                if (res === "null" && res === null) {
                     setStatusMsgErro("block");
-                    $('#btnAdicionar').attr({ "disabled": "disabled" });
+                    $('#btnAdicionar').attr({ "disabled": false });
                 } else {
                     setStatusMsgErro("none");
                 }
-                if (res == 1) {
+                if (res === 1 || res === "true" || res === true) {
                     setStatusMsgSuccess("block");
                     $('#btnAdicionar').attr({ "disabled": "disabled" });
                 } else {
                     setStatusMsgSuccess("none");
                 }
             } else {
-                alert("API Error");
+                 alert("Error: parametros API")
             }
 
         })
@@ -138,7 +138,7 @@ const Usuarios = () => {
             <Imagens />
             <h4 className="mb-3 mt-3">Usuários <i class="bi bi-person-fill"></i></h4>
 
-            <button type="button" class="btn  w-100 btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#novoUsuario">
+            <button type="button" class="btn w-100 btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#novoUsuario">
                 <i class="bi bi-person-fill-add"></i> Novo
             </button>
 
@@ -171,8 +171,8 @@ const Usuarios = () => {
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="loginEmailInput" class="form-label">Login ou email</label>
-                                <input type="email" class="form-control" id="loginEmailInput" onChange={(e) => { setEmailLoginUser(e.target.value) }} placeholder="Email ou Login" autocomplete="off" />
+                                <label for="loginEmailInput" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="loginEmailInput" onChange={(e) => { setEmailLoginUser(e.target.value) }} placeholder="Email" autocomplete="off" />
                             </div>
                             <div class="mb-3">
                                 <label for="senhaInput" class="form-label">Senha</label>

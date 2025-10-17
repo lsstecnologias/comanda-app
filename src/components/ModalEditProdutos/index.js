@@ -41,7 +41,7 @@ const ModalEditProdutos = (data_id) => {
         //let qtd = $("#qtItemInputEdit");
         // let preco = $("#precoUnitInputEdit");
 
-        var objProduto = { id: idEdit, item: "", desc: "", id_categoria: "", qtd: "", preco: "", data_criacao: "" };
+        var objProduto = { id: idEdit, item: "", desc: "", id_categoria: "", qtd: "", preco: "", data_post: "" };
 
         if (valorCateg !== undefined && valorCateg !== "") {
             //preco.addClass("is-valid").removeClass("is-invalid");
@@ -85,9 +85,9 @@ const ModalEditProdutos = (data_id) => {
         }
 
         let data_atual = new Date();
-        let dataCriacao = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
-        if (objProduto.data_criacao == "") {
-            objProduto.data_criacao = dataCriacao;
+        let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
+        if (objProduto.data_post == "") {
+            objProduto.data_post = data_post;
         }
 
         const paramApi_edit_produto = "?api=updateItem";
@@ -96,15 +96,15 @@ const ModalEditProdutos = (data_id) => {
 
             if (status === "success") {
 
-                if (res === "null") {
+                if (res === "null" || res === null) {
                     setMsgError("Erro ao atualizar o item!");
                     setDisplayError("block");
-                    $('#btnEditar').attr({ "disabled": "disabled" });
+                    $('#btnEditar').attr({ "disabled": false });
                 } else {
                     setDisplayError("none");
                     setMsgError(null);
                 }
-                if (res == 1) {
+                if (res === 1 || res === "true" || res === true) {
                     setMsgSuccess("O item foi atualizado!");
                     setDisplaySuccess("block");
                     $('#btnEditar').attr({ "disabled": "disabled" });
@@ -113,7 +113,7 @@ const ModalEditProdutos = (data_id) => {
                     setMsgSuccess(null);
                 }
             } else {
-                alert("Error: modal, parametros API")
+                alert("Error: parametros API")
             }
 
         })
@@ -132,20 +132,19 @@ const ModalEditProdutos = (data_id) => {
             }
         };
         axios.get(urlApi + nameApi + param_api_lista_produto, config)
-            .then((res) => {
-                var vl = res.data;
-
-                setDataFilter(vl)
-            }).catch((error) => { alert(error); });
+        .then(async(res) => {
+            var vl = await res.data;
+            setDataFilter(vl)
+        }).catch((error) => { alert("Error: parametros API "+error) });
 
 
         const listCategoria = () => {
             axios.get(urlApi + nameApi + param_api_get_categoria, config)
-                .then((res) => {
-                    var vl = res.data;
-                    setListCateg(vl);
+            .then(async(res) => {
+                var vl = await res.data;
+                setListCateg(vl);
 
-                }).catch((error) => { alert(error); });
+            }).catch((error) => { alert("Error: parametros API "+error) });
 
         };
         listCategoria();
@@ -157,7 +156,7 @@ const ModalEditProdutos = (data_id) => {
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticnvProduto">Edit Produto {idEdit}</h1>
+                        <h1 class="modal-title fs-5" id="staticnvProduto">Editar Produto {idEdit}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
                     </div>
                     <div class="m-3 alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">

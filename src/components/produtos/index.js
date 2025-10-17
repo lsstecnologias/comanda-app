@@ -59,7 +59,7 @@ const Produto = () => {
         let qtd = $("#qtItemInput");
         let preco = $("#precoUnitInput");
 
-        var objProduto = { item: "", desc: "", qtd: "", preco: "", data_criacao: "", categoria_id: "" };
+        var objProduto = { item: "", desc: "", qtd: "", preco: "", data_post: "", categoria_id: "" };
 
         if (valorCateg !== undefined && valorCateg !== "") {
             preco.addClass("is-valid").removeClass("is-invalid");
@@ -103,10 +103,11 @@ const Produto = () => {
             objProduto.qtd = null;
 
         }
+       
         let data_atual = new Date();
-        let dataCriacao = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
+        let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
         if (objProduto.data_criacao == "") {
-            objProduto.data_criacao = dataCriacao;
+            objProduto.data_post = data_post;
         }
 
         const paramApi_save_produto = "?api=setProduto";
@@ -133,21 +134,17 @@ const Produto = () => {
     }
     const addNvCategoria = (e) => {
         e.preventDefault();
-
         let categ_input = $("#addCategorias");
-
-
         let data_atual = new Date();
-        let dataCriacao = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
+        let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
 
-        const obj_categoria = { data_criacao: "", cod: "", nome: "", data_criacao: "" };
+        const obj_categoria = {  cod: "", nome: "", data_post: "" };
 
-        if (obj_categoria.data_criacao == "" && obj_categoria.cod == "") {
-            obj_categoria.data_criacao = dataCriacao;
-            obj_categoria.cod = Math.floor(Math.random() * (7777 - 0)) + 0;
+        if (obj_categoria.data_post == "" && obj_categoria.cod == "") {
+            obj_categoria.data_post = data_post;
+            obj_categoria.cod = Math.floor(Math.random() * (777 + 0)) - 1;
         }
-
-
+   
         if (nvCateg !== undefined && nvCateg !== "") {
             categ_input.addClass("is-valid").removeClass("is-invalid");
             obj_categoria.nome = nvCateg;

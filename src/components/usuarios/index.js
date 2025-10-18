@@ -76,13 +76,13 @@ const Usuarios = () => {
         $.post(urlApi + nameApi + paramApi_save_usuario, objUsuario, (res, status) => {
             if (status === "success") {
 
-                if (res === "null" && res === null) {
+                if (res == "null" && res == null) {
                     setStatusMsgErro("block");
                     $('#btnAdicionar').attr({ "disabled": false });
                 } else {
                     setStatusMsgErro("none");
                 }
-                if (res === 1 || res === "true" || res === true) {
+                if (res == 1 || res == "true" || res == true) {
                     setStatusMsgSuccess("block");
                     $('#btnAdicionar').attr({ "disabled": "disabled" });
                 } else {
@@ -177,10 +177,8 @@ const Usuarios = () => {
                             <div class="mb-3">
                                 <label for="senhaInput" class="form-label">Senha</label>
                                 <input type="password" class="form-control w-20" id="senhaInput"  onChange={(e) => { setSenhaUser(e.target.value) }} placeholder="Sua senha" autocomplete="off" />
-
                             </div>
-                            
-                           
+                                                       
                         </div>
 
                         <div class="modal-footer">

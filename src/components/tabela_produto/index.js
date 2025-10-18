@@ -5,8 +5,8 @@ import ModalEditProdutos from '../ModalEditProdutos';
 import ReactPaginate from 'react-paginate';
 const $ = require("jquery");
 
-
 const TabelaProduto = () => {
+
     const [data, setData] = useState([]);
     const [id, setId] = useState();
     const [msg, setMsg] = useState("none");
@@ -21,19 +21,12 @@ const TabelaProduto = () => {
             $.post(urlApi + nameApi + paramApi_delete_item, objId, (req, res) => { window.location.reload() })
         }
     }
-
-    const editItem = (id) => {
-        setId(id);
-    }
-
+    const editItem = (id) => { setId(id); }
 
     useEffect(() => {
-
-      
         const paramApi_lista_produto = '?api=getProdutos';
-        let config = {
-
-            method: "get",
+        const config = {
+            method: "GET",
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Headers': '*',
@@ -42,18 +35,18 @@ const TabelaProduto = () => {
             }
         };
         axios.get(urlApi + nameApi + paramApi_lista_produto, config)
-            .then((res) => {
-                var vl = res.data;
-                setData(vl);
+        .then(async(res) => {
+            var vl = await res.data;
+            setData(vl);
 
-            }).catch((error) => { alert(error); });
+        }).catch((error) => { alert("Error: parametros API "+error)  });
 
     }, [setData]);
 
     return (
-        <div class="table-responsive mt-4">
+        <div class="table-responsive mt-4 ">
 
-            <table class="table caption-top">
+            <table class="table caption-top  animate__animated  animate__fadeIn">
                 <caption>Lista de produtos</caption>
                 <thead>
                     <tr>

@@ -23,10 +23,10 @@ const ModalEditUsuarios = (data_id) => {
 
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
-    const vlFilter = dataFilter.filter(async e => { return await e.id === idEdit });
+    const vlFilter = dataFilter.filter( e => { return e.id === idEdit });
 
     // const perfil = (vlFilter[0].perfil);
-    console.log(vlFilter[0]);
+  
 
     const editUsuario = (e) => {
         e.preventDefault();
@@ -83,12 +83,13 @@ const ModalEditUsuarios = (data_id) => {
         const param_api_update_usuario = "?api=updateUsuarios";
 
         $.post(urlApi + nameApi + param_api_update_usuario, objUsuario, (res, status) => {
-
+            
+            var editarUsuario = $('#btnEditarUsuario')
             if (status === "success") {
                 if (res === "null" || res === null) {
                     setMsgError("Erro ao atualizar usuário!");
                     setDisplayError("block");
-                    $('#btnAdicionar').attr({ "disabled": false });
+                    editarUsuario.attr({ "disabled": false });
                 } else {
                     setDisplayError("none");
                     setMsgError(null);
@@ -96,13 +97,13 @@ const ModalEditUsuarios = (data_id) => {
                 if (res == 1 || res == "true" || res == true) {
                     setMsgSuccess("Usuário atualizado!");
                     setDisplaySuccess("block");
-                    $('#btnAdicionar').attr({ "disabled": "disabled" });
+                    editarUsuario.attr({ "disabled": "disabled" });
                 } else {
                     setDisplaySuccess("none");
                     setMsgSuccess(null);
                 }
             } else {
-                alert("Error: parametros API!")
+                alert("Error: parametros API")
             }
 
         })
@@ -112,7 +113,7 @@ const ModalEditUsuarios = (data_id) => {
     }
     useEffect(() => {
         const param_api_lista_usuario = '?api=getUsuarios';
-        let config = {
+        const config = {
             method: "GET",
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -122,16 +123,16 @@ const ModalEditUsuarios = (data_id) => {
             }
         };
         axios.get(urlApi + nameApi + param_api_lista_usuario, config)
-            .then((res) => {
-                if (res.data !== "") {
-                    var vl = res.data;
-                    setDataFilter(vl);
+        .then(async(res) => {
+            if (res.data !== "") {
+                var vl = await res.data;
+                setDataFilter(vl);
 
-                } else {
-                    alert("Error: parametros API!")
-                }
+            } else {
+                alert("Error: parametros API!")
+            }
 
-            }).catch((error) => { alert("Error: parametros API " + error); });
+        }).catch((error) => { alert("Error: parametros API " + error); });
 
     }, [setDataFilter, setEdit]);
 
@@ -161,23 +162,23 @@ const ModalEditUsuarios = (data_id) => {
                                 <div key={e.id}>
                                     <div class="mb-3">
                                         <label for="nomeInput" class="form-label">Nome</label>
-                                        <input type="text" class="form-control" id="nomeInput" onChange={(e) => { setNomeUser(e.target.value) }} placeholder={"nomes"} autocomplete="off" />
+                                        <input type="text" class="form-control" id="nomeInput" onChange={(e) => { setNomeUser(e.target.value) }} placeholder={e.nome} autocomplete="off" />
                                     </div>
                                     <div class="mb-3">
                                         <label for="perfilUser" class="form-label">Perfil</label>
                                         <select id="perfilUser" onChange={(e) => { setPerfilUser(e.target.value) }} class="form-select">
-                                            <option value={"perfil"} selected>{"perfil"}</option>
+                                            <option value={e.perfil} selected>{e.perfil == 'a' ? "Administrador" : "Usuário"}</option>
                                             <option value="u">Usuário</option>
                                             <option value="a">Administrador</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="loginEmailInput" class="form-label">E-mail</label>
-                                        <input type="email" class="form-control" id="loginEmailInput" onChange={(e) => { setEmailLoginUser(e.target.value) }} placeholder="Email" autocomplete="off" />
+                                        <input type="email" class="form-control" id="loginEmailInput" onChange={(e) => { setEmailLoginUser(e.target.value) }}  placeholder={e.email} autocomplete="off" />
                                     </div>
                                     <div class="mb-3">
                                         <label for="senhaInput" class="form-label">Senha</label>
-                                        <input type="password" class="form-control w-20" id="senhaInput" onChange={(e) => { setSenhaUser(e.target.value) }} placeholder="Sua senha" autocomplete="off" />
+                                        <input type="password" class="form-control w-20" id="senhaInput" onChange={(e) => { setSenhaUser(e.target.value) }} placeholder="••••••" autocomplete="off" />
 
                                     </div>
                                 </div>
@@ -188,7 +189,7 @@ const ModalEditUsuarios = (data_id) => {
 
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary w-100" id="btnAdicionar" onClick={(e) => { editUsuario(e) }}> <i class="bi bi-pencil-square"></i> Editar</button>
+                            <button type="button" class="btn btn-primary w-100" id="btnEditarUsuario" onClick={(e) => { editUsuario(e) }}> <i class="bi bi-pencil-square"></i> Editar</button>
                         </div>
 
                     </div>

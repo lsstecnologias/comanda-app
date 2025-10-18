@@ -93,21 +93,24 @@ const ModalEditProdutos = (data_id) => {
         const paramApi_edit_produto = "?api=updateItem";
 
         $.post(urlApi + nameApi + paramApi_edit_produto, objProduto, (res, status) => {
-
+           var editarProduto = $('#btnEditarProduto')
             if (status === "success") {
 
-                if (res === "null" || res === null) {
-                    setMsgError("Erro ao atualizar o item!");
+                if (res == 0 || res === null) {
                     setDisplayError("block");
-                    $('#btnEditar').attr({ "disabled": false });
+                    setMsgError("Erro ao atualizar o item!");
+                    editarProduto.attr({ "disabled": false });
                 } else {
                     setDisplayError("none");
                     setMsgError(null);
                 }
-                if (res === 1 || res === "true" || res === true) {
-                    setMsgSuccess("O item foi atualizado!");
+                 console.log(typeof(res))
+                if (res == 1) {
+                     console.log(res)
                     setDisplaySuccess("block");
-                    $('#btnEditar').attr({ "disabled": "disabled" });
+                    setMsgSuccess("O item foi atualizado!");
+                
+                    editarProduto.attr({ "disabled": "disabled" });
                 } else {
                     setDisplaySuccess("none");
                     setMsgSuccess(null);
@@ -121,7 +124,7 @@ const ModalEditProdutos = (data_id) => {
     useEffect(() => {
         const param_api_lista_produto = '?api=getProdutos';
         const param_api_get_categoria = "?api=getCategoria";
-        let config = {
+        const config = {
 
             method: "get",
             headers: {
@@ -132,16 +135,16 @@ const ModalEditProdutos = (data_id) => {
             }
         };
         axios.get(urlApi + nameApi + param_api_lista_produto, config)
-        .then(async(res) => {
-            var vl = await res.data;
+        .then((res) => {
+            var vl = res.data;
             setDataFilter(vl)
         }).catch((error) => { alert("Error: parametros API "+error) });
 
 
         const listCategoria = () => {
             axios.get(urlApi + nameApi + param_api_get_categoria, config)
-            .then(async(res) => {
-                var vl = await res.data;
+            .then((res) => {
+                var vl =  res.data;
                 setListCateg(vl);
 
             }).catch((error) => { alert("Error: parametros API "+error) });
@@ -222,7 +225,7 @@ const ModalEditProdutos = (data_id) => {
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" onClick={(e) => { editNovoProduto(e) }} class="btn w-100 btn-primary" id="btnEditar"> <i class="bi bi-plus-circle"></i> Editar</button>
+                        <button type="button" onClick={(e) => { editNovoProduto(e) }} class="btn w-100 btn-primary" id="btnEditarProduto"> <i class="bi bi-plus-circle"></i> Editar</button>
                     </div>
                 </div>
 

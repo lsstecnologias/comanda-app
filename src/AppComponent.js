@@ -57,10 +57,10 @@ function AppComponent() {
 
     return (
 
-        <div class="container-fluid">
-            <Header />
-            <Outlet />
-        </div>
+        <>
+        <Header />
+        <Outlet />
+        </>
     )
 
 }

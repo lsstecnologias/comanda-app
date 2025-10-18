@@ -47,7 +47,7 @@ const TabelaUsuario = () => {
     return (
         <div class="table-responsive mt-4 m-3">
 
-            <table class="table caption-top ">
+            <table class="table caption-top animate__animated  animate__fadeIn ">
 
                 <thead>
                     <tr>

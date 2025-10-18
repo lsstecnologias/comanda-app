@@ -10,7 +10,7 @@ import AppComponent from './AppComponent';
 import Acesso from './components/acesso';
 import { useEffect, useState } from 'react';
 import axios from "axios";
-import 'animate.css';
+
 
 const $ = require("jquery");
 
@@ -59,7 +59,7 @@ function App() {
  
   return (
 
-    <div class="container-fluid " >
+    <div class="container-fluid m-0 p-0 " >
       <div id="preloader" style={{ display: statusTela }}>
 
         <div class="spinner-border" role="status">

@@ -106,7 +106,7 @@ const Produto = () => {
        
         let data_atual = new Date();
         let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
-        if (objProduto.data_criacao == "") {
+        if (objProduto.data_post == "") {
             objProduto.data_post = data_post;
         }
 
@@ -156,7 +156,6 @@ const Produto = () => {
         const param_api_save_categoria = "?api=setCategoria";
         $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
             if (status === "success") {
-
                 setStatusFormAddCateg("none");
                 $("#addCategorias").val("");
                 let categ_input = $("#addCategorias");
@@ -192,7 +191,7 @@ const Produto = () => {
     return (
         <div className="container">
         
-            <div className="container p-0">
+            <div className="container p-0 animate__animated  animate__fadeIn">
                 
                 <button type="button" class="btn w-100 btn-primary" data-bs-toggle="modal" data-bs-target="#nvProduto">
                     <i class="bi bi-plus-circle-dotted fs-4"></i> <p>Novo Produto</p>

@@ -69,7 +69,7 @@ const TabelaUsuario = () => {
                                 <td className='lh-1 fw-light'>{e.perfil == 'a' ? 'Admin' : 'User'}</td>
                                 <td>
                                     <button data-bs-toggle="modal" onClick={() => editItem(e.id)} data-bs-target={"#editUsuario-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
-                                    <button class="btn btn-sm btn-outline-secondary bi bi-x-lg" onClick={()=> deleteUsuario(e.id)}></button>
+                                    <button class="btn btn-sm btn-outline-secondary bi bi-x-lg" onClick={() => deleteUsuario(e.id)}></button>
                                 </td>
 
                             </tr>
@@ -79,7 +79,15 @@ const TabelaUsuario = () => {
 
                 </tbody>
             </table>
+            {usuarios.length == 0 &&
+                <div class="alert alert-light" role="alert">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
 
+                    </div>
+
+                </div>
+            }
             <ModalEditUsuarios data_id={id} />
         </div>
     );

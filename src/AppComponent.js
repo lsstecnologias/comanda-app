@@ -56,7 +56,6 @@ function AppComponent() {
     }, []);*/
 
     return (
-
         <>
         <Header />
         <Outlet />

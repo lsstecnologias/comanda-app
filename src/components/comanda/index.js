@@ -1,7 +1,7 @@
-import { Outlet } from 'react-router-dom';
+
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Header from '../header';
+
 
 const $ = require("jquery");
 
@@ -20,8 +20,8 @@ function Comanda() {
     if (!isNaN(qt) && qt !== null && qt !== "") {
       var subtotal = (qt * preco).toFixed(2);
       inpt_subtotal.val(subtotal);
-     
-     
+
+
       if (check[0].value == 'on') {
         inpt_qt.attr("disabled", true).addClass("is-valid").removeClass("is-invalid");
 
@@ -39,7 +39,7 @@ function Comanda() {
 
 
   }
-  
+
   useEffect(() => {
 
     let config = {
@@ -54,12 +54,12 @@ function Comanda() {
     };
     axios.get('http://10.10.10.6/api_comanda/?api=getProdutos', config)
       .then((res) => {
-       var vl = res.data;
-         
-       for(var i=0; i < vl.length;i++){
-          vl[i].subtotal=0;
-       }
-       
+        var vl = res.data;
+
+        for (var i = 0; i < vl.length; i++) {
+          vl[i].subtotal = 0;
+        }
+
         setData(vl);
 
       }).catch((error) => { alert(error); });
@@ -67,8 +67,8 @@ function Comanda() {
   }, [setData]);
 
   return (
-    <div className=" animate__animated animate__fadeIn">
-    
+    <div className="animate__animated animate__fadeIn">
+
       <main class="container">
         <div class="alert alert-danger text-start" style={{ display: "none" }} role="alert">
           A simple danger alert—check it out!
@@ -117,8 +117,8 @@ function Comanda() {
                     </td>
                     <td>
                       <div class="d-subtotal">
-                        <input type='text' id={"inpt-subtotal-" + valor.id}  class="form-control" disabled/>
-                        
+                        <input type='text' id={"inpt-subtotal-" + valor.id} class="form-control" disabled />
+
                       </div>
                     </td>
 
@@ -132,7 +132,7 @@ function Comanda() {
           </table>
         </article>
       </main>
-       
+
     </div>
   )
 

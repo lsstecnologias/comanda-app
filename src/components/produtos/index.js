@@ -14,10 +14,13 @@ const Produto = () => {
     const [valorCateg, setCategorias] = useState();
     const [nvCateg, setNvCateg] = useState();
     const [listCateg, setListCateg] = useState(null);
-    const [statusMsgErro, setStatusMsgErro] = useState("none");
-    const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
     const [statusFormAddCateg, setStatusFormAddCateg] = useState("none");
-    const [formProduto, setFormProd] = useState({});
+
+    //HOOK MSG ERROS
+    const [displayError, setDisplayError] = useState('none');
+    const [displaySuccess, setDisplaySuccess] = useState('none');
+    const [msgError, setMsgError] = useState(null);
+    const [msgSuccess, setMsgSuccess] = useState(null);
 
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
@@ -26,7 +29,7 @@ const Produto = () => {
 
         let config = {
 
-            method: "get",
+            method: "GET",
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Headers': '*',
@@ -35,12 +38,11 @@ const Produto = () => {
             }
         }
 
-
         const param_api_get_categoria = "?api=getCategoria";
         const listCategoria = () => {
             axios.get(urlApi + nameApi + param_api_get_categoria, config)
-                .then((res) => {
-                    var vl = res.data;
+                .then(async (res) => {
+                    var vl = await res.data;
                     setListCateg(vl);
 
                 }).catch((error) => { alert(error); });
@@ -58,8 +60,9 @@ const Produto = () => {
         let desc = $("#descItemInput");
         let qtd = $("#qtItemInput");
         let preco = $("#precoUnitInput");
+         let cod = Math.floor(Math.random() * (777 + 0)) - 1;
 
-        var objProduto = { item: "", desc: "", qtd: "", preco: "", data_post: "", categoria_id: "" };
+        var objProduto = {cod_item:cod, item: "", desc: "", qtd: "", preco: "", data_post: "", categoria_id: "" };
 
         if (valorCateg !== undefined && valorCateg !== "") {
             preco.addClass("is-valid").removeClass("is-invalid");
@@ -103,31 +106,39 @@ const Produto = () => {
             objProduto.qtd = null;
 
         }
-       
+
         let data_atual = new Date();
         let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
         if (objProduto.data_post == "") {
             objProduto.data_post = data_post;
         }
+       
 
         const paramApi_save_produto = "?api=setProduto";
         $.post(urlApi + nameApi + paramApi_save_produto, objProduto, (res, status) => {
             if (status === "success") {
-
-                if (res === "null") {
-                    setStatusMsgErro("block");
-                    $('#btnAdicionar').attr({ "disabled": "disabled" });
+               var btnAdicionar = $('#btnAdicionar');
+                if (res == "null") {
+                    setDisplayError("block");
+                    setMsgError("Preencha os campos!");
+                    btnAdicionar.attr({ "disabled": false });
+                    
                 } else {
-                    setStatusMsgErro("none");
+                    setDisplayError("none");
+                    setMsgError(null);
                 }
+              
                 if (res == 1) {
-                    setStatusMsgSuccess("block");
-                    $('#btnAdicionar').attr({ "disabled": "disabled" });
+                   setDisplaySuccess("block");
+                   setMsgSuccess("Novo item adicionado!")
+                   btnAdicionar.attr({ "disabled": "disabled" });
+
                 } else {
-                    setStatusMsgSuccess("none");
+                   setDisplaySuccess("none");
+                   setMsgSuccess(null);
                 }
             } else {
-                alert("API Error");
+                  alert("Error: parametros API")
             }
 
         })
@@ -138,13 +149,13 @@ const Produto = () => {
         let data_atual = new Date();
         let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
 
-        const obj_categoria = {  cod: "", nome: "", data_post: "" };
+        const obj_categoria = { cod: "", nome: "", data_post: "" };
 
         if (obj_categoria.data_post == "" && obj_categoria.cod == "") {
             obj_categoria.data_post = data_post;
             obj_categoria.cod = Math.floor(Math.random() * (777 + 0)) - 1;
         }
-   
+
         if (nvCateg !== undefined && nvCateg !== "") {
             categ_input.addClass("is-valid").removeClass("is-invalid");
             obj_categoria.nome = nvCateg;
@@ -160,22 +171,22 @@ const Produto = () => {
                 $("#addCategorias").val("");
                 let categ_input = $("#addCategorias");
                 categ_input.addClass("is-invalid").removeClass("is-valid");
-
+                var btnAdicionar = $('#btnAdicionar')
                 if (res === "null") {
-                    setStatusMsgErro("block");
-                    //$('#btnAdicionar').attr({ "disabled": "disabled" });
+                   
+                    btnAdicionar.attr({ "disabled":false });
                 } else {
-                    setStatusMsgErro("none");
+                   // setStatusMsgErro("none");
                 }
                 if (res == 1) {
-                    setStatusMsgSuccess("block");
+                  
 
-                    // $('#btnAdicionar').attr({ "disabled": "disabled" });
+                    btnAdicionar.attr({ "disabled": "disabled" });
                 } else {
-                    setStatusMsgSuccess("none");
+                   // setStatusMsgSuccess("none");
                 }
             } else {
-                alert("API Error");
+                 alert("Error: parametros API!")
             }
 
         })
@@ -190,9 +201,9 @@ const Produto = () => {
     }
     return (
         <div className="container">
-        
+
             <div className="container p-0 animate__animated  animate__fadeIn">
-                
+
                 <button type="button" class="btn w-100 btn-primary" data-bs-toggle="modal" data-bs-target="#nvProduto">
                     <i class="bi bi-plus-circle-dotted fs-4"></i> <p>Novo Produto</p>
                 </button>
@@ -205,11 +216,15 @@ const Produto = () => {
                             <button type="button" onClick={() => { fecharModal() }} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="alert alert-danger" style={{ display: statusMsgErro }} role="alert">
-                                Preencha os campo(s)!
+                            <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+                                <i class="bi bi-check-circle p-2"></i>
+                                {msgSuccess !== null && msgSuccess}
+
                             </div>
-                            <div class="alert alert-success" style={{ display: statusMsgSuccess }} role="alert">
-                                Produto <strong> {valorItem ?? valorItem}  </strong> registrado!
+                            <div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+                                <i class="bi bi-exclamation-triangle p-2"></i>
+                                {msgError !== null && msgError}
+
                             </div>
                             <div class="mb-3">
                                 <label for="nomeItemInput" class="form-label">Nome item</label>

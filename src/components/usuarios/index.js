@@ -75,7 +75,6 @@ const Usuarios = () => {
         const paramApi_save_usuario = "?api=setUsuarios";
         $.post(urlApi + nameApi + paramApi_save_usuario, objUsuario, (res, status) => {
             if (status === "success") {
-
                 if (res == "null" && res == null) {
                     setStatusMsgErro("block");
                     $('#btnAdicionar').attr({ "disabled": false });

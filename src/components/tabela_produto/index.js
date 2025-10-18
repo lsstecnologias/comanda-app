@@ -10,7 +10,7 @@ const TabelaProduto = () => {
     const [data, setData] = useState([]);
     const [id, setId] = useState();
     const [msg, setMsg] = useState("none");
-    
+
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
 
@@ -35,11 +35,11 @@ const TabelaProduto = () => {
             }
         };
         axios.get(urlApi + nameApi + paramApi_lista_produto, config)
-        .then(async(res) => {
-            var vl = await res.data;
-            setData(vl);
+            .then(async (res) => {
+                var vl = await res.data;
+                setData(vl);
 
-        }).catch((error) => { alert("Error: parametros API "+error)  });
+            }).catch((error) => { alert("Error: parametros API " + error) });
 
     }, [setData]);
 
@@ -77,12 +77,16 @@ const TabelaProduto = () => {
             </table>
             {data.length == 0 &&
                 <div class="alert alert-light" role="alert">
-                    Nenhum produto!
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                        
+                    </div>
+                    
                 </div>
             }
             <ModalEditProdutos data_id={id} />
 
-           
+
         </div>
 
     )

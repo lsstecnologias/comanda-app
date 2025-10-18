@@ -104,12 +104,11 @@ const ModalEditProdutos = (data_id) => {
                     setDisplayError("none");
                     setMsgError(null);
                 }
-                 console.log(typeof(res))
+                 
                 if (res == 1) {
-                     console.log(res)
+                    
                     setDisplaySuccess("block");
                     setMsgSuccess("O item foi atualizado!");
-                
                     editarProduto.attr({ "disabled": "disabled" });
                 } else {
                     setDisplaySuccess("none");
@@ -159,7 +158,7 @@ const ModalEditProdutos = (data_id) => {
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticnvProduto">Editar Produto {idEdit}</h1>
+                        <h1 class="modal-title fs-5" id="staticnvProduto"><i class="bi bi-pencil-square"></i> Editar Produto {idEdit}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
                     </div>
                     <div class="m-3 alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
@@ -225,7 +224,7 @@ const ModalEditProdutos = (data_id) => {
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" onClick={(e) => { editNovoProduto(e) }} class="btn w-100 btn-primary" id="btnEditarProduto"> <i class="bi bi-plus-circle"></i> Editar</button>
+                        <button type="button" onClick={(e) => { editNovoProduto(e) }} class="btn w-100 btn-primary" id="btnEditarProduto"> <i class="bi bi-pencil-square"></i> Editar</button>
                     </div>
                 </div>
 

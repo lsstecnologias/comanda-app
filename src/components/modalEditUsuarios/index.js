@@ -186,8 +186,6 @@ const ModalEditUsuarios = (data_id) => {
 
                         })}
 
-
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary w-100" id="btnEditarUsuario" onClick={(e) => { editUsuario(e) }}> <i class="bi bi-pencil-square"></i> Editar</button>
                         </div>

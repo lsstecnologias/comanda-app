@@ -41,13 +41,14 @@ function App() {
           <Route path="/admin" element={<AppComponent />} >
             <Route path="produto" index element={<Produto />} />
             <Route path="usuario" element={<Usuarios />} />
+             <Route path="imagen" element={<Imagens />} />
             <Route path="comanda" element={<Comanda />} />
             <Route path="*" element={page404()}></Route>
           </Route>
           <Route path="*" element={page404()}></Route>
         </Routes>
       </BrowserRouter>
-
+      
     </div>
   )
 

@@ -31,13 +31,11 @@ const TabelaUsuario = () => {
         fetch(urlApi + nameApi + param_api_list_usuario)
             .then(async (e) => {
                 return await e.json();
-
             }).then(res => {
                 if (Array.isArray(res) && res.length == 0) {
                     alert("Error: parametros API");
                 } else {
                     setUsuarios(res);
-
                 }
 
             }).catch(error => {

@@ -131,10 +131,10 @@ const Usuarios = () => {
 
 
     return (
-        <div  className="container">
+        <div  className="container mt-4 usuario">
         
-            <h4 className="mb-3">Logo <i class="bi bi-images"></i></h4>
-            <Imagens />
+         
+           
             <h4 className="mb-3 mt-3">Usuários <i class="bi bi-person-fill"></i></h4>
 
             <button type="button" class="btn w-100 btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#novoUsuario">

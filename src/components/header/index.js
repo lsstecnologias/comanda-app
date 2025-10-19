@@ -16,10 +16,19 @@ const Header = () => {
                                 <Link to="/" aria-current="page" class="nav-link active">Admin</Link>
                             </li>
                             
-                            <li class="nav-item">
-                               <Link to="/admin/produto" class="nav-link">Produto</Link>
+                            <li class="nav-item dropdown">
+                               <Link to="/admin/produto" class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="false">Produto</Link>
+                                 <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/admin/usuario">Usuários</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+
+                                </ul>
                             </li>
-                           
+                             <li class="nav-item">
+                                <Link to="/admin/imagen" class="nav-link">Imagens</Link>
+                            </li>
                               <li class="nav-item">
                                 <Link to="/admin/comanda" class="nav-link">Comanda</Link>
                             </li>
@@ -37,7 +46,7 @@ const Header = () => {
 
                             </li>
                            
-                            
+                       
                         </ul>
                         
 

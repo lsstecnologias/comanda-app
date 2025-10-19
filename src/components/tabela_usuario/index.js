@@ -1,15 +1,20 @@
 import { error } from "jquery";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+
 import ModalEditUsuarios from "../modalEditUsuarios";
 import $ from 'jquery';
+
+
 const TabelaUsuario = () => {
-
-    const [usuarios, setUsuarios] = useState([]);
-    const [codUser, setCodUser] = useState("");
-    const [id, setId] = useState(null);
-
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
+
+    var [usuarios, setUsuarios] = useState([]);
+    const [codUser, setCodUser] = useState("");
+    const [id, setId] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(7);
+
     const editItem = (id) => {
         setId(id);
     }
@@ -17,37 +22,38 @@ const TabelaUsuario = () => {
     const deleteUsuario = (id) => {
         if (id !== null || id !== undefined) {
             let objId = { "id": id };
-            $.post(urlApi + nameApi + paramApi_delete_item, objId, (req, res) => { window.location.reload() })
+            $.post(urlApi + nameApi + paramApi_delete_item, objId, () => { window.location.reload() })
         }
     }
 
     useEffect(() => {
         const param_api_list_usuario = "?api=getUsuarios";
+        fetch(urlApi + nameApi + param_api_list_usuario)
+            .then(async (e) => {
+                return await e.json();
 
-        const getUsuarios = () => {
-            fetch(urlApi + nameApi + param_api_list_usuario)
-                .then((e) => {
-                    return e.json();
+            }).then(res => {
+                if (Array.isArray(res) && res.length == 0) {
+                    alert("Error: parametros API");
+                } else {
+                    setUsuarios(res);
 
-                }).then(res => {
-                    if (Array.isArray(res) && res.length === 0) {
-                        alert("Error: parametros API");
-                    } else {
-                        setUsuarios(res);
-                    }
+                }
 
-                }).catch(error => {
-                    alert(error)
-                })
-        }
-        getUsuarios();
+            }).catch(error => {
+                alert("Error: parametros API" + error);
+            })
 
-    }, [setUsuarios, setCodUser]);
+
+    }, [setCodUser, setUsuarios]);
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = usuarios.slice(indexOfFirstPost, indexOfLastPost);
 
     return (
         <div class="table-responsive mt-4 m-3">
 
-            <table class="table caption-top animate__animated  animate__fadeIn ">
+            <table class="table caption-top animate__animated animate__fadeIn ">
 
                 <thead>
                     <tr>
@@ -59,7 +65,7 @@ const TabelaUsuario = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {usuarios && usuarios.map((e) => {
+                    {currentPosts && currentPosts.map((e) => {
 
                         return (
                             <tr key={e.id}>
@@ -79,7 +85,8 @@ const TabelaUsuario = () => {
 
                 </tbody>
             </table>
-            {usuarios.length == 0 &&
+
+            {currentPosts.length == 0 &&
                 <div class="alert alert-light" role="alert">
                     <div class="spinner-border" role="status">
                         <span class="visually-hidden">Loading...</span>
@@ -88,8 +95,47 @@ const TabelaUsuario = () => {
 
                 </div>
             }
+            <Pagination
+                postsPerPage={postsPerPage}
+                totalPosts={usuarios.length}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+            />
             <ModalEditUsuarios data_id={id} />
         </div>
+    )
+};
+    const Pagination = ({
+        postsPerPage,
+        totalPosts,
+        setCurrentPage,
+        currentPage,
+    }) => {
+    const pageNumbers = [];
+
+    for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
+    const paginate = (pageNumber, e) => {
+        e.preventDefault();
+        setCurrentPage(pageNumber);
+    };
+
+    return (
+        <nav>
+            <ul className="pagination">
+                {pageNumbers.map((number) => (
+                    <li key={number} className={`page-item ${currentPage === number ? "active" : ""}`} >
+                        <a onClick={(e) => paginate(number, e)} href="!#" className="page-link" >
+                            {number}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </nav>
     );
 }
+
+
 export default TabelaUsuario;

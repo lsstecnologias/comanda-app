@@ -26,7 +26,7 @@ const Acesso = () => {
             setMsgSuccess("Aguarde...");
             ObjSessao.email_login = emailLogin;
             ObjSessao.senha = md5(senha);
-            console.log(emailLogin)
+            
         } else {
             setDisplayError("block");
             setMsgError("Verifique email e senha!");
@@ -43,13 +43,13 @@ const Acesso = () => {
             return await e.json();
         }).then(res => {
             var dataSession = res.filter((x) => { return x.senha === ObjSessao.senha && x.email === ObjSessao.email_login });
-      
+            
             if (Array.isArray(dataSession) && dataSession.length === 0) {
                 setDisplayError("block");
                 setMsgError("Email ou Senha incorreto!");
                 setDisplaySuccess("none");
                 setMsgSuccess(null);
-
+                
             } else {
                 let host = window.location.hostname;
                 let porta = window.location.port;

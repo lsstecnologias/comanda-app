@@ -25,32 +25,26 @@ function App() {
     setStatusTela("block");
   });
  
-  function getSessionAdminUser() {
-    const dataUserJson = sessionStorage.getItem("user_admin");
-    return dataUserJson ? JSON.parse(dataUserJson) : [];
+  const page404 = () => {
+    return (
+      <div class="container-fluid">
+        <h1>404 - Pagina não encontrada</h1>
+      </div>
+    )
   }
-
-  var session_admin_user = getSessionAdminUser();
-  console.log(session_admin_user);
   return (
 
     <div class="container-fluid m-0 p-0 " >
-      <div id="preloader" style={{ display: statusTela }}>
-
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-
-
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Acesso />} />
           <Route path="/admin" element={<AppComponent />} >
-            <Route path="produto" index  element={<Produto />} />
+            <Route path="produto" index element={<Produto />} />
             <Route path="usuario" element={<Usuarios />} />
             <Route path="comanda" element={<Comanda />} />
+            <Route path="*" element={page404()}></Route>
           </Route>
+          <Route path="*" element={page404()}></Route>
         </Routes>
       </BrowserRouter>
 

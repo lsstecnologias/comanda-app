@@ -1,5 +1,6 @@
 import TabelaProduto from "../tabela_produto";
 import Header from '../header';
+import './style.css';
 
 import { NumericFormat } from 'react-number-format';
 import { useEffect, useState } from 'react';
@@ -200,7 +201,7 @@ const Produto = () => {
         window.location.reload();
     }
     return (
-        <div className="container">
+        <div className="container mt-4 produtos">
 
             <div className="container p-0 animate__animated  animate__fadeIn">
 

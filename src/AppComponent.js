@@ -1,4 +1,4 @@
-
+//import sessao_start from './Sessaostart';
 import Comanda from './components/comanda';
 import { BrowserRouter, Routes, Route, Link, Outlet } from 'react-router-dom';
 import Produto from './components/produtos';
@@ -14,47 +14,15 @@ const $ = require("jquery");
 
 
 function AppComponent() {
-
+   
     const [statusTela, setStatusTela] = useState('');
-
+    var [statusSessao,setStatusSessao] = useState(null);
     window.addEventListener('load', () => {
         $('#preloader').hide(500);
         setStatusTela("block");
     });
-  /*  const urlApi = 'http://10.10.10.6/';
-    const nameApi = 'api_comanda/';
-    useEffect(() => {
-
-
-        let config = {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Credentials': 'true',
-                'mode': 'no-cors'
-            }
-        }
-
-        const param_api_get_autenticar = "?api=sessaoUser";
-        const listCategoria = () => {
-            axios.get(urlApi + nameApi + param_api_get_autenticar, config)
-                .then((res) => {
-                    var vl = res.data;
-
-                    console.log(vl);
-                }).catch((error) => { alert(error); });
-
-        };
-        listCategoria();
-        function getSessionUser() {
-            const carrinhoJson = localStorage.getItem("user");
-            return carrinhoJson ? JSON.parse(carrinhoJson) : [];
-        }
-
-        var session_user = getSessionUser();
-        console.log(session_user);
-    }, []);*/
-
+    //sessao_start();
+  
     return (
         <>
         <Header />

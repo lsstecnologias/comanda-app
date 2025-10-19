@@ -1,7 +1,7 @@
 import { Link, Outlet } from 'react-router-dom';
 const Header = () => {
     return (
-        <div className="container-fluid bg-body-tertiary mb-4">
+        <div className="container-fluid bg-body-tertiary mb-4 fixed-top ">
          
             <nav class=" navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container">
@@ -10,7 +10,7 @@ const Header = () => {
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <ul class="navbar-nav me-auto mb-lg-0">
                             <li class="nav-item">
                               
                                 <Link to="/" aria-current="page" class="nav-link active">Admin</Link>
@@ -24,8 +24,8 @@ const Header = () => {
                                 <Link to="/admin/comanda" class="nav-link">Comanda</Link>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                   <i class="bi bi-person-circle"></i> Acesso
+                                <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                   <button class="btn btn-outline-primary btn-sm"> <i class="bi bi-person-circle"></i> Acesso</button>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="/admin/usuario">Usuários</a></li>

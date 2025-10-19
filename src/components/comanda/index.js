@@ -1,8 +1,6 @@
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-
-
 const $ = require("jquery");
 
 function Comanda() {
@@ -55,19 +53,17 @@ function Comanda() {
     axios.get('http://10.10.10.6/api_comanda/?api=getProdutos', config)
       .then((res) => {
         var vl = res.data;
-
         for (var i = 0; i < vl.length; i++) {
           vl[i].subtotal = 0;
         }
-
         setData(vl);
 
-      }).catch((error) => { alert(error); });
+      }).catch((error) => { alert("Error: parametros API "+error) });
 
   }, [setData]);
 
   return (
-    <div className="animate__animated animate__fadeIn">
+    <div className="animate__animated animate__fadeIn comanda">
 
       <main class="container">
         <div class="alert alert-danger text-start" style={{ display: "none" }} role="alert">
@@ -128,6 +124,15 @@ function Comanda() {
 
 
             </tbody>
+             {data.length == 0 &&
+                <div class="alert alert-light" role="alert">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+
+                    </div>
+
+                </div>
+            }
 
           </table>
         </article>

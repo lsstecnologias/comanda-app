@@ -77,18 +77,16 @@ const Categorias = () => {
     }
     return (
         <div class="container mt-4 categorias">
-             <h4>Categorias</h4>
+            
             <div class="container-fluid animate__animated  animate__fadeIn">
-               
+                <h4 className="mb-2 mt-2 pb-2 ">Categorias</h4>
                 <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
                     <i class="bi bi-check-circle p-2"></i>
                     {msgSuccess !== null && msgSuccess}
-
                 </div>
                 <div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
                     <i class="bi bi-exclamation-triangle p-2"></i>
                     {msgError !== null && msgError}
-
                 </div>
                 <button class="btn btn-secondary w-100 mt-3 " onClick={(e) => { exibeFormAddCateg(e) }} type="button">  <i class="bi bi-plus-circle-dotted fs-4"></i> Nova categoria</button>
                 <div class="input-group animate__animated  animate__fadeIn mb-3 mt-4" style={{ display: statusFormAddCateg }}>

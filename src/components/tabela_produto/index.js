@@ -45,7 +45,7 @@ const TabelaProduto = () => {
 
     return (
         <div class="table-responsive mt-4 ">
-
+            
             <table class="table caption-top  animate__animated  animate__fadeIn">
                 <caption>Lista de produtos</caption>
                 <thead>

@@ -46,7 +46,6 @@ const Usuarios = () => {
             objUsuario.login_email = null;
         }
        
-
         if (senhaUser !== undefined && senhaUser !== "" && senhaUser.length >= 6) {
             senha.addClass("is-valid").removeClass("is-invalid");
             objUsuario.senha_user = md5(senhaUser);
@@ -131,10 +130,9 @@ const Usuarios = () => {
 
 
     return (
-        <div  className="container mt-4 usuario">
-        
-                  
-            <h4 className="mb-3 mt-3">Usuários <i class="bi bi-person-fill"></i></h4>
+        <div  className="container mt-2 usuario">
+                         
+            <h4 className="mb-2 mt-2 pb-2">Usuários</h4>
 
             <button type="button" class="btn w-100 btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#novoUsuario">
                 <i class="bi bi-person-fill-add"></i> Novo
@@ -149,6 +147,7 @@ const Usuarios = () => {
                         </div>
 
                         <div class="modal-body">
+                            
                             <div class="alert alert-danger" style={{ display: statusMsgErro }} role="alert">
                                 Preencha os campo(s)!
                             </div>

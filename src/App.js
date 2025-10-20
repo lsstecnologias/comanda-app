@@ -12,6 +12,7 @@ import Acesso from './components/acesso';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 import Categorias from './components/categorias';
+import QRCode from './components/qrcode';
 
 
 const $ = require("jquery");
@@ -44,7 +45,8 @@ function App() {
             <Route path="usuario" element={<Usuarios />} />
              <Route path="imagen" element={<Imagens />} />
              <Route path="categoria" element={<Categorias />} />
-            <Route path="comanda" element={<Comanda />} />
+             <Route path="qr" element={<QRCode />} />
+             <Route path="comanda" element={<Comanda />} />
             <Route path="*" element={page404()}></Route>
           </Route>
           <Route path="*" element={page404()}></Route>

@@ -149,12 +149,11 @@ const Produto = () => {
         window.location.reload();
     }
     return (
-        <div className="container mt-4 produtos">
-
+        <div className="container mt-3 produtos">
             <div className="container p-0 animate__animated  animate__fadeIn">
-
+                <h4 className="mb-2 mt-2 pb-2 ">Produtos</h4>
                 <button type="button" class="btn w-100 btn-primary" data-bs-toggle="modal" data-bs-target="#nvProduto">
-                    <i class="bi bi-plus-circle-dotted fs-4"></i> <p>Novo Produto</p>
+                    <i class="bi bi-plus-circle-dotted fs-4 "></i> <p>Novo Produto</p>
                 </button>
             </div>
             <div class="modal fade" id="nvProduto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticnvProduto" aria-hidden="true">

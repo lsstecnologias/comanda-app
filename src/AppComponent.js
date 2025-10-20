@@ -9,6 +9,7 @@ import ReactPaginate from 'react-paginate';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 import 'animate.css';
+import Breadcrumb from './components/breadcrumb';
 
 const $ = require("jquery");
 
@@ -26,6 +27,7 @@ function AppComponent() {
     return (
         <>
         <Header />
+       
         <Outlet />
         </>
     )

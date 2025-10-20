@@ -144,59 +144,7 @@ const Produto = () => {
 
         })
     }
-    const addNvCategoria = (e) => {
-        e.preventDefault();
-        let categ_input = $("#addCategorias");
-        let data_atual = new Date();
-        let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
-
-        const obj_categoria = { cod: "", nome: "", data_post: "" };
-
-        if (obj_categoria.data_post == "" && obj_categoria.cod == "") {
-            obj_categoria.data_post = data_post;
-            obj_categoria.cod = Math.floor(Math.random() * (777 + 0)) - 1;
-        }
-
-        if (nvCateg !== undefined && nvCateg !== "") {
-            categ_input.addClass("is-valid").removeClass("is-invalid");
-            obj_categoria.nome = nvCateg;
-        } else {
-            categ_input.addClass("is-invalid").removeClass("is-valid");
-            obj_categoria.nome = null;
-        }
-
-        const param_api_save_categoria = "?api=setCategoria";
-        $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
-            if (status === "success") {
-                setStatusFormAddCateg("none");
-                $("#addCategorias").val("");
-                let categ_input = $("#addCategorias");
-                categ_input.addClass("is-invalid").removeClass("is-valid");
-                var btnAdicionar = $('#btnAdicionar')
-                if (res === "null") {
-                   
-                    btnAdicionar.attr({ "disabled":false });
-                } else {
-                   // setStatusMsgErro("none");
-                }
-                if (res == 1) {
-                  
-
-                    btnAdicionar.attr({ "disabled": "disabled" });
-                } else {
-                   // setStatusMsgSuccess("none");
-                }
-            } else {
-                 alert("Error: parametros API!")
-            }
-
-        })
-    }
-    const exibeFormAddCateg = (e) => {
-        e.preventDefault();
-        setStatusFormAddCateg("inline-flex");
-
-    }
+ 
     const fecharModal = () => {
         window.location.reload();
     }
@@ -246,12 +194,9 @@ const Produto = () => {
 
                                 </select>
 
-                                <button class="btn btn-outline-secondary" onClick={(e) => { exibeFormAddCateg(e) }} type="button" >Nova categoria</button>
+                               
                             </div>
-                            <div class="input-group mb-3" style={{ display: statusFormAddCateg }}>
-                                <input type="text" class="form-control" id="addCategorias" autocomplete="off" onChange={(e) => { setNvCateg(e.target.value) }} placeholder="Categoria do produto" aria-label="Categoria do produto" aria-describedby="button-addon2" />
-                                <button class="btn btn-primary" type="button" onClick={(e) => { addNvCategoria(e) }} ><i class="bi bi-plus-circle-fill"></i> Adicionar</button>
-                            </div>
+                           
                             <div class="mb-3">
                                 <label for="qtItemInput" class="form-label">Quantidade</label>
                                 <input type="number" min="1" class="form-control" id="qtItemInput" onChange={(e) => { setQuant(e.target.value) }} autocomplete="off" placeholder="0" />

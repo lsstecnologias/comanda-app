@@ -1,9 +1,9 @@
 import { Link, Outlet } from 'react-router-dom';
 const Header = () => {
     return (
-        <div className="container-fluid bg-body-tertiary mb-4 fixed-top ">
+        <div className="container-fluid bg-body-tertiary mb-4 fixed-top m-0 p-0 ">
          
-            <nav class=" navbar navbar-expand-lg bg-body-tertiary">
+            <nav class=" navbar navbar-expand-lg bg-body-tertiary shadow   bg-body-tertiary">
                 <div class="container">
                     <a class="navbar-brand" href="#">Navbar</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,10 +17,10 @@ const Header = () => {
                             </li>
                             
                             <li class="nav-item dropdown">
-                               <Link to="/admin/produto" class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="false">Produto</Link>
+                               <Link to="/admin/produto" class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="false">Produtos</Link>
                                  <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/admin/usuario">Usuários</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="/admin/produto">Lista de produtos</a></li>
+                                    <li><a class="dropdown-item" href="/admin/categoria">Adicionar categoria</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li><a class="dropdown-item" href="#">Something else here</a></li>
 

@@ -11,6 +11,7 @@ import Acesso from './components/acesso';
 
 import { useEffect, useState } from 'react';
 import axios from "axios";
+import Categorias from './components/categorias';
 
 
 const $ = require("jquery");
@@ -42,6 +43,7 @@ function App() {
             <Route path="produto" index element={<Produto />} />
             <Route path="usuario" element={<Usuarios />} />
              <Route path="imagen" element={<Imagens />} />
+             <Route path="categoria" element={<Categorias />} />
             <Route path="comanda" element={<Comanda />} />
             <Route path="*" element={page404()}></Route>
           </Route>

@@ -1,8 +1,11 @@
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { UserContext } from '../../components/context';
 import 'animate.css';
-
+import { useContext } from 'react';
 import Breadcrumb from '../breadcrumb';
 const Header = () => {
+      const { data } = useContext(UserContext);
+      console.log(data);
     return (
         <div className="container-fluid bg-body-tertiary mb-4 fixed-top m-0 p-0 ">
          
@@ -62,7 +65,7 @@ const Header = () => {
                 
                 </div >
                 
-            </nav >
+            </nav>
               <Breadcrumb/>
         </div >
     );

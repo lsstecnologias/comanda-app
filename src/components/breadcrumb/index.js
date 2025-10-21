@@ -1,7 +1,6 @@
-import { useParams } from "react-router";
+
 const Breadcrumb = () => {
-    const { productId } = useParams();
-    console.log(productId);
+
     return (
         <div className="container mt-3 lh-1">
             <nav aria-label="breadcrumb">

@@ -18,7 +18,7 @@ const TabelaProduto = () => {
     const deleteItem = (id) => {
         if (id !== null || id !== undefined) {
             let objId = { "id": id };
-            $.post(urlApi + nameApi + paramApi_delete_item, objId, (req, res) => { window.location.reload() })
+            $.post(urlApi + nameApi + paramApi_delete_item, objId, () => { window.location.reload() })
         }
     }
     const editItem = (id) => { setId(id); }

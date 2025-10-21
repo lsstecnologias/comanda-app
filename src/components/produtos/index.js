@@ -3,11 +3,13 @@ import Header from '../header';
 import './style.css';
 
 import { NumericFormat } from 'react-number-format';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useContext } from 'react';
+import { UserContext } from '../context';
 import axios from "axios";
 const $ = require("jquery");
 
 const Produto = () => {
+
     const [valorPreco, setPreco] = useState();
     const [valorItem, setItem] = useState();
     const [valorDesc, setDesc] = useState();
@@ -22,10 +24,11 @@ const Produto = () => {
     const [displaySuccess, setDisplaySuccess] = useState('none');
     const [msgError, setMsgError] = useState(null);
     const [msgSuccess, setMsgSuccess] = useState(null);
-
+    const { GetSession } = useContext(UserContext);
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
 
+    console.log(GetSession);
     useEffect(() => {
 
         let config = {

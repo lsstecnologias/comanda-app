@@ -1,5 +1,6 @@
 import './style.css';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
+
 import md5 from 'md5';
 const Acesso = () => {
     const [emailLogin, setEmailLogin] = useState(null);

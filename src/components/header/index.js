@@ -5,7 +5,7 @@ import 'animate.css';
 
 import Breadcrumb from '../breadcrumb';
 const Header = () => {
-      const { sessao,Sair } = useContext(UserContext);
+      const { Sair } = useContext(UserContext);
     
      
     return (

@@ -107,16 +107,16 @@ const Acesso = () => {
         )*/
     return (
         <div class="container col-xl-10 col-xxl-8 px-4 py-5">
-            <div class="row align-items-center g-lg-5 py-5  animate__animated animate__fadeIn">
+            <div class="row g-lg-5 py-5  animate__animated animate__fadeIn">
                 <div class="col-md-10 mx-auto col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded">
 
                     <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
-                        <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+                        <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn" style={{ display: displaySuccess }} role="alert">
                             <i class="bi bi-check-circle p-2"></i>
                             {msgSuccess !== null && msgSuccess}
 
                         </div>
-                        <div class="alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+                        <div class="alert alert-danger alert-dismissible fade show animate__animated animate__fadeIn" style={{ display: displayError }} role="alert">
                             <i class="bi bi-exclamation-triangle p-2"></i>
                             {msgError !== null && msgError}
 
@@ -143,7 +143,7 @@ const Acesso = () => {
                 </div>
 
             </div>
-                  <p class="mt-3 mb-3 text-center text-body-secondary">lsstecnologias&copy;2025</p>
+            <p class="mt-3 mb-3 text-center text-body-secondary">lsstecnologias&copy;2025</p>
         </div>
     )
 }

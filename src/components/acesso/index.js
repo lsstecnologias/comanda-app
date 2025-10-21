@@ -1,5 +1,5 @@
 import './style.css';
-import {  useState } from 'react';
+import { useState } from 'react';
 import 'animate.css';
 
 import md5 from 'md5';
@@ -28,7 +28,7 @@ const Acesso = () => {
             setMsgSuccess("Aguarde...");
             ObjSessao.email_login = emailLogin;
             ObjSessao.senha = md5(senha);
-            
+
         } else {
             setDisplayError("block");
             setMsgError("Verifique email e senha!");
@@ -37,72 +37,113 @@ const Acesso = () => {
             setEmailLogin(null);
             ObjSessao.email_login = "";
             ObjSessao.senha = "";
-            
+
         }
 
         fetch(urlApi + nameApi + param_api_get_usuarios)
-        .then(async (e) => {
-            return await e.json();
-        }).then(res => {
-            var dataSession = res.filter((x) => { return x.senha === ObjSessao.senha && x.email === ObjSessao.email_login });
-            
-            if (Array.isArray(dataSession) && dataSession.length === 0) {
-                setDisplayError("block");
-                setMsgError("Email ou Senha incorreto!");
-                setDisplaySuccess("none");
-                setMsgSuccess(null);
-                
-            } else {
-                let host = window.location.hostname;
-                let porta = window.location.port;
-                let protocolo = window.location.protocol;
-                let pathDir = window.location.pathname;
-                let url = protocolo + "//" + host + ':' + porta + pathDir + 'admin';
-                sessionStorage.setItem("user_admin", JSON.stringify(dataSession))
-                window.location.href = url;
-                
-            }
+            .then(async (e) => {
+                return await e.json();
+            }).then(res => {
+                var dataSession = res.filter((x) => { return x.senha === ObjSessao.senha && x.email === ObjSessao.email_login });
+
+                if (Array.isArray(dataSession) && dataSession.length === 0) {
+                    setDisplayError("block");
+                    setMsgError("Verifique email e senha!");
+                    setDisplaySuccess("none");
+                    setMsgSuccess(null);
+
+                } else {
+                    let host = window.location.hostname;
+                    let porta = window.location.port;
+                    let protocolo = window.location.protocol;
+                    let pathDir = window.location.pathname;
+                    let url = protocolo + "//" + host + ':' + porta + pathDir + 'admin';
+                    sessionStorage.setItem("user_admin", JSON.stringify(dataSession))
+                    window.location.href = url;
+
+                }
 
 
-        }).catch(error => {
-            alert("ERRO: verificar os serviços ou recursos API" + error)
-        });
+            }).catch(error => {
+                alert("ERRO: verificar os serviços ou recursos API" + error)
+            });
     }
 
-
-
+    /*
+    
+        return (
+            <div id="login" class="container animate__animated animate__fadeIn">
+                <main class="form-signin w-100 m-auto">
+                    <form >
+    
+                        <h1 class="h1 mb-3 fw-normal">Login</h1>
+                        <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+                            <i class="bi bi-check-circle p-2"></i>
+                            {msgSuccess !== null && msgSuccess}
+    
+                        </div>
+                        <div class="alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+                            <i class="bi bi-exclamation-triangle p-2"></i>
+                            {msgError !== null && msgError}
+    
+                        </div>
+                        <div class="form-floating">
+                            <input type="email" name="login" class="form-control" id="inpt_email_login" value={emailLogin} onChange={e => setEmailLogin(e.target.value)} autocomplete="off" placeholder="login" />
+                            <label for="inpt_emailLogin">Email</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="password" name="pass" class="form-control" id="inpt_senha" value={senha} onChange={e => setSenha(e.target.value)} autocomplete="off" placeholder="Password" />
+                            <label for="inpt_senha">Senha</label>
+                        </div>
+                        <div class="form-check text-start my-3">
+                            <input class="form-check-input" type="checkbox" value="remember-me" id="checkDefault" />
+                            <label class="form-check-label fw-normal lh-1" for="checkDefault"><small>Lembrar?  </small> </label>
+                        </div>
+                        <button class="btn btn-primary w-100 " onClick={(e) => { validarForm(e) }} type="button"> <i class="bi fs-5 bi-box-arrow-in-right"></i> Entrar</button>
+                        <p class="mt-3 mb-3 text-center text-body-secondary">lsstecnologias &copy; 2017–2025</p>
+                    </form>
+                </main>
+            </div>
+        )*/
     return (
-        <div id="login" class="container animate__animated animate__fadeIn">
-            <main class="form-signin w-100 m-auto">
-                <form >
+        <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+            <div class="row align-items-center g-lg-5 py-5  animate__animated animate__fadeIn">
+                <div class="col-md-10 mx-auto col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded">
 
-                    <h1 class="h1 mb-3 fw-normal">Login</h1>
-                    <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-                        <i class="bi bi-check-circle p-2"></i>
-                        {msgSuccess !== null && msgSuccess}
+                    <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
+                        <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+                            <i class="bi bi-check-circle p-2"></i>
+                            {msgSuccess !== null && msgSuccess}
 
-                    </div>
-                    <div class="alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
-                        <i class="bi bi-exclamation-triangle p-2"></i>
-                        {msgError !== null && msgError}
+                        </div>
+                        <div class="alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+                            <i class="bi bi-exclamation-triangle p-2"></i>
+                            {msgError !== null && msgError}
 
-                    </div>
-                    <div class="form-floating">
-                        <input type="email" name="login" class="form-control" id="inpt_email_login" value={emailLogin} onChange={e => setEmailLogin(e.target.value)} autocomplete="off" placeholder="login" />
-                        <label for="inpt_emailLogin">Email</label>
-                    </div>
-                    <div class="form-floating">
-                        <input type="password" name="pass" class="form-control" id="inpt_senha" value={senha} onChange={e => setSenha(e.target.value)} autocomplete="off" placeholder="Password" />
-                        <label for="inpt_senha">Senha</label>
-                    </div>
-                    <div class="form-check text-start my-3">
-                        <input class="form-check-input" type="checkbox" value="remember-me" id="checkDefault" />
-                        <label class="form-check-label fw-normal lh-1" for="checkDefault"><small>Lembrar?  </small> </label>
-                    </div>
-                    <button class="btn btn-primary w-100 " onClick={(e) => { validarForm(e) }} type="button"> <i class="bi fs-5 bi-box-arrow-in-right"></i> Entrar</button>
-                    <p class="mt-3 mb-3 text-center text-body-secondary">lsstecnologias &copy; 2017–2025</p>
-                </form>
-            </main>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="inpt_email" value={emailLogin} onChange={e => setEmailLogin(e.target.value)} autocomplete="off" placeholder="name@example.com" />
+                            <label for="finpt_email">E-mail</label> </div> <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="inpt_senha" value={senha} onChange={e => setSenha(e.target.value)} autocomplete="off" placeholder="" />
+                            <label for="inpt_senha">Senha</label>
+                        </div>
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" value="remember-me" /> <small> Remember me</small>
+                            </label>
+                        </div>
+                        <button class="w-100 btn btn-sm btn-primary" onClick={(e) => { validarForm(e) }} type="button"><i class="bi fs-5 bi-box-arrow-in-right"></i> Entrar</button>
+                        <hr class="my-4" />
+                        <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+                    </form>
+                </div>
+                <div class="overflow-hidden col-lg-7 text-center text-lg-start" style={{ maxHeight: "30vh" }}> <div class="container px-5">
+                    <img src="https://getbootstrap.com/docs/5.3/examples/heroes/bootstrap-docs.png" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" width="700" height="500" loading="lazy" />
+                </div>
+                </div>
+
+            </div>
+                  <p class="mt-3 mb-3 text-center text-body-secondary">lsstecnologias&copy;2025</p>
         </div>
     )
 }

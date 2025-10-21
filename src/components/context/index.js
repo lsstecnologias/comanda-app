@@ -6,12 +6,12 @@ function UserProvider({ children }) {
     const [sessao, setSessao] = useState([]);
     const [status, setStatus] = useState(false);
 
-    const Host = () => {
+    const redirect_login = () => {
         let host = window.location.hostname;
         let porta = window.location.port;
         let protocolo = window.location.protocol;
         let url = protocolo + "//" + host + ':' + porta;
-        return url;
+        window.location.href = url;
     }
 
     useEffect(() => {
@@ -19,22 +19,28 @@ function UserProvider({ children }) {
         var data = dataUser ? JSON.parse(dataUser) : [];
 
         if (Array.isArray(data) && data.length == 0) {
-             setStatus(false);
-            window.location.href = Host();
+            setStatus(false);
+            redirect_login();
+
         } else {
-            setSessao(data);
             setStatus(true);
+            const {cod,data_post,email,id,nome,perfil,senha,status} = data[0] ?? redirect_login();
+            const objSessao ={cod,data_post,email,id,nome,perfil,senha,status};
+            setSessao(objSessao);
+           
         }
 
-    }, [setSessao,setStatus])
+    }, [setSessao,setStatus]);
+
     const Sair = () => {
         setStatus(false);
         sessionStorage.removeItem("user_admin");
         sessionStorage.clear();
-        window.location.href = Host();
+        redirect_login();
+        
     }
     return (
-        <UserContext.Provider value={{ sessao, status, Sair }}>
+        <UserContext.Provider value={{ sessao, status, Sair, redirect_login }}>
             {children}
         </UserContext.Provider>
     )

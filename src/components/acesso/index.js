@@ -1,5 +1,6 @@
 import './style.css';
 import {  useState } from 'react';
+import 'animate.css';
 
 import md5 from 'md5';
 const Acesso = () => {
@@ -71,7 +72,7 @@ const Acesso = () => {
 
 
     return (
-        <div id="login">
+        <div id="login" class="container animate__animated animate__fadeIn">
             <main class="form-signin w-100 m-auto">
                 <form >
 

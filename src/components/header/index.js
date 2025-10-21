@@ -6,7 +6,7 @@ import 'animate.css';
 import Breadcrumb from '../breadcrumb';
 const Header = () => {
       const { sessao,Sair } = useContext(UserContext);
-      console.log(sessao);
+    
      
     return (
         <div className="container-fluid bg-body-tertiary mb-4 fixed-top m-0 p-0 ">

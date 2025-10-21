@@ -1,22 +1,38 @@
-import React from "react";
+
+import { useContext } from 'react';
+import { UserContext } from '../../components/context';
 import { useEffect, useState } from 'react';
 import ImageUploading from "react-images-uploading";
 import $ from 'jquery';
 import QRCode from "../qrcode";
 const Imagens = () => {
+    const [sessaoUser ,setSessaoUser] = useState([]);
     const [selectedFileUser, setSelectedFileUser] = useState(null);
+    const { sessao,status,redirect_login } = useContext(UserContext);
+    
+    var data_atual = new Date();
+    var data_image_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
+    useEffect(()=>{
+       if(status){
+          const {cod,id,nome,status,data_post} = sessao ?? redirect_login();
+          setSessaoUser({cod,id,nome,status,data_post,data_image_post}); 
+
+       }else{
+          redirect_login();
+       }
+    },[setSessaoUser])
+   
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
 
     const carregarImagens = () => {
         const paramApi_save_img = "?api=setUploadFile";
         let inputFoto = $("#inputFoto");
-
+        console.log(sessaoUser)
+        //parei aqui
         if (selectedFileUser !== null) {
             var formData = new FormData();
-            console.log(selectedFileUser)
             formData.append("arquivo", selectedFileUser);
-
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4) {
@@ -40,9 +56,10 @@ const Imagens = () => {
     }
     return (
         <div class="container mb-3 mt-4 imagem">
-               <h4 className="mb-2 mt-2">Logo <i class="bi bi-images"></i></h4>
+            <h4 className="mb-2 mt-2">Logo <i class="bi bi-images"></i></h4>
             <input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileUser(e.target.files[0]) }} placeholder="Another input placeholder" />
-            <button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={carregarImagens}> <i class="bi fs-5 bi-cloud-arrow-up"></i> Carregar imagem</button>
+           
+           <button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={carregarImagens}> <i class="bi fs-5 bi-cloud-arrow-up"></i> Carregar imagem</button>
      
         </div>
     )

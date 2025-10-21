@@ -33,8 +33,6 @@ const TabelaUsuario = () => {
     }
 
     useEffect(() => {
-        
-  
         const param_api_list_usuario = "?api=getUsuarios";
         fetch(urlApi + nameApi + param_api_list_usuario)
         .then(async (e) => {

@@ -1,7 +1,7 @@
 
-import { Outlet,useContext } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Header from './components/header';
-import 'animate.css';
+import TelaPrincipal from './components/TelaPrincipal';
 import UserProvider from './components/context';
 
 function AppComponent() {
@@ -11,6 +11,7 @@ function AppComponent() {
         <UserProvider>
             <Header /> 
             <Outlet />
+            <TelaPrincipal />
         </UserProvider>
         </>
     )

@@ -3,30 +3,38 @@ import { useState, createContext, useEffect } from 'react';
 export const UserContext = createContext({});
 
 function UserProvider({ children }) {
-    const [data, setData] = useState([]);
-    const [status,setStatus] = useState(false);
+    const [sessao, setSessao] = useState([]);
+    const [status, setStatus] = useState(false);
+
+    const Host = () => {
+        let host = window.location.hostname;
+        let porta = window.location.port;
+        let protocolo = window.location.protocol;
+        let url = protocolo + "//" + host + ':' + porta;
+        return url;
+    }
 
     useEffect(() => {
         const dataUser = sessionStorage.getItem("user_admin");
         var data = dataUser ? JSON.parse(dataUser) : [];
-      
+
         if (Array.isArray(data) && data.length == 0) {
-            let host = window.location.hostname;
-            let porta = window.location.port;
-            let protocolo = window.location.protocol;
-          
-            let url = protocolo + "//" + host + ':' + porta;
-            window.location.href= url; 
+             setStatus(false);
+            window.location.href = Host();
         } else {
-          
-            setData(data);
+            setSessao(data);
             setStatus(true);
         }
 
-    }, [setData])
-
+    }, [setSessao,setStatus])
+    const Sair = () => {
+        setStatus(false);
+        sessionStorage.removeItem("user_admin");
+        sessionStorage.clear();
+        window.location.href = Host();
+    }
     return (
-        <UserContext.Provider value={{ data,status }}>
+        <UserContext.Provider value={{ sessao, status, Sair }}>
             {children}
         </UserContext.Provider>
     )

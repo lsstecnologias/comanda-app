@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import $ from 'jquery';
 import TabelaCategoria from "../tabela_categoria";
-
+import 'animate.css';
 const Categorias = () => {
-    
+
     const [valorCateg, setCategorias] = useState();
     const [nvCateg, setNvCateg] = useState();
     const [listCateg, setListCateg] = useState(null);
     const [statusFormAddCateg, setStatusFormAddCateg] = useState("none");
-    
+
     //HOOK MSG ERROS
     const [displayError, setDisplayError] = useState('none');
     const [displaySuccess, setDisplaySuccess] = useState('none');
@@ -17,6 +17,9 @@ const Categorias = () => {
 
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
+    const fecharModal = () => {
+        window.location.reload();
+    }
 
     const addNvCategoria = (e) => {
         e.preventDefault();
@@ -47,19 +50,21 @@ const Categorias = () => {
                 let categ_input = $("#addCategorias");
                 categ_input.addClass("is-invalid").removeClass("is-valid");
                 var btnAdicionar = $('#btnAdicionar')
+
                 if (res == "null") {
                     setDisplayError("block");
-                    setMsgError("Erro ao adicionar a categoria!")
+                    setMsgError("Preencha o campo!")
                     btnAdicionar.attr({ "disabled": false });
+
                 } else {
                     setDisplayError("none");
                     setMsgError(null)
                 }
+
                 if (res == 1) {
-
-
                     setDisplaySuccess("block");
                     setMsgSuccess("Nova categoria adicionada!");
+
                 } else {
                     setDisplaySuccess("none");
                     setMsgSuccess(null);
@@ -76,23 +81,27 @@ const Categorias = () => {
 
     }
     return (
-        <div class="container mt-4 categorias">
-            
-            <div class="container-fluid animate__animated  animate__fadeIn">
+        <div class="container-fluid mt-4 categorias">
+
+            <div class="container  p-0 ">
                 <h4 className="mb-2 mt-2 pb-2 ">Categorias</h4>
                 <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-                    <i class="bi bi-check-circle p-2"></i>
+                    <i class="bi bi-check-circle-fill p-2"></i>
                     {msgSuccess !== null && msgSuccess}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }}></button>
                 </div>
+
                 <div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
-                    <i class="bi bi-exclamation-triangle p-2"></i>
+                    <i class="bi bi-exclamation-triangle-fill  p-2"></i>
                     {msgError !== null && msgError}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }} ></button>
                 </div>
-                <button class="btn btn-secondary w-100 mt-3 " onClick={(e) => { exibeFormAddCateg(e) }} type="button">  <i class="bi bi-plus-circle-dotted fs-4"></i> Nova categoria</button>
-                <div class="input-group animate__animated  animate__fadeIn mb-3 mt-4" style={{ display: statusFormAddCateg }}>
-                    <button class="btn btn-primary " type="button" onClick={(e) => { addNvCategoria(e) }} ><i class="bi bi-plus-circle-fill"></i> Adicionar</button>
-                    <input type="text" class="form-control " id="addCategorias" autocomplete="off" onChange={(e) => { setNvCateg(e.target.value) }} placeholder="Nome da categoria" aria-label="Categoria do produto" aria-describedby="button-addon2" />
-                  
+
+
+                <div class="input-group  mb-3 mt-2" style={{ display: 'inline-flex' }}>
+                    <button class="btn btn-primary " type="button" onClick={(e) => { addNvCategoria(e) }} > <i class="bi bi-plus-circle-dotted fs-4"></i> Adicionar</button>
+                    <input type="text" class="form-control animate__animated  animate__fadeIn " id="addCategorias" autocomplete="off" onChange={(e) => { setNvCateg(e.target.value) }} placeholder="Nome da categoria" aria-label="Categoria do produto" aria-describedby="button-addon2" />
+
                 </div>
                 <TabelaCategoria />
             </div>

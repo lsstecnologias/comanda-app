@@ -1,5 +1,6 @@
 
 import { useState, createContext, useEffect } from 'react';
+import thumb_logo from '../lss_tecnologias.png';
 export const UserContext = createContext({});
 
 function UserProvider({ children }) {
@@ -40,7 +41,7 @@ function UserProvider({ children }) {
         
     }
     return (
-        <UserContext.Provider value={{ sessao, status, Sair, redirect_login }}>
+        <UserContext.Provider value={{ sessao,thumb_logo, status, Sair, redirect_login }}>
             {children}
         </UserContext.Provider>
     )

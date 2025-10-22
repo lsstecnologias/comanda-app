@@ -5,42 +5,40 @@ import 'animate.css';
 
 import Breadcrumb from '../breadcrumb';
 const Header = () => {
-      const { Sair } = useContext(UserContext);
-    
-     
+    const { Sair,thumb_logo } = useContext(UserContext);
+         
     return (
         <div className="container-fluid bg-body-tertiary mb-4 fixed-top m-0 p-0 ">
          
             <nav class="navbar navbar-expand-lg bg-body-tertiary shadow animate__animated animate__fadeIn bg-body-tertiary">
                 <div class="container animate__animated animate__fadeIn">
-                    <button class="navbar-toggler btn-toogler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler btn-toogler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <a class="navbar-brand  animate__animated animate__fadeIn" href="#">Navbar</a>
+                    <a class="navbar-brand  animate__animated animate__fadeIn" href="#"><img src={thumb_logo} width={100}/></a>
                 
                     <div class="collapse navbar-collapse  animate__animated animate__fadeIn" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-lg-0">
                             <li class="nav-item ">
                               
-                                <Link to="/" aria-current="page" class="nav-link active">Admin</Link>
+                                <Link  aria-current="page" class="nav-link active">Admin</Link>
                             </li>
                             
                            
                              <li class="nav-item">
                                 <Link to="/admin/imagen" class="nav-link">Imagens</Link>
                             </li>
-                             <li class="nav-item">
-                                <Link to="/admin/qr" class="nav-link">Gerar QRCode</Link>
-                            </li>
+                           
                               <li class="nav-item">
                                 <Link to="/admin/comanda" class="nav-link">Comanda</Link>
                             </li>
                               <li class="nav-item dropdown">
                                <Link to="/admin/produto" class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="false">Produtos</Link>
                                  <ul class="dropdown-menu fw-light">
-                                    <li><Link class="dropdown-item fw-light" to="/admin/produto">Lista de produtos</Link></li>
-                                    <li><Link class="dropdown-item fw-light" to="/admin/categoria">Adicionar categoria</Link></li>
+                                    <li><Link class="dropdown-item fw-light" to="/admin/produto">Produtos</Link></li>
                                     <li><hr class="dropdown-divider" /></li>
+                                    <li><Link class="dropdown-item fw-light" to="/admin/categoria">Categoria</Link></li>
+                                   
                                     
                                 </ul>
                             </li>                           

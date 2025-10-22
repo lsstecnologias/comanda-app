@@ -3,7 +3,7 @@ import Header from '../header';
 import './style.css';
 
 import { NumericFormat } from 'react-number-format';
-import { useEffect, useState,useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context';
 import axios from "axios";
 const $ = require("jquery");
@@ -28,7 +28,7 @@ const Produto = () => {
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
 
-    console.log(GetSession);
+   
     useEffect(() => {
 
         let config = {
@@ -42,14 +42,14 @@ const Produto = () => {
             }
         }
 
-        const param_api_get_categoria = "?api=getCategoria";
+        const param_api_get_categorias = "?api=getCategorias";
         const listCategoria = () => {
-            axios.get(urlApi + nameApi + param_api_get_categoria, config)
-                .then(async (res) => {
-                    var vl = await res.data;
-                    setListCateg(vl);
+            axios.get(urlApi + nameApi + param_api_get_categorias, config)
+            .then(async (res) => {
+                var vl = await res.data;
+                setListCateg(vl);
 
-                }).catch((error) => { alert(error); });
+            }).catch((error) => {  alert("Error: parametros API "+error) });
 
         };
         listCategoria();
@@ -64,9 +64,9 @@ const Produto = () => {
         let desc = $("#descItemInput");
         let qtd = $("#qtItemInput");
         let preco = $("#precoUnitInput");
-         let cod = Math.floor(Math.random() * (777 + 0)) - 1;
+        let cod = Math.floor(Math.random() * (777 + 0)) - 1;
 
-        var objProduto = {cod_item:cod, item: "", desc: "", qtd: "", preco: "", data_post: "", categoria_id: "" };
+        var objProduto = { cod_item: cod, item: "", desc: "", qtd: "", preco: "", data_post: "", categoria_id: "" };
 
         if (valorCateg !== undefined && valorCateg !== "") {
             preco.addClass("is-valid").removeClass("is-invalid");
@@ -116,43 +116,43 @@ const Produto = () => {
         if (objProduto.data_post == "") {
             objProduto.data_post = data_post;
         }
-       
+
 
         const paramApi_save_produto = "?api=setProduto";
         $.post(urlApi + nameApi + paramApi_save_produto, objProduto, (res, status) => {
             if (status === "success") {
-               var btnAdicionar = $('#btnAdicionar');
+                var btnAdicionar = $('#btnAdicionar');
                 if (res == "null") {
                     setDisplayError("block");
                     setMsgError("Preencha os campos!");
                     btnAdicionar.attr({ "disabled": false });
-                    
+
                 } else {
                     setDisplayError("none");
                     setMsgError(null);
                 }
-              
+
                 if (res == 1) {
-                   setDisplaySuccess("block");
-                   setMsgSuccess("Novo item adicionado!")
-                   btnAdicionar.attr({ "disabled": "disabled" });
+                    setDisplaySuccess("block");
+                    setMsgSuccess("Novo item adicionado!")
+                    btnAdicionar.attr({ "disabled": "disabled" });
 
                 } else {
-                   setDisplaySuccess("none");
-                   setMsgSuccess(null);
+                    setDisplaySuccess("none");
+                    setMsgSuccess(null);
                 }
             } else {
-                  alert("Error: parametros API")
+                alert("Error: parametros API")
             }
 
         })
     }
- 
+
     const fecharModal = () => {
         window.location.reload();
     }
     return (
-        <div className="container mt-3 produtos">
+        <div className="container-fluid mt-3 produtos">
             <div className="container p-0 animate__animated  animate__fadeIn">
                 <h4 className="mb-2 mt-2 pb-2 ">Produtos</h4>
                 <button type="button" class="btn w-100 btn-primary" data-bs-toggle="modal" data-bs-target="#nvProduto">
@@ -196,9 +196,9 @@ const Produto = () => {
 
                                 </select>
 
-                               
+
                             </div>
-                           
+
                             <div class="mb-3">
                                 <label for="qtItemInput" class="form-label">Quantidade</label>
                                 <input type="number" min="1" class="form-control" id="qtItemInput" onChange={(e) => { setQuant(e.target.value) }} autocomplete="off" placeholder="0" />

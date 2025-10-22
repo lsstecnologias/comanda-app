@@ -63,7 +63,7 @@ function Comanda() {
   }, [setData]);
 
   return (
-    <div className="animate__animated animate__fadeIn comanda">
+    <div className="container-fluid animate__animated animate__fadeIn comanda">
 
       <main class="container">
         <div class="alert alert-danger text-start" style={{ display: "none" }} role="alert">

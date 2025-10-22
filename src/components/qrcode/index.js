@@ -27,7 +27,7 @@ const qrcode = document.querySelector("#qrcode");
 const QRCode = () => {
     //dimensao-logomarca-valor-http://localhost:3001/?mesa=3
     return (
-        <div>
+        <div class="container-fluid mt-3 produtos">
             <div class="container">
                 <input placeholder="Escreva aqui" /> 
                 <input type="button" onclick="genQRCode()" value="gerar"/>

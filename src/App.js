@@ -39,7 +39,7 @@ function App() {
             <Route path="/" element={<Acesso />} />
               
               <Route path="/admin" element={<AppComponent />} >
-                <Route path="produto" index element={<Produto />} />
+                <Route path="produto" element={<Produto />} />
                 <Route path="usuario" element={<Usuarios />} />
                   <Route path="imagen" element={<Imagens />} />
                   <Route path="categoria" element={<Categorias />} />

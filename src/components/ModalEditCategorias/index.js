@@ -8,11 +8,6 @@ const ModalEditCategorias = (data_id) => {
     var idEdit = id.data_id;
 
 
-    const [nomeUser, setNomeUser] = useState("");
-    const [emailLoginUser, setEmailLoginUser] = useState("");
-    const [senhaUser, setSenhaUser] = useState("");
-    const [perfilUser, setPerfilUser] = useState("");
-
     const [displayError, setDisplayError] = useState('none');
     const [displaySuccess, setDisplaySuccess] = useState('none');
     const [msgError, setMsgError] = useState(null);
@@ -20,84 +15,59 @@ const ModalEditCategorias = (data_id) => {
 
     const [dataFilter, setDataFilter] = useState([]);
     const [edit, setEdit] = useState([]);
+    //INPUTS
+    const [nvCateg, setNvCateg] = useState();
 
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
-    const vlFilter = dataFilter.filter( e => { return e.id === idEdit });
+    const vlFilter = dataFilter.filter(e => { return e.id === idEdit });
 
-    // const perfil = (vlFilter[0].perfil);
-  
 
-    const editUsuario = (e) => {
+    const editCategoria = (e) => {
         e.preventDefault();
-        /*
-        let nome = $("#nomeInput");
-        let senha = $("#senhaInput");
-        let loginEmail = $("#loginEmailInput");
-        let perfil = $("#perfilUser");*/
-        // let cod = Math.floor(Math.random() * (777 - 0)) + 1;
+ 
 
-        var objUsuario = { id: idEdit, cod_user: vlFilter[0].cod, nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
+        var objCategoria = { id: idEdit, cod: "", nome: "", data_post: "" };
 
-        if (nomeUser !== undefined && nomeUser !== "") {
+        if (nvCateg !== undefined && nvCateg !== "") {
             // nome.addClass("is-valid").removeClass("is-invalid");
-            objUsuario.nome_user = nomeUser;
+            objCategoria.nome = nvCateg;
         } else {
             //nome.addClass("is-invalid").removeClass("is-valid");
-            objUsuario.nome_user = vlFilter[0].nome;
-        }
-
-        if (emailLoginUser !== undefined && emailLoginUser !== "") {
-            //loginEmail.addClass("is-valid").removeClass("is-invalid");
-            objUsuario.login_email = emailLoginUser;
-        } else {
-            //loginEmail.addClass("is-invalid").removeClass("is-valid");
-            objUsuario.login_email = vlFilter[0].email;
-        }
-
-        if (senhaUser !== undefined && senhaUser !== "") {
-            // senha.addClass("is-valid").removeClass("is-invalid");
-            objUsuario.senha_user = md5(senhaUser);
-        } else {
-            //senha.addClass("is-invalid").removeClass("is-valid");
-            objUsuario.senha_user = vlFilter[0].senha;
-        }
-
-        if (perfilUser !== undefined && perfilUser !== "") {
-            //perfil.addClass("is-valid").removeClass("is-invalid");
-            objUsuario.perfil_user = perfilUser;
-
-        } else {
-            // perfil.addClass("is-invalid").removeClass("is-valid");
-            objUsuario.perfil_user = vlFilter[0].perfil;
-
+            objCategoria.nome = vlFilter[0].nome;
         }
 
         let data_atual = new Date();
         let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 
-        if (objUsuario.data_post == "") {
-            objUsuario.data_post = data_post;
+        if (objCategoria.data_post == "") {
+            objCategoria.data_post = data_post;
+        }
+         if (objCategoria.cod == "") {
+            objCategoria.cod = vlFilter[0].cod;
         }
 
-        const param_api_update_usuario = "?api=updateUsuarios";
+        const param_api_update_categorias = "?api=updateCategorias";
 
-        $.post(urlApi + nameApi + param_api_update_usuario, objUsuario, (res, status) => {
-            
-            var editarUsuario = $('#btnEditarUsuario')
+        $.post(urlApi + nameApi + param_api_update_categorias, objCategoria, (res, status) => {
+
+            var editarUsuario = $('#btnCategorias');
+            console.log(res)
             if (status === "success") {
-                if (res === "null" || res === null) {
+                if (res == 0 || res == null) {
                     setMsgError("Erro ao atualizar usuário!");
                     setDisplayError("block");
                     editarUsuario.attr({ "disabled": false });
+
                 } else {
                     setDisplayError("none");
                     setMsgError(null);
                 }
-                if (res == 1 || res == "true" || res == true) {
-                    setMsgSuccess("Usuário atualizado!");
+                if (res == 1) {
                     setDisplaySuccess("block");
+                    setMsgSuccess("Usuário atualizado!");
                     editarUsuario.attr({ "disabled": "disabled" });
+
                 } else {
                     setDisplaySuccess("none");
                     setMsgSuccess(null);
@@ -112,8 +82,11 @@ const ModalEditCategorias = (data_id) => {
         window.location.reload();
     }
     useEffect(() => {
-        const param_api_lista_usuario = '?api=getUsuarios';
+
+
+        const param_api_get_categorias = "?api=getCategorias";
         const config = {
+
             method: "GET",
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -122,17 +95,12 @@ const ModalEditCategorias = (data_id) => {
                 'mode': 'no-cors'
             }
         };
-        axios.get(urlApi + nameApi + param_api_lista_usuario, config)
-        .then(async(res) => {
-            if (res.data !== "") {
-                var vl = await res.data;
+        axios.get(urlApi + nameApi + param_api_get_categorias, config)
+            .then((res) => {
+                var vl = res.data;
                 setDataFilter(vl);
 
-            } else {
-                alert("Error: parametros API!")
-            }
-
-        }).catch((error) => { alert("Error: parametros API " + error); });
+            }).catch((error) => { alert("Error: parametros API " + error) });
 
     }, [setDataFilter, setEdit]);
 
@@ -147,38 +115,24 @@ const ModalEditCategorias = (data_id) => {
 
                     <div class="modal-body">
                         <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-                            <i class="bi bi-check-circle p-2"></i>
+                            <i class="bi bi-check-circle-fill p-2"></i>
                             {msgSuccess !== null && msgSuccess}
-
+                            <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }}></button>
                         </div>
+
                         <div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
-                            <i class="bi bi-exclamation-triangle p-2"></i>
+                            <i class="bi bi-exclamation-triangle-fill  p-2"></i>
                             {msgError !== null && msgError}
-
+                            <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }} ></button>
                         </div>
+
 
                         {vlFilter && vlFilter.map(e => {
                             return (
                                 <div key={e.id}>
-                                    <div class="mb-3">
-                                        <label for="nomeInput" class="form-label">Nome</label>
-                                        <input type="text" class="form-control" id="nomeInput" onChange={(e) => { setNomeUser(e.target.value) }} placeholder={e.nome} autocomplete="off" />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="perfilUser" class="form-label">Perfil</label>
-                                        <select id="perfilUser" onChange={(e) => { setPerfilUser(e.target.value) }} class="form-select">
-                                            <option value={e.perfil} selected>{e.perfil == 'a' ? "Administrador" : "Usuário"}</option>
-                                            <option value="u">Usuário</option>
-                                            <option value="a">Administrador</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="loginEmailInput" class="form-label">E-mail</label>
-                                        <input type="email" class="form-control" id="loginEmailInput" onChange={(e) => { setEmailLoginUser(e.target.value) }}  placeholder={e.email} autocomplete="off" />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="senhaInput" class="form-label">Senha</label>
-                                        <input type="password" class="form-control w-20" id="senhaInput" onChange={(e) => { setSenhaUser(e.target.value) }} placeholder="••••••" autocomplete="off" />
+                                    <div class="input-group  mb-3 mt-2" style={{ display: 'inline-flex' }}>
+                                        <button class="btn btn-outline-primary  animate__animated animate__fadeIn" id="btnCategorias" type="button" onClick={(e) => { editCategoria(e) }} ><i class="bi bi-pencil-square"></i> Editar</button>
+                                        <input type="text" class="form-control" id="inpt-categorias" autocomplete="off" onChange={(e) => { setNvCateg(e.target.value) }} placeholder={e.nome} aria-describedby="button-addon2" />
 
                                     </div>
                                 </div>
@@ -186,9 +140,7 @@ const ModalEditCategorias = (data_id) => {
 
                         })}
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary w-100" id="btnEditarCategoria" onClick={(e) => { editUsuario(e) }}> <i class="bi bi-pencil-square"></i> Editar</button>
-                        </div>
+
 
                     </div>
                 </div>

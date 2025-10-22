@@ -15,7 +15,7 @@ const Produto = () => {
     const [valorDesc, setDesc] = useState();
     const [valorQt, setQuant] = useState();
     const [valorCateg, setCategorias] = useState();
-    const [nvCateg, setNvCateg] = useState();
+ 
     const [listCateg, setListCateg] = useState(null);
     const [statusFormAddCateg, setStatusFormAddCateg] = useState("none");
 

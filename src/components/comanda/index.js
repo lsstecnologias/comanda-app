@@ -14,6 +14,12 @@ function Comanda() {
   const nameApi = 'api_comanda/';
   const param_api_get_categorias = "?api=getProdutos";
 
+  const registrarAtendimento = (e) =>{
+    e.preventDefault();
+
+    alert("E")
+  }
+
   const marcarQuantidade = (id, preco) => {
 
     let inpt_qt = $("#inpt-qt-id-" + id);
@@ -42,6 +48,13 @@ function Comanda() {
   }
 
   useEffect(() => {
+    const getCliente = () =>{
+
+    }
+
+    const getAtendente = () =>{
+
+    }
 
     const config = {
 
@@ -53,16 +66,15 @@ function Comanda() {
         'mode': 'no-cors'
       }
     };
-
     axios.get(urlApi + nameApi + param_api_get_categorias, config)
-      .then((res) => {
-        var vl = res.data;
-        for (var i = 0; i < vl.length; i++) {
-          vl[i].subtotal = 0;
-        }
-        setData(vl);
+    .then((res) => {
+      var vl = res.data;
+      for (var i = 0; i < vl.length; i++) {
+        vl[i].subtotal = 0;
+      }
+      setData(vl);
 
-      }).catch((error) => { alert("Error: parametros API " + error) });
+    }).catch((error) => { alert("Error: parametros API " + error) });
 
   }, [setData]);
 
@@ -70,13 +82,14 @@ function Comanda() {
     <div className="container-fluid comanda">
       <main class="container animate__animated animate__fadeIn">
         { /*Usuário */}
+        <h4 className="mb-2 mt-2 pb-2 ">Atendimento <i class="bi bi-clock"></i></h4>
         <div class="container p-0 m-0 mb-4">
           <table class="container-fluid table table-bordered ">
             <thead>
               <tr>
-                <th >Atendente</th>
+                <th >Atend.Usuário</th>
                 <th >Cliente</th>
-                <th >Cod atendimento</th>
+                <th >Cod.Atendimento</th>
               </tr>
             </thead>
             <tbody>
@@ -91,7 +104,7 @@ function Comanda() {
                 </td>
                 <td>
                   <div class="input-group input-group-sm ">
-                    <input list="browsers" className='form-select form-control' placeholder='buscar' />
+                    <input list="browsers" className='form-select form-control' placeholder='Buscar...' />
                     <datalist id="browsers">
                       <option value="Edge" />
                       <option value="Firefox" />
@@ -113,7 +126,7 @@ function Comanda() {
             </tbody>
           </table>
           <div class="container p-0 m-0">
-            <button class="btn btn-outline-secondary w-100" type="button"> <i class="bi bi-pencil-square"></i> Registrar Atendimento</button>
+            <button class="btn btn-outline-secondary w-100" onClick={(e)=>{  registrarAtendimento(e) }} type="button"> <i class="bi bi-pencil-square"></i> Registrar Atendimento</button>
           </div>
         </div>
 

@@ -1,7 +1,9 @@
 
+import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 const $ = require("jquery");
+const uid_str = uuidv4().substring(0, 7);
 
 function Comanda() {
 
@@ -67,36 +69,56 @@ function Comanda() {
   return (
     <div className="container-fluid comanda">
       <main class="container animate__animated animate__fadeIn">
-
-        <div class="container p-0 m-0">
+        { /*Usuário */}
+        <div class="container p-0 m-0 mb-4">
           <table class="container-fluid table table-bordered ">
             <thead>
               <tr>
-                <th >First</th>
-                <th >Last</th>
-                <th >Handle</th>
+                <th >Atendente</th>
+                <th >Cliente</th>
+                <th >Cod atendimento</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>1</td>
                 <td>
-                 <div class="input-group input-group-sm">
-                    <select class="form-select" id="inputGroupSelect04" list="datalistOptions" aria-label="Example select with button addon">
-                      <option selected>Choose...</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                     
-                    </select>
-                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+                  <select class="form-select form-select-sm form-control">
+                    <option selected>Selecione</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </td>
+                <td>
+                  <div class="input-group input-group-sm ">
+                    <input list="browsers" className='form-select form-control' placeholder='buscar' />
+                    <datalist id="browsers">
+                      <option value="Edge" />
+                      <option value="Firefox" />
+                      <option value="Chrome" />
+                      <option value="Opera" />
+                      <option value="Safari" />
+                    </datalist>
+
                   </div>
                 </td>
-                <td>Otto</td>
+                <td>
+                  <div class="input-group input-group-sm ">
+                    <input disabled id="cod_comanda" class="form-control input-group-sm w-50 p-1" value={uid_str} />
+                    <input type='date' class="form-control w-50"  />
+                  </div>
+                </td>
               </tr>
+
             </tbody>
           </table>
+          <div class="container p-0 m-0">
+            <button class="btn btn-outline-secondary w-100" type="button"> <i class="bi bi-pencil-square"></i> Registrar Atendimento</button>
+          </div>
+        </div>
 
+        { /*Comanda */}
+        <div class="container  p-0 m-0 pt-4 mt-4">
           <article>
             <table class="table table-bordered align-right table-responsive">
               <thead class="align-end">
@@ -159,8 +181,8 @@ function Comanda() {
               </div>
             }
           </article>
-
         </div>
+
       </main>
     </div>
   )

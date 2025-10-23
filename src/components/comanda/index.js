@@ -1,23 +1,35 @@
 
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../../components/context';
+import { useEffect, useState, useMemo } from 'react';
 const $ = require("jquery");
 const uid_str = uuidv4().substring(0, 7);
 
 function Comanda() {
 
   const [data, setData] = useState([]);
+  const [sessaoUser, setSessaoUser] = useState([]);
+  const [clientes, setClientes] = useState([]);
   const [subtotal, setSubTotal] = useState([]);
+  const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
   const urlApi = 'http://10.10.10.6/';
   const nameApi = 'api_comanda/';
-  const param_api_get_categorias = "?api=getProdutos";
+  const param_api_get_produtos = "?api=getProdutos";
+  const param_api_get_clientes = "?api=getClientes";
+  const param_api_set_atendimento = "?api=setAtendimento";
 
-  const registrarAtendimento = (e) =>{
+  const registrarAtendimento = (e) => {
     e.preventDefault();
+    let atendente = $('#atendente');
+    let cliente = $('#cliente');
+    let cod_atendimento = $('#cod_atendimento');
+    let data_atendimento = $('#data_atendimento');
 
-    alert("E")
+   
+
   }
 
   const marcarQuantidade = (id, preco) => {
@@ -48,16 +60,14 @@ function Comanda() {
   }
 
   useEffect(() => {
-    const getCliente = () =>{
+    if (status == true) {
 
+      setSessaoUser(sessao);
+
+    } else {
+      Sair();
     }
-
-    const getAtendente = () =>{
-
-    }
-
     const config = {
-
       method: "GET",
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -66,15 +76,29 @@ function Comanda() {
         'mode': 'no-cors'
       }
     };
-    axios.get(urlApi + nameApi + param_api_get_categorias, config)
-    .then((res) => {
-      var vl = res.data;
-      for (var i = 0; i < vl.length; i++) {
-        vl[i].subtotal = 0;
-      }
-      setData(vl);
 
-    }).catch((error) => { alert("Error: parametros API " + error) });
+    const getCliente = () => {
+      axios.get(urlApi + nameApi + param_api_get_clientes, config)
+        .then((res) => {
+          if (res.status == 200) {
+            setClientes(res.data);
+          }
+
+        }).catch((error) => { alert("Error: parametros API " + error) });
+
+    }
+    getCliente();
+
+
+    axios.get(urlApi + nameApi + param_api_get_produtos, config)
+      .then((res) => {
+        var vl = res.data;
+        for (var i = 0; i < vl.length; i++) {
+          vl[i].subtotal = 0;
+        }
+        setData(vl);
+
+      }).catch((error) => { alert("Error: parametros API " + error) });
 
   }, [setData]);
 
@@ -87,38 +111,31 @@ function Comanda() {
           <table class="container-fluid table table-bordered ">
             <thead>
               <tr>
-                <th >Atend.Usuário</th>
-                <th >Cliente</th>
-                <th >Cod.Atendimento</th>
+                <th class="fw-medium">Atend. Usuário</th>
+                <th class="fw-medium">Cliente</th>
+                <th class="fw-medium">Cod. Atendimento</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>
-                  <select class="form-select form-select-sm form-control">
-                    <option selected>Selecione</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                  <select class="form-select form-select-sm form-control" id="atendente">
+                    <option value={sessaoUser.cod} selected>{sessaoUser.nome}</option>
                   </select>
                 </td>
                 <td>
                   <div class="input-group input-group-sm ">
-                    <input list="browsers" className='form-select form-control' placeholder='Buscar...' />
-                    <datalist id="browsers">
-                      <option value="Edge" />
-                      <option value="Firefox" />
-                      <option value="Chrome" />
-                      <option value="Opera" />
-                      <option value="Safari" />
+                    <input list="clientes" className='form-select form-control' id="cliente" placeholder='Buscar...' />
+                    <datalist id="clientes">
+                      {clientes && clientes.map((vl) => { return <option value={vl.nome} /> })}
                     </datalist>
 
                   </div>
                 </td>
                 <td>
                   <div class="input-group input-group-sm ">
-                    <input disabled id="cod_comanda" class="form-control input-group-sm w-50 p-1" value={uid_str} />
-                    <input type='date' class="form-control w-50"  />
+                    <input disabled class="form-control input-group-sm w-50 p-1" value={uid_str} id="cod_atendimento" />
+                    <input type='date' class="form-control w-50" id="data_atendimento" />
                   </div>
                 </td>
               </tr>
@@ -126,7 +143,7 @@ function Comanda() {
             </tbody>
           </table>
           <div class="container p-0 m-0">
-            <button class="btn btn-outline-secondary w-100" onClick={(e)=>{  registrarAtendimento(e) }} type="button"> <i class="bi bi-pencil-square"></i> Registrar Atendimento</button>
+            <button class="btn btn-outline-secondary w-100" onClick={(e) => { registrarAtendimento(e) }} type="button"> <i class="bi bi-pencil-square"></i> Registrar Atendimento</button>
           </div>
         </div>
 

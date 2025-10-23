@@ -14,14 +14,16 @@ function Comanda() {
   const [data, setData] = useState([]);
   const [sessaoUser, setSessaoUser] = useState([]);
   const [clientes, setClientes] = useState([]);
-  const [buscarCliente, setBuscarCliente] = useState(null);
+  const [buscarCliente, setBuscarCliente] = useState("");
+  const [messagem, setMessagem] = useState("");
   const [subtotal, setSubTotal] = useState([]);
 
-  console.log(buscarCliente)
+
   const urlApi = 'http://10.10.10.6/';
   const nameApi = 'api_comanda/';
   const param_api_get_produtos = "?api=getProdutos";
   const param_api_get_clientes = "?api=getClientes";
+  const param_api_find_clientes = "?api=findClientes";
   const param_api_set_atendimento = "?api=setAtendimento";
 
   const registrarAtendimento = (e) => {
@@ -30,32 +32,63 @@ function Comanda() {
     let cliente = $('#cliente');
     let cod_atendimento = $('#cod_atendimento');
     let data_atendimento = $('#data_atendimento');
-    var objAtendimento = {usuario:"",cliente:"",cod_atendimento:"",data_atendimento:""}
+    let messagems = $("#menssagem");
+    var objAtendimento = { usuario: "", cliente: "", cod_atendimento: "", data_atendimento: "" }
     //parei aqui
     if (cod_atendimento.val()) {
-      alert(cod_atendimento.val())
+      console.log(cod_atendimento.val())
       cod_atendimento.addClass("is-valid").removeClass("is-invalid");
+
     } else {
       cod_atendimento.addClass("is-invalid").removeClass("is-valid");
     }
 
     if (data_atendimento.val()) {
-      alert(data_atendimento.val())
+     console.log(data_atendimento.val())
       data_atendimento.addClass("is-valid").removeClass("is-invalid");
     } else {
       data_atendimento.addClass("is-invalid").removeClass("is-valid");
     }
 
-    if (cliente.val()) {
-      alert(cliente.val())
-      console.log(buscarCliente)
-      cliente.addClass("is-valid").removeClass("is-invalid");
+    if (cliente.val() && buscarCliente !== "") {
+
+      $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente }, async (data, status) => {
+        if (status == 'success') {
+          if (data !== 'false') {
+            const resp = JSON.parse(data);
+            let vl = resp.find((e) => { return e.nome == buscarCliente });
+
+            if (vl) {
+              messagems.addClass("valid-feedback").removeClass("invalid-feedback");
+              cliente.addClass("is-valid").removeClass("is-invalid");
+              setMessagem("Selecione o cliente!");
+              setBuscarCliente(vl.nome);
+              console.log(buscarCliente)
+
+            } else {
+              setMessagem("Selecione o cliente!")
+              cliente.addClass("is-invalid").removeClass("is-valid");
+              messagems.addClass("invalid-feedback").removeClass("valid-feedback");
+
+            }
+
+          } else {
+            cliente.addClass("is-invalid").removeClass("is-valid");
+            messagems.addClass("invalid-feedback").removeClass("valid-feedback");
+            setMessagem("Selecione o cliente!");
+
+          }
+
+        }
+
+      });
+
     } else {
       cliente.addClass("is-invalid").removeClass("is-valid");
     }
 
     if (atendente.val()) {
-      alert(atendente.val())
+      console.log(atendente.val())
       atendente.addClass("is-valid").removeClass("is-invalid");
     } else {
       atendente.addClass("is-invalid").removeClass("is-valid");
@@ -139,7 +172,7 @@ function Comanda() {
 
       }).catch((error) => { alert("Error: parametros API " + error) });
 
-  }, [setData, setBuscarCliente]);
+  }, [setData, setBuscarCliente, setMessagem]);
 
   return (
     <div className="container-fluid comanda">
@@ -169,20 +202,21 @@ function Comanda() {
                     <input list="clientes" className='form-select form-control' onChange={(e) => setBuscarCliente(e.target.value)} id="cliente" placeholder='Buscar...' />
                     <datalist id="clientes" className='p-4'>
                       {clientes && clientes.map((vl) => { return <option className='p-4' value={vl.nome} /> })}
-                    </datalist>
 
+                    </datalist>
+                    <div id="messagems" class="invalid-feedback">{messagem && messagem}</div>
                   </div>
 
                 </td>
                 <td>
-                  <div class="input-group input-group-sm  m-2">
+                  <div class="input-group input-group-sm ">
 
                     <input type="text" class="form-control" id="cod_atendimento" placeholder="Gerar cod." aria-label="Recipient’s username" aria-describedby="button-addon2" />
                     <button class="btn btn-outline-secondary" onClick={() => { gerarCodAtendimento() }} type="button" id="button-addon2"><i class="bi bi-arrow-counterclockwise"></i></button>
 
 
                   </div>
-                  <div class="input-group input-group-sm  m-2 ">
+                  <div class="input-group input-group-sm mt-2 ">
                     <input type='date' class="form-control" id="data_atendimento" />
                   </div>
                 </td>

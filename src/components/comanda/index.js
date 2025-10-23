@@ -1,20 +1,23 @@
 
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import './style.css';
 import { useContext } from 'react';
 import { UserContext } from '../../components/context';
 import { useEffect, useState, useMemo } from 'react';
 const $ = require("jquery");
-const uid_str = uuidv4().substring(0, 7);
+
 
 function Comanda() {
+  const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
   const [data, setData] = useState([]);
   const [sessaoUser, setSessaoUser] = useState([]);
   const [clientes, setClientes] = useState([]);
+  const [buscarCliente, setBuscarCliente] = useState(null);
   const [subtotal, setSubTotal] = useState([]);
-  const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
+  console.log(buscarCliente)
   const urlApi = 'http://10.10.10.6/';
   const nameApi = 'api_comanda/';
   const param_api_get_produtos = "?api=getProdutos";
@@ -27,11 +30,46 @@ function Comanda() {
     let cliente = $('#cliente');
     let cod_atendimento = $('#cod_atendimento');
     let data_atendimento = $('#data_atendimento');
+    var objAtendimento = {usuario:"",cliente:"",cod_atendimento:"",data_atendimento:""}
+    //parei aqui
+    if (cod_atendimento.val()) {
+      alert(cod_atendimento.val())
+      cod_atendimento.addClass("is-valid").removeClass("is-invalid");
+    } else {
+      cod_atendimento.addClass("is-invalid").removeClass("is-valid");
+    }
 
-   
+    if (data_atendimento.val()) {
+      alert(data_atendimento.val())
+      data_atendimento.addClass("is-valid").removeClass("is-invalid");
+    } else {
+      data_atendimento.addClass("is-invalid").removeClass("is-valid");
+    }
+
+    if (cliente.val()) {
+      alert(cliente.val())
+      console.log(buscarCliente)
+      cliente.addClass("is-valid").removeClass("is-invalid");
+    } else {
+      cliente.addClass("is-invalid").removeClass("is-valid");
+    }
+
+    if (atendente.val()) {
+      alert(atendente.val())
+      atendente.addClass("is-valid").removeClass("is-invalid");
+    } else {
+      atendente.addClass("is-invalid").removeClass("is-valid");
+    }
+
 
   }
+  const gerarCodAtendimento = () => {
 
+    var uid_str = uuidv4().substring(0, 7);
+    let cod_atendimento = $('#cod_atendimento');
+    cod_atendimento.val(uid_str).attr({ disabled: 'disabled' })
+
+  }
   const marcarQuantidade = (id, preco) => {
 
     let inpt_qt = $("#inpt-qt-id-" + id);
@@ -67,6 +105,7 @@ function Comanda() {
     } else {
       Sair();
     }
+
     const config = {
       method: "GET",
       headers: {
@@ -100,7 +139,7 @@ function Comanda() {
 
       }).catch((error) => { alert("Error: parametros API " + error) });
 
-  }, [setData]);
+  }, [setData, setBuscarCliente]);
 
   return (
     <div className="container-fluid comanda">
@@ -114,6 +153,7 @@ function Comanda() {
                 <th class="fw-medium">Atend. Usuário</th>
                 <th class="fw-medium">Cliente</th>
                 <th class="fw-medium">Cod. Atendimento</th>
+
               </tr>
             </thead>
             <tbody>
@@ -123,21 +163,30 @@ function Comanda() {
                     <option value={sessaoUser.cod} selected>{sessaoUser.nome}</option>
                   </select>
                 </td>
-                <td>
-                  <div class="input-group input-group-sm ">
-                    <input list="clientes" className='form-select form-control' id="cliente" placeholder='Buscar...' />
-                    <datalist id="clientes">
-                      {clientes && clientes.map((vl) => { return <option value={vl.nome} /> })}
+                <td >
+
+                  <div class="input-group input-group-sm  ">
+                    <input list="clientes" className='form-select form-control' onChange={(e) => setBuscarCliente(e.target.value)} id="cliente" placeholder='Buscar...' />
+                    <datalist id="clientes" className='p-4'>
+                      {clientes && clientes.map((vl) => { return <option className='p-4' value={vl.nome} /> })}
                     </datalist>
 
                   </div>
+
                 </td>
                 <td>
-                  <div class="input-group input-group-sm ">
-                    <input disabled class="form-control input-group-sm w-50 p-1" value={uid_str} id="cod_atendimento" />
-                    <input type='date' class="form-control w-50" id="data_atendimento" />
+                  <div class="input-group input-group-sm  m-2">
+
+                    <input type="text" class="form-control" id="cod_atendimento" placeholder="Gerar cod." aria-label="Recipient’s username" aria-describedby="button-addon2" />
+                    <button class="btn btn-outline-secondary" onClick={() => { gerarCodAtendimento() }} type="button" id="button-addon2"><i class="bi bi-arrow-counterclockwise"></i></button>
+
+
+                  </div>
+                  <div class="input-group input-group-sm  m-2 ">
+                    <input type='date' class="form-control" id="data_atendimento" />
                   </div>
                 </td>
+
               </tr>
 
             </tbody>
@@ -171,16 +220,11 @@ function Comanda() {
                       </td>
                       <td class=" d-flex align-items-center justify-content-center">
                         <div class="input-group input-group-sm d-flex align-items-center ">
-
                           <input type="number" min="1" class="form-control" id={"inpt-qt-id-" + valor.id} aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
-
-
                           <div class="input-group-text" onClick={() => { marcarQuantidade(valor.id, valor.preco) }}>
                             <input class="form-check-input mt-0" type="checkbox" name="block-qtd" style={{ display: "none" }} id={"check-inpt-" + valor.id} />
                             <i class="bi bi-lock-fill"></i>
                           </div>
-
-
                         </div>
                       </td>
                       <td>
@@ -198,21 +242,22 @@ function Comanda() {
                     </tr>
                   )
                 })}
+
               </tbody>
 
             </table>
-            {data.length == 0 &&
-              <div class="alert alert-light" role="alert">
-                <div class="spinner-border" role="status">
-                  <span class="visually-hidden">Loading...</span>
 
-                </div>
-
-              </div>
-            }
           </article>
         </div>
+        {data.length == 0 &&
+          <div class="container-fluid alert alert-light" role="alert">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
 
+            </div>
+
+          </div>
+        }
       </main>
     </div>
   )

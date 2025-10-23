@@ -1,5 +1,5 @@
 
-import { useEffect, useState, useContext} from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import UserProvider from './components/context';
 import Comanda from './components/comanda';
@@ -10,6 +10,8 @@ import AppComponent from './AppComponent';
 import Acesso from './components/acesso';
 import Categorias from './components/categorias';
 import QRCode from './components/qrcode';
+import Atendimento from './components/atendimento';
+import TabelaAtendimento from './components/tabela_atendimento';
 
 const $ = require("jquery");
 
@@ -21,7 +23,7 @@ function App() {
     $('#preloader').hide(500);
     setStatusTela("block");
   });
- 
+
   const page404 = () => {
     return (
       <div class="container-fluid">
@@ -33,26 +35,28 @@ function App() {
   return (
 
     <div class="container-fluid m-0 p-0 " >
-      
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Acesso />} />
-              
-              <Route path="/admin" element={<AppComponent />} >
-                <Route path="produto" element={<Produto />} />
-                <Route path="usuario" element={<Usuarios />} />
-                  <Route path="imagen" element={<Imagens />} />
-                  <Route path="categoria" element={<Categorias />} />
-                  <Route path="qr" element={<QRCode />} />
-                  <Route path="comanda" element={<Comanda />} />
-                <Route path="*" element={page404()}></Route>
-              </Route>
-            
+
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Acesso />} />
+
+          <Route path="/admin" element={<AppComponent />} >
+            <Route path="produto" element={<Produto />} />
+            <Route path="usuario" element={<Usuarios />} />
+            <Route path="imagen" element={<Imagens />} />
+            <Route path="categoria" element={<Categorias />} />
+            <Route path="qr" element={<QRCode />} />
+            <Route path="atendimento" element={<Atendimento />} />
+            <Route path="lista-atendimento" element={<TabelaAtendimento />} />
+            <Route path="comanda" element={<Comanda />} />
             <Route path="*" element={page404()}></Route>
-                
-          </Routes>
-        </BrowserRouter>
-    
+          </Route>
+
+          <Route path="*" element={page404()}></Route>
+
+        </Routes>
+      </BrowserRouter>
+
     </div>
   )
 

@@ -46,9 +46,9 @@ const TabelaCategoria = () => {
     }, [setData]);
 
     return (
-        <div class="container-fluid mt-3 ">
-            <div className='container p-0 table-responsive'>
-                <table class="table caption-top animate__animated animate__fadeIn">
+        <div class="container-fluid m-0 p-0 ">
+            <div className='container m-0 p-0 table-responsive'>
+                <table class="table m-0 p-0  caption-top animate__animated animate__fadeIn">
                     <caption>Lista categorias</caption>
                     <thead>
                         <tr>

@@ -52,8 +52,8 @@ const TabelaProduto = () => {
     }, [setData]);
 
     return (
-        <div class="container-fluid mt-4 ">
-            <div className='container table-responsive'>
+        <div class="container-fluid m-0 p-0 mt-4 ">
+            <div class='container table-responsive'>
                 <table class="table caption-top  animate__animated  animate_fadeIn">
                     <caption>Lista produtos</caption>
                     <thead>

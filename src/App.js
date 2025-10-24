@@ -5,7 +5,7 @@ import UserProvider from './components/context';
 import Comanda from './components/comanda';
 import Produto from './components/produtos';
 import Usuarios from './components/usuarios';
-import Imagens from './components/Imagens';
+import Loja from './components/loja';
 import AppComponent from './AppComponent';
 import Acesso from './components/acesso';
 import Categorias from './components/categorias';
@@ -45,7 +45,7 @@ function App() {
             <Route path="produto" element={<Produto />} />
             <Route path="agendamento-pedido" element={<AgendamentoPedido />} />
             <Route path="usuario" element={<Usuarios />} />
-            <Route path="imagen" element={<Imagens />} />
+            <Route path="loja" element={<Loja />} />
             <Route path="categoria" element={<Categorias />} />
             <Route path="qr" element={<QRCode />} />
             <Route path="atendimento" element={<Atendimento />} />

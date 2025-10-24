@@ -25,8 +25,13 @@ const Header = () => {
                      </li>
 
 
-                     <li class="nav-item">
-                        <Link to="/admin/imagen" class="nav-link">Imagens</Link>
+                     <li class="nav-item dropdown">
+                       <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Minha loja</Link>
+                        <ul class="dropdown-menu fw-light">
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/loja">Loja</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/qr">Gerar QRCode</Link></li>
+                      
+                        </ul>
                      </li>
 
                      <li class="nav-item dropdown">

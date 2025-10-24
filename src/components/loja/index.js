@@ -1,15 +1,15 @@
 import { useContext } from 'react';
-import { UserContext } from '../../components/context';
+import { UserContext } from '../context';
 import { useEffect, useState } from 'react';
 
 
 import ImageUploading from "react-images-uploading";
 import $ from 'jquery';
 import QRCode from "../qrcode";
-const Imagens = () => {
+const Loja = () => {
     const [sessaoUser, setSessaoUser] = useState([]);
     const [selectedFileUser, setSelectedFileUser] = useState(null);
-    const { sessao, status, redirect_login, Sair } = useContext(UserContext);
+    const { sessao, status, redirect_login, Sair,thumb_logo  } = useContext(UserContext);
 
     const [displayError, setDisplayError] = useState('none');
     const [displaySuccess, setDisplaySuccess] = useState('none');
@@ -148,4 +148,4 @@ const Imagens = () => {
         </div>
     );*/
 }
-export default Imagens;
+export default Loja;

@@ -12,6 +12,7 @@ import Categorias from './components/categorias';
 import QRCode from './components/qrcode';
 import Atendimento from './components/atendimento';
 import TabelaAtendimento from './components/tabela_atendimento';
+import AgendamentoPedido from './components/agendamento_pedido';
 
 const $ = require("jquery");
 
@@ -42,6 +43,7 @@ function App() {
 
           <Route path="/admin" element={<AppComponent />} >
             <Route path="produto" element={<Produto />} />
+            <Route path="agendamento-pedido" element={<AgendamentoPedido />} />
             <Route path="usuario" element={<Usuarios />} />
             <Route path="imagen" element={<Imagens />} />
             <Route path="categoria" element={<Categorias />} />

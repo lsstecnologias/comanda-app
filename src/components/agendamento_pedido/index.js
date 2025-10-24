@@ -1,17 +1,12 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import ModalEditProdutos from '../ModalEditProdutos';
-import ModalEditCategorias from '../ModalEditCategorias';
 import { Link } from 'react-router-dom';
-
-
 const $ = require("jquery");
+const AgendamentoPedido = () => {
 
-const TabelaAtendimento = () => {
-
-   const [dataClientes, setDataClientes] = useState([]);
    
- 
+   
+   const [data, setData] = useState([]);
    const [id, setId] = useState();
 
    const urlApi = 'http://10.10.10.6/';
@@ -40,49 +35,51 @@ const TabelaAtendimento = () => {
       axios.get(urlApi + nameApi + param_api_lista_atendimentos, config)
          .then(async (res) => {
             var vl = await res.data;
-            setDataClientes(vl);
            
+            setData(vl)
          }).catch((error) => {
             alert("Error: parametros API " + error)
          });
 
-   }, [setDataClientes]);
+   }, [setData]);
+
+
 
    return (
-      <div class="container-fluid m-0 p-0 mt-4 categorias">
-         <div class="container">
-                <h4 className="mb-4 mt-4  ">Clientes <i class="bi bi-people-fill"></i></h4>
-            <table class="table m-0 p-0 mt-4 caption-top animate__animated animate__fadeIn">
+      <div className="container-fluid categorias">
+         <div className="container">
+            <h4 className=" mt-4  ">Agendamento e Pedidos <i class="bi bi-clock"></i></h4>
+            <table class="table m-0 p-0  caption-top animate__animated animate__fadeIn">
                <caption>Lista de clientes confirmados</caption>
                <thead>
                   <tr>
-                 
-                   
-                     <th scope="col">Cliente</th>
-                   <th scope="col">Agenda</th>
-                      <th scope="col" colSpan={2}>Ações</th>
+
+                     <th scope="col fw-light">Cod. Atendimento</th>
+                     <th scope="col fw-light" >Atendente</th>
+
+                     <th scope="col fw-light"  >Data Atendimento</th>
+                     <th scope="col" > </th>
                   </tr>
                </thead>
                <tbody>
-                  {dataClientes && dataClientes.map((val) => {
+                  {data && data.map((val) => {
                      return (
                         <tr key={val.id}>
-                          
-                           <td className='lh-1 fw-light'><b>{val.cod_cliente}</b> {val.cliente}</td>
-                           <td className='lh-1 fw-light'><Link class="btn btn-sm btn-primary" to="/admin/agendamento-pedido" ><i class="bi bi-person-lines-fill"></i> </Link>  </td>
-                             
 
-                           <td>
-                              <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
-                              <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button>
-                           </td>
+                           <td className='lh-1 fw-light'>{val.cod_atendimento}</td>
+                           <td className='lh-1 fw-light'>{val.cod_usuario}</td>
+
+                           <td className='lh-1 fw-light' >{val.data_atendimento + ' - ' + val.data_post}</td>
+                           <td className='lh-1 fw-light' ><button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-person-fill-gear"></i></button></td>
+
                         </tr>
                      )
                   })}
 
                </tbody>
             </table>
-            {dataClientes.length == 0 &&
+            {
+               data.length == 0 &&
                <div class="alert alert-light" role="alert">
                   <div class="spinner-border" role="status">
                      <span class="visually-hidden">Loading...</span>
@@ -91,10 +88,9 @@ const TabelaAtendimento = () => {
 
                </div>
             }
-             </div>
-      </div>
-
+         </div>
+      </div >
    )
 
 }
-export default TabelaAtendimento;
+export default AgendamentoPedido;

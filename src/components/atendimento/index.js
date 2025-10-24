@@ -8,32 +8,36 @@ import { useEffect, useState, useMemo } from 'react';
 const $ = require("jquery");
 
 
-const Atendimento=()=> {
+const Atendimento = () => {
   const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
   const [sessaoUser, setSessaoUser] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [buscarCliente, setBuscarCliente] = useState("");
   const [messagem, setMessagem] = useState("");
-  const [subtotal, setSubTotal] = useState([]);
 
+  const [displayError, setDisplayError] = useState('none');
+  const [displaySuccess, setDisplaySuccess] = useState('none');
+  const [msgError, setMsgError] = useState(null);
+  const [msgSuccess, setMsgSuccess] = useState(null);
 
   const urlApi = 'http://10.10.10.6/';
   const nameApi = 'api_comanda/';
-  
+
   const param_api_get_clientes = "?api=getClientes";
   const param_api_find_clientes = "?api=findClientes";
   const param_api_set_atendimento = "?api=setAtendimento";
 
-  const registrarAtendimento = (e) => {
+
+  const validarAtendimento = (e) => {
     e.preventDefault();
+    var objAtendimento = { cod_usuario: "", cod_cliente: "", cliente: "", cod_atendimento: "", data_atendimento: "" }
     let atendente = $('#atendente');
     let cliente = $('#cliente');
     let cod_atendimento = $('#cod_atendimento');
     let data_atendimento = $('#data_atendimento');
     let messagems = $("#menssagem");
-    var objAtendimento = { cod_usuario: "", cod_cliente: "", cliente: "", cod_atendimento: "", data_atendimento: "" }
-    //parei aqui
+
     if (cod_atendimento.val()) {
       objAtendimento.cod_atendimento = cod_atendimento.val();
       cod_atendimento.addClass("is-valid").removeClass("is-invalid");
@@ -41,23 +45,31 @@ const Atendimento=()=> {
     } else {
       cod_atendimento.addClass("is-invalid").removeClass("is-valid");
       objAtendimento.cod_atendimento = null;
+
     }
 
     if (data_atendimento.val()) {
       objAtendimento.data_atendimento = data_atendimento.val();
       data_atendimento.addClass("is-valid").removeClass("is-invalid");
+
     } else {
       data_atendimento.addClass("is-invalid").removeClass("is-valid");
       objAtendimento.data_atendimento = null;
+
+
     }
 
 
     if (atendente.val()) {
       objAtendimento.cod_usuario = atendente.val();
       atendente.addClass("is-valid").removeClass("is-invalid");
+
+
     } else {
       atendente.addClass("is-invalid").removeClass("is-valid");
       objAtendimento.cod_usuario = null;
+
+
     }
 
     if (cliente.val() && buscarCliente !== "") {
@@ -71,11 +83,22 @@ const Atendimento=()=> {
             if (vl) {
               messagems.addClass("valid-feedback").removeClass("invalid-feedback");
               cliente.addClass("is-valid").removeClass("is-invalid");
-              setMessagem("Cliente não encontrado!");
+
               setBuscarCliente(vl.nome);
               objAtendimento.cliente = vl.nome;
               objAtendimento.cod_cliente = vl.cod;
-              console.log(objAtendimento);
+
+              const param_api_save_atendimento = "?api=setAtendimentos";
+              if (objAtendimento.cod_usuario !== null && objAtendimento.cod_atendimento !== null && objAtendimento.cod_cliente !== null && objAtendimento.data_atendimento !== null) {
+               
+                $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
+                  if (status == "success") {
+                    console.log(res);
+                  }
+                })
+              } else {
+                console.log("Flase")
+              }
 
 
             } else {
@@ -92,6 +115,7 @@ const Atendimento=()=> {
             messagems.addClass("invalid-feedback").removeClass("valid-feedback");
             setMessagem("Erro ao selecionar o cliente!");
 
+
           }
 
         }
@@ -102,9 +126,10 @@ const Atendimento=()=> {
       cliente.addClass("is-invalid").removeClass("is-valid");
     }
 
+    return;
 
-    console.log(objAtendimento)
   }
+
   const gerarCodAtendimento = () => {
 
     var uid_str = uuidv4().substring(0, 7);
@@ -112,8 +137,10 @@ const Atendimento=()=> {
     cod_atendimento.val(uid_str).attr({ disabled: 'disabled' })
 
   }
-  
 
+  const fecharModal = () => {
+    window.location.reload();
+  }
   useEffect(() => {
     if (status == true) {
 
@@ -150,9 +177,19 @@ const Atendimento=()=> {
   return (
     <div className="container-fluid comanda">
       <div class="container animate__animated animate__fadeIn">
-       
-        <h4 className="mb-2 mt-2 pb-2 ">Atendimento <i class="bi bi-clock"></i></h4>
+
+        <h4 className="mb-4 mt-4 pb-2 ">Atendimento <i class="bi bi-clock"></i></h4>
         <div class="container p-0 m-0 mb-4">
+          <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+            <i class="bi bi-check-circle-fill p-2"></i>
+            {msgSuccess !== null && msgSuccess}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }}></button>
+          </div>
+          <div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+            <i class="bi bi-exclamation-triangle p-2"></i>
+            {msgError !== null && msgError}
+
+          </div>
           <table class="container-fluid table table-bordered ">
             <thead>
               <tr>
@@ -180,7 +217,7 @@ const Atendimento=()=> {
                 <td colspan="2">
                   <td class="lh-3 fw-light">Cliente Nome</td>
                   <div class="input-group  mt-2 mb-2">
-                  
+
                     <input list="clientes" className='form-select form-control' onChange={(e) => setBuscarCliente(e.target.value)} id="cliente" placeholder='Buscar cliente...' /> <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
                     <datalist id="clientes" className='p-4'>
                       {clientes && clientes.map((vl) => { return <option className='p-4' value={vl.nome} /> })}
@@ -200,13 +237,13 @@ const Atendimento=()=> {
 
             </tbody>
           </table>
-          <div class="container p-0 m-0">
+          <div class="container p-0 m-0 mt-4">
 
-            <button class="btn btn-primary w-100" onClick={(e) => { registrarAtendimento(e) }} type="button"> <i class="bi bi-pencil-square"></i> Registrar Atendimento</button>
+            <button class="btn btn-primary w-100" onClick={(e) => { validarAtendimento(e) }} type="button"> <i class="bi bi-pencil-square"></i> Registrar Atendimento</button>
           </div>
         </div>
 
-       
+
       </div>
     </div>
   )

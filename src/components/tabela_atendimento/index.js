@@ -48,8 +48,8 @@ const TabelaAtendimento = () => {
    return (
       <div class="container-fluid m-0 p-0 mt-4 categorias">
          <div class="container">
-                <h4 className="mb-2 mt-2 pb-2 ">Atendimento</h4>
-            <table class="table m-0 p-0  caption-top animate__animated animate__fadeIn">
+                <h4 className="mb-4 mt-4 pb-2 ">Atendimento</h4>
+            <table class="table m-0 p-0 mt-4 caption-top animate__animated animate__fadeIn">
                <caption>Meus atendimento</caption>
                <thead>
                   <tr>

@@ -31,7 +31,14 @@ const Atendimento = () => {
 
   const validarAtendimento = (e) => {
     e.preventDefault();
-    var objAtendimento = { cod_usuario: "", cod_cliente: "", cliente: "", cod_atendimento: "", data_atendimento: "" }
+    let data_atual = new Date();
+    let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
+
+
+    const objAtendimento = { cod_usuario: "", cod_cliente: "", cliente: "", cod_atendimento: "", data_atendimento: "", data_post: "" }
+
+    if (objAtendimento.data_post == "") { objAtendimento.data_post = data_post; }
+
     let atendente = $('#atendente');
     let cliente = $('#cliente');
     let cod_atendimento = $('#cod_atendimento');
@@ -90,14 +97,31 @@ const Atendimento = () => {
 
               const param_api_save_atendimento = "?api=setAtendimentos";
               if (objAtendimento.cod_usuario !== null && objAtendimento.cod_atendimento !== null && objAtendimento.cod_cliente !== null && objAtendimento.data_atendimento !== null) {
-               
+
                 $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
                   if (status == "success") {
-                    console.log(res);
+                    if (res == 1) {
+                      setDisplaySuccess("block");
+                      setMsgSuccess("Atendimento registrado!");
+
+                      $('#cliente').val("");
+                      $('#cod_atendimento').val("");
+                      $('#data_atendimento').val("");
+                      $("#menssagem").val("");
+                      return objAtendimento;
+                    } else {
+                      setDisplayError("none");
+                      setMsgError("O atendimento não foi registrado!");
+                      setDisplaySuccess("block");
+                      setMsgSuccess(null);
+                    }
                   }
                 })
               } else {
-                console.log("Flase")
+                setDisplayError("block");
+                setMsgError("O atendimento não foi registrado!");
+                setDisplaySuccess("none");
+                setMsgSuccess(null);
               }
 
 
@@ -132,14 +156,14 @@ const Atendimento = () => {
 
   const gerarCodAtendimento = () => {
 
-    var uid_str = uuidv4().substring(0, 7);
+    var cod = Math.floor(Math.random() * (777 + 0)) - 1;
     let cod_atendimento = $('#cod_atendimento');
-    cod_atendimento.val(uid_str).attr({ disabled: 'disabled' })
+    cod_atendimento.val(cod).attr({ disabled: 'disabled' })
 
   }
 
   const fecharModal = () => {
-    window.location.reload();
+    // window.location.reload();
   }
   useEffect(() => {
     if (status == true) {

@@ -3,7 +3,6 @@ import { UserContext } from '../../components/context';
 import { Link } from 'react-router-dom';
 import 'animate.css';
 
-import Breadcrumb from '../breadcrumb';
 const Header = () => {
    const { Sair, thumb_logo } = useContext(UserContext);
 
@@ -19,17 +18,14 @@ const Header = () => {
 
                <div class="collapse navbar-collapse  animate__animated animate__fadeIn" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto mb-lg-0">
-                     <li class="nav-item ">
-
-                        <Link aria-current="page" class="nav-link active">Admin</Link>
-                     </li>
+                
 
 
-                     <li class="nav-item dropdown">
+                     <li class="nav-item  dropdown">
                        <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Minha loja</Link>
                         <ul class="dropdown-menu fw-light">
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/loja">Loja</Link></li>
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/qr">Gerar QRCode</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/qr">Gerar QR-Code</Link></li>
                       
                         </ul>
                      </li>
@@ -72,7 +68,7 @@ const Header = () => {
             </div >
 
          </nav>
-         <Breadcrumb />
+       
       </div >
    );
 

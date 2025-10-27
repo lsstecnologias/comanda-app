@@ -19,12 +19,11 @@ const Header = () => {
                <div class="collapse navbar-collapse  animate__animated animate__fadeIn" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto mb-lg-0">
                 
-
-
                      <li class="nav-item  dropdown">
                        <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Minha loja</Link>
                         <ul class="dropdown-menu fw-light">
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/loja">Loja</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/template-view">Template</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/qr">Gerar QR-Code</Link></li>
                       
                         </ul>
@@ -49,7 +48,6 @@ const Header = () => {
 
                   </ul>
 
-
                </div>
                <div class="nav-item dropdown">
 
@@ -59,8 +57,6 @@ const Header = () => {
                   <ul class="dropdown-menu">
                      <li><Link class="dropdown-item fw-light" to="/admin/usuario"> <i class="bi  fs-5 bi-person-fill"></i> Usuários</Link></li>
                      <li><button class="btn btn-sm btn-primary dropdown-item" onClick={() => Sair()} > <i class="bi fs-5 bi-box-arrow-left"></i> Sair</button></li>
-
-
                   </ul>
 
                </div>

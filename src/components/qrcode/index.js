@@ -64,29 +64,32 @@ const QRCode = () => {
     }
 
     return (
-        <div class="container-fluid mt-3 produtos">
+        <div class="container mt-2 produtos">
+            <div style={{ maxWidth: '800px', height: '500px' }} class="container text-center table-responsive card d-flex  align-self-center justify-content-start" >
 
-            <div style={{ maxWidth: '800px' }} class="container text-center table-responsive card" id="printJS-form">
-                <table class="table align-middle " style={{ maxWidth: '800px' }}>
-                    <tr>
-                        <td>
-                            <div class="container logo m-4">
-                                <img className='img-fluid ' src={thumb_logo} width={tamLogo} />
+
+<h3 className="mb-2 text-start mt-2 pb-2 ">GEN <i class="bi bi-qr-code"></i> QR</h3>
+                
+                <table id="printJS-form" class="table align-middle " >
+                    <tr class="align-middle">
+                        <td className='text-center'>
+                            <div class="d-flex align-items-center justify-content-center align-middle">
+                                <img src={thumb_logo} width={tamLogo} />
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <div class="container qrcodeContent m-4 d-flex align-items-center justify-content-center  ">
-                                <img id="qrcode" className='card p-2' src={imagem} width={tamW ?? 340} />
+                    <tr class="align-middle">
+                        <td className='text-center'>
+                            <div class=" qrcodeContent m-4 d-flex align-items-center justify-content-center m-0 p-0">
+                                <img id="qrcode" className='card p-2 border' src={imagem} width={tamW ?? 340} />
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="align-middle">
                         <td>
-                            <div class="container logo mb-4">
-                                <p>{titulo ?? titulo}</p>
-                                <p>{subTitulo ?? subTitulo}</p>
+                            <div class="text-center m-0 p-0">
+                                <h5 class="text-center">{titulo ?? titulo}</h5>
+                                <p class="text-center">{subTitulo ?? subTitulo}</p>
                             </div>
                         </td>
                     </tr>
@@ -118,26 +121,24 @@ const QRCode = () => {
                 <div class="input-group mt-3  w-100 ">
                     <input type="text" class="form-control" value={subTitulo} placeholder="SubTitulo" onChange={(e) => { setSubTitulo(e.target.value) }} aria-label="Example text with button addon" aria-describedby="button-addon1" />
                 </div>
-                 <div class="input-group mt-3  w-100 ">
+                <div class="input-group mt-3  w-100 ">
                     <input type="text" class="form-control" value={valorQR} placeholder="Cole o link" onChange={(e) => { setValorQR(e.target.value) }} aria-label="Example text with button addon" aria-describedby="button-addon1" />
                 </div>
-                <div class="input-group w-100 mt-3 mb-4">
-                    <button class="btn btn-secondary w-100" type="button" onClick={() => { geraQR() }} value="gerar" id="button-addon1"><i class="bi fs-5 bi-arrow-repeat"></i> Gerar QR</button>
 
-                </div>
                 <div class="input-group mt-3  w-100 ">
                     <label for="range4" class="form-label">Aumentar logo</label>
                     <input type="range" class="form-range" min="0" max="500" value={tamLogo} onChange={(e) => { setTamLogo(e.target.value) }} id="range4" />
 
-                    <output for="range4" id="rangeValue" aria-hidden="true">Largura {tamLogo}px</output>
+                    <output for="range4" id="rangeValue" aria-hidden="true"><small>Largura {tamLogo}px  </small></output>
                 </div>
                 <div class="input-group mt-3 mb-4 w-100 ">
                     <label for="qrcode" class="form-label">Aumentar QR CODE:</label>
                     <input type="range" class="form-range " min="50" max="500" value={tamW} onChange={(e) => { setTamW(e.target.value) }} id="qrcode-w" />
-                    <output id="qrcode-w" aria-hidden="true">Largura {tamW}px</output>
+                    <output id="qrcode-w lh-1" aria-hidden="true"><small>Largura {tamW}px </small></output>
                 </div>
                 <div class="input-group mt-3  mb-4 " >
-                    <button className='btn btn-sm w-100 btn-primary' onClick={() => { printJS('printJS-form', 'html') }}><i class="bi bi-printer-fill fs-5"></i>  Imprimir</button>
+                    <button class="btn btn-secondary w-50" type="button" onClick={() => { geraQR() }} value="gerar" ><i class="bi fs-5 bi-arrow-repeat"></i> Gerar QR</button>
+                    <button className='btn btn-sm btn-primary w-50' onClick={() => { printJS('printJS-form', 'html') }}><i class="bi bi-printer-fill fs-5"></i>  Imprimir</button>
                 </div>
             </div>
         </div>

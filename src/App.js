@@ -13,6 +13,7 @@ import QRCode from './components/qrcode';
 import Atendimento from './components/atendimento';
 import TabelaAtendimento from './components/tabela_atendimento';
 import AgendamentoPedido from './components/agendamento_pedido';
+import Template from './components/template';
 
 const $ = require("jquery");
 
@@ -47,6 +48,7 @@ function App() {
             <Route path="usuario" element={<Usuarios />} />
             <Route path="loja" element={<Loja />} />
             <Route path="categoria" element={<Categorias />} />
+            <Route path="template-view" element={<Template />} />
             <Route path="qr" element={<QRCode />} />
             <Route path="atendimento" element={<Atendimento />} />
             <Route path="lista-atendimento" element={<TabelaAtendimento />} />

@@ -32,15 +32,17 @@ const AgendamentoPedido = () => {
             'mode': 'no-cors'
          }
       };
-      axios.get(urlApi + nameApi + param_api_lista_atendimentos, config)
-         .then(async (res) => {
-            var vl = await res.data;
-           
-            setData(vl)
-         }).catch((error) => {
-            alert("Error: parametros API " + error)
-         });
 
+      
+      axios.get(urlApi + nameApi + param_api_lista_atendimentos, config)
+      .then(async (res) => {
+         var vl = await res.data;
+         
+         setData(vl)
+      }).catch((error) => {
+         alert("Error: parametros API " + error)
+      });
+      
    }, [setData]);
 
 
@@ -70,6 +72,7 @@ const AgendamentoPedido = () => {
                            <td className='lh-1 fw-light'>{val.cod_usuario}</td>
 
                            <td className='lh-1 fw-light' >{val.data_atendimento + ' - ' + val.data_post}</td>
+                           
                            <td className='lh-1 fw-light' ><button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-person-fill-gear"></i></button></td>
 
                         </tr>

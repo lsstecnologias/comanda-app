@@ -4,7 +4,7 @@ import Imagens from "../loja";
 import TabelaUsuario from "../tabela_usuario";
 
 import Header from '../header';
-import 'jquery-mask-plugin';
+
 var md5 = require('md5');
  
 

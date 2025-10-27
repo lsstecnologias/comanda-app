@@ -2,11 +2,11 @@
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import './style.css';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { UserContext } from '../context';
 import { useEffect, useState, useMemo } from 'react';
-const $ = require("jquery");
-
+import 'jquery-mask-plugin';
+import $ from 'jquery';
 
 const Atendimento = () => {
   const { sessao, status, redirect_login, Sair } = useContext(UserContext);
@@ -21,30 +21,96 @@ const Atendimento = () => {
   const [msgError, setMsgError] = useState(null);
   const [msgSuccess, setMsgSuccess] = useState(null);
 
+  const [datacep, setDataCep] = useState("");
+
   const urlApi = 'http://10.10.10.6/';
   const nameApi = 'api_comanda/';
 
   const param_api_get_clientes = "?api=getClientes";
   const param_api_find_clientes = "?api=findClientes";
-  const param_api_set_atendimento = "?api=setAtendimento";
 
+  const config = {
+    method: "GET",
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Credentials': 'true',
+      'mode': 'cors'
+    }
+  };
+
+  /**/
+
+
+  //let data_cep = $('#cep');
+  // data_cep.mask('0000000');
+  const validarCep = async () => {
+    let data_cep = $('#cep');
+    let data_endereco = $('#data_endereco');
+    data_cep.mask('00000000');
+    if (datacep) {
+      $.get("https://viacep.com.br/ws/" + datacep + "/json/", (res, status) => {
+        if (status == 'success') {
+
+          data_cep.addClass("is-valid").removeClass("is-invalid");
+          let data_str = `${res.logradouro} - ${res.localidade} ${res.uf} - ${res.regiao} ${res.bairro} - ${res.cep}`;
+           
+          data_endereco.val(data_str)
+          setDataCep("");
+        } else {
+          data_cep.addClass("is-invalid").removeClass("is-valid");
+         
+        }
+      });
+    } else {
+      data_cep.addClass("is-invalid").removeClass("is-valid");
+     
+    }
+
+    /*
+   async function getData() {
+     const url = "https://viacep.com.br/ws/"+datacep+"/json/";
+     try {
+       const response = await fetch(url,config);
+       if (!response.ok) {
+         throw new Error(`Response status: ${response.status}`);
+       }
+
+       const result = await response.json();
+       console.log(result);
+     } catch (error) {
+       console.error(error.message);
+     }
+   }
+   getData() */
+  }
 
   const validarAtendimento = (e) => {
     e.preventDefault();
     let data_atual = new Date();
     let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
 
-
-    const objAtendimento = { cod_usuario: "", cod_cliente: "", cliente: "", cod_atendimento: "", data_atendimento: "", data_post: "" }
-
+    const objAtendimento = { cod_usuario: "", cod_cliente: "", cliente: "", cod_atendimento: "", data_atendimento: "", data_post: "",  data_endereco: "" }
     if (objAtendimento.data_post == "") { objAtendimento.data_post = data_post; }
 
     let atendente = $('#atendente');
     let cliente = $('#cliente');
     let cod_atendimento = $('#cod_atendimento');
     let data_atendimento = $('#data_atendimento');
+        let endereco = $('#data_endereco');
     let messagems = $("#menssagem");
 
+    if (endereco.val()) {
+       objAtendimento.data_endereco = endereco.val();
+      endereco.addClass("is-valid").removeClass("is-invalid");
+ 
+     } else {
+      endereco.addClass("is-invalid").removeClass("is-valid");
+       objAtendimento.data_endereco = null;
+ 
+     }
+ 
+    
     if (cod_atendimento.val()) {
       objAtendimento.cod_atendimento = cod_atendimento.val();
       cod_atendimento.addClass("is-valid").removeClass("is-invalid");
@@ -52,7 +118,6 @@ const Atendimento = () => {
     } else {
       cod_atendimento.addClass("is-invalid").removeClass("is-valid");
       objAtendimento.cod_atendimento = null;
-
     }
 
     if (data_atendimento.val()) {
@@ -62,22 +127,18 @@ const Atendimento = () => {
     } else {
       data_atendimento.addClass("is-invalid").removeClass("is-valid");
       objAtendimento.data_atendimento = null;
-
-
     }
-
 
     if (atendente.val()) {
       objAtendimento.cod_usuario = atendente.val();
       atendente.addClass("is-valid").removeClass("is-invalid");
 
-
     } else {
       atendente.addClass("is-invalid").removeClass("is-valid");
       objAtendimento.cod_usuario = null;
 
-
     }
+
 
     if (cliente.val() && buscarCliente !== "") {
 
@@ -96,7 +157,8 @@ const Atendimento = () => {
               objAtendimento.cod_cliente = vl.cod;
 
               const param_api_save_atendimento = "?api=setAtendimentos";
-              if (objAtendimento.cod_usuario !== null && objAtendimento.cod_atendimento !== null && objAtendimento.cod_cliente !== null && objAtendimento.data_atendimento !== null) {
+              console.log(objAtendimento)
+              if (objAtendimento.cod_usuario !== null && objAtendimento.cod_atendimento !== null && objAtendimento.cod_cliente !== null) {
 
                 $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
                   if (status == "success") {
@@ -174,15 +236,9 @@ const Atendimento = () => {
       Sair();
     }
 
-    const config = {
-      method: "GET",
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Credentials': 'true',
-        'mode': 'no-cors'
-      }
-    };
+    let data_cep = $('#cep');
+    data_cep.mask('00000000');
+
 
     const getCliente = () => {
       axios.get(urlApi + nameApi + param_api_get_clientes, config)
@@ -199,11 +255,11 @@ const Atendimento = () => {
   }, [setBuscarCliente, setMessagem]);
 
   return (
-    <div className="container-fluid comanda">
+    <div className="container comanda">
       <div class="container animate__animated animate__fadeIn">
 
-        <h4 className="mb-4 mt-4 pb-2 ">Atendimento <i class="bi bi-clock"></i></h4>
-        <div class="container p-0 m-0 mb-4">
+        <h4 className="mb-4 mt-4">Atendimentos <i class="bi bi-clock"></i></h4>
+        <div class="container p-0 m-0">
           <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
             <i class="bi bi-check-circle-fill p-2"></i>
             {msgSuccess !== null && msgSuccess}
@@ -257,6 +313,29 @@ const Atendimento = () => {
                     <input type='date' class="form-control" id="data_atendimento" />
                   </div>
                 </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <td class="fw-light">C.E.P</td>
+                  <div class="input-group mt-2 mb-2 ">
+
+                    <input type='text' class="form-control" id="cep" value={datacep} placeholder='0000-000' onChange={(e) => setDataCep(e.target.value)} />
+                    <button class="btn btn-secondary" type="button" onClick={() => validarCep()} id="button-addon2"><i class="bi bi-search"></i> </button>
+                  </div>
+
+                </td>
+
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <td class="fw-light">Endereço:</td>
+                  <div class="input-group mt-2 mb-2 ">
+                    <input type='text' class="form-control" placeholder='Endereço'  id="data_endereco" />
+
+                  </div>
+
+                </td>
+
               </tr>
 
             </tbody>

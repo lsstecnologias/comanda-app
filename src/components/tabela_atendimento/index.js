@@ -12,6 +12,11 @@ const TabelaAtendimento = () => {
    const [dataClientes, setDataClientes] = useState([]);
 
 
+    const [displayError, setDisplayError] = useState('none');
+    const [displaySuccess, setDisplaySuccess] = useState('none');
+    const [msgError, setMsgError] = useState(null);
+    const [msgSuccess, setMsgSuccess] = useState(null);
+
    const [id, setId] = useState();
 
    const urlApi = 'http://10.10.10.6/';
@@ -21,11 +26,18 @@ const TabelaAtendimento = () => {
    const deleteItem = (id) => {
       if (id !== null || id !== undefined) {
          let objId = { "id": id };
+         setDisplayError("block");
+         setMsgError("Cliente foi excluido!");
          $.post(urlApi + nameApi + param_api_delete_atendimentos, objId, () => { window.location.reload() })
+      }else{
+          setDisplayError("none");
+         setMsgError(null);
       }
    }
    const editItem = (id) => { setId(id); }
-
+   const fecharModal = () => {
+        window.location.reload();
+    }
    useEffect(() => {
       const param_api_lista_atendimentos = '?api=getAtendimentos';
       const config = {
@@ -51,9 +63,20 @@ const TabelaAtendimento = () => {
    return (
       <div class="container-fluid m-0 p-0  categorias">
          <div class="container">
-            <h4 className="mb-3 mt-3">Clientes <i class="bi bi-people-fill"></i></h4>
-            <table class="table m-0 p-0 mt-4 caption-top animate__animated animate__fadeIn">
+            <h4 className="mb-3 ">Clientes <i class="bi bi-people-fill"></i></h4>
+            <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+                  <i class="bi bi-check-circle-fill p-2"></i>
+                  {msgSuccess !== null && msgSuccess}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }}></button>
+               </div>
+               <div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+                  <i class="bi bi-exclamation-triangle p-2"></i>
+                  {msgError !== null && msgError}
+
+               </div>
+            <table class="table m-0 p-0 caption-top animate__animated animate__fadeIn">
                <caption>Lista de clientes confirmados</caption>
+               
                <thead>
                   <tr>
 

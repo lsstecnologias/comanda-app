@@ -1,4 +1,4 @@
-.produtos, .comanda,.usuario,.imagem,.tela-principal,.categorias{  margin-top:125px !important; }
+.produtos, .comanda,.usuario,.imagem,.tela-principal,.categorias{  margin-top:100px !important; }
 
 .dropdown-menu[data-bs-popper] {
   top: 122% !important;

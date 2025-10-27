@@ -110,15 +110,6 @@ const Atendimento = () => {
 
     }
 
-    if (cep.val()) {
-
-      cep.addClass("is-valid").removeClass("is-invalid");
-
-    } else {
-      cep.addClass("is-invalid").removeClass("is-valid");
-
-
-    }
 
 
     if (cod_atendimento.val()) {
@@ -149,7 +140,9 @@ const Atendimento = () => {
 
     }
 
-
+   const fecharModal = () => {
+        window.location.reload();
+    }
     if (cliente.val() && buscarCliente !== "") {
 
       $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente }, async (data, status) => {
@@ -159,49 +152,48 @@ const Atendimento = () => {
             let vl = resp.find((e) => { return e.nome == buscarCliente });
 
             if (vl) {
-              messagems.addClass("valid-feedback").removeClass("invalid-feedback");
-              cliente.addClass("is-valid").removeClass("is-invalid");
+                messagems.addClass("valid-feedback").removeClass("invalid-feedback");
+                cliente.addClass("is-valid").removeClass("is-invalid");
 
-              setBuscarCliente(vl.nome);
-              objAtendimento.cliente = vl.nome;
-              objAtendimento.cod_cliente = vl.cod;
+                setBuscarCliente(vl.nome);
+                objAtendimento.cliente = vl.nome;
+                objAtendimento.cod_cliente = vl.cod;
 
-              const param_api_save_atendimento = "?api=setAtendimentos";
+                const param_api_save_atendimento = "?api=setAtendimentos";
+            
+                  $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
+                  if (status == "success") {
+                      if (res == 1) {
+                        setDisplaySuccess("block");
+                        setMsgSuccess("Atendimento registrado!");
+
+                        $('#cliente').val("");
+                        $('#cod_atendimento').val("");
+                        $('#data_atendimento').val("");
+                        $("#menssagem").val("");
+
+                        setDisplayError("none");
+                        setMsgError(null);
+                        return objAtendimento;
+                      } else {
+                        setDisplayError("block");
+                        setMsgError("O atendimento não foi registrado!");
+                        setDisplaySuccess("none");
+                        setMsgSuccess(null);
+                      }
+                    }
+                  })
+                
 
 
+              } else {
+                setMessagem("Selecione o cliente!")
+                cliente.addClass("is-invalid").removeClass("is-valid");
+                messagems.addClass("invalid-feedback").removeClass("valid-feedback");
+                objAtendimento.cliente = null;
+                objAtendimento.cod_cliente = null;
 
-              $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
-                if (status == "success") {
-                  if (res == 1) {
-                    setDisplaySuccess("block");
-                    setMsgSuccess("Atendimento registrado!");
-
-                    $('#cliente').val("");
-                    $('#cod_atendimento').val("");
-                    $('#data_atendimento').val("");
-                    $("#menssagem").val("");
-
-                    setDisplayError("none");
-                    setMsgError(null);
-                    return objAtendimento;
-                  } else {
-                    setDisplayError("block");
-                    setMsgError("O atendimento não foi registrado!");
-                    setDisplaySuccess("none");
-                    setMsgSuccess(null);
-                  }
-                }
-              })
-
-
-            } else {
-              setMessagem("Selecione o cliente!")
-              cliente.addClass("is-invalid").removeClass("is-valid");
-              messagems.addClass("invalid-feedback").removeClass("valid-feedback");
-              objAtendimento.cliente = null;
-              objAtendimento.cod_cliente = null;
-
-            }
+              }
 
           } else {
             cliente.addClass("is-invalid").removeClass("is-valid");
@@ -219,7 +211,7 @@ const Atendimento = () => {
       cliente.addClass("is-invalid").removeClass("is-valid");
     }
 
-    return;
+    
 
   }
 
@@ -268,7 +260,7 @@ const Atendimento = () => {
         <h4 className="mb-4 mt-4">Atendimentos <i class="bi bi-clock"></i></h4>
         <div class="container p-0 m-0">
           <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-            <i class="bi bi-check-circle-fill p-2"></i>
+           <i class="bi bi-clock p-2"></i>
             {msgSuccess !== null && msgSuccess}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }}></button>
           </div>

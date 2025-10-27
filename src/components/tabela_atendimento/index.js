@@ -10,18 +10,18 @@ const $ = require("jquery");
 const TabelaAtendimento = () => {
 
    const [dataClientes, setDataClientes] = useState([]);
-   
- 
+
+
    const [id, setId] = useState();
 
    const urlApi = 'http://10.10.10.6/';
    const nameApi = 'api_comanda/';
 
-   const param_api_delete_categoria = '?api=deleteCategorias';
+   const param_api_delete_atendimentos = '?api=deleteAtendimentos';
    const deleteItem = (id) => {
       if (id !== null || id !== undefined) {
          let objId = { "id": id };
-         $.post(urlApi + nameApi + param_api_delete_categoria, objId, () => { window.location.reload() })
+         $.post(urlApi + nameApi + param_api_delete_atendimentos, objId, () => { window.location.reload() })
       }
    }
    const editItem = (id) => { setId(id); }
@@ -41,7 +41,7 @@ const TabelaAtendimento = () => {
          .then(async (res) => {
             var vl = await res.data;
             setDataClientes(vl);
-           
+
          }).catch((error) => {
             alert("Error: parametros API " + error)
          });
@@ -49,28 +49,27 @@ const TabelaAtendimento = () => {
    }, [setDataClientes]);
 
    return (
-      <div class="container-fluid m-0 p-0 mt-4 categorias">
+      <div class="container-fluid m-0 p-0  categorias">
          <div class="container">
-                <h4 className="mb-4 mt-4  ">Clientes <i class="bi bi-people-fill"></i></h4>
+            <h4 className="mb-3 mt-3">Clientes <i class="bi bi-people-fill"></i></h4>
             <table class="table m-0 p-0 mt-4 caption-top animate__animated animate__fadeIn">
                <caption>Lista de clientes confirmados</caption>
                <thead>
                   <tr>
-                 
-                   
+
                      <th scope="col">Cliente</th>
-                   <th scope="col">Agenda</th>
-                      <th scope="col" colSpan={2}>Ações</th>
+                     <th scope="col">Agenda</th>
+                     <th scope="col" colSpan={2}>Ações</th>
                   </tr>
                </thead>
                <tbody>
                   {dataClientes && dataClientes.map((val) => {
                      return (
                         <tr key={val.id}>
-                          
+
                            <td className='lh-1 fw-light'><b>{val.cod_cliente}</b> {val.cliente}</td>
                            <td className='lh-1 fw-light'><Link class="btn btn-sm btn-primary" to="/admin/agendamento-pedido" ><i class="bi bi-person-lines-fill"></i> </Link>  </td>
-                             
+
 
                            <td>
                               <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
@@ -91,7 +90,7 @@ const TabelaAtendimento = () => {
 
                </div>
             }
-             </div>
+         </div>
       </div>
 
    )

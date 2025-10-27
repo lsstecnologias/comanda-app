@@ -51,20 +51,19 @@ const Atendimento = () => {
     if (datacep) {
       $.get("https://viacep.com.br/ws/" + datacep + "/json/", (res, status) => {
         if (status == 'success') {
-
           data_cep.addClass("is-valid").removeClass("is-invalid");
           let data_str = `${res.logradouro} - ${res.localidade} ${res.uf} - ${res.regiao} ${res.bairro} - ${res.cep}`;
-           
           data_endereco.val(data_str)
           setDataCep("");
+
         } else {
           data_cep.addClass("is-invalid").removeClass("is-valid");
-         
+
         }
       });
     } else {
       data_cep.addClass("is-invalid").removeClass("is-valid");
-     
+
     }
 
     /*
@@ -90,27 +89,38 @@ const Atendimento = () => {
     let data_atual = new Date();
     let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
 
-    const objAtendimento = { cod_usuario: "", cod_cliente: "", cliente: "", cod_atendimento: "", data_atendimento: "", data_post: "",  data_endereco: "" }
+    const objAtendimento = { cod_usuario: "", cod_cliente: "", cliente: "", cod_atendimento: "", data_atendimento: "", data_post: "", data_endereco: "" }
     if (objAtendimento.data_post == "") { objAtendimento.data_post = data_post; }
 
     let atendente = $('#atendente');
     let cliente = $('#cliente');
+    let cep = $('#cep')
     let cod_atendimento = $('#cod_atendimento');
     let data_atendimento = $('#data_atendimento');
-        let endereco = $('#data_endereco');
+    let endereco = $('#data_endereco');
     let messagems = $("#menssagem");
 
     if (endereco.val()) {
-       objAtendimento.data_endereco = endereco.val();
+      objAtendimento.data_endereco = endereco.val();
       endereco.addClass("is-valid").removeClass("is-invalid");
- 
-     } else {
+
+    } else {
       endereco.addClass("is-invalid").removeClass("is-valid");
-       objAtendimento.data_endereco = null;
- 
-     }
- 
-    
+      objAtendimento.data_endereco = null;
+
+    }
+
+    if (cep.val()) {
+
+      cep.addClass("is-valid").removeClass("is-invalid");
+
+    } else {
+      cep.addClass("is-invalid").removeClass("is-valid");
+
+
+    }
+
+
     if (cod_atendimento.val()) {
       objAtendimento.cod_atendimento = cod_atendimento.val();
       cod_atendimento.addClass("is-valid").removeClass("is-invalid");
@@ -157,34 +167,31 @@ const Atendimento = () => {
               objAtendimento.cod_cliente = vl.cod;
 
               const param_api_save_atendimento = "?api=setAtendimentos";
-              console.log(objAtendimento)
-              if (objAtendimento.cod_usuario !== null && objAtendimento.cod_atendimento !== null && objAtendimento.cod_cliente !== null) {
 
-                $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
-                  if (status == "success") {
-                    if (res == 1) {
-                      setDisplaySuccess("block");
-                      setMsgSuccess("Atendimento registrado!");
 
-                      $('#cliente').val("");
-                      $('#cod_atendimento').val("");
-                      $('#data_atendimento').val("");
-                      $("#menssagem").val("");
-                      return objAtendimento;
-                    } else {
-                      setDisplayError("none");
-                      setMsgError("O atendimento não foi registrado!");
-                      setDisplaySuccess("block");
-                      setMsgSuccess(null);
-                    }
+
+              $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
+                if (status == "success") {
+                  if (res == 1) {
+                    setDisplaySuccess("block");
+                    setMsgSuccess("Atendimento registrado!");
+
+                    $('#cliente').val("");
+                    $('#cod_atendimento').val("");
+                    $('#data_atendimento').val("");
+                    $("#menssagem").val("");
+
+                    setDisplayError("none");
+                    setMsgError(null);
+                    return objAtendimento;
+                  } else {
+                    setDisplayError("block");
+                    setMsgError("O atendimento não foi registrado!");
+                    setDisplaySuccess("none");
+                    setMsgSuccess(null);
                   }
-                })
-              } else {
-                setDisplayError("block");
-                setMsgError("O atendimento não foi registrado!");
-                setDisplaySuccess("none");
-                setMsgSuccess(null);
-              }
+                }
+              })
 
 
             } else {
@@ -225,7 +232,7 @@ const Atendimento = () => {
   }
 
   const fecharModal = () => {
-    // window.location.reload();
+     window.location.reload();
   }
   useEffect(() => {
     if (status == true) {
@@ -320,7 +327,7 @@ const Atendimento = () => {
                   <div class="input-group mt-2 mb-2 ">
 
                     <input type='text' class="form-control" id="cep" value={datacep} placeholder='0000-000' onChange={(e) => setDataCep(e.target.value)} />
-                    <button class="btn btn-secondary" type="button" onClick={() => validarCep()} id="button-addon2"><i class="bi bi-search"></i> </button>
+                    <button class="btn btn-success " type="button" onClick={() => validarCep()} id="button-addon2"><i class="bi bi-search"></i> </button>
                   </div>
 
                 </td>
@@ -330,7 +337,7 @@ const Atendimento = () => {
                 <td colspan="2">
                   <td class="fw-light">Endereço:</td>
                   <div class="input-group mt-2 mb-2 ">
-                    <input type='text' class="form-control" placeholder='Endereço'  id="data_endereco" />
+                    <input type='text' class="form-control" placeholder='Endereço' id="data_endereco" />
 
                   </div>
 

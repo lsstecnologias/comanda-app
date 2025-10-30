@@ -22,7 +22,7 @@ const Header = () => {
                      <li class="nav-item  dropdown">
                        <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Minha loja</Link>
                         <ul class="dropdown-menu fw-light">
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/loja">Loja</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/imagens">Imagens</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/template-view">Template</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/qr">Gerar QR-Code</Link></li>
                       
@@ -45,6 +45,13 @@ const Header = () => {
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/categoria">Categoria</Link></li>
                         </ul>
                      </li>
+                      <li class="nav-item dropdown">
+                        <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administrador</Link>
+                        <ul class="dropdown-menu fw-light">
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/produto">Meus clientes</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/categoria">Keygen</Link></li>
+                        </ul>
+                     </li>
 
                   </ul>
 
@@ -56,6 +63,7 @@ const Header = () => {
                   </a>
                   <ul class="dropdown-menu">
                      <li><Link class="dropdown-item fw-light" to="/admin/usuario"> <i class="bi  fs-5 bi-person-fill"></i> Usuários</Link></li>
+                       <li><Link class="dropdown-item fw-light" to="/admin/sistema"> <i class="bi bi-gear-fill"></i> Sistema</Link></li>
                      <li><button class="btn btn-sm btn-primary dropdown-item" onClick={() => Sair()} > <i class="bi fs-5 bi-box-arrow-left"></i> Sair</button></li>
                   </ul>
 

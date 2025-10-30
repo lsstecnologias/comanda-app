@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import $ from 'jquery';
-import Imagens from "../loja";
+import Imagens from "../upload_imagens";
 import TabelaUsuario from "../tabela_usuario";
 
 import Header from '../header';

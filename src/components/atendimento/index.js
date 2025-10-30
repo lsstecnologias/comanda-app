@@ -82,7 +82,7 @@ const Atendimento = () => {
           const { nome, cod } = data[0] ?? false;
 
 
-          if (nome) {
+          if (nome && cod) {
             inptBuscar.addClass("is-valid").removeClass("is-invalid");
             setBuscarCliente(nome);
             setCodCliente(cod);
@@ -176,15 +176,7 @@ const Atendimento = () => {
     const param_api_save_atendimento = "?api=setAtendimentos";
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
-    const config = {
-      method: "POST",
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Credentials': 'true',
-        'mode': 'no-cors'
-      }
-    };
+    
 
     if (objAtendimento.cod_atendimento == null || objAtendimento.cod_atendente == null || objAtendimento.cod_cliente == null || objAtendimento.cliente == null || objAtendimento.data_endereco == null || objAtendimento.data_atendimento == null || objAtendimento.data_post == null) {
       console.log(objAtendimento);
@@ -219,36 +211,6 @@ const Atendimento = () => {
       
     }
 
-    //  let messagems = $("#menssagem");
-
-
-    /*
-        const param_api_save_atendimento = "?api=setAtendimentos";
-
-      $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
-      if (status == "success") {
-          if (res == 1) {
-            setDisplaySuccess("block");
-            setMsgSuccess("Atendimento registrado!");
-
-            $('#cliente').val("");
-            $('#cod_atendimento').val("");
-            $('#data_atendimento').val("");
-            $("#menssagem").val("");
-
-            setDisplayError("none");
-            setMsgError(null);
-            return objAtendimento;
-          } else {
-            setDisplayError("block");
-            setMsgError("O atendimento não foi registrado!");
-            setDisplaySuccess("none");
-            setMsgSuccess(null);
-          }
-                  }
-                })
-   
-        */
   }
 
   const gerarCodAtendimento = () => {
@@ -273,9 +235,7 @@ const Atendimento = () => {
 
       setSessaoUser(sessao);
 
-    } else {
-      Sair();
-    }
+    } 
 
     let data_cep = $('#cep');
     data_cep.mask('00000000');
@@ -286,7 +246,7 @@ const Atendimento = () => {
         .then((res) => {
           if (res.status == 200) {
             setClientes(res.data);
-            console.log(res.data)
+            
           }
 
         }).catch((error) => { alert("Error: parametros API " + error) });

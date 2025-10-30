@@ -5,7 +5,7 @@ import UserProvider from './components/context';
 import Comanda from './components/comanda';
 import Produto from './components/produtos';
 import Usuarios from './components/usuarios';
-import Loja from './components/loja';
+import UploadImagens from './components/upload_imagens';
 import AppComponent from './AppComponent';
 import Acesso from './components/acesso';
 import Categorias from './components/categorias';
@@ -14,6 +14,10 @@ import Atendimento from './components/atendimento';
 import TabelaAtendimento from './components/tabela_atendimento';
 import AgendamentoPedido from './components/agendamento_pedido';
 import Template from './components/template';
+
+import { UserContext } from './components/context';
+import TelaPrincipal from './components/TelaPrincipal';
+import Sistema from './components/sistema';
 
 const $ = require("jquery");
 
@@ -41,24 +45,28 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Acesso />} />
-
+                  
           <Route path="/admin" element={<AppComponent />} >
             <Route path="produto" element={<Produto />} />
             <Route path="agendamento-pedido" element={<AgendamentoPedido />} />
             <Route path="usuario" element={<Usuarios />} />
-            <Route path="loja" element={<Loja />} />
+            <Route path="imagens" element={<UploadImagens />} />
             <Route path="categoria" element={<Categorias />} />
             <Route path="template-view" element={<Template />} />
+            <Route path="sistema" element={<Sistema />} />
             <Route path="qr" element={<QRCode />} />
             <Route path="atendimento" element={<Atendimento />} />
             <Route path="lista-atendimento" element={<TabelaAtendimento />} />
             <Route path="comanda" element={<Comanda />} />
             <Route path="*" element={page404()}></Route>
+
           </Route>
 
           <Route path="*" element={page404()}></Route>
-
+         
         </Routes>
+
+
       </BrowserRouter>
 
     </div>

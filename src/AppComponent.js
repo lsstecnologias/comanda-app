@@ -1,16 +1,20 @@
 
-import { Outlet } from 'react-router-dom';
+import { Outlet,useParams } from 'react-router-dom';
 import Header from './components/header';
 import TelaPrincipal from './components/TelaPrincipal';
 import UserProvider from './components/context';
 import { useContext } from 'react';
 import { UserContext } from './components/context';
+
 function AppComponent() {
-  //<TelaPrincipal />
+       const { sessao,status } = useContext(UserContext);
+
+    
     return (
         <UserProvider>
             <Header />
-            <Outlet />    
+            <Outlet />
+                              
         </UserProvider>
          
     )

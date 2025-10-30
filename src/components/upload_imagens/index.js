@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import ImageUploading from "react-images-uploading";
 import $ from 'jquery';
 import QRCode from "../qrcode";
-const Loja = () => {
+const UploadImagens = () => {
     const [sessaoUser, setSessaoUser] = useState([]);
     const [selectedFileUser, setSelectedFileUser] = useState(null);
     const { sessao, status, redirect_login, Sair,thumb_logo  } = useContext(UserContext);
@@ -23,9 +23,7 @@ const Loja = () => {
             const { cod, id, nome, status, data_post } = sessao ?? Sair();
             setSessaoUser({ cod, id, nome, status, data_post, data_image_post });
 
-        } else {
-            Sair();
-        }
+        } 
     }, [setSessaoUser])
 
     const urlApi = 'http://10.10.10.6/';
@@ -77,7 +75,7 @@ const Loja = () => {
 
     }
     return (
-        <div class="container-fluid mb-3 mt-4 imagem">
+        <div class="container">
             <div className='container'>
                 <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
                     <i class="bi bi-check-circle p-2"></i>
@@ -148,4 +146,4 @@ const Loja = () => {
         </div>
     );*/
 }
-export default Loja;
+export default UploadImagens;

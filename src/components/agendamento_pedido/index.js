@@ -64,13 +64,14 @@ const AgendamentoPedido = () => {
                </thead>
                <tbody>
                   {data && data.map((val) => {
+                     console.log(val)
                      return (
                         <tr key={val.id}>
 
                            <td className='lh-1 fw-light'>{val.cod_atendimento}</td>
-                           <td className='lh-1 fw-light'>{val.cod_usuario}</td>
+                           <td className='lh-1 fw-light'>{val.cod_atendente}</td>
 
-                           <td className='lh-1 fw-light' >{val.data_atendimento + ' - ' + val.data_post}</td>
+                           <td className='lh-1 fw-light' >{val.data_atendimento}</td>
                            
                            <td className='lh-1 fw-light' ><button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-person-fill-gear"></i></button></td>
 

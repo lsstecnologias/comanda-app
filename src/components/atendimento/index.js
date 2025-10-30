@@ -26,9 +26,7 @@ const Atendimento = () => {
 
   const urlApi = 'http://10.10.10.6/';
   const nameApi = 'api_comanda/';
-
   const param_api_get_clientes = "?api=getClientes";
-
 
   const config = {
     method: "GET",
@@ -47,38 +45,27 @@ const Atendimento = () => {
     data_cep.mask('00000000');
     if (datacep) {
       $.get("https://viacep.com.br/ws/" + datacep + "/json/", async (res, status) => {
+        console.log(res)
         if (status == 'success') {
-         
+
           let data_str = `${await res.logradouro} - ${await res.localidade} ${await res.uf} - ${await res.regiao} ${await res.bairro} - ${await res.cep}`;
           data_endereco.val(data_str)
-           data_cep.addClass("is-valid").removeClass("is-invalid");
+          data_cep.addClass("is-valid").removeClass("is-invalid");
+          data_endereco.addClass("is-valid").removeClass("is-invalid");
 
         } else {
           data_cep.addClass("is-invalid").removeClass("is-valid");
-
+          data_endereco.addClass("is-invalid").removeClass("is-valid");
+          data_endereco.val(null);
         }
       });
     } else {
       data_cep.addClass("is-invalid").removeClass("is-valid");
-
+      data_endereco.addClass("is-invalid").removeClass("is-valid");
+      data_endereco.val(null)
     }
 
-    /*
-   async function getData() {
-     const url = "https://viacep.com.br/ws/"+datacep+"/json/";
-     try {
-       const response = await fetch(url,config);
-       if (!response.ok) {
-         throw new Error(`Response status: ${response.status}`);
-       }
 
-       const result = await response.json();
-       console.log(result);
-     } catch (error) {
-       console.error(error.message);
-     }
-   }
-   getData() */
   }
 
   const validarBusca = () => {
@@ -88,13 +75,17 @@ const Atendimento = () => {
       const param_api_find_clientes = "?api=findClientes";
       $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente }, async (res, status) => {
 
-        const data = JSON.parse(res);
+       
         if (status == 'success') {
+
+           const data = JSON.parse(res);
           const { nome, cod } = data[0] ?? false;
+
+
           if (nome) {
+            inptBuscar.addClass("is-valid").removeClass("is-invalid");
             setBuscarCliente(nome);
             setCodCliente(cod);
-            inptBuscar.addClass("is-valid").removeClass("is-invalid");
             setMessagem("")
           } else {
             setBuscarCliente("");
@@ -147,19 +138,21 @@ const Atendimento = () => {
 
     if (cep.val()) {
       cep.addClass("is-valid").removeClass("is-invalid");
-
     } else {
-      cep.addClass("is-invalid").removeClass("is-valid")
+      cep.addClass("is-invalid").removeClass("is-valid");
     }
+  
+    if (inpt_buscar.val() && codCliente) {
 
-    if (inpt_buscar.val()) {
-      inpt_buscar.addClass("is-valid").removeClass("is-invalid");
       objAtendimento.cliente = inpt_buscar.val();
-      objAtendimento.cod_cliente =codCliente;
+      objAtendimento.cod_cliente = codCliente;
+      setMessagem("Clique em buscar!");
+      inpt_buscar.addClass("is-valid").removeClass("is-invalid");
     } else {
-      inpt_buscar.addClass("is-invalid").removeClass("is-valid");
+
       objAtendimento.cliente = null;
-       objAtendimento.cod_cliente=null;
+      objAtendimento.cod_cliente = null;
+      inpt_buscar.addClass("is-invalid").removeClass("is-valid");
     }
 
     if (data_atendimento.val()) {
@@ -178,12 +171,53 @@ const Atendimento = () => {
       objAtendimento.data_endereco = null;
 
     }
-    console.log(objAtendimento)
 
 
+    const param_api_save_atendimento = "?api=setAtendimentos";
+    const urlApi = 'http://10.10.10.6/';
+    const nameApi = 'api_comanda/';
+    const config = {
+      method: "POST",
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Credentials': 'true',
+        'mode': 'no-cors'
+      }
+    };
+
+    if (objAtendimento.cod_atendimento == null || objAtendimento.cod_atendente == null || objAtendimento.cod_cliente == null || objAtendimento.cliente == null || objAtendimento.data_endereco == null || objAtendimento.data_atendimento == null || objAtendimento.data_post == null) {
+      console.log(objAtendimento);
+
+      setDisplaySuccess("none");
+      setMsgSuccess(null);
+      setDisplayError("block");
+      setMsgError("Preencha os campos!");
 
 
+    } else {
 
+    
+
+      $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
+        if (status == "success") {
+          if (res == 1) {
+
+            setDisplaySuccess("block");
+            setMsgSuccess("Atendimento registrado!");
+            setDisplayError("none");
+            setMsgError(null);
+
+          } else {
+            setDisplaySuccess("none");
+            setMsgSuccess(null);
+            setDisplayError("block");
+            setMsgError("Preencha os campos!");
+          }
+        }
+      })
+      
+    }
 
     //  let messagems = $("#menssagem");
 
@@ -220,9 +254,10 @@ const Atendimento = () => {
   const gerarCodAtendimento = () => {
     let cod_atendimento = $('#cod_atendimento');
     var cod = Math.floor(Math.random() * (777 + 0)) - 1;
+
     cod_atendimento.val(cod).attr({ disabled: 'disabled' });
 
-    if (cod_atendimento.val()) {
+    if (cod_atendimento.val() > 0) {
       cod_atendimento.addClass("is-valid").removeClass("is-invalid");
     } else {
       cod_atendimento.addClass("is-valid").removeClass("is-invalid");
@@ -328,9 +363,8 @@ const Atendimento = () => {
                 <td colspan="2">
                   <td class="fw-light">CEP</td>
                   <div class="input-group mt-2 mb-2 ">
-
-                    <input type='text' class="form-control" id="cep" value={datacep} placeholder='0000-000' onChange={(e) => setDataCep(e.target.value)} />
-                    <button class="btn btn-success " type="button" onClick={() => validarCep()} id="button-addon2"><i class="bi bi-search"></i> </button>
+                    <input type='text' class="form-control" id="cep" value={datacep} placeholder='CEP' onChange={(e) => setDataCep(e.target.value)} />
+                    <button class="btn btn-success" type="button" onClick={() => validarCep()} id="button-addon2"><i class="bi bi-search"></i> </button>
                   </div>
 
                 </td>
@@ -338,7 +372,7 @@ const Atendimento = () => {
               </tr>
               <tr>
                 <td colspan="2">
-                  <td class="fw-light">Endereço:</td>
+                  <td class="fw-light">Endereço</td>
                   <div class="input-group mt-2 mb-2 ">
                     <input type='text' class="form-control" placeholder='Endereço' id="data_endereco" />
 
@@ -350,9 +384,9 @@ const Atendimento = () => {
 
             </tbody>
           </table>
-          <div class="container p-0 m-0 mt-4">
+          <div class="container-fluid p-0 m-0 mt-4">
 
-            <button class="btn btn-primary w-100" onClick={(e) => { validarAtendimento(e) }} type="button"> <i class="bi bi-pencil-square"></i> Registrar Atendimento</button>
+            <button class="btn btn-md btn-primary w-100" onClick={(e) => { validarAtendimento(e) }} type="button"> <i class="bi bi-pencil-square"></i> Registrar Atendimento</button>
           </div>
         </div>
 

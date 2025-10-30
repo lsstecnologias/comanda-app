@@ -4,3 +4,7 @@
   top: 122% !important;
   left: -50px !important;
 }
+
+.navbar-toggler:focus{
+  box-shadow:unset !important;
+}

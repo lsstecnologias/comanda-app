@@ -14,6 +14,7 @@ const Atendimento = () => {
   const [sessaoUser, setSessaoUser] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [buscarCliente, setBuscarCliente] = useState("");
+  const [codCliente, setCodCliente] = useState("");
   const [messagem, setMessagem] = useState("");
 
   const [displayError, setDisplayError] = useState('none');
@@ -27,7 +28,7 @@ const Atendimento = () => {
   const nameApi = 'api_comanda/';
 
   const param_api_get_clientes = "?api=getClientes";
-  const param_api_find_clientes = "?api=findClientes";
+
 
   const config = {
     method: "GET",
@@ -39,22 +40,18 @@ const Atendimento = () => {
     }
   };
 
-  /**/
 
-
-  //let data_cep = $('#cep');
-  // data_cep.mask('0000000');
-  const validarCep = async () => {
+  const validarCep = () => {
     let data_cep = $('#cep');
     let data_endereco = $('#data_endereco');
     data_cep.mask('00000000');
     if (datacep) {
-      $.get("https://viacep.com.br/ws/" + datacep + "/json/", (res, status) => {
+      $.get("https://viacep.com.br/ws/" + datacep + "/json/", async (res, status) => {
         if (status == 'success') {
-          data_cep.addClass("is-valid").removeClass("is-invalid");
-          let data_str = `${res.logradouro} - ${res.localidade} ${res.uf} - ${res.regiao} ${res.bairro} - ${res.cep}`;
+         
+          let data_str = `${await res.logradouro} - ${await res.localidade} ${await res.uf} - ${await res.regiao} ${await res.bairro} - ${await res.cep}`;
           data_endereco.val(data_str)
-          setDataCep("");
+           data_cep.addClass("is-valid").removeClass("is-invalid");
 
         } else {
           data_cep.addClass("is-invalid").removeClass("is-valid");
@@ -84,147 +81,157 @@ const Atendimento = () => {
    getData() */
   }
 
+  const validarBusca = () => {
+    var inptBuscar = $('#inpt_buscar');
+
+    if (inptBuscar.val()) {
+      const param_api_find_clientes = "?api=findClientes";
+      $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente }, async (res, status) => {
+
+        const data = JSON.parse(res);
+        if (status == 'success') {
+          const { nome, cod } = data[0] ?? false;
+          if (nome) {
+            setBuscarCliente(nome);
+            setCodCliente(cod);
+            inptBuscar.addClass("is-valid").removeClass("is-invalid");
+            setMessagem("")
+          } else {
+            setBuscarCliente("");
+            setCodCliente("");
+            inptBuscar.addClass("is-invalid").removeClass("is-valid");
+          }
+        }
+      });
+
+    } else {
+      inptBuscar.addClass("is-invalid").removeClass("is-valid");
+      setMessagem("Cliente não encontrado!")
+    }
+  }
+
   const validarAtendimento = (e) => {
     e.preventDefault();
     let data_atual = new Date();
-    let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
+    let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 
-    const objAtendimento = { cod_usuario: "", cod_cliente: "", cliente: "", cod_atendimento: "", data_atendimento: "", data_post: "", data_endereco: "" }
-    if (objAtendimento.data_post == "") { objAtendimento.data_post = data_post; }
+    const objAtendimento = { cod_atendimento: null, cod_atendente: null, cod_cliente: null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
 
+    objAtendimento.data_post = data_post;
     let atendente = $('#atendente');
-    let cliente = $('#cliente');
-    let cep = $('#cep')
+    let cep = $('#cep');
     let cod_atendimento = $('#cod_atendimento');
     let data_atendimento = $('#data_atendimento');
     let endereco = $('#data_endereco');
-    let messagems = $("#menssagem");
-
-    if (endereco.val()) {
-      objAtendimento.data_endereco = endereco.val();
-      endereco.addClass("is-valid").removeClass("is-invalid");
-
-    } else {
-      endereco.addClass("is-invalid").removeClass("is-valid");
-      objAtendimento.data_endereco = null;
-
-    }
-
+    let inpt_buscar = $('#inpt_buscar');
 
 
     if (cod_atendimento.val()) {
-      objAtendimento.cod_atendimento = cod_atendimento.val();
       cod_atendimento.addClass("is-valid").removeClass("is-invalid");
+      objAtendimento.cod_atendimento = cod_atendimento.val();
 
     } else {
       cod_atendimento.addClass("is-invalid").removeClass("is-valid");
       objAtendimento.cod_atendimento = null;
     }
 
-    if (data_atendimento.val()) {
-      objAtendimento.data_atendimento = data_atendimento.val();
-      data_atendimento.addClass("is-valid").removeClass("is-invalid");
+    if (atendente.val()) {
+      atendente.addClass("is-valid").removeClass("is-invalid");
+      objAtendimento.cod_atendente = atendente.val();
 
+    } else {
+      atendente.addClass("is-invalid").removeClass("is-valid");
+      objAtendimento.cod_atendente = null;
+
+    }
+
+    if (cep.val()) {
+      cep.addClass("is-valid").removeClass("is-invalid");
+
+    } else {
+      cep.addClass("is-invalid").removeClass("is-valid")
+    }
+
+    if (inpt_buscar.val()) {
+      inpt_buscar.addClass("is-valid").removeClass("is-invalid");
+      objAtendimento.cliente = inpt_buscar.val();
+      objAtendimento.cod_cliente =codCliente;
+    } else {
+      inpt_buscar.addClass("is-invalid").removeClass("is-valid");
+      objAtendimento.cliente = null;
+       objAtendimento.cod_cliente=null;
+    }
+
+    if (data_atendimento.val()) {
+      data_atendimento.addClass("is-valid").removeClass("is-invalid");
+      objAtendimento.data_atendimento = data_atendimento.val();
     } else {
       data_atendimento.addClass("is-invalid").removeClass("is-valid");
       objAtendimento.data_atendimento = null;
     }
 
-    if (atendente.val()) {
-      objAtendimento.cod_usuario = atendente.val();
-      atendente.addClass("is-valid").removeClass("is-invalid");
-
+    if (endereco.val()) {
+      endereco.addClass("is-valid").removeClass("is-invalid");
+      objAtendimento.data_endereco = endereco.val();
     } else {
-      atendente.addClass("is-invalid").removeClass("is-valid");
-      objAtendimento.cod_usuario = null;
+      endereco.addClass("is-invalid").removeClass("is-valid");
+      objAtendimento.data_endereco = null;
 
     }
-
-   const fecharModal = () => {
-        window.location.reload();
-    }
-    if (cliente.val() && buscarCliente !== "") {
-
-      $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente }, async (data, status) => {
-        if (status == 'success') {
-          if (data !== 'false') {
-            const resp = JSON.parse(data);
-            let vl = resp.find((e) => { return e.nome == buscarCliente });
-
-            if (vl) {
-                messagems.addClass("valid-feedback").removeClass("invalid-feedback");
-                cliente.addClass("is-valid").removeClass("is-invalid");
-
-                setBuscarCliente(vl.nome);
-                objAtendimento.cliente = vl.nome;
-                objAtendimento.cod_cliente = vl.cod;
-
-                const param_api_save_atendimento = "?api=setAtendimentos";
-            
-                  $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
-                  if (status == "success") {
-                      if (res == 1) {
-                        setDisplaySuccess("block");
-                        setMsgSuccess("Atendimento registrado!");
-
-                        $('#cliente').val("");
-                        $('#cod_atendimento').val("");
-                        $('#data_atendimento').val("");
-                        $("#menssagem").val("");
-
-                        setDisplayError("none");
-                        setMsgError(null);
-                        return objAtendimento;
-                      } else {
-                        setDisplayError("block");
-                        setMsgError("O atendimento não foi registrado!");
-                        setDisplaySuccess("none");
-                        setMsgSuccess(null);
-                      }
-                    }
-                  })
-                
+    console.log(objAtendimento)
 
 
-              } else {
-                setMessagem("Selecione o cliente!")
-                cliente.addClass("is-invalid").removeClass("is-valid");
-                messagems.addClass("invalid-feedback").removeClass("valid-feedback");
-                objAtendimento.cliente = null;
-                objAtendimento.cod_cliente = null;
 
-              }
 
+
+
+    //  let messagems = $("#menssagem");
+
+
+    /*
+        const param_api_save_atendimento = "?api=setAtendimentos";
+
+      $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
+      if (status == "success") {
+          if (res == 1) {
+            setDisplaySuccess("block");
+            setMsgSuccess("Atendimento registrado!");
+
+            $('#cliente').val("");
+            $('#cod_atendimento').val("");
+            $('#data_atendimento').val("");
+            $("#menssagem").val("");
+
+            setDisplayError("none");
+            setMsgError(null);
+            return objAtendimento;
           } else {
-            cliente.addClass("is-invalid").removeClass("is-valid");
-            messagems.addClass("invalid-feedback").removeClass("valid-feedback");
-            setMessagem("Erro ao selecionar o cliente!");
-
-
+            setDisplayError("block");
+            setMsgError("O atendimento não foi registrado!");
+            setDisplaySuccess("none");
+            setMsgSuccess(null);
           }
-
-        }
-
-      });
-
-    } else {
-      cliente.addClass("is-invalid").removeClass("is-valid");
-    }
-
-    
-
+                  }
+                })
+   
+        */
   }
 
   const gerarCodAtendimento = () => {
-
-    var cod = Math.floor(Math.random() * (777 + 0)) - 1;
     let cod_atendimento = $('#cod_atendimento');
-    cod_atendimento.val(cod).attr({ disabled: 'disabled' })
+    var cod = Math.floor(Math.random() * (777 + 0)) - 1;
+    cod_atendimento.val(cod).attr({ disabled: 'disabled' });
+
+    if (cod_atendimento.val()) {
+      cod_atendimento.addClass("is-valid").removeClass("is-invalid");
+    } else {
+      cod_atendimento.addClass("is-valid").removeClass("is-invalid");
+    }
 
   }
 
   const fecharModal = () => {
-     window.location.reload();
+    window.location.reload();
   }
   useEffect(() => {
     if (status == true) {
@@ -244,6 +251,7 @@ const Atendimento = () => {
         .then((res) => {
           if (res.status == 200) {
             setClientes(res.data);
+            console.log(res.data)
           }
 
         }).catch((error) => { alert("Error: parametros API " + error) });
@@ -260,7 +268,7 @@ const Atendimento = () => {
         <h4 className="mb-4 mt-4">Atendimentos <i class="bi bi-clock"></i></h4>
         <div class="container p-0 m-0">
           <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-           <i class="bi bi-clock p-2"></i>
+            <i class="bi bi-clock p-2"></i>
             {msgSuccess !== null && msgSuccess}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }}></button>
           </div>
@@ -273,7 +281,7 @@ const Atendimento = () => {
             <thead>
               <tr>
                 <th class="fw-medium">Atendente</th>
-                <th class="fw-medium">Cod. Atendimento</th>
+                <th class="fw-medium">N° Atendimento</th>
               </tr>
             </thead>
             <tbody>
@@ -287,17 +295,20 @@ const Atendimento = () => {
                 </td>
                 <td colspan="2">
                   <div class="input-group ">
-                    <input type="text" class="form-control" id="cod_atendimento" placeholder="Gerar cod." aria-label="Recipient’s username" aria-describedby="button-addon2" />
-                    <button class="btn btn-secondary" onClick={() => { gerarCodAtendimento() }} type="button" id="button-addon2"><i class="bi bi-arrow-repeat"></i></button>
+                    <input type="text" class="form-control" id="cod_atendimento" placeholder="N° Atendimento" aria-label="Recipient’s username" aria-describedby="button-addon2" />
+                    <button class="btn btn-secondary" onClick={() => { gerarCodAtendimento() }} type="button" id="button-addon2">  <i class="bi bi-arrow-repeat"></i></button>
                   </div>
                 </td>
               </tr>
               <tr>
                 <td colspan="2">
-                  <td class="lh-3 fw-light">Cliente Nome</td>
+                  <td class="lh-3 fw-light">Cliente</td>
                   <div class="input-group  mt-2 mb-2">
 
-                    <input list="clientes" className='form-select form-control' onChange={(e) => setBuscarCliente(e.target.value)} id="cliente" placeholder='Buscar cliente...' /> <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
+                    <input list="clientes" class='form-select form-control' id="inpt_buscar" value={buscarCliente} onChange={(e) => setBuscarCliente(e.target.value)} placeholder='Encontrar cliente...' aria-describedby="button-addon2" />
+
+                    <button class="btn btn-success " type="button" onClick={() => validarBusca()} id="button-addon2">Buscar <i class="bi bi-search"></i> </button>
+
                     <datalist id="clientes" className='p-4'>
                       {clientes && clientes.map((vl) => { return <option className='p-4' value={vl.nome} /> })}
                     </datalist>
@@ -315,7 +326,7 @@ const Atendimento = () => {
               </tr>
               <tr>
                 <td colspan="2">
-                  <td class="fw-light">C.E.P</td>
+                  <td class="fw-light">CEP</td>
                   <div class="input-group mt-2 mb-2 ">
 
                     <input type='text' class="form-control" id="cep" value={datacep} placeholder='0000-000' onChange={(e) => setDataCep(e.target.value)} />

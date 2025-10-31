@@ -7,6 +7,7 @@ import ImageUploading from "react-images-uploading";
 import $ from 'jquery';
 import QRCode from "../qrcode";
 const UploadImagens = () => {
+ 
     const [sessaoUser, setSessaoUser] = useState([]);
     const [selectedFileUser, setSelectedFileUser] = useState(null);
     const { sessao, status, redirect_login, Sair,thumb_logo  } = useContext(UserContext);
@@ -36,7 +37,7 @@ const UploadImagens = () => {
 
         if (selectedFileUser !== null) {
 
-            var formData = new FormData();
+            const formData = new FormData();
             formData.append("arquivo", selectedFileUser);
             formData.append("usuario", JSON.stringify(sessaoUser));
 

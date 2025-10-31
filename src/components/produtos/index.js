@@ -17,19 +17,22 @@ const Produto = () => {
 	const [valorQt, setQuant] = useState();
 	const [valorCateg, setCategorias] = useState();
 
+	const [sessaoUser, setSessaoUser] = useState([]);
 	const [listCateg, setListCateg] = useState(null);
-	const [statusFormAddCateg, setStatusFormAddCateg] = useState("none");
+	const [listProduto, setListProduto] = useState([]);
 
 	//HOOK MSG ERROS
 	const [displayError, setDisplayError] = useState('none');
 	const [displaySuccess, setDisplaySuccess] = useState('none');
 	const [msgError, setMsgError] = useState(null);
 	const [msgSuccess, setMsgSuccess] = useState(null);
-	const { GetSession } = useContext(UserContext);
+	const { GetSession, sessao, Sair, status } = useContext(UserContext);
 	const urlApi = 'http://10.10.10.6/';
 	const nameApi = 'api_comanda/';
 
-
+	const [selectedFileUser, setSelectedFileUser] = useState(null);
+	var data_atual = new Date();
+	var data_image_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 	useEffect(() => {
 
 		let config = {
@@ -42,7 +45,11 @@ const Produto = () => {
 				'mode': 'no-cors'
 			}
 		}
+		if (status) {
+			const { cod, id, nome, status, data_post, thumb_image } = sessao ?? Sair();
+			setSessaoUser({ cod, id, nome, status, data_post, data_image_post });
 
+		}
 		const param_api_get_categorias = "?api=getCategorias";
 		const listCategoria = () => {
 			axios.get(urlApi + nameApi + param_api_get_categorias, config)
@@ -55,9 +62,56 @@ const Produto = () => {
 		};
 		listCategoria();
 
-	}, [setListCateg]);
+	}, [setListCateg, setSessaoUser]);
 
 
+	const carregarImagens = () => {
+
+		const param_api_save_img = "?api=setUploadFile";
+		let inputFoto = $("#inputFoto");
+
+
+		if (selectedFileUser !== null) {
+
+			const formData = new FormData();
+			formData.append("arquivo", selectedFileUser);
+			formData.append("usuario", JSON.stringify(sessaoUser));
+			formData.append("produto", JSON.stringify(listProduto))
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState == 4) {
+					var res = xhr.responseText;
+					if (res) {
+						inputFoto.addClass("is-valid").removeClass("is-invalid").val(null);
+
+						/*let data = JSON.parse(res)
+						if (data.status) {
+							inputFoto.addClass("is-valid").removeClass("is-invalid").val(null);
+
+
+						} else {
+							inputFoto.addClass("is-invalid").removeClass("is-valid");
+
+						}*/
+						console.log(res)
+
+					} else {
+						inputFoto.addClass("is-invalid").removeClass("is-valid");
+					}
+				}
+			}
+
+			//fazer o envio do nosso request
+			xhr.open("POST", urlApi + nameApi + param_api_save_img);
+			xhr.send(formData);
+			// inputFoto.addClass("is-valid").removeClass("is-invalid");
+		} else {
+			inputFoto.addClass("is-invalid").removeClass("is-valid");
+
+		}
+
+
+	}
 	const addNovoProduto = (e) => {
 		e.preventDefault();
 
@@ -120,6 +174,7 @@ const Produto = () => {
 
 
 		const paramApi_save_produto = "?api=setProduto";
+
 		$.post(urlApi + nameApi + paramApi_save_produto, objProduto, (res, status) => {
 			if (status === "success") {
 				var btnAdicionar = $('#btnAdicionar');
@@ -134,6 +189,7 @@ const Produto = () => {
 				}
 
 				if (res == 1) {
+					setListProduto(objProduto);
 					setDisplaySuccess("block");
 					setMsgSuccess("Novo item adicionado!")
 					btnAdicionar.attr({ "disabled": "disabled" });
@@ -152,6 +208,7 @@ const Produto = () => {
 	const fecharModal = () => {
 		window.location.reload();
 	}
+
 	return (
 		<div className="container-fluid mt-3 produtos">
 			<div className="container p-0 animate__animated  animate__fadeIn">
@@ -160,6 +217,7 @@ const Produto = () => {
 					<i class="bi bi-plus-circle-dotted fs-4 "></i> <p>Novo Produto</p>
 				</button>
 			</div>
+
 			<div class="modal fade" id="nvProduto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticnvProduto" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
@@ -205,9 +263,7 @@ const Produto = () => {
 								<input type="number" min="1" class="form-control" id="qtItemInput" onChange={(e) => { setQuant(e.target.value) }} autocomplete="off" placeholder="0" />
 
 							</div>
-							<div class="mb-3">
-								<UploadImagens />
-							</div>
+
 							<div class="mb-3">
 								<label for="precoUnitInput" class="form-label">Preço unitário</label>
 
@@ -221,6 +277,11 @@ const Produto = () => {
 										setPreco(values);
 									}}
 								/>
+							</div>
+							<div class="mb-3">
+								<input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileUser(e.target.files[0]) }} placeholder="Another input placeholder" />
+
+								<button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={() => { carregarImagens() }}> <i class="bi fs-5 bi-cloud-arrow-up"></i> Carregar imagem</button>
 							</div>
 						</div>
 						<div class="modal-footer">

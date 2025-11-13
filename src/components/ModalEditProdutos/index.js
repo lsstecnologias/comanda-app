@@ -93,7 +93,7 @@ const ModalEditProdutos = (data_id) => {
         const paramApi_edit_produto = "?api=updateItem";
 
         $.post(urlApi + nameApi + paramApi_edit_produto, objProduto, (res, status) => {
-           var editarProduto = $('#btnEditarProduto')
+            var editarProduto = $('#btnEditarProduto')
             if (status === "success") {
 
                 if (res == 0 || res === null) {
@@ -104,9 +104,9 @@ const ModalEditProdutos = (data_id) => {
                     setDisplayError("none");
                     setMsgError(null);
                 }
-                 
+
                 if (res == 1) {
-                    
+
                     setDisplaySuccess("block");
                     setMsgSuccess("O item foi atualizado!");
                     editarProduto.attr({ "disabled": "disabled" });
@@ -122,7 +122,7 @@ const ModalEditProdutos = (data_id) => {
     }
     useEffect(() => {
         const param_api_lista_produto = '?api=getProdutos';
-        const param_api_get_categoria = "?api=getCategoria";
+        // const param_api_get_categoria = "?api=getCategoria";
         const config = {
 
             method: "get",
@@ -134,24 +134,24 @@ const ModalEditProdutos = (data_id) => {
             }
         };
         axios.get(urlApi + nameApi + param_api_lista_produto, config)
-        .then((res) => {
-            var vl = res.data;
-            setDataFilter(vl)
-        }).catch((error) => { alert("Error: parametros API "+error) });
-
-
-        const listCategoria = () => {
-            axios.get(urlApi + nameApi + param_api_get_categoria, config)
             .then((res) => {
-                var vl =  res.data;
+                var vl = res.data;
+                setDataFilter(vl)
+            }).catch((error) => { alert("Error: parametros API " + error) });
+
+        const param_api_get_categorias = "?api=getCategorias";
+
+        axios.get(urlApi + nameApi + param_api_get_categorias, config)
+            .then(async (res) => {
+                var vl = await res.data;
+                console.log(vl)
                 setListCateg(vl);
 
-            }).catch((error) => { alert("Error: parametros API "+error) });
+            }).catch((error) => { alert("Error: parametros API " + error) });
 
-        };
-        listCategoria();
 
-    }, [setDataFilter, setEdit, setListCateg]);
+
+    }, [setDataFilter, setEdit]);
 
     return (
         <div class="modal fade" id={"editProduto-" + idEdit} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticeditProduto" aria-hidden="true">
@@ -186,7 +186,7 @@ const ModalEditProdutos = (data_id) => {
                                         <label for="descItemInput" class="form-label">Descrição item</label>
                                         <input type="text" class="form-control" id="descItemInputEdit" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder={e.descricao} />
                                     </div>
-                                    <label for="descItemInput" class="form-label">Selecione item</label>
+                                    <label for="descItemInput" class="form-label"> Categoria</label>
                                     <div class="input-group mb-3" id="categorias">
 
                                         <select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">

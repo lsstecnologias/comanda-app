@@ -245,7 +245,7 @@ const Produto = () => {
 								<input type="text" class="form-control" id="descItemInput" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder="Detalhes" />
 							</div>
 							<div class="mb-3" id="categorias">
-								<label for="categorias" class="form-label">Categoria item</label>
+								<label for="categorias" class="form-label">Categoria</label>
 								<select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">
 									<option >Selecione</option>
 									{listCateg && listCateg.map((e) => {

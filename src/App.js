@@ -16,7 +16,7 @@ import AgendamentoPedido from './components/agendamento_pedido';
 import Template from './components/template';
 
 import { UserContext } from './components/context';
-import TelaPrincipal from './components/TelaPrincipal';
+import Clientes from './components/Clientes';
 import Sistema from './components/sistema';
 
 const $ = require("jquery");
@@ -49,6 +49,7 @@ function App() {
           <Route path="/admin" element={<AppComponent />} >
             <Route path="produto" element={<Produto />} />
             <Route path="agendamento-pedido" element={<AgendamentoPedido />} />
+            <Route path="meus-clientes" element={<Clientes />} />
             <Route path="usuario" element={<Usuarios />} />
             <Route path="imagens" element={<UploadImagens />} />
             <Route path="categoria" element={<Categorias />} />

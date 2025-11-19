@@ -6,7 +6,7 @@ import $ from 'jquery';
 import Pagination from "../../ListPagina";
 
 
-const TabelaUsuario = () => {
+const TabelaCliente = () => {
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
 
@@ -53,9 +53,9 @@ const TabelaUsuario = () => {
   
     return (
         <div class="table-responsive mt-4 m-3">
-            
+            <h4 className="mb-2 mt-2 pb-2">Lista</h4>
             <table class="table caption-top animate__animated animate__fadeIn ">
-
+                   
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -108,4 +108,4 @@ const TabelaUsuario = () => {
     
 };
 
-export default TabelaUsuario;
+export default TabelaCliente;

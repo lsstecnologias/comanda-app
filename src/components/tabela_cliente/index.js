@@ -52,17 +52,17 @@ const TabelaCliente = () => {
     }, [setCodUser, setUsuarios]);
   
     return (
-        <div class="table-responsive mt-4 m-3">
+        <div class="table-responsive mt-4">
             <h4 className="mb-2 mt-2 pb-2">Lista</h4>
             <table class="table caption-top animate__animated animate__fadeIn ">
                    
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
+                      
                         <th scope="col">Cod. </th>
                         <th scope="col">Nome</th>
                         <th scope="col">Perfil</th>
-                        <th scope="col">Ações</th>
+                        <th className="text-end" scope="col">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,11 +70,11 @@ const TabelaCliente = () => {
 
                         return (
                             <tr key={e.id}>
-                                <th scope="row">{e.id}</th>
+                               
                                 <td className='lh-1 fw-light'>{e.cod}</td>
                                 <td className='lh-1 fw-light'>{e.nome}</td>
                                 <td className='lh-1 fw-light'>{e.perfil == 'a' ? 'Admin' : 'User'}</td>
-                                <td>
+                                <td className="d-flex align-items-center justify-content-end">
                                     <button data-bs-toggle="modal" onClick={() => editItem(e.id)} data-bs-target={"#editUsuario-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                                     <button class="btn btn-sm btn-outline-secondary bi bi-x-lg" onClick={() => deleteUsuario(e.id)}></button>
                                 </td>

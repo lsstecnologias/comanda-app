@@ -1,6 +1,6 @@
 
 import { useEffect, useState, useContext } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route,useParams } from 'react-router-dom';
 import UserProvider from './components/context';
 import Comanda from './components/comanda';
 import Produto from './components/produtos';
@@ -18,12 +18,15 @@ import Template from './components/template';
 import { UserContext } from './components/context';
 import Clientes from './components/Clientes';
 import Sistema from './components/sistema';
+import TabelaCliente from './components/tabela_cliente';
+import TelaPrincipal from './components/TelaPrincipal';
 
 const $ = require("jquery");
 
 function App() {
 
   const [statusTela, setStatusTela] = useState('');
+ 
 
   window.addEventListener('load', () => {
     $('#preloader').hide(500);
@@ -47,9 +50,11 @@ function App() {
           <Route path="/" element={<Acesso />} />
                   
           <Route path="/admin" element={<AppComponent />} >
+          
             <Route path="produto" element={<Produto />} />
             <Route path="agendamento-pedido" element={<AgendamentoPedido />} />
             <Route path="meus-clientes" element={<Clientes />} />
+             <Route path="listar-clientes" element={<TabelaCliente />} />
             <Route path="usuario" element={<Usuarios />} />
             <Route path="imagens" element={<UploadImagens />} />
             <Route path="categoria" element={<Categorias />} />

@@ -26,6 +26,7 @@ const Produto = () => {
 	const [displaySuccess, setDisplaySuccess] = useState('none');
 	const [msgError, setMsgError] = useState(null);
 	const [msgSuccess, setMsgSuccess] = useState(null);
+	
 	const { GetSession, sessao, Sair, status } = useContext(UserContext);
 	const urlApi = 'http://10.10.10.6/';
 	const nameApi = 'api_comanda/';

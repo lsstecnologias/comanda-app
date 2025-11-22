@@ -16,11 +16,11 @@ const Clientes = () => {
 	const [emailLoginUser, setEmailLoginUser] = useState("");
 	const [senhaUser, setSenhaUser] = useState("");
 	const [perfilUser, setPerfilUser] = useState("");
-	const [statusMsgErro, setStatusMsgErro] = useState("none");
-	const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
-
-	const urlApi = 'http://10.10.10.6/';
-	const nameApi = 'api_comanda/';
+	//HOOK MSG ERROS
+	const [displayError, setDisplayError] = useState('none');
+	const [displaySuccess, setDisplaySuccess] = useState('none');
+	const [msgError, setMsgError] = useState(null);
+	const [msgSuccess, setMsgSuccess] = useState(null);
 
 	const addNovoCliente = (e) => {
 		e.preventDefault();
@@ -30,7 +30,9 @@ const Clientes = () => {
 		const cpf = $("#cpf");
 		const cnpj = $("#cnpj");
 		const rg = $("#rg");
+		const cep = $("#cep");
 		const endereco = $("#endereco");
+		const senha = $("#senha");
 		const btnAdicionar = $("#btnAdicionarClientes");
 
 		const fullUuid = uuidv4();
@@ -38,8 +40,27 @@ const Clientes = () => {
 		let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 		var codCliente = fullUuid.substring(0, 7)
 
-		const objCliente = { cod: codCliente, data_post:data_post };
-		console.log(objCliente);
+		const obj_cliente = { cod: codCliente, nome: "", sobrenome: "", email: "", senha: "", cpf: "", rg: "", cnpj: "", cep: "", endereco: "", data_post: data_post };
+
+
+		if (nome.val()) {
+			obj_cliente.nome = nome.val();
+
+			nome.addClass("is-valid").removeClass("is-invalid");
+
+		} else {
+			obj_cliente.nome = null;
+			nome.addClass("is-invalid").removeClass("is-valid");
+		}
+
+		if (sobrenome.val()) {
+			obj_cliente.sobrenome = sobrenome.val();
+			sobrenome.addClass("is-valid").removeClass("is-invalid");
+
+		} else {
+			obj_cliente.sobrenome = null;
+			sobrenome.addClass("is-invalid").removeClass("is-valid");
+		}
 
 		function validateEmail(email) {
 			const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -47,120 +68,143 @@ const Clientes = () => {
 		}
 		//valida email
 		if (validateEmail(email.val())) {
-			$("#email").addClass("is-valid").removeClass("is-invalid");
+			email.addClass("is-valid").removeClass("is-invalid");
+			obj_cliente.email = email.val();
+		} else {
+			email.addClass("is-invalid").removeClass("is-valid");
+			obj_cliente.email = null;
+		}
+
+		if (cpf.val()) {
+			obj_cliente.cpf = cpf.val();
+			cpf.addClass("is-valid").removeClass("is-invalid");
 
 		} else {
-			$("#email").addClass("is-invalid").removeClass("is-valid");
+			obj_cliente.cpf = null;
+			cpf.addClass("is-invalid").removeClass("is-valid");
 
 		}
-		/*
-				
-				let nome = $("#nomeInput");
-				let senha = $("#senhaInput");
-				let loginEmail = $("#loginEmailInput");
-				let perfil = $("#perfilUser");
-				let cod = Math.floor(Math.random() * (777 + 0)) - 1;
-		
-				var objUsuario = { cod_user: cod, nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
-		
-				if (nomeUser !== undefined && nomeUser !== "") {
-					 nome.addClass("is-valid").removeClass("is-invalid");
-					 objUsuario.nome_user = nomeUser;
+
+		if (rg.val()) {
+			obj_cliente.rg = cpf.val();
+			rg.addClass("is-valid").removeClass("is-invalid");
+		} else {
+			obj_cliente.rg = null;
+			rg.addClass("is-invalid").removeClass("is-valid");
+		}
+
+		if (cnpj.val()) {
+			obj_cliente.cnpj = cnpj.val();
+			cnpj.addClass("is-valid").removeClass("is-invalid");
+		} else {
+			obj_cliente.cnpj = null;
+			cnpj.addClass("is-invalid").removeClass("is-valid");
+		}
+
+		if (cpf.val()) {
+			obj_cliente.cpf = cpf.val();
+			cpf.addClass("is-valid").removeClass("is-invalid");
+		} else {
+			obj_cliente.cpf = null;
+			cpf.addClass("is-invalid").removeClass("is-valid");
+		}
+
+		if (senha.val()) {
+			obj_cliente.senha = md5(senha.val());
+			senha.addClass("is-valid").removeClass("is-invalid");
+		} else {
+			obj_cliente.senha = null;
+			senha.addClass("is-invalid").removeClass("is-valid");
+		}
+
+		if (cep.val()) {
+			obj_cliente.cep = cep.val();
+			cep.addClass("is-valid").removeClass("is-invalid");
+		} else {
+			obj_cliente.cep = null;
+			cep.addClass("is-invalid").removeClass("is-valid");
+		}
+
+		if (endereco.val()) {
+			obj_cliente.endereco = endereco.val();
+			endereco.addClass("is-valid").removeClass("is-invalid");
+		} else {
+			obj_cliente.endereco = null;
+			endereco.addClass("is-invalid").removeClass("is-valid");
+		}
+
+		const urlApi = 'http://10.10.10.6/';
+		const nameApi = 'api_comanda/';
+
+		const param_save_estabelecimento = "?api=setEstabelecimento";
+		$.post(urlApi + nameApi + param_save_estabelecimento, obj_cliente, (res, status) => {
+
+			if (status == "success") {
+				if (res == 1) {
+					$("#senha").val("");
+					setDisplaySuccess("block");
+					setMsgSuccess("Pré-cadastro realizado!");
+
+					setDisplayError("none")
+					setMsgError(null);
 				} else {
-					 nome.addClass("is-invalid").removeClass("is-valid");
-					 objUsuario.nome_user = null;
+					setDisplaySuccess("none");
+					setDisplayError("block")
+					setMsgError("Erro: verifique os campos!");
+					setMsgSuccess(null);
 				}
-		
-				if (emailLoginUser !== undefined && emailLoginUser !== "") {
-					 loginEmail.addClass("is-valid").removeClass("is-invalid");
-					 objUsuario.login_email = emailLoginUser;
-				} else {
-					 loginEmail.addClass("is-invalid").removeClass("is-valid");
-					 objUsuario.login_email = null;
-				}
-		
-				if (senhaUser !== undefined && senhaUser !== "" && senhaUser.length >= 6) {
-					 senha.addClass("is-valid").removeClass("is-invalid");
-					 objUsuario.senha_user = md5(senhaUser);
-				} else {
-					 senha.addClass("is-invalid").removeClass("is-valid");
-					 objUsuario.senha_user = null;
-				}
-		
-				if (perfilUser !== undefined && perfilUser !== "") {
-					 perfil.addClass("is-valid").removeClass("is-invalid");
-					 objUsuario.perfil_user = perfilUser;
-		
-				} else {
-					 perfil.addClass("is-invalid").removeClass("is-valid");
-					 objUsuario.perfil_user = null;
-		
-				}
-		
-				let data_atual = new Date();
-				let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
-		
-				if (objUsuario.data_post == "") {
-					 objUsuario.data_post = data_post;
-				}
-		
-				const paramApi_save_usuario = "?api=setUsuarios";
-				$.post(urlApi + nameApi + paramApi_save_usuario, objUsuario, (res, status) => {
-					 if (status === "success") {
-						  if (res == "null" && res == null) {
-								setStatusMsgErro("block");
-								$('#btnAdicionar').attr({ "disabled": false });
-						  } else {
-								setStatusMsgErro("none");
-						  }
-						  if (res == 1 || res == "true" || res == true) {
-								setStatusMsgSuccess("block");
-								$('#btnAdicionar').attr({ "disabled": "disabled" });
-						  } else {
-								setStatusMsgSuccess("none");
-						  }
-					 } else {
-						  alert("Error: parametros API")
-					 }
-		
-				})
-					 */
+			} else {
+				alert("Error: parametros API")
+			}
+
+		});
+
+		//REGISTRA OS DADOS NA TABELA DE USUARIOS
+		const obj_usuario = {};
+		const paramApi_save_usuario = "?api=setUsuarios";
+		$.post(urlApi + nameApi + paramApi_save_usuario, obj_usuario, (res, status) => {
+			if (status == "success") {
+				console.log(res)
+			} else {
+				alert("Error: parametros API")
+			}
+
+		})
+
 	}
 	const fecharModal = () => {
 		window.location.reload();
 	}
-	/*  const carregarImagens = () => {
-			const paramApi_save_img = "?api=setUploadFile";
-			let inputFoto = $("#inputFoto");
- 
-			if (selectedFileUser !== null) {
-				 var formData = new FormData();
-			   
-				 
-				 formData.append("arquivo", selectedFileUser);
- 
-				 var xhr = new XMLHttpRequest();
-				 xhr.onreadystatechange = function () {
-					  if (xhr.readyState == 4) {
-							var resposta = xhr.responseText;
-							console.log(resposta)
-							inputFoto.addClass("is-valid").removeClass("is-invalid");
-					  }
-				 }
- 
-				 //fazer o envio do nosso request
-				 xhr.open("POST", urlApi + nameApi + paramApi_save_img);
-				 xhr.send(formData);
- 
-			}
- 
- 
-	  }*/
+
+
+
 	useEffect(() => {
 		$('#cnpj').mask('00.000.000/0000-00')
 		$('#rg').mask('00.000.000-00');
 		$('#cep').mask('00000000');
 		$('#cpf').mask('000.000.000-00');
+
+		/*
+		const paramApi_save_usuario = "?api=setUsuarios";
+		$.post(urlApi + nameApi + paramApi_save_usuario, objUsuario, (res, status) => {
+			if (status === "success") {
+				if (res == "null" && res == null) {
+					setStatusMsgErro("block");
+					$('#btnAdicionar').attr({ "disabled": false });
+				} else {
+					setStatusMsgErro("none");
+				}
+				if (res == 1 || res == "true" || res == true) {
+					setStatusMsgSuccess("block");
+					$('#btnAdicionar').attr({ "disabled": "disabled" });
+				} else {
+					setStatusMsgSuccess("none");
+				}
+			} else {
+				alert("Error: parametros API")
+			}
+
+		})*/
 
 	}, [])
 	const consultarCep = (e) => {
@@ -175,7 +219,7 @@ const Clientes = () => {
 						const { cep, logradouro, bairro, localidade, uf, estado, regiao } = await res;
 						var str = `${cep} - ${logradouro} - ${bairro} - ${localidade} - ${uf} - ${estado} - ${uf} -${regiao}`;
 						document.getElementById("endereco").value = str;
-						document.getElementById("cep").value = "";
+
 						$("#cep").addClass("is-valid").removeClass("is-invalid");
 					} else {
 						$("#cep").addClass("is-invalid").removeClass("is-valid");
@@ -183,7 +227,7 @@ const Clientes = () => {
 				}
 			})
 		} else {
-		
+
 			$("#cep").addClass("is-invalid").removeClass("is-valid");
 		}
 
@@ -193,11 +237,27 @@ const Clientes = () => {
 		e.preventDefault();
 		$('#endereco').attr({ "disabled": false })
 	}
+	const gerarSenha = (e) => {
+		e.preventDefault();
+		const fullUuid = uuidv4();
+		var senha = fullUuid.substring(0, 6);
+		$("#senha").val(senha);
+
+	}
 
 	return (
-		<div className="container mt-2 usuario animate__animated animate__fadeIn">
+		<div className="container table-responsive mt-3 produtos animate__animated animate__fadeIn">
+			<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+				<i class="bi bi-check-circle p-2"></i>
+				{msgSuccess !== null && msgSuccess}
 
-			<h4 className="mb-2 mt-2 pb-2">Clientes</h4>
+			</div>
+			<div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+				<i class="bi bi-exclamation-triangle p-2"></i>
+				{msgError !== null && msgError}
+
+			</div>
+			<h4 className="mb-2 mt-2 pb-2">Estabelecimento / Cliente</h4>
 
 			<table class="table table-bordered ">
 				<thead>
@@ -275,6 +335,20 @@ const Clientes = () => {
 
 					</tr>
 					<tr>
+						<th colSpan={3} scope="row">GERAR SENHA</th>
+
+					</tr>
+					<tr>
+						<td colSpan={3} scope="row">
+							<div class="input-group ">
+
+								<input type="text" autoComplete="off" name="senha" id="senha" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								<button class="btn btn-outline-secondary" onClick={(e) => { gerarSenha(e) }} type="button" id="btn-alterar">  <i class="bi bi-arrow-repeat"></i></button>
+							</div>
+						</td>
+
+					</tr>
+					<tr>
 						<th colSpan={3} scope="row">ENDEREÇO</th>
 
 					</tr>
@@ -300,7 +374,7 @@ const Clientes = () => {
 
 			</table>
 
-			<TabelaCliente />
+
 
 		</div >
 	)

@@ -53,14 +53,14 @@ const Acesso = () => {
                     setMsgSuccess(null);
 
                 } else {
-                    let host = window.location.hostname;
-                    let porta = window.location.port;
-                    let protocolo = window.location.protocol;
+                   // let host = window.location.hostname;
+                    //let porta = window.location.port;
+                    //let protocolo = window.location.protocol;
                     let pathDir = window.location.pathname;
-                    let url = protocolo + "//" + host + ':' + porta + pathDir + 'admin';
+                    let url =  pathDir + 'admin';
                     sessionStorage.setItem("user_admin", JSON.stringify(dataSession))
                     window.location.href = url;
-
+                   
                 }
 
 
@@ -106,8 +106,8 @@ const Acesso = () => {
             </div>
         )*/
     return (
-        <div class="container col-xl-10 col-xxl-8 px-4 py-5">
-            <div class="row g-lg-5 py-5  animate__animated animate__fadeIn">
+        <div class="container-fluid col-xl-10 col-xxl-8 px-4 py-5">
+            <div class="row g-lg-5  animate__animated animate__fadeIn">
                 <div class="col-md-10 mx-auto col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded">
 
                     <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary">

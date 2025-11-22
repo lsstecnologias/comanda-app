@@ -58,13 +58,13 @@ const AgendamentoPedido = () => {
                      <th scope="col fw-light">Cod. Atendimento</th>
                      <th scope="col fw-light" >Atendente</th>
 
-                     <th scope="col fw-light"  >Data Atendimento</th>
+                     <th scope="col fw-light">Data Atendimento</th>
                      <th scope="col" > </th>
                   </tr>
                </thead>
                <tbody>
                   {data && data.map((val) => {
-                     console.log(val)
+                     
                      return (
                         <tr key={val.id}>
 

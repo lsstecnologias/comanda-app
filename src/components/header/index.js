@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { UserContext } from '../../components/context';
 import { Link } from 'react-router-dom';
 import 'animate.css';
+import TelaPrincipal from '../TelaPrincipal';
 
 const Header = () => {
    const { Sair, thumb_logo } = useContext(UserContext);
@@ -48,7 +49,8 @@ const Header = () => {
                       <li class="nav-item dropdown">
                         <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administrador</Link>
                         <ul class="dropdown-menu fw-light">
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/meus-clientes">Meus clientes</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/meus-clientes">Clientes</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/listar-clientes">Listar Clientes</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/categoria">Keygen</Link></li>
                         </ul>
                      </li>
@@ -63,7 +65,7 @@ const Header = () => {
                   </a>
                   <ul class="dropdown-menu">
                      <li><Link class="dropdown-item fw-light" to="/admin/usuario"> <i class="bi  fs-5 bi-person-fill"></i> Usuários</Link></li>
-                       <li><Link class="dropdown-item fw-light" to="/admin/sistema"> <i class="bi bi-gear-fill"></i> Sistema</Link></li>
+                     <li><Link class="dropdown-item fw-light" to="/admin/sistema"> <i class="bi bi-gear-fill"></i> Sistema</Link></li>
                      <li><button class="btn btn-sm btn-primary dropdown-item" onClick={() => Sair()} > <i class="bi fs-5 bi-box-arrow-left"></i> Sair</button></li>
                   </ul>
 
@@ -72,7 +74,7 @@ const Header = () => {
             </div >
 
          </nav>
-       
+      
       </div >
    );
 

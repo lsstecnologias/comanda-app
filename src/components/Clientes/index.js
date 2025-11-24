@@ -137,6 +137,8 @@ const Clientes = () => {
 		const nameApi = 'api_comanda/';
 
 		const param_save_estabelecimento = "?api=setEstabelecimento";
+		//REGISTRA OS DADOS NA TABELA DE ESTABELECIMENTO/CLIENTE
+		
 		$.post(urlApi + nameApi + param_save_estabelecimento, obj_cliente, (res, status) => {
 
 			if (status == "success") {
@@ -144,7 +146,6 @@ const Clientes = () => {
 					$("#senha").val("");
 					setDisplaySuccess("block");
 					setMsgSuccess("Pré-cadastro realizado!");
-
 					setDisplayError("none")
 					setMsgError(null);
 				} else {
@@ -160,11 +161,15 @@ const Clientes = () => {
 		});
 
 		//REGISTRA OS DADOS NA TABELA DE USUARIOS
-		const obj_usuario = {};
+		
+		var cod = Math.floor(Math.random() * (777 + 0)) - 1;
+		
+		const obj_usuario = {cod_user:cod,cod_estabelecimento:obj_cliente.cod,nome_user:obj_cliente.nome,login_email:obj_cliente.email,senha_user:obj_cliente.senha,perfil_user:'s',status:'a',data_post:obj_cliente.data_post};
 		const paramApi_save_usuario = "?api=setUsuarios";
 		$.post(urlApi + nameApi + paramApi_save_usuario, obj_usuario, (res, status) => {
 			if (status == "success") {
 				console.log(res)
+				//REALIZAR O TRATAMENTO DOS DADOS DA REQUISICAO
 			} else {
 				alert("Error: parametros API")
 			}
@@ -246,7 +251,7 @@ const Clientes = () => {
 	}
 
 	return (
-		<div className="container table-responsive mt-3 produtos animate__animated animate__fadeIn">
+		<div className="container usuario table-responsive mt-3 animate__animated animate__fadeIn">
 			<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
 				<i class="bi bi-check-circle p-2"></i>
 				{msgSuccess !== null && msgSuccess}

@@ -37,8 +37,6 @@ const TabelaCliente = () => {
 
     useEffect(() => {
 
-
-
         const config = {
 
             method: "get",
@@ -59,8 +57,8 @@ const TabelaCliente = () => {
     }, [setClienteEstablecimento]);
 
     return (
-        <div class="container table-responsive mt-4">
-            <h4 className="mb-2 mt-2 pb-2">Lista</h4>
+        <div class="container table-responsive produtos mt-4">
+            <h4 className="mb-2 mt-2 pb-2">Lista Estabelecimento</h4>
             <table class="table caption-top animate__animated animate__fadeIn ">
 
                 <thead>

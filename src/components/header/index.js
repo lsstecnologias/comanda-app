@@ -3,12 +3,15 @@ import { UserContext } from '../../components/context';
 import { Link } from 'react-router-dom';
 import 'animate.css';
 import TelaPrincipal from '../TelaPrincipal';
-
+import $ from 'jquery';
+const exibeModal=()=>{
+   $('body')
+}
 const Header = () => {
    const { Sair, thumb_logo } = useContext(UserContext);
 
    return (
-      <div className="container-fluid bg-body-tertiary mb-4 fixed-top m-0 p-0 ">
+      <div className="container-fluid bg-body-tertiary mb-4 fixed-top m-0 p-0" onLoad={()=>{exibeModal()}}>
 
          <nav class="navbar navbar-expand-lg bg-body-tertiary shadow animate__animated animate__fadeIn bg-body-tertiary">
             <div class="container animate__animated animate__fadeIn">
@@ -51,7 +54,7 @@ const Header = () => {
                         <ul class="dropdown-menu fw-light">
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/meus-clientes">Clientes</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/listar-clientes">Listar Clientes</Link></li>
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/categoria">Keygen</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/keygen">Keygen</Link></li>
                         </ul>
                      </li>
 
@@ -74,8 +77,7 @@ const Header = () => {
             </div >
 
          </nav>
-      
-      </div >
+        </div>
    );
 
 }

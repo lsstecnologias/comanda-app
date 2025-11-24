@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import $ from 'jquery';
 import Imagens from "../upload_imagens";
 import TabelaUsuario from "../tabela_usuario";
-
+import axios from "axios";
 import Header from '../header';
 
 var md5 = require('md5');
- 
+
 
 const Usuarios = () => {
 
@@ -29,7 +29,7 @@ const Usuarios = () => {
         let perfil = $("#perfilUser");
         let cod = Math.floor(Math.random() * (777 + 0)) - 1;
 
-        var objUsuario = {cod_user:cod, nome_user: "", senha_user: "",  login_email: "", perfil_user: "", data_post: "" };
+        var objUsuario = { cod_user: cod, nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
 
         if (nomeUser !== undefined && nomeUser !== "") {
             nome.addClass("is-valid").removeClass("is-invalid");
@@ -46,7 +46,7 @@ const Usuarios = () => {
             loginEmail.addClass("is-invalid").removeClass("is-valid");
             objUsuario.login_email = null;
         }
-       
+
         if (senhaUser !== undefined && senhaUser !== "" && senhaUser.length >= 6) {
             senha.addClass("is-valid").removeClass("is-invalid");
             objUsuario.senha_user = md5(senhaUser);
@@ -88,7 +88,7 @@ const Usuarios = () => {
                     setStatusMsgSuccess("none");
                 }
             } else {
-                 alert("Error: parametros API")
+                alert("Error: parametros API")
             }
 
         })
@@ -96,43 +96,45 @@ const Usuarios = () => {
     const fecharModal = () => {
         window.location.reload();
     }
-  /*  const carregarImagens = () => {
-        const paramApi_save_img = "?api=setUploadFile";
-        let inputFoto = $("#inputFoto");
-
-        if (selectedFileUser !== null) {
-            var formData = new FormData();
-           
-            
-            formData.append("arquivo", selectedFileUser);
-
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    var resposta = xhr.responseText;
-                    console.log(resposta)
-                    inputFoto.addClass("is-valid").removeClass("is-invalid");
-                }
-            }
-
-            //fazer o envio do nosso request
-            xhr.open("POST", urlApi + nameApi + paramApi_save_img);
-            xhr.send(formData);
-
-        }
-
-
-    }*/
+    /*  const carregarImagens = () => {
+          const paramApi_save_img = "?api=setUploadFile";
+          let inputFoto = $("#inputFoto");
+  
+          if (selectedFileUser !== null) {
+              var formData = new FormData();
+             
+              
+              formData.append("arquivo", selectedFileUser);
+  
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState == 4) {
+                      var resposta = xhr.responseText;
+                      console.log(resposta)
+                      inputFoto.addClass("is-valid").removeClass("is-invalid");
+                  }
+              }
+  
+              //fazer o envio do nosso request
+              xhr.open("POST", urlApi + nameApi + paramApi_save_img);
+              xhr.send(formData);
+  
+          }
+  
+  
+      }*/
     useEffect(() => {
         // $('#rgInput').mask('00.000.000-00');
         // $('#cepInput').mask('0000000');
+       
+            
 
     }, [])
 
 
     return (
-        <div  className="container mt-2 usuario">
-                         
+        <div className="container mt-2 usuario">
+
             <h4 className="mb-2 mt-2 pb-2">Usuários</h4>
 
             <button type="button" class="btn w-100 btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#novoUsuario">
@@ -148,7 +150,7 @@ const Usuarios = () => {
                         </div>
 
                         <div class="modal-body">
-                            
+
                             <div class="alert alert-danger" style={{ display: statusMsgErro }} role="alert">
                                 Preencha os campo(s)!
                             </div>
@@ -174,9 +176,9 @@ const Usuarios = () => {
                             </div>
                             <div class="mb-3">
                                 <label for="senhaInput" class="form-label">Senha</label>
-                                <input type="password" class="form-control w-20" id="senhaInput"  onChange={(e) => { setSenhaUser(e.target.value) }} placeholder="Sua senha" autocomplete="off" />
+                                <input type="password" class="form-control w-20" id="senhaInput" onChange={(e) => { setSenhaUser(e.target.value) }} placeholder="Sua senha" autocomplete="off" />
                             </div>
-                                                       
+
                         </div>
 
                         <div class="modal-footer">

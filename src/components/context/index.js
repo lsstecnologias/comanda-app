@@ -6,7 +6,7 @@ export const UserContext = createContext({});
 function UserProvider({ children }) {
     const [sessao, setSessao] = useState([]);
     const [status, setStatus] = useState(false);
-
+    
     const redirect_login = () => {
         let host = window.location.hostname;
         let porta = window.location.port;
@@ -25,10 +25,9 @@ function UserProvider({ children }) {
 
         } else {
             setStatus(true);
-            const {cod,data_post,email,id,nome,perfil,senha,status} = data[0] ?? redirect_login();
-            const objSessao ={cod,data_post,email,id,nome,perfil,senha,status};
+            const {cod,cod_estabelecimento,data_post,email,id,nome,perfil,senha,status} = data[0] ?? redirect_login();
+            const objSessao ={cod,cod_estabelecimento,data_post,email,id,nome,perfil,senha,status};
             setSessao(objSessao);
-           
         }
 
     }, [setSessao,setStatus]);
@@ -36,6 +35,7 @@ function UserProvider({ children }) {
     const Sair = () => {
         setStatus(false);
         sessionStorage.removeItem("user_admin");
+        sessionStorage.removeItem("cod_estabelecimento");
         sessionStorage.clear();
         redirect_login();
         

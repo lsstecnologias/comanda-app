@@ -9,6 +9,7 @@ import UploadImagens from './components/upload_imagens';
 import AppComponent from './AppComponent';
 import Acesso from './components/acesso';
 import Categorias from './components/categorias';
+import Keygen from './components/keygen';
 import QRCode from './components/qrcode';
 import Atendimento from './components/atendimento';
 import TabelaAtendimento from './components/tabela_atendimento';
@@ -44,7 +45,7 @@ function App() {
   return (
 
     <div class="container-fluid m-0 p-0 " >
-
+   
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Acesso />} />
@@ -61,6 +62,7 @@ function App() {
             <Route path="template-view" element={<Template />} />
             <Route path="sistema" element={<Sistema />} />
             <Route path="qr" element={<QRCode />} />
+            <Route path="keygen" element={<Keygen />} />
             <Route path="atendimento" element={<Atendimento />} />
             <Route path="lista-atendimento" element={<TabelaAtendimento />} />
             <Route path="comanda" element={<Comanda />} />

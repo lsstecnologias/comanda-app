@@ -1,5 +1,5 @@
 import './style.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'animate.css';
 
 import md5 from 'md5';
@@ -17,6 +17,20 @@ const Acesso = () => {
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
     const param_api_get_usuarios = "?api=getUsuarios";
+    useEffect(() => {
+        // Registrar o cliente estabelecimento, qunando for liberar o acesso
+        // const param_api_list_perfil_usuarios ="?api=getPerfilUsuarios";
+
+        /* let id = "57541fc";
+         let obj_cliente= {"cod_cliente_estabelecimento":id}
+         $.post(urlApi + nameApi + param_api_list_perfil_usuarios,obj_cliente,(res,status)=>{
+          var data = JSON.parse(res);
+          data.forEach(element => {
+             console.log(element.cod)
+          });
+           
+         })-*/
+    }, [])
 
     const validarForm = (e) => {
         e.preventDefault();
@@ -39,7 +53,7 @@ const Acesso = () => {
             ObjSessao.senha = "";
 
         }
-
+        //REQUISIÇAO
         fetch(urlApi + nameApi + param_api_get_usuarios)
             .then(async (e) => {
                 return await e.json();
@@ -53,14 +67,16 @@ const Acesso = () => {
                     setMsgSuccess(null);
 
                 } else {
-                   // let host = window.location.hostname;
+                    // let host = window.location.hostname;
                     //let porta = window.location.port;
                     //let protocolo = window.location.protocol;
                     let pathDir = window.location.pathname;
-                    let url =  pathDir + 'admin';
+                    let url = pathDir + 'admin';
+                    let cod_estabelecimento = (dataSession[0].cod_estabelecimento);
                     sessionStorage.setItem("user_admin", JSON.stringify(dataSession))
+                    sessionStorage.setItem('cod_estabelecimento', cod_estabelecimento)
                     window.location.href = url;
-                   
+
                 }
 
 

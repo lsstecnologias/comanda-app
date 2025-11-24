@@ -1,5 +1,6 @@
-import { error } from "jquery";
-import { useEffect, useState, useMemo } from "react";
+import { data, error } from "jquery";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from '../context';
 import ListPagina from "../../ListPagina";
 import ModalEditUsuarios from "../modalEditUsuarios";
 import $ from 'jquery';
@@ -9,11 +10,13 @@ import Pagination from "../../ListPagina";
 const TabelaUsuario = () => {
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
+    //CONTINUA AQUI....
+    const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
     var [usuarios, setUsuarios] = useState([]);
     const [codUser, setCodUser] = useState("");
     const [id, setId] = useState(null);
-   
+
     //PAGINACAO
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(2);
@@ -22,9 +25,9 @@ const TabelaUsuario = () => {
     const currentPosts = usuarios.slice(indexOfFirstPost, indexOfLastPost);
     <ListPagina />
 
-    const editItem = (id) => { setId(id);}
+    const editItem = (id) => { setId(id); }
     const paramApi_delete_item = '?api=deleteUsuarios';
-   
+
     const deleteUsuario = (id) => {
         if (id !== null || id !== undefined) {
             let objId = { "id": id };
@@ -33,27 +36,46 @@ const TabelaUsuario = () => {
     }
 
     useEffect(() => {
-        const param_api_list_usuario = "?api=getUsuarios";
-        fetch(urlApi + nameApi + param_api_list_usuario)
-        .then(async (e) => {
-            return await e.json();
-        }).then(res => {
-            if (Array.isArray(res) && res.length == 0) {
-                alert("Error: parametros API");
-            } else {
-                setUsuarios(res);
-            }
 
-        }).catch(error => {
-            alert("Error: parametros API" + error);
-        })
+        const dataUser = sessionStorage.getItem("cod_estabelecimento");
+        var cod_estabelecimento = dataUser;
 
+        if (cod_estabelecimento !== 'null') {
+            const param_api_list_usuario = `?api=getPerfilUsuarios`;
+            var obj = { 'id': cod_estabelecimento };
+
+            $.post(urlApi + nameApi + param_api_list_usuario, obj, (res) => {
+                const data = JSON.parse(res);
+//TRABALHAR AQIO
+                data.forEach(element => {
+                    console.log(element)
+                });
+
+            })
+        } else {
+            alert("Nenhum cliente estabelecimento");
+            Sair();
+        }
+
+
+        //FAZER UM FILTRO CUJO OS DADOS RETORNE o COD DO ESTABELECIMENTO
+        //const param_api_list_perfil_usuarios ="?api=getPerfilUsuarios";
+
+        /* let id = "57541fc";
+         let obj_cliente= {"cod_cliente_estabelecimento":id}
+         $.post(urlApi + nameApi + param_api_list_perfil_usuarios,obj_cliente,(res,status)=>{
+          var data = JSON.parse(res);
+          data.forEach(element => {
+             console.log(element.cod)
+          });
+           
+         })-*/
 
     }, [setCodUser, setUsuarios]);
-  
+
     return (
         <div class="table-responsive mt-4 m-3">
-            
+
             <table class="table caption-top animate__animated animate__fadeIn ">
 
                 <thead>
@@ -102,10 +124,10 @@ const TabelaUsuario = () => {
                 currentPage={currentPage}
             />
             <ModalEditUsuarios data_id={id} />
-           
+
         </div>
     )
-    
+
 };
 
 export default TabelaUsuario;

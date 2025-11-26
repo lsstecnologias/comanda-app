@@ -23,10 +23,10 @@ const ModalEditUsuarios = (data_id) => {
 
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
-    const vlFilter = dataFilter.filter( e => { return e.id === idEdit });
+    const vlFilter = dataFilter.filter(e => { return e.id === idEdit });
 
     // const perfil = (vlFilter[0].perfil);
-  
+
 
     const editUsuario = (e) => {
         e.preventDefault();
@@ -83,7 +83,7 @@ const ModalEditUsuarios = (data_id) => {
         const param_api_update_usuario = "?api=updateUsuarios";
 
         $.post(urlApi + nameApi + param_api_update_usuario, objUsuario, (res, status) => {
-            
+
             var editarUsuario = $('#btnEditarUsuario')
             if (status === "success") {
                 if (res === "null" || res === null) {
@@ -112,27 +112,31 @@ const ModalEditUsuarios = (data_id) => {
         window.location.reload();
     }
     useEffect(() => {
-        const param_api_lista_usuario = '?api=getUsuarios';
-        const config = {
-            method: "GET",
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Credentials': 'true',
-                'mode': 'no-cors'
-            }
-        };
-        axios.get(urlApi + nameApi + param_api_lista_usuario, config)
-        .then(async(res) => {
-            if (res.data !== "") {
-                var vl = await res.data;
-                setDataFilter(vl);
 
-            } else {
-                alert("Error: parametros API!")
-            }
 
-        }).catch((error) => { alert("Error: parametros API " + error); });
+        const dataUser = sessionStorage.getItem("cod_estabelecimento");
+        var cod_estabelecimento = dataUser;
+
+        if (cod_estabelecimento !== 'null') {
+            const param_api_list_usuario = `?api=getPerfilUsuarios`;
+            var obj = { 'id': cod_estabelecimento };
+
+            $.post(urlApi + nameApi + param_api_list_usuario, obj, (res, status) => {
+
+                if (status == 'success') {
+
+                    var data = JSON.parse(res);
+                    let arr = [data];
+                    setDataFilter(arr);
+                }
+
+
+            })
+        } else {
+            alert("Nenhum cliente estabelecimento");
+            //Sair();
+        }
+
 
     }, [setDataFilter, setEdit]);
 
@@ -174,7 +178,7 @@ const ModalEditUsuarios = (data_id) => {
                                     </div>
                                     <div class="mb-3">
                                         <label for="loginEmailInput" class="form-label">E-mail</label>
-                                        <input type="email" class="form-control" id="loginEmailInput" onChange={(e) => { setEmailLoginUser(e.target.value) }}  placeholder={e.email} autocomplete="off" />
+                                        <input type="email" class="form-control" id="loginEmailInput" onChange={(e) => { setEmailLoginUser(e.target.value) }} placeholder={e.email} autocomplete="off" />
                                     </div>
                                     <div class="mb-3">
                                         <label for="senhaInput" class="form-label">Senha</label>

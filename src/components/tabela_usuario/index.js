@@ -14,18 +14,20 @@ const TabelaUsuario = () => {
     const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
     var [usuarios, setUsuarios] = useState([]);
+ console.log(usuarios)
     const [codUser, setCodUser] = useState("");
     const [id, setId] = useState(null);
 
     //PAGINACAO
-    const [currentPage, setCurrentPage] = useState(1);
+   const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(2);
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = usuarios.slice(indexOfFirstPost, indexOfLastPost);
+    
     <ListPagina />
 
-    const editItem = (id) => { setId(id); }
+    //const editItem = (id) => { setId(id); }
     const paramApi_delete_item = '?api=deleteUsuarios';
 
     const deleteUsuario = (id) => {
@@ -44,13 +46,17 @@ const TabelaUsuario = () => {
             const param_api_list_usuario = `?api=getPerfilUsuarios`;
             var obj = { 'id': cod_estabelecimento };
 
-            $.post(urlApi + nameApi + param_api_list_usuario, obj, (res) => {
-                const data = JSON.parse(res);
-//TRABALHAR AQIO
-                data.forEach(element => {
-                    console.log(element)
-                });
-
+            $.post(urlApi + nameApi + param_api_list_usuario, obj, (res,status) => {
+                
+               if(status == 'success'){
+                    
+                    var data =  JSON.parse(res);
+                    console.log(data)
+                    let arr =[data];
+                    setUsuarios(arr);
+               }
+                
+           
             })
         } else {
             alert("Nenhum cliente estabelecimento");
@@ -58,18 +64,7 @@ const TabelaUsuario = () => {
         }
 
 
-        //FAZER UM FILTRO CUJO OS DADOS RETORNE o COD DO ESTABELECIMENTO
-        //const param_api_list_perfil_usuarios ="?api=getPerfilUsuarios";
-
-        /* let id = "57541fc";
-         let obj_cliente= {"cod_cliente_estabelecimento":id}
-         $.post(urlApi + nameApi + param_api_list_perfil_usuarios,obj_cliente,(res,status)=>{
-          var data = JSON.parse(res);
-          data.forEach(element => {
-             console.log(element.cod)
-          });
-           
-         })-*/
+      
 
     }, [setCodUser, setUsuarios]);
 
@@ -89,21 +84,22 @@ const TabelaUsuario = () => {
                 </thead>
                 <tbody>
                     {currentPosts && currentPosts.map((e) => {
-
+                       console.log(currentPosts)
                         return (
                             <tr key={e.id}>
                                 <th scope="row">{e.id}</th>
                                 <td className='lh-1 fw-light'>{e.cod}</td>
                                 <td className='lh-1 fw-light'>{e.nome}</td>
-                                <td className='lh-1 fw-light'>{e.perfil == 'a' ? 'Admin' : 'User'}</td>
+                                <td className='lh-1 fw-light'>{e.perfil == 's' ? 'super' :'admin' }</td>
                                 <td>
-                                    <button data-bs-toggle="modal" onClick={() => editItem(e.id)} data-bs-target={"#editUsuario-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
+                                    <button data-bs-toggle="modal"  data-bs-target={"#editUsuario-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                                     <button class="btn btn-sm btn-outline-secondary bi bi-x-lg" onClick={() => deleteUsuario(e.id)}></button>
                                 </td>
 
                             </tr>
                         )
-                    })}
+                    })
+                    }
 
                 </tbody>
             </table>
@@ -117,12 +113,13 @@ const TabelaUsuario = () => {
 
                 </div>
             }
-            <Pagination
+             <Pagination
                 postsPerPage={postsPerPage}
                 totalPosts={usuarios.length}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
             />
+
             <ModalEditUsuarios data_id={id} />
 
         </div>

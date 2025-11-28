@@ -122,7 +122,7 @@ const Produto = () => {
 		let preco = $("#precoUnitInput");
 		let cod = Math.floor(Math.random() * (777 + 0)) - 1;
 
-		var objProduto = { cod_item: cod, item: "", desc: "", qtd: "", preco: "", data_post: "", categoria_id: "" };
+		var objProduto = { cod_item: cod, id_estabelecimento:"", item: "", desc: "", qtd: "", preco: "", data_post: "", categoria_id: "" };
 
 		if (valorCateg !== undefined && valorCateg !== "") {
 			preco.addClass("is-valid").removeClass("is-invalid");
@@ -174,8 +174,34 @@ const Produto = () => {
 		}
 
 
-		const paramApi_save_produto = "?api=setProduto";
+		 const dataUser = sessionStorage.getItem("cod_estabelecimento");
+        var cod_estabelecimento = dataUser;
 
+        if (cod_estabelecimento !== 'null') {
+            const param_api_list_usuario = `?api=setProduto`;
+            objProduto.id_estabelecimento = cod_estabelecimento;
+
+			console.log(objProduto)
+           /* $.post(urlApi + nameApi + param_api_list_usuario, objProduto, (res,status) => {
+                
+               if(status == 'success'){
+                    
+                    var data =  JSON.parse(res);
+                    console.log(data)
+                    let arr =[data];
+                    setUsuarios(arr);
+               }
+                
+           
+            })
+        } else {
+            alert("Nenhum cliente estabelecimento");
+            Sair();
+        }*/
+
+
+		/*
+const paramApi_save_produto = "?api=setProduto";
 		$.post(urlApi + nameApi + paramApi_save_produto, objProduto, (res, status) => {
 			if (status === "success") {
 				var btnAdicionar = $('#btnAdicionar');
@@ -203,7 +229,8 @@ const Produto = () => {
 				alert("Error: parametros API")
 			}
 
-		})
+		})*/
+}
 	}
 
 	const fecharModal = () => {

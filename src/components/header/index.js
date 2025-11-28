@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import 'animate.css';
 import TelaPrincipal from '../TelaPrincipal';
 import $ from 'jquery';
-const exibeModal=()=>{
-   $('body')
-}
+
+
+
 const Header = () => {
    const { Sair, thumb_logo } = useContext(UserContext);
 
    return (
-      <div className="container-fluid bg-body-tertiary mb-4 fixed-top m-0 p-0" onLoad={()=>{exibeModal()}}>
+      <div className="container-fluid bg-body-tertiary mb-4 fixed-top m-0 p-0" >
 
          <nav class="navbar navbar-expand-lg bg-body-tertiary shadow animate__animated animate__fadeIn bg-body-tertiary">
             <div class="container animate__animated animate__fadeIn">
@@ -77,6 +77,8 @@ const Header = () => {
             </div >
 
          </nav>
+         
+            
         </div>
    );
 

@@ -1,13 +1,17 @@
 import 'animate.css';
 
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import ModalEditProdutos from '../ModalEditProdutos';
-
+import { UserContext } from '../context';
 import ReactPaginate from 'react-paginate';
+
 const $ = require("jquery");
 
 const TabelaProduto = () => {
+    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+    sessionStorage.setItem('modal_notas', 'hide');
+    const { GetSession, sessao, Sair, status } = useContext(UserContext);
 
     const [data, setData] = useState([]);
     const [id, setId] = useState();
@@ -17,6 +21,15 @@ const TabelaProduto = () => {
     const [displaySuccess, setDisplaySuccess] = useState('none');
     const [msgError, setMsgError] = useState(null);
     const [msgSuccess, setMsgSuccess] = useState(null);
+
+    //PAGINACAO
+    /* const [currentPage, setCurrentPage] = useState(1);
+     const [postsPerPage] = useState(2);
+     const indexOfLastPost = currentPage * postsPerPage;
+     const indexOfFirstPost = indexOfLastPost - postsPerPage;
+     const currentPosts = usuarios.slice(indexOfFirstPost, indexOfLastPost);
+     <ListPagina />*/
+
 
 
     const urlApi = 'http://10.10.10.6/';
@@ -32,22 +45,31 @@ const TabelaProduto = () => {
     const editItem = (id) => { setId(id); }
 
     useEffect(() => {
-        const paramApi_lista_produto = '?api=getProdutos';
-        const config = {
-            method: "GET",
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Credentials': 'true',
-                'mode': 'no-cors'
-            }
-        };
-        axios.get(urlApi + nameApi + paramApi_lista_produto, config)
-            .then(async (res) => {
-                var vl = await res.data;
-                setData(vl);
 
-            }).catch((error) => { alert("Error: parametros API " + error) });
+        //REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
+        const dataUser = sessionStorage.getItem("cod_estabelecimento");
+        var cod_estabelecimento = dataUser;
+
+        if (cod_estabelecimento !== 'null') {
+            const param_api_list_produto = `?api=getProdutos`;
+
+            var obj = { 'id': cod_estabelecimento };
+            $.post(urlApi + nameApi + param_api_list_produto, obj, (res, status) => {
+
+                if (status == 'success') {
+                    var data = JSON.parse(res);
+                    setData(data);
+
+
+                } else {
+                    alert("Error: parametros API ")
+                }
+
+            })
+        } else {
+            alert("Nenhum cliente estabelecimento");
+            Sair();
+        }
 
     }, [setData]);
 
@@ -58,7 +80,7 @@ const TabelaProduto = () => {
                     <caption>Lista produtos</caption>
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col">Cod.</th>
                             <th scope="col">Nome </th>
                             <th scope="col">Categ.</th>
                             <th scope="col">Preço unit.</th>
@@ -66,10 +88,12 @@ const TabelaProduto = () => {
                         </tr>
                     </thead>
                     <tbody>
+                        {/*RETORNAR COD ESTABELECIMENTO */}
                         {data && data.map((val) => {
+
                             return (
                                 <tr key={val.id}>
-                                    <th scope="row">{val.id}</th>
+                                    <td scope="row">{val.cod_estabelecimento}</td>
                                     <td className='lh-1 fw-light'>{val.item}</td>
                                     <td className='lh-1 fw-light'>{val.nome}</td>
                                     <td className='lh-1 fw-light'>{val.preco}</td>
@@ -92,7 +116,14 @@ const TabelaProduto = () => {
 
                     </div>
                 }
-                <ModalEditProdutos data_id={id} />
+                {/*
+                <Pagination
+                    postsPerPage={postsPerPage}
+                    totalPosts={usuarios.length}
+                    setCurrentPage={setCurrentPage}
+                    currentPage={currentPage}
+                />
+                <ModalEditProdutos data_id={id} />*/ }
             </div>
 
         </div>

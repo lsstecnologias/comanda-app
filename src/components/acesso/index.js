@@ -1,7 +1,7 @@
 import './style.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useContext } from 'react';
+import { UserContext } from '../context';
 import 'animate.css';
-
 import md5 from 'md5';
 const Acesso = () => {
     const [emailLogin, setEmailLogin] = useState(null);
@@ -74,7 +74,8 @@ const Acesso = () => {
                     let url = pathDir + 'admin';
                     let cod_estabelecimento = (dataSession[0].cod_estabelecimento);
                     sessionStorage.setItem("user_admin", JSON.stringify(dataSession))
-                    sessionStorage.setItem('cod_estabelecimento', cod_estabelecimento)
+                    sessionStorage.setItem('cod_estabelecimento', cod_estabelecimento);
+                    sessionStorage.setItem('modal_notas','show');
                     window.location.href = url;
 
                 }

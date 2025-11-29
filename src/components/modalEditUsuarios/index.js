@@ -6,7 +6,8 @@ const ModalEditUsuarios = (data_id) => {
     var data = { data_id };
     var id = data.data_id;
     var idEdit = id.data_id;
-
+ 	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+		sessionStorage.setItem('modal_notas', 'hide');
 
     const [nomeUser, setNomeUser] = useState("");
     const [emailLoginUser, setEmailLoginUser] = useState("");
@@ -112,7 +113,7 @@ const ModalEditUsuarios = (data_id) => {
         window.location.reload();
     }
     useEffect(() => {
-
+     
 
         const dataUser = sessionStorage.getItem("cod_estabelecimento");
         var cod_estabelecimento = dataUser;
@@ -134,7 +135,7 @@ const ModalEditUsuarios = (data_id) => {
             })
         } else {
             alert("Nenhum cliente estabelecimento");
-            //Sair();
+           // Sair();
         }
 
 

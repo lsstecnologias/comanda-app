@@ -4,18 +4,23 @@ import Header from './components/header';
 import TelaPrincipal from './components/TelaPrincipal';
 import UserProvider from './components/context';
 import $ from 'jquery';
+
 function AppComponent() {
     // const { nome, perfil, senha, status } = useContext(UserContext);
     //  const params = useParams();
     // console.log(params);
-    
-                
+
+    //PERIMITE EXIBIR MODAL DE MODAL
+ sessionStorage.setItem('modal_notas','show');
+     
+   
+  
     return (
         <UserProvider >
             <Header />
             <Outlet />
-<div class="modal fade"  id="myModal"  tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticeditCategoria" aria-hidden="true">
-                <div class="modal-dialog">
+            <div class="modal fade" id="myModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticeditCategoria" aria-hidden="true">
+                <div class="modal-dialog  modal-dialog-centered modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Modal title</h5>
@@ -31,7 +36,7 @@ function AppComponent() {
                     </div>
                 </div>
             </div>
-           
+
         </UserProvider>
 
     )

@@ -189,8 +189,34 @@ const Atendimento = () => {
 
     } else {
 
-    
+       const dataUser = sessionStorage.getItem("cod_estabelecimento");
+        var cod_estabelecimento = dataUser;
 
+        if (cod_estabelecimento !== 'null') {
+            const param_api_save_categoria = "?api=setCategorias";
+            obj_categoria.id_estabelecimento = cod_estabelecimento;
+
+            $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
+
+                if (status == 'success') {
+                    setStatusFormAddCateg("none");
+                    $("#addCategorias").val("");
+                    window.location.reload()
+
+                } else {
+                    setDisplayError("block");
+                    setMsgError("Erro: !");
+                    setDisplaySuccess("none");
+                    setMsgSuccess(null);
+
+                }
+
+            })
+        } else {
+            alert("Nenhum cliente estabelecimento");
+            Sair();
+        }
+      /*
       $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
         if (status == "success") {
           if (res == 1) {
@@ -207,7 +233,7 @@ const Atendimento = () => {
             setMsgError("Preencha os campos!");
           }
         }
-      })
+      })*/
       
     }
 

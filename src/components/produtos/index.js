@@ -10,7 +10,8 @@ import UploadImagens from "../upload_imagens";
 const $ = require("jquery");
 
 const Produto = () => {
-
+		//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+		sessionStorage.setItem('modal_notas', 'hide');
 	const [valorPreco, setPreco] = useState();
 	const [valorItem, setItem] = useState();
 	const [valorDesc, setDesc] = useState();
@@ -26,7 +27,7 @@ const Produto = () => {
 	const [displaySuccess, setDisplaySuccess] = useState('none');
 	const [msgError, setMsgError] = useState(null);
 	const [msgSuccess, setMsgSuccess] = useState(null);
-	
+
 	const { GetSession, sessao, Sair, status } = useContext(UserContext);
 	const urlApi = 'http://10.10.10.6/';
 	const nameApi = 'api_comanda/';
@@ -35,6 +36,7 @@ const Produto = () => {
 	var data_atual = new Date();
 	var data_image_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 	useEffect(() => {
+	
 
 		let config = {
 
@@ -122,7 +124,7 @@ const Produto = () => {
 		let preco = $("#precoUnitInput");
 		let cod = Math.floor(Math.random() * (777 + 0)) - 1;
 
-		var objProduto = { cod_item: cod, id_estabelecimento:"", item: "", desc: "", qtd: "", preco: "", data_post: "", categoria_id: "" };
+		var objProduto = { cod_item: cod, id_estabelecimento: "", item: "", desc: "", qtd: "", preco: "", data_post: "", categoria_id: "" };
 
 		if (valorCateg !== undefined && valorCateg !== "") {
 			preco.addClass("is-valid").removeClass("is-invalid");
@@ -173,154 +175,133 @@ const Produto = () => {
 			objProduto.data_post = data_post;
 		}
 
+		//REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
+		const dataUser = sessionStorage.getItem("cod_estabelecimento");
+		var cod_estabelecimento = dataUser;
 
-		 const dataUser = sessionStorage.getItem("cod_estabelecimento");
-        var cod_estabelecimento = dataUser;
+		if (cod_estabelecimento !== 'null') {
+			const param_api_save_usuario = `?api=setProduto`;
+			objProduto.id_estabelecimento = cod_estabelecimento;
 
-        if (cod_estabelecimento !== 'null') {
-            const param_api_list_usuario = `?api=setProduto`;
-            objProduto.id_estabelecimento = cod_estabelecimento;
-
-			console.log(objProduto)
-           /* $.post(urlApi + nameApi + param_api_list_usuario, objProduto, (res,status) => {
-                
-               if(status == 'success'){
-                    
-                    var data =  JSON.parse(res);
-                    console.log(data)
-                    let arr =[data];
-                    setUsuarios(arr);
-               }
-                
-           
-            })
-        } else {
-            alert("Nenhum cliente estabelecimento");
-            Sair();
-        }*/
-
-
-		/*
-const paramApi_save_produto = "?api=setProduto";
-		$.post(urlApi + nameApi + paramApi_save_produto, objProduto, (res, status) => {
-			if (status === "success") {
+			$.post(urlApi + nameApi + param_api_save_usuario, objProduto, (res, status) => {
 				var btnAdicionar = $('#btnAdicionar');
-				if (res == "null") {
-					setDisplayError("block");
-					setMsgError("Preencha os campos!");
-					btnAdicionar.attr({ "disabled": false });
+				if (status == 'success') {
+					var btnAdicionar = $('#btnAdicionar');
+					var data = JSON.parse(res);
+					console.log(data)
+					let arrProduto = [data];
 
-				} else {
-					setDisplayError("none");
-					setMsgError(null);
-				}
-
-				if (res == 1) {
-					setListProduto(objProduto);
+					setListProduto(arrProduto);
 					setDisplaySuccess("block");
 					setMsgSuccess("Novo item adicionado!")
 					btnAdicionar.attr({ "disabled": "disabled" });
 
 				} else {
-					setDisplaySuccess("none");
-					setMsgSuccess(null);
+					setDisplayError("block");
+					setMsgError("Preencha os campos!");
+					btnAdicionar.attr({ "disabled": false });
+
 				}
-			} else {
-				alert("Error: parametros API")
-			}
 
-		})*/
+
+			})
+		} else {
+			alert("Nenhum cliente estabelecimento");
+			Sair();
+		}
+
+
+	}
+
+
+const fecharModal = () => {
+	window.location.reload();
 }
-	}
 
-	const fecharModal = () => {
-		window.location.reload();
-	}
+return (
+	<div className="container-fluid mt-3 produtos">
+		<div className="container p-0 animate__animated  animate__fadeIn">
+			<h4 className="mb-2 mt-2 pb-2 ">Produtos</h4>
+			<button type="button" class="btn w-100 btn-primary" data-bs-toggle="modal" data-bs-target="#nvProduto">
+				<i class="bi bi-plus-circle-dotted fs-4 "></i> <p>Novo Produto</p>
+			</button>
+		</div>
 
-	return (
-		<div className="container-fluid mt-3 produtos">
-			<div className="container p-0 animate__animated  animate__fadeIn">
-				<h4 className="mb-2 mt-2 pb-2 ">Produtos</h4>
-				<button type="button" class="btn w-100 btn-primary" data-bs-toggle="modal" data-bs-target="#nvProduto">
-					<i class="bi bi-plus-circle-dotted fs-4 "></i> <p>Novo Produto</p>
-				</button>
-			</div>
+		<div class="modal fade" id="nvProduto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticnvProduto" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="staticnvProduto">Novo Produto</h1>
+						<button type="button" onClick={() => { fecharModal() }} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+							<i class="bi bi-check-circle p-2"></i>
+							{msgSuccess !== null && msgSuccess}
 
-			<div class="modal fade" id="nvProduto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticnvProduto" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="staticnvProduto">Novo Produto</h1>
-							<button type="button" onClick={() => { fecharModal() }} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
-						<div class="modal-body">
-							<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-								<i class="bi bi-check-circle p-2"></i>
-								{msgSuccess !== null && msgSuccess}
+						<div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+							<i class="bi bi-exclamation-triangle p-2"></i>
+							{msgError !== null && msgError}
 
-							</div>
-							<div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
-								<i class="bi bi-exclamation-triangle p-2"></i>
-								{msgError !== null && msgError}
-
-							</div>
-							<div class="mb-3">
-								<label for="nomeItemInput" class="form-label">Nome item</label>
-								<input type="text" class="form-control " id="nomeItemInput" autocomplete="off" onChange={(e) => { setItem(e.target.value) }} placeholder="Nome item" />
-							</div>
-							<div class="mb-3">
-								<label for="descItemInput" class="form-label">Descrição item</label>
-								<input type="text" class="form-control" id="descItemInput" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder="Detalhes" />
-							</div>
-							<div class="mb-3" id="categorias">
-								<label for="categorias" class="form-label">Categoria</label>
-								<select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">
-									<option >Selecione</option>
-									{listCateg && listCateg.map((e) => {
-										return (<option key={e.id} value={e.cod}>{e.nome}</option>)
-									})}
-									{listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}
-
-								</select>
-
-
-							</div>
-
-							<div class="mb-3">
-								<label for="qtItemInput" class="form-label">Quantidade</label>
-								<input type="number" min="1" class="form-control" id="qtItemInput" onChange={(e) => { setQuant(e.target.value) }} autocomplete="off" placeholder="0" />
-
-							</div>
-
-							<div class="mb-3">
-								<label for="precoUnitInput" class="form-label">Preço unitário</label>
-
-								<NumericFormat
-									autoComplete="off"
-									thousandSeparator=","
-									class="form-control" id="precoUnitInput" placeholder="R$" onChange={(e) => { setPreco(e.target.value) }}
-									decimalScale={2}
-									fixedDecimalScale={true}
-									onValueChange={(values) => {
-										setPreco(values);
-									}}
-								/>
-							</div>
-							<div class="mb-3">
-								<input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileUser(e.target.files[0]) }} placeholder="Another input placeholder" />
-
-								<button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={() => { carregarImagens() }}> <i class="bi fs-5 bi-cloud-arrow-up"></i> Carregar imagem</button>
-							</div>
 						</div>
-						<div class="modal-footer">
-
-							<button type="button" onClick={(e) => { addNovoProduto(e) }} class="btn w-100 btn-primary" id="btnAdicionar" > <i class="bi bi-plus-circle"></i> Adicionar</button>
+						<div class="mb-3">
+							<label for="nomeItemInput" class="form-label">Nome item</label>
+							<input type="text" class="form-control " id="nomeItemInput" autocomplete="off" onChange={(e) => { setItem(e.target.value) }} placeholder="Nome item" />
 						</div>
+						<div class="mb-3">
+							<label for="descItemInput" class="form-label">Descrição item</label>
+							<input type="text" class="form-control" id="descItemInput" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder="Detalhes" />
+						</div>
+						<div class="mb-3" id="categorias">
+							<label for="categorias" class="form-label">Categoria</label>
+							<select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">
+								<option >Selecione</option>
+								{listCateg && listCateg.map((e) => {
+									return (<option key={e.id} value={e.cod}>{e.nome}</option>)
+								})}
+								{listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}
+
+							</select>
+
+
+						</div>
+
+						<div class="mb-3">
+							<label for="qtItemInput" class="form-label">Quantidade</label>
+							<input type="number" min="1" class="form-control" id="qtItemInput" onChange={(e) => { setQuant(e.target.value) }} autocomplete="off" placeholder="0" />
+
+						</div>
+
+						<div class="mb-3">
+							<label for="precoUnitInput" class="form-label">Preço unitário</label>
+
+							<NumericFormat
+								autoComplete="off"
+								thousandSeparator=","
+								class="form-control" id="precoUnitInput" placeholder="R$" onChange={(e) => { setPreco(e.target.value) }}
+								decimalScale={2}
+								fixedDecimalScale={true}
+								onValueChange={(values) => {
+									setPreco(values);
+								}}
+							/>
+						</div>
+						<div class="mb-3">
+							<input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileUser(e.target.files[0]) }} placeholder="Another input placeholder" />
+
+							<button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={() => { carregarImagens() }}> <i class="bi fs-5 bi-cloud-arrow-up"></i> Carregar imagem</button>
+						</div>
+					</div>
+					<div class="modal-footer">
+
+						<button type="button" onClick={(e) => { addNovoProduto(e) }} class="btn w-100 btn-primary" id="btnAdicionar" > <i class="bi bi-plus-circle"></i> Adicionar</button>
 					</div>
 				</div>
 			</div>
-			<TabelaProduto />
 		</div>
-	)
+		<TabelaProduto />
+	</div>
+)
 }
 export default Produto;

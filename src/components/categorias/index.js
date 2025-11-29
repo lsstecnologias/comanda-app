@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import $ from 'jquery';
 import TabelaCategoria from "../tabela_categoria";
+import { UserContext } from '../context';
 import 'animate.css';
 const Categorias = () => {
+    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+    sessionStorage.setItem('modal_notas', 'hide');
+    const { GetSession, sessao, Sair, status } = useContext(UserContext);
 
     const [valorCateg, setCategorias] = useState();
     const [nvCateg, setNvCateg] = useState();
@@ -23,63 +27,111 @@ const Categorias = () => {
 
     const addNvCategoria = (e) => {
         e.preventDefault();
-        let categ_input = $("#addCategorias");
+        let categ_input = $("#inpt_categoria");
         let data_atual = new Date();
-        let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
+        let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 
-        const obj_categoria = { cod: "", nome: "", data_post: "" };
-
+        const obj_categoria = { id_estabelecimento: "", cod: "", nome: "", data_post: "" };
+        //Valida hora-data e cod da categoria do item
         if (obj_categoria.data_post == "" && obj_categoria.cod == "") {
             obj_categoria.data_post = data_post;
             obj_categoria.cod = Math.floor(Math.random() * (777 + 0)) - 1;
         }
 
+        //Valida os campos
         if (nvCateg !== undefined && nvCateg !== "") {
             categ_input.addClass("is-valid").removeClass("is-invalid");
             obj_categoria.nome = nvCateg;
         } else {
+
+            setDisplayError("block");
+            setMsgError("Preencha os campo!");
+
             categ_input.addClass("is-invalid").removeClass("is-valid");
             obj_categoria.nome = null;
+
         }
 
-        const param_api_save_categoria = "?api=setCategoria";
-        $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
-            if (status === "success") {
-                setStatusFormAddCateg("none");
-                $("#addCategorias").val("");
-                let categ_input = $("#addCategorias");
-                categ_input.addClass("is-invalid").removeClass("is-valid");
-                var btnAdicionar = $('#btnAdicionar')
+        if (categ_input.val()) {
+            setDisplaySuccess("block");
+            setMsgSuccess("Nova categoria adicionada!");
 
-                if (res == "null") {
+            setDisplayError("none");
+            setMsgError(null);
+
+            categ_input.addClass("is-valid").removeClass("is-invalid");
+        } else {
+            setDisplayError("block");
+            setMsgError("Preencha os campo!");
+
+            setDisplaySuccess("none");
+            setMsgSuccess(null);
+             
+            categ_input.addClass("is-invalid").removeClass("is-valid");
+        }
+
+        const dataUser = sessionStorage.getItem("cod_estabelecimento");
+        var cod_estabelecimento = dataUser;
+
+        if (cod_estabelecimento !== 'null') {
+            const param_api_save_categoria = "?api=setCategorias";
+            obj_categoria.id_estabelecimento = cod_estabelecimento;
+
+            $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
+
+                if (status == 'success') {
+                    setStatusFormAddCateg("none");
+                    $("#addCategorias").val("");
+                    window.location.reload()
+
+                } else {
                     setDisplayError("block");
-                    setMsgError("Preencha o campo!")
-                    btnAdicionar.attr({ "disabled": false });
-
-                } else {
-                    setDisplayError("none");
-                    setMsgError(null)
-                }
-
-                if (res == 1) {
-                    setDisplaySuccess("block");
-                    setMsgSuccess("Nova categoria adicionada!");
-
-                } else {
+                    setMsgError("Erro: !");
                     setDisplaySuccess("none");
                     setMsgSuccess(null);
+
                 }
+
+            })
+        } else {
+            alert("Nenhum cliente estabelecimento");
+            Sair();
+        }
+        
+
+        /* $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
+        if (status === "success") {
+            setStatusFormAddCateg("none");
+            $("#addCategorias").val("");
+            let categ_input = $("#addCategorias");
+            categ_input.addClass("is-invalid").removeClass("is-valid");
+            var btnAdicionar = $('#btnAdicionar')
+
+            if (res == "null") {
+                setDisplayError("block");
+                setMsgError("Preencha o campo!")
+                btnAdicionar.attr({ "disabled": false });
+
             } else {
-                alert("Error: parametros API!")
+                setDisplayError("none");
+                setMsgError(null)
             }
 
-        })
-    }
-    const exibeFormAddCateg = (e) => {
-        e.preventDefault();
-        setStatusFormAddCateg("inline-flex");
+            if (res == 1) {
+                setDisplaySuccess("block");
+                setMsgSuccess("Nova categoria adicionada!");
+
+            } else {
+                setDisplaySuccess("none");
+                setMsgSuccess(null);
+            }
+        } else {
+            alert("Error: parametros API!")
+        }*/
 
     }
+
+
     return (
         <div class="container-fluid mt-4 categorias">
 
@@ -100,7 +152,7 @@ const Categorias = () => {
 
                 <div class="input-group  mb-3 mt-2" style={{ display: 'inline-flex' }}>
                     <button class="btn btn-primary " type="button" onClick={(e) => { addNvCategoria(e) }} > <i class="bi bi-plus-circle-dotted fs-4"></i> Adicionar</button>
-                    <input type="text" class="form-control animate__animated  animate__fadeIn " id="addCategorias" autocomplete="off" onChange={(e) => { setNvCateg(e.target.value) }} placeholder="Nome da categoria" aria-label="Categoria do produto" aria-describedby="button-addon2" />
+                    <input type="text" class="form-control animate__animated  animate__fadeIn " id="inpt_categoria" autocomplete="off" onChange={(e) => { setNvCateg(e.target.value) }} placeholder="Nome da categoria" aria-label="Categoria do produto" aria-describedby="button-addon2" />
 
                 </div>
                 <TabelaCategoria />
@@ -108,7 +160,7 @@ const Categorias = () => {
         </div>
 
     )
-
 }
+
 
 export default Categorias;

@@ -14,17 +14,16 @@ const TabelaUsuario = () => {
     const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
     var [usuarios, setUsuarios] = useState([]);
- console.log(usuarios)
+    console.log(usuarios)
     const [codUser, setCodUser] = useState("");
     const [id, setId] = useState(null);
 
     //PAGINACAO
-   const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(2);
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = usuarios.slice(indexOfFirstPost, indexOfLastPost);
-    
     <ListPagina />
 
     //const editItem = (id) => { setId(id); }
@@ -38,7 +37,8 @@ const TabelaUsuario = () => {
     }
 
     useEffect(() => {
-
+	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+		sessionStorage.setItem('modal_notas', 'hide');
         const dataUser = sessionStorage.getItem("cod_estabelecimento");
         var cod_estabelecimento = dataUser;
 
@@ -46,17 +46,17 @@ const TabelaUsuario = () => {
             const param_api_list_usuario = `?api=getPerfilUsuarios`;
             var obj = { 'id': cod_estabelecimento };
 
-            $.post(urlApi + nameApi + param_api_list_usuario, obj, (res,status) => {
-                
-               if(status == 'success'){
-                    
-                    var data =  JSON.parse(res);
+            $.post(urlApi + nameApi + param_api_list_usuario, obj, (res, status) => {
+
+                if (status == 'success') {
+
+                    var data = JSON.parse(res);
                     console.log(data)
-                    let arr =[data];
+                    let arr = [data];
                     setUsuarios(arr);
-               }
-                
-           
+                }
+
+
             })
         } else {
             alert("Nenhum cliente estabelecimento");
@@ -64,7 +64,7 @@ const TabelaUsuario = () => {
         }
 
 
-      
+
 
     }, [setCodUser, setUsuarios]);
 
@@ -84,15 +84,15 @@ const TabelaUsuario = () => {
                 </thead>
                 <tbody>
                     {currentPosts && currentPosts.map((e) => {
-                       console.log(currentPosts)
+                        console.log(currentPosts)
                         return (
                             <tr key={e.id}>
                                 <th scope="row">{e.id}</th>
                                 <td className='lh-1 fw-light'>{e.cod}</td>
                                 <td className='lh-1 fw-light'>{e.nome}</td>
-                                <td className='lh-1 fw-light'>{e.perfil == 's' ? 'super' :'admin' }</td>
+                                <td className='lh-1 fw-light'>{e.perfil == 's' ? 'super' : 'admin'}</td>
                                 <td>
-                                    <button data-bs-toggle="modal"  data-bs-target={"#editUsuario-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
+                                    <button data-bs-toggle="modal" data-bs-target={"#editUsuario-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                                     <button class="btn btn-sm btn-outline-secondary bi bi-x-lg" onClick={() => deleteUsuario(e.id)}></button>
                                 </td>
 
@@ -113,7 +113,7 @@ const TabelaUsuario = () => {
 
                 </div>
             }
-             <Pagination
+            <Pagination
                 postsPerPage={postsPerPage}
                 totalPosts={usuarios.length}
                 setCurrentPage={setCurrentPage}

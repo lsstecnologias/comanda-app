@@ -32,6 +32,7 @@ function App() {
   window.addEventListener('load', () => {
     $('#preloader').hide(500);
     setStatusTela("block");
+    
   });
 
   const page404 = () => {
@@ -51,11 +52,11 @@ function App() {
           <Route path="/" element={<Acesso />} />
                   
           <Route path="/admin" element={<AppComponent />} >
-          
+              
             <Route path="produto" element={<Produto />} />
             <Route path="agendamento-pedido" element={<AgendamentoPedido />} />
             <Route path="meus-clientes" element={<Clientes />} />
-             <Route path="listar-clientes" element={<TabelaCliente />} />
+            <Route path="listar-clientes" element={<TabelaCliente />} />
             <Route path="usuario" element={<Usuarios />} />
             <Route path="imagens" element={<UploadImagens />} />
             <Route path="categoria" element={<Categorias />} />

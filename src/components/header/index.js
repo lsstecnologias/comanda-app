@@ -36,7 +36,7 @@ const Header = () => {
                      <li class="nav-item dropdown">
                         <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Atendimento</Link>
                         <ul class="dropdown-menu fw-light">
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/atendimento">Novo Atendimento</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/atendimento">Novo Atendimentos</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/lista-atendimento">Lista de Atendimentos</Link></li>
                       
                         </ul>
@@ -45,8 +45,9 @@ const Header = () => {
                      <li class="nav-item dropdown">
                         <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Produtos</Link>
                         <ul class="dropdown-menu fw-light">
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/produto">Novo item</Link></li>
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/categoria">Categoria</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/produto">Adicionar Item</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/categoria">Adicionar Categoria</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="">Pesquisa de satisfação</Link></li>
                         </ul>
                      </li>
                       <li class="nav-item dropdown">

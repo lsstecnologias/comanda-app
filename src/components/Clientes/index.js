@@ -262,7 +262,7 @@ const Clientes = () => {
 				{msgError !== null && msgError}
 
 			</div>
-			<h4 className="mb-2 mt-2 pb-2">Estabelecimento / Cliente</h4>
+			<h4 className="mb-2 mt-2 pb-2">Estabelecimento/Cliente</h4>
 
 			<table class="table table-bordered ">
 				<thead>

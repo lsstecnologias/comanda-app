@@ -10,7 +10,8 @@ import $ from 'jquery';
 
 const Atendimento = () => {
   const { sessao, status, redirect_login, Sair } = useContext(UserContext);
-
+//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+		sessionStorage.setItem('modal_notas', 'hide');
   const [sessaoUser, setSessaoUser] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [buscarCliente, setBuscarCliente] = useState("");
@@ -75,10 +76,10 @@ const Atendimento = () => {
       const param_api_find_clientes = "?api=findClientes";
       $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente }, async (res, status) => {
 
-       
+
         if (status == 'success') {
 
-           const data = JSON.parse(res);
+          const data = JSON.parse(res);
           const { nome, cod } = data[0] ?? false;
 
 
@@ -102,11 +103,12 @@ const Atendimento = () => {
   }
 
   const validarAtendimento = (e) => {
+    
     e.preventDefault();
     let data_atual = new Date();
     let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 
-    const objAtendimento = { cod_atendimento: null, cod_atendente: null, cod_cliente: null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
+    const objAtendimento = { id_estabelecimento: null, cod_atendimento: null, cod_atendente: null, cod_cliente: null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
 
     objAtendimento.data_post = data_post;
     let atendente = $('#atendente');
@@ -141,7 +143,7 @@ const Atendimento = () => {
     } else {
       cep.addClass("is-invalid").removeClass("is-valid");
     }
-  
+
     if (inpt_buscar.val() && codCliente) {
 
       objAtendimento.cliente = inpt_buscar.val();
@@ -176,10 +178,10 @@ const Atendimento = () => {
     const param_api_save_atendimento = "?api=setAtendimentos";
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
-    
+
 
     if (objAtendimento.cod_atendimento == null || objAtendimento.cod_atendente == null || objAtendimento.cod_cliente == null || objAtendimento.cliente == null || objAtendimento.data_endereco == null || objAtendimento.data_atendimento == null || objAtendimento.data_post == null) {
-      console.log(objAtendimento);
+    
 
       setDisplaySuccess("none");
       setMsgSuccess(null);
@@ -189,33 +191,35 @@ const Atendimento = () => {
 
     } else {
 
-       const dataUser = sessionStorage.getItem("cod_estabelecimento");
-        var cod_estabelecimento = dataUser;
+      const dataUser = sessionStorage.getItem("cod_estabelecimento");
+      var cod_estabelecimento = dataUser;
 
-        if (cod_estabelecimento !== 'null') {
-            const param_api_save_categoria = "?api=setCategorias";
-            obj_categoria.id_estabelecimento = cod_estabelecimento;
+      if (cod_estabelecimento !== 'null') {
 
-            $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
+        objAtendimento.id_estabelecimento = cod_estabelecimento;
 
-                if (status == 'success') {
-                    setStatusFormAddCateg("none");
-                    $("#addCategorias").val("");
-                    window.location.reload()
+        $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
+          if (status == "success") {
+            if (res == 1) {
 
-                } else {
-                    setDisplayError("block");
-                    setMsgError("Erro: !");
-                    setDisplaySuccess("none");
-                    setMsgSuccess(null);
+              setDisplaySuccess("block");
+              setMsgSuccess("Atendimento registrado!");
+              setDisplayError("none");
+              setMsgError(null);
 
-                }
+            } else {
+              setDisplaySuccess("none");
+              setMsgSuccess(null);
+              setDisplayError("block");
+              setMsgError("Preencha os campos!");
+            }
+          }
 
-            })
-        } else {
-            alert("Nenhum cliente estabelecimento");
-            Sair();
-        }
+        })
+      } else {
+        alert("Nenhum cliente estabelecimento");
+        Sair();
+      }
       /*
       $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
         if (status == "success") {
@@ -234,7 +238,7 @@ const Atendimento = () => {
           }
         }
       })*/
-      
+
     }
 
   }
@@ -261,7 +265,7 @@ const Atendimento = () => {
 
       setSessaoUser(sessao);
 
-    } 
+    }
 
     let data_cep = $('#cep');
     data_cep.mask('00000000');
@@ -272,7 +276,7 @@ const Atendimento = () => {
         .then((res) => {
           if (res.status == 200) {
             setClientes(res.data);
-            
+
           }
 
         }).catch((error) => { alert("Error: parametros API " + error) });

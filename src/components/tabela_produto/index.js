@@ -62,7 +62,7 @@ const TabelaProduto = () => {
 
 
                 } else {
-                    alert("Error: parametros API ")
+                    alert("Error: parametros API!")
                 }
 
             })

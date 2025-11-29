@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react"
+import { useContext } from 'react';
+import { UserContext } from '../../components/context';
 import axios from 'axios';
 const $ = require("jquery");
 const Comanda = () => {
-
-
+   //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+   sessionStorage.setItem('modal_notas', 'hide');
+   const { Sair, thumb_logo } = useContext(UserContext);
    const [data, setData] = useState([]);
 
    const urlApi = 'http://10.10.10.6/';
@@ -46,22 +49,49 @@ const Comanda = () => {
             'mode': 'no-cors'
          }
       };
-      axios.get(urlApi + nameApi + param_api_get_produtos, config)
-      .then((res) => {
-         var vl = res.data;
-         for (var i = 0; i < vl.length; i++) {
-            vl[i].subtotal = 0;
-         }
-         setData(vl);
 
-      }).catch((error) => { alert("Error: parametros API " + error) });
+      const dataUser = sessionStorage.getItem("cod_estabelecimento");
+      var cod_estabelecimento = dataUser;
 
+      if (cod_estabelecimento !== 'null') {
+        
+         var obj = { 'id': cod_estabelecimento };
+
+         $.post(urlApi + nameApi + param_api_get_produtos , obj, (res, status) => {
+
+            if (status == 'success') {
+
+               var data = JSON.parse(res);
+              
+               for (var i = 0; i < data.length; i++) {
+                  data[i].subtotal = 0;
+               }
+               setData(data);
+            }
+
+
+         })
+      } else {
+         alert("Nenhum cliente estabelecimento");
+         Sair();
+      }
+      /*
+            axios.get(urlApi + nameApi + param_api_get_produtos, config)
+               .then((res) => {
+                  var vl = res.data;
+                  for (var i = 0; i < vl.length; i++) {
+                     vl[i].subtotal = 0;
+                  }
+                  setData(vl);
+      
+               }).catch((error) => { alert("Error: parametros API " + error) });
+      */
    }, [setData])
    return (
       <div className="container comanda">
-          <h4 className="mb-2 mt-2 pb-2 ">Comanda <i class="bi bi-clipboard2"></i></h4>
+         <h4 className="mb-2 mt-2 pb-2 ">Comanda <i class="bi bi-clipboard2"></i></h4>
          <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
-            
+
             <article>
                <table class="table table-bordered align-right table-responsive">
                   <thead class="align-end">

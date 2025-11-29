@@ -51,9 +51,9 @@ const TabelaUsuario = () => {
                 if (status == 'success') {
 
                     var data = JSON.parse(res);
-                    console.log(data)
-                    let arr = [data];
-                    setUsuarios(arr);
+                    console.log('usuarios',data)
+                 
+                    setUsuarios(data);
                 }
 
 

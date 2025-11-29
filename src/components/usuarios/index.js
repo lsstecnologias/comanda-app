@@ -9,7 +9,8 @@ var md5 = require('md5');
 
 
 const Usuarios = () => {
-
+//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+		sessionStorage.setItem('modal_notas', 'hide');
     const [nomeUser, setNomeUser] = useState("");
     const [emailLoginUser, setEmailLoginUser] = useState("");
     const [senhaUser, setSenhaUser] = useState("");

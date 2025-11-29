@@ -25,7 +25,7 @@ import TelaPrincipal from './components/TelaPrincipal';
 const $ = require("jquery");
 
 function App() {
-
+  sessionStorage.setItem('modal_notas', 'hide');
   const [statusTela, setStatusTela] = useState('');
  
 
@@ -62,6 +62,7 @@ function App() {
             <Route path="categoria" element={<Categorias />} />
             <Route path="template-view" element={<Template />} />
             <Route path="sistema" element={<Sistema />} />
+             <Route path="comanda/:cod" element={<Comanda />} />
             <Route path="qr" element={<QRCode />} />
             <Route path="keygen" element={<Keygen />} />
             <Route path="atendimento" element={<Atendimento />} />

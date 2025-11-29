@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useParams } from 'react-router-dom';
 const $ = require("jquery");
 const AgendamentoPedido = () => {
   
@@ -56,7 +56,7 @@ const AgendamentoPedido = () => {
                   <tr>
 
                      <th scope="col fw-light">Cod. Atendimento</th>
-                     <th scope="col fw-light" >Atendente</th>
+                     <th scope="col fw-light">Atendente</th>
 
                      <th scope="col fw-light">Data Atendimento</th>
                      <th scope="col" > </th>
@@ -70,7 +70,7 @@ const AgendamentoPedido = () => {
 
                            <td className='lh-1 fw-light'>{val.cod_atendimento}</td>
                            <td className='lh-1 fw-light'>{val.cod_atendente}</td>
-                           <td className='lh-1 fw-light' >{val.data_atendimento}</td>
+                           <td className='lh-1 fw-light'>{val.data_atendimento}</td>
                      
                            <td className='lh-1 fw-light' ><button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-person-fill-gear"></i></button></td>
 

@@ -3,6 +3,8 @@ import 'animate.css';
 import axios from 'axios';
 import { useEffect, useState, useContext } from 'react';
 import ModalEditProdutos from '../ModalEditProdutos';
+import ListPagina from "../../ListPagina";
+import Pagination from "../../ListPagina";
 import { UserContext } from '../context';
 import ReactPaginate from 'react-paginate';
 
@@ -23,12 +25,12 @@ const TabelaProduto = () => {
     const [msgSuccess, setMsgSuccess] = useState(null);
 
     //PAGINACAO
-    /* const [currentPage, setCurrentPage] = useState(1);
+     const [currentPage, setCurrentPage] = useState(1);
      const [postsPerPage] = useState(2);
      const indexOfLastPost = currentPage * postsPerPage;
      const indexOfFirstPost = indexOfLastPost - postsPerPage;
-     const currentPosts = usuarios.slice(indexOfFirstPost, indexOfLastPost);
-     <ListPagina />*/
+     const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+     <ListPagina />
 
 
 
@@ -89,7 +91,7 @@ const TabelaProduto = () => {
                     </thead>
                     <tbody>
                         {/*RETORNAR COD ESTABELECIMENTO */}
-                        {data && data.map((val) => {
+                        {currentPosts && currentPosts.map((val) => {
 
                             return (
                                 <tr key={val.id}>
@@ -116,14 +118,14 @@ const TabelaProduto = () => {
 
                     </div>
                 }
-                {/*
+                
                 <Pagination
                     postsPerPage={postsPerPage}
-                    totalPosts={usuarios.length}
+                    totalPosts={data.length}
                     setCurrentPage={setCurrentPage}
                     currentPage={currentPage}
                 />
-                <ModalEditProdutos data_id={id} />*/ }
+                <ModalEditProdutos data_id={id} /> 
             </div>
 
         </div>

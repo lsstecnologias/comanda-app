@@ -55,7 +55,7 @@ const Categorias = () => {
         if (categ_input.val()) {
             setDisplaySuccess("block");
             setMsgSuccess("Nova categoria adicionada!");
-
+            window.location.reload();
             setDisplayError("none");
             setMsgError(null);
 
@@ -82,7 +82,7 @@ const Categorias = () => {
                 if (status == 'success') {
                     setStatusFormAddCateg("none");
                     $("#addCategorias").val("");
-                    window.location.reload()
+                   
 
                 } else {
                     setDisplayError("block");
@@ -134,7 +134,6 @@ const Categorias = () => {
 
     return (
         <div class="container-fluid mt-4 categorias">
-
             <div class="container  p-0 ">
                 <h4 className="mb-2 mt-2 pb-2 ">Categorias</h4>
                 <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
@@ -153,7 +152,7 @@ const Categorias = () => {
                 <div class="input-group  mb-3 mt-2" style={{ display: 'inline-flex' }}>
                     <button class="btn btn-primary " type="button" onClick={(e) => { addNvCategoria(e) }} > <i class="bi bi-plus-circle-dotted fs-4"></i> Adicionar</button>
                     <input type="text" class="form-control animate__animated  animate__fadeIn " id="inpt_categoria" autocomplete="off" onChange={(e) => { setNvCateg(e.target.value) }} placeholder="Nome da categoria" aria-label="Categoria do produto" aria-describedby="button-addon2" />
-
+                    
                 </div>
                 <TabelaCategoria />
             </div>

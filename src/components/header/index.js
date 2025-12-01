@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../components/context';
 import { Link } from 'react-router-dom';
 import 'animate.css';
@@ -8,8 +8,11 @@ import $ from 'jquery';
 
 
 const Header = () => {
-   const { Sair, thumb_logo } = useContext(UserContext);
-
+   const {sessao, Sair, thumb_logo } = useContext(UserContext);
+   console.log(sessao.nome)
+   useEffect(()=>{
+      console.log(sessao,thumb_logo)
+   },[]);
    return (
       <div className="container-fluid bg-body-tertiary mb-4 fixed-top m-0 p-0" >
 
@@ -64,7 +67,9 @@ const Header = () => {
 
                </div>
                <div class="nav-item dropdown">
-
+                  <a class="nav-link  fw-light">
+                     <small> Olá, {sessao.nome}</small>
+                  </a>
                   <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                      <button class="btn btn-outline-primary btn-sm"> <i class="bi bi-lock-fill"></i> <small>Acesso </small></button>
                   </a>

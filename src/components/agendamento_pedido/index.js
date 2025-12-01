@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { Link,useParams } from 'react-router-dom';
 const $ = require("jquery");
 const AgendamentoPedido = () => {
-  
+  //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+   sessionStorage.setItem('modal_notas', 'hide');
    
    const [data, setData] = useState([]);
    const [id, setId] = useState();

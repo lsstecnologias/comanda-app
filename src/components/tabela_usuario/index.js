@@ -4,23 +4,27 @@ import { UserContext } from '../context';
 import ListPagina from "../../ListPagina";
 import ModalEditUsuarios from "../modalEditUsuarios";
 import $ from 'jquery';
+
+
 import Pagination from "../../ListPagina";
 
 
 const TabelaUsuario = () => {
+    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+		sessionStorage.setItem('modal_notas', 'hide');
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
     //CONTINUA AQUI....
     const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
     var [usuarios, setUsuarios] = useState([]);
-    console.log(usuarios)
+   
     const [codUser, setCodUser] = useState("");
     const [id, setId] = useState(null);
 
     //PAGINACAO
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage] = useState(2);
+    const [postsPerPage] = useState(4);
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = usuarios.slice(indexOfFirstPost, indexOfLastPost);
@@ -37,8 +41,7 @@ const TabelaUsuario = () => {
     }
 
     useEffect(() => {
-	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
-		sessionStorage.setItem('modal_notas', 'hide');
+	
         const dataUser = sessionStorage.getItem("cod_estabelecimento");
         var cod_estabelecimento = dataUser;
 

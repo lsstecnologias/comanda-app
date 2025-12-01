@@ -7,11 +7,14 @@ import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context';
 import axios from "axios";
 import UploadImagens from "../upload_imagens";
+
 const $ = require("jquery");
 
 const Produto = () => {
 		//PERIMITE NÃO EXIBIR MODAL DE NOTAS
-		sessionStorage.setItem('modal_notas', 'hide');
+	sessionStorage.setItem('modal_notas', 'hide');
+	const { GetSession, sessao, Sair, status } = useContext(UserContext);
+	
 	const [valorPreco, setPreco] = useState();
 	const [valorItem, setItem] = useState();
 	const [valorDesc, setDesc] = useState();
@@ -22,21 +25,23 @@ const Produto = () => {
 	const [listCateg, setListCateg] = useState(null);
 	const [listProduto, setListProduto] = useState([]);
 
+	
+
 	//HOOK MSG ERROS
 	const [displayError, setDisplayError] = useState('none');
 	const [displaySuccess, setDisplaySuccess] = useState('none');
 	const [msgError, setMsgError] = useState(null);
 	const [msgSuccess, setMsgSuccess] = useState(null);
 
-	const { GetSession, sessao, Sair, status } = useContext(UserContext);
+	
 	const urlApi = 'http://10.10.10.6/';
 	const nameApi = 'api_comanda/';
 
 	const [selectedFileUser, setSelectedFileUser] = useState(null);
 	var data_atual = new Date();
-	var data_image_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
+	//var data_image_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 	useEffect(() => {
-	
+		
 
 		let config = {
 
@@ -48,11 +53,7 @@ const Produto = () => {
 				'mode': 'no-cors'
 			}
 		}
-		if (status) {
-			const { cod, id, nome, status, data_post, thumb_image } = sessao ?? Sair();
-			setSessaoUser({ cod, id, nome, status, data_post, data_image_post });
-
-		}
+	
 		const param_api_get_categorias = "?api=getCategorias";
 		const listCategoria = () => {
 			axios.get(urlApi + nameApi + param_api_get_categorias, config)
@@ -66,7 +67,7 @@ const Produto = () => {
 		listCategoria();
 
 	}, [setListCateg, setSessaoUser]);
-
+/*
 
 	const carregarImagens = () => {
 
@@ -80,6 +81,7 @@ const Produto = () => {
 			formData.append("arquivo", selectedFileUser);
 			formData.append("usuario", JSON.stringify(sessaoUser));
 			formData.append("produto", JSON.stringify(listProduto))
+			
 			var xhr = new XMLHttpRequest();
 			xhr.onreadystatechange = function () {
 				if (xhr.readyState == 4) {
@@ -87,7 +89,7 @@ const Produto = () => {
 					if (res) {
 						inputFoto.addClass("is-valid").removeClass("is-invalid").val(null);
 
-						/*let data = JSON.parse(res)
+						let data = JSON.parse(res)
 						if (data.status) {
 							inputFoto.addClass("is-valid").removeClass("is-invalid").val(null);
 
@@ -95,7 +97,7 @@ const Produto = () => {
 						} else {
 							inputFoto.addClass("is-invalid").removeClass("is-valid");
 
-						}*/
+						}
 						console.log(res)
 
 					} else {
@@ -114,7 +116,7 @@ const Produto = () => {
 		}
 
 
-	}
+	}*/
 	const addNovoProduto = (e) => {
 		e.preventDefault();
 
@@ -287,11 +289,7 @@ return (
 								}}
 							/>
 						</div>
-						<div class="mb-3">
-							<input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileUser(e.target.files[0]) }} placeholder="Another input placeholder" />
-
-							<button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={() => { carregarImagens() }}> <i class="bi fs-5 bi-cloud-arrow-up"></i> Carregar imagem</button>
-						</div>
+						
 					</div>
 					<div class="modal-footer">
 

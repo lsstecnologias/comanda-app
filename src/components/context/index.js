@@ -25,9 +25,9 @@ function UserProvider({ children }) {
 
         } else {
             setStatus(true);
-            const {cod,cod_estabelecimento,data_post,email,id,nome,perfil,senha,status} = data[0] ?? redirect_login();
-            const objSessao ={cod,cod_estabelecimento,data_post,email,id,nome,perfil,senha,status};
-            setSessao(objSessao);
+            const {cod,cod_estabelecimento,data_post,email,id,nome,sobrenome,perfil,senha,status} = data[0] ?? redirect_login();
+                     
+            setSessao({cod,cod_estabelecimento,data_post,email,id,nome,sobrenome,perfil,senha,status});
         }
 
     }, [setSessao,setStatus]);

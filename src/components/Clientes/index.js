@@ -11,7 +11,8 @@ var md5 = require('md5');
 
 
 const Clientes = () => {
-
+	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+	sessionStorage.setItem('modal_notas', 'hide');
 	const [nomeUser, setNomeUser] = useState("");
 	const [emailLoginUser, setEmailLoginUser] = useState("");
 	const [senhaUser, setSenhaUser] = useState("");
@@ -138,7 +139,7 @@ const Clientes = () => {
 
 		const param_save_estabelecimento = "?api=setEstabelecimento";
 		//REGISTRA OS DADOS NA TABELA DE ESTABELECIMENTO/CLIENTE
-		
+
 		$.post(urlApi + nameApi + param_save_estabelecimento, obj_cliente, (res, status) => {
 
 			if (status == "success") {
@@ -161,10 +162,10 @@ const Clientes = () => {
 		});
 
 		//REGISTRA OS DADOS NA TABELA DE USUARIOS
-		
+
 		var cod = Math.floor(Math.random() * (777 + 0)) - 1;
-		
-		const obj_usuario = {cod_user:cod,cod_estabelecimento:obj_cliente.cod,nome_user:obj_cliente.nome,login_email:obj_cliente.email,senha_user:obj_cliente.senha,perfil_user:'s',status:'a',data_post:obj_cliente.data_post};
+
+		const obj_usuario = { cod_user: cod, cod_estabelecimento: obj_cliente.cod, nome_user: obj_cliente.nome, login_email: obj_cliente.email, senha_user: obj_cliente.senha, perfil_user: 's', status: 'a', data_post: obj_cliente.data_post };
 		const paramApi_save_usuario = "?api=setUsuarios";
 		$.post(urlApi + nameApi + paramApi_save_usuario, obj_usuario, (res, status) => {
 			if (status == "success") {

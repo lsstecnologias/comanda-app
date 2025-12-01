@@ -7,6 +7,7 @@ const Comanda = () => {
    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
    sessionStorage.setItem('modal_notas', 'hide');
     const { cod } = useParams();
+    
    const { Sair, thumb_logo } = useContext(UserContext);
     
    const [data, setData] = useState([]);

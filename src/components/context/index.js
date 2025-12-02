@@ -14,11 +14,11 @@ function UserProvider({ children }) {
         let url = protocolo + "//" + host + ':' + porta;
         window.location.href = url;
     }
-
-    useEffect(() => {
-        const dataUser = sessionStorage.getItem("user_admin");
+ const dataUser = sessionStorage.getItem("user_admin");
         var data = dataUser ? JSON.parse(dataUser) : [];
 
+    useEffect(() => {
+       
         if (Array.isArray(data) && data.length == 0) {
             setStatus(false);
             redirect_login();

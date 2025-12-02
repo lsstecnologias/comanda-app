@@ -9,8 +9,8 @@ var md5 = require('md5');
 
 
 const Usuarios = () => {
-//PERIMITE NÃO EXIBIR MODAL DE NOTAS
-		sessionStorage.setItem('modal_notas', 'hide');
+    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+    sessionStorage.setItem('modal_notas', 'hide');
     const [nomeUser, setNomeUser] = useState("");
     const [emailLoginUser, setEmailLoginUser] = useState("");
     const [senhaUser, setSenhaUser] = useState("");
@@ -30,7 +30,7 @@ const Usuarios = () => {
         let perfil = $("#perfilUser");
         let cod = Math.floor(Math.random() * (777 + 0)) - 1;
 
-        var objUsuario = { cod_user: cod, nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
+        var objUsuario = { cod_user: cod,cod_estabelecimento:"", nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
 
         if (nomeUser !== undefined && nomeUser !== "") {
             nome.addClass("is-valid").removeClass("is-invalid");
@@ -73,6 +73,41 @@ const Usuarios = () => {
             objUsuario.data_post = data_post;
         }
 
+        const dataUser = sessionStorage.getItem("cod_estabelecimento");
+        var cod_estabelecimento = dataUser;
+
+        if (cod_estabelecimento !== 'null') {
+            const param_api_list_usuario = `?api=setUsuarios`;
+            objUsuario.cod_estabelecimento = cod_estabelecimento;
+
+            $.post(urlApi + nameApi + param_api_list_usuario, objUsuario, (res, status) => {
+
+                if (status === "success") {
+                    if (res == "null" && res == null) {
+                        setStatusMsgErro("block");
+                        $('#btnAdicionar').attr({ "disabled": false });
+                    } else {
+                        setStatusMsgErro("none");
+                    }
+                    if (res == 1 || res == "true" || res == true) {
+                        setStatusMsgSuccess("block");
+                        $('#btnAdicionar').attr({ "disabled": "disabled" });
+                    } else {
+                        setStatusMsgSuccess("none");
+                    }
+                } else {
+                    alert("Error: parametros API")
+                }
+            
+
+
+            })
+        } else {
+            alert("Nenhum cliente estabelecimento");
+           // Sair();
+        }
+
+        /*
         const paramApi_save_usuario = "?api=setUsuarios";
         $.post(urlApi + nameApi + paramApi_save_usuario, objUsuario, (res, status) => {
             if (status === "success") {
@@ -92,7 +127,7 @@ const Usuarios = () => {
                 alert("Error: parametros API")
             }
 
-        })
+        })*/
     }
     const fecharModal = () => {
         window.location.reload();
@@ -127,9 +162,9 @@ const Usuarios = () => {
     useEffect(() => {
         // $('#rgInput').mask('00.000.000-00');
         // $('#cepInput').mask('0000000');
-       	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
-		sessionStorage.setItem('modal_notas', 'hide');
-            
+        //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+        sessionStorage.setItem('modal_notas', 'hide');
+
 
     }, [])
 

@@ -189,14 +189,14 @@ const ModalEditProdutos = (data_id) => {
                                     <label for="descItemInput" class="form-label"> Categoria</label>
                                     <div class="input-group mb-3" id="categorias">
 
-                                        <select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">
+                                      {/*  <select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">
 
                                             <option value={e.cod} selected>{e.nome}</option>
-                                            {listCateg && listCateg.map((e) => {
+                                            listCateg && listCateg.map((e) => {
                                                 return (<option key={e.id} value={e.cod}>{e.nome}</option>)
                                             })}
-                                            {listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}
-                                        </select>
+                                            {listCateg == null ?? <option value={null} >Nenhuma categoria!</option>
+                                        </select>*/}
 
                                     </div>
 

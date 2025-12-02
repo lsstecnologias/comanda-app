@@ -6,7 +6,6 @@ import ModalEditProdutos from '../ModalEditProdutos';
 import ListPagina from "../../ListPagina";
 import Pagination from "../../ListPagina";
 import { UserContext } from '../context';
-import ReactPaginate from 'react-paginate';
 
 const $ = require("jquery");
 
@@ -125,7 +124,7 @@ const TabelaProduto = () => {
                     setCurrentPage={setCurrentPage}
                     currentPage={currentPage}
                 />
-                <ModalEditProdutos data_id={id} /> 
+               { /* <ModalEditProdutos data_id={id} /> */} 
             </div>
 
         </div>

@@ -9,7 +9,7 @@ import $ from 'jquery';
 
 const Header = () => {
    const {sessao, Sair, thumb_logo } = useContext(UserContext);
-   console.log(sessao.nome)
+  
    useEffect(()=>{
       console.log(sessao,thumb_logo)
    },[]);
@@ -68,8 +68,9 @@ const Header = () => {
                </div>
                <div class="nav-item dropdown">
                   <a class="nav-link  fw-light">
-                     <small> Olá, {sessao.nome}</small>
+                     <small> Olá, {sessao.nome}</small> <small> {sessao.cod_estabelecimento}</small>
                   </a>
+                  
                   <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                      <button class="btn btn-outline-primary btn-sm"> <i class="bi bi-lock-fill"></i> <small>Acesso </small></button>
                   </a>
@@ -77,6 +78,7 @@ const Header = () => {
                      <li><Link class="dropdown-item fw-light" to="/admin/usuario"> <i class="bi  fs-5 bi-person-fill"></i> Usuários</Link></li>
                      <li><Link class="dropdown-item fw-light" to="/admin/sistema"> <i class="bi bi-gear-fill"></i> Sistema</Link></li>
                      <li><button class="btn btn-sm btn-primary dropdown-item" onClick={() => Sair()} > <i class="bi fs-5 bi-box-arrow-left"></i> Sair</button></li>
+                     <li class="fw-light p-4 pb-0 pt-0"><small> {sessao.nome}</small> <small> {sessao.cod_estabelecimento}</small></li>
                   </ul>
 
                </div>

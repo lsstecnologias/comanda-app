@@ -9,8 +9,8 @@ const Categorias = () => {
     const { GetSession, sessao, Sair, status } = useContext(UserContext);
 
     const [valorCateg, setCategorias] = useState();
-    const [nvCateg, setNvCateg] = useState();
-    const [listCateg, setListCateg] = useState(null);
+ 
+    //const [listCateg, setListCateg] = useState(null);
     const [statusFormAddCateg, setStatusFormAddCateg] = useState("none");
 
     //HOOK MSG ERROS
@@ -39,9 +39,9 @@ const Categorias = () => {
         }
 
         //Valida os campos
-        if (nvCateg !== undefined && nvCateg !== "") {
-            categ_input.addClass("is-valid").removeClass("is-invalid");
-            obj_categoria.nome = nvCateg;
+        if (categ_input.val()) {
+           categ_input.addClass("is-valid").removeClass("is-invalid");
+            obj_categoria.nome = categ_input.val();
         } else {
 
             setDisplayError("block");
@@ -52,7 +52,7 @@ const Categorias = () => {
 
         }
 
-        if (categ_input.val()) {
+      /*  if (categ_input.val()) {
             setDisplaySuccess("block");
             setMsgSuccess("Nova categoria adicionada!");
             window.location.reload();
@@ -68,66 +68,38 @@ const Categorias = () => {
             setMsgSuccess(null);
              
             categ_input.addClass("is-invalid").removeClass("is-valid");
-        }
+        }*/
 
         const dataUser = sessionStorage.getItem("cod_estabelecimento");
         var cod_estabelecimento = dataUser;
+         if(categ_input.val()){  
+            if (cod_estabelecimento !== 'null') {
+                const param_api_save_categoria = "?api=setCategorias";
+                obj_categoria.id_estabelecimento = cod_estabelecimento;
+            
+                $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
+                    window.location.reload()
+                    /*
+                    if (status == 'success') {
+                        setStatusFormAddCateg("none");
+                        $("#addCategorias").val("");
+                    
 
-        if (cod_estabelecimento !== 'null') {
-            const param_api_save_categoria = "?api=setCategorias";
-            obj_categoria.id_estabelecimento = cod_estabelecimento;
+                    } else {
+                        setDisplayError("block");
+                        setMsgError("Erro: !");
+                        setDisplaySuccess("none");
+                        setMsgSuccess(null);
 
-            $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
+                    }*/
 
-                if (status == 'success') {
-                    setStatusFormAddCateg("none");
-                    $("#addCategorias").val("");
-                   
-
-                } else {
-                    setDisplayError("block");
-                    setMsgError("Erro: !");
-                    setDisplaySuccess("none");
-                    setMsgSuccess(null);
-
-                }
-
-            })
-        } else {
-            alert("Nenhum cliente estabelecimento");
-            Sair();
+                })
+            } else {
+                alert("Nenhum cliente estabelecimento");
+                Sair();
+            }
         }
-        
 
-        /* $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
-        if (status === "success") {
-            setStatusFormAddCateg("none");
-            $("#addCategorias").val("");
-            let categ_input = $("#addCategorias");
-            categ_input.addClass("is-invalid").removeClass("is-valid");
-            var btnAdicionar = $('#btnAdicionar')
-
-            if (res == "null") {
-                setDisplayError("block");
-                setMsgError("Preencha o campo!")
-                btnAdicionar.attr({ "disabled": false });
-
-            } else {
-                setDisplayError("none");
-                setMsgError(null)
-            }
-
-            if (res == 1) {
-                setDisplaySuccess("block");
-                setMsgSuccess("Nova categoria adicionada!");
-
-            } else {
-                setDisplaySuccess("none");
-                setMsgSuccess(null);
-            }
-        } else {
-            alert("Error: parametros API!")
-        }*/
 
     }
 
@@ -142,16 +114,12 @@ const Categorias = () => {
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }}></button>
                 </div>
 
-                <div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
-                    <i class="bi bi-exclamation-triangle-fill  p-2"></i>
-                    {msgError !== null && msgError}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }} ></button>
-                </div>
+               
 
 
                 <div class="input-group  mb-3 mt-2" style={{ display: 'inline-flex' }}>
-                    <button class="btn btn-primary " type="button" onClick={(e) => { addNvCategoria(e) }} > <i class="bi bi-plus-circle-dotted fs-4"></i> Adicionar</button>
-                    <input type="text" class="form-control animate__animated  animate__fadeIn " id="inpt_categoria" autocomplete="off" onChange={(e) => { setNvCateg(e.target.value) }} placeholder="Nome da categoria" aria-label="Categoria do produto" aria-describedby="button-addon2" />
+                    <button class="btn btn-primary btn-sm " type="button" onClick={(e) => { addNvCategoria(e) }} > <i class="bi bi-plus-circle-dotted fs-4"></i> </button>
+                    <input type="text" class="form-control animate__animated  animate__fadeIn " id="inpt_categoria" autocomplete="off"  placeholder="Nome da categoria" aria-label="Categoria do produto" aria-describedby="button-addon2" />
                     
                 </div>
                 <TabelaCategoria />

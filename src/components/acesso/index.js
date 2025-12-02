@@ -53,7 +53,7 @@ const Acesso = () => {
             ObjSessao.senha = "";
 
         }
-        //REQUISIÇAO
+        //REQUISIÇAO - REALIZAR A REQUISIÇAO BACKEND SEM PASSAR O ID
         fetch(urlApi + nameApi + param_api_get_usuarios)
             .then(async (e) => {
                 return await e.json();

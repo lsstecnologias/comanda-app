@@ -160,230 +160,215 @@ const Clientes = () => {
 			}
 
 		});
-
-		//REGISTRA OS DADOS NA TABELA DE USUARIOS
-
-		var cod = Math.floor(Math.random() * (777 + 0)) - 1;
-
-		const obj_usuario = { cod_user: cod, cod_estabelecimento: obj_cliente.cod, nome_user: obj_cliente.nome, login_email: obj_cliente.email, senha_user: obj_cliente.senha, perfil_user: 's', status: 'a', data_post: obj_cliente.data_post };
-		const paramApi_save_usuario = "?api=setUsuarios";
-		$.post(urlApi + nameApi + paramApi_save_usuario, obj_usuario, (res, status) => {
-			if (status == "success") {
-				console.log(res)
-				//REALIZAR O TRATAMENTO DOS DADOS DA REQUISICAO
-			} else {
-				alert("Error: parametros API")
-			}
-
-		})
-
 	}
-	const fecharModal = () => {
-		window.location.reload();
-	}
-
-
-
-	useEffect(() => {
-		$('#cnpj').mask('00.000.000/0000-00')
-		$('#rg').mask('00.000.000-00');
-		$('#cep').mask('00000000');
-		$('#cpf').mask('000.000.000-00');
-
-		/*
-		const paramApi_save_usuario = "?api=setUsuarios";
-		$.post(urlApi + nameApi + paramApi_save_usuario, objUsuario, (res, status) => {
-			if (status === "success") {
-				if (res == "null" && res == null) {
-					setStatusMsgErro("block");
-					$('#btnAdicionar').attr({ "disabled": false });
-				} else {
-					setStatusMsgErro("none");
-				}
-				if (res == 1 || res == "true" || res == true) {
-					setStatusMsgSuccess("block");
-					$('#btnAdicionar').attr({ "disabled": "disabled" });
-				} else {
-					setStatusMsgSuccess("none");
-				}
-			} else {
-				alert("Error: parametros API")
-			}
-
-		})*/
-
-	}, [])
-	const consultarCep = (e) => {
-		e.preventDefault();
-		let cep = document.getElementById('cep');
-
-		if (cep.value && cep.value.length >= 8) {
-			const inpt_cep = cep.value;
-			$.get(`https://viacep.com.br/ws/${inpt_cep}/json/`, async (res, status) => {
-				if (status == 'success') {
-					if (!res.erro) {
-						const { cep, logradouro, bairro, localidade, uf, estado, regiao } = await res;
-						var str = `${cep} - ${logradouro} - ${bairro} - ${localidade} - ${uf} - ${estado} - ${uf} -${regiao}`;
-						document.getElementById("endereco").value = str;
-
-						$("#cep").addClass("is-valid").removeClass("is-invalid");
-					} else {
-						$("#cep").addClass("is-invalid").removeClass("is-valid");
-					}
-				}
-			})
-		} else {
-
-			$("#cep").addClass("is-invalid").removeClass("is-valid");
+		
+		const fecharModal = () => {
+			window.location.reload();
 		}
 
-	}
 
-	const alterarEndereco = (e) => {
-		e.preventDefault();
-		$('#endereco').attr({ "disabled": false })
-	}
-	const gerarSenha = (e) => {
-		e.preventDefault();
-		const fullUuid = uuidv4();
-		var senha = fullUuid.substring(0, 6);
-		$("#senha").val(senha);
 
-	}
+		useEffect(() => {
+			$('#cnpj').mask('00.000.000/0000-00')
+			$('#rg').mask('00.000.000-00');
+			$('#cep').mask('00000000');
+			$('#cpf').mask('000.000.000-00');
 
-	return (
-		<div className="container usuario table-responsive mt-3 animate__animated animate__fadeIn">
-			<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-				<i class="bi bi-check-circle p-2"></i>
-				{msgSuccess !== null && msgSuccess}
+			/*
+			const paramApi_save_usuario = "?api=setUsuarios";
+			$.post(urlApi + nameApi + paramApi_save_usuario, objUsuario, (res, status) => {
+				if (status === "success") {
+					if (res == "null" && res == null) {
+						setStatusMsgErro("block");
+						$('#btnAdicionar').attr({ "disabled": false });
+					} else {
+						setStatusMsgErro("none");
+					}
+					if (res == 1 || res == "true" || res == true) {
+						setStatusMsgSuccess("block");
+						$('#btnAdicionar').attr({ "disabled": "disabled" });
+					} else {
+						setStatusMsgSuccess("none");
+					}
+				} else {
+					alert("Error: parametros API")
+				}
+	
+			})*/
+
+		},[]);
+		const consultarCep = (e) => {
+			e.preventDefault();
+			let cep = document.getElementById('cep');
+
+			if (cep.value && cep.value.length >= 8) {
+				const inpt_cep = cep.value;
+				$.get(`https://viacep.com.br/ws/${inpt_cep}/json/`, async (res, status) => {
+					if (status == 'success') {
+						if (!res.erro) {
+							const { cep, logradouro, bairro, localidade, uf, estado, regiao } = await res;
+							var str = `${cep} - ${logradouro} - ${bairro} - ${localidade} - ${uf} - ${estado} - ${uf} -${regiao}`;
+							document.getElementById("endereco").value = str;
+
+							$("#cep").addClass("is-valid").removeClass("is-invalid");
+						} else {
+							$("#cep").addClass("is-invalid").removeClass("is-valid");
+						}
+					}
+				})
+			} else {
+
+				$("#cep").addClass("is-invalid").removeClass("is-valid");
+			}
+
+		}
+
+		const alterarEndereco = (e) => {
+			e.preventDefault();
+			$('#endereco').attr({ "disabled": false })
+		}
+		const gerarSenha = (e) => {
+			e.preventDefault();
+			const fullUuid = uuidv4();
+			var senha = fullUuid.substring(0, 6);
+			$("#senha").val(senha);
+
+		}
+
+		return (
+			<div className="container usuario table-responsive mt-3 animate__animated animate__fadeIn">
+				<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+					<i class="bi bi-check-circle p-2"></i>
+					{msgSuccess !== null && msgSuccess}
+
+				</div>
+				<div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+					<i class="bi bi-exclamation-triangle p-2"></i>
+					{msgError !== null && msgError}
+
+				</div>
+				<h4 className="mb-2 mt-2 pb-2">Estabelecimento/Cliente</h4>
+
+				<table class="table table-bordered ">
+					<thead>
+						<tr>
+							<th colSpan={5} scope="col">Nome</th>
+						</tr>
+					</thead>
+
+					<tbody>
+
+						<tr>
+
+							<td colSpan={3} scope="row">
+								<div class="input-group">
+									<input type="text" name="nome" autoComplete="off" id="nome" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th colSpan={3} scope="row">Sobrenome</th>
+						</tr>
+						<tr>
+							<td colSpan={3} scope="row">
+								<div class="input-group">
+									<input type="text" autoComplete="off" name="sobrenome" id="sobrenome" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th colSpan={3} scope="row">E-mail</th>
+						</tr>
+						<tr>
+							<td colSpan={3} scope="row">
+								<div class="input-group">
+									<input type="email" autoComplete="off" name="email" id="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">CPF</th>
+							<th scope="row">RG</th>
+							<th scope="row">CNPJ</th>
+						</tr>
+						<tr>
+							<td scope="row">
+								<div class="input-group">
+
+									<input type="text" autoComplete="off" name="cpf" id="cpf" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								</div>
+							</td>
+							<td scope="row">
+								<div class="input-group">
+
+									<input type="text" autoComplete="off" name="rg" id="rg" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								</div>
+							</td>
+							<td scope="row">
+								<div class="input-group">
+
+									<input type="text" autoComplete="off" name="cnpj" id="cnpj" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								</div>
+							</td>
+
+						</tr>
+						<tr>
+							<th colSpan={3} scope="row">CEP</th>
+
+						</tr>
+						<tr>
+							<td colSpan={3} scope="row"><div class="input-group ">
+
+								<input type="text" autoComplete="off" name="cep" id="cep" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								<button class="btn btn-outline-secondary" type="button" onClick={(e) => { consultarCep(e) }} id="button-addon1"><small>Consultar</small> <i class="bi bi-search"></i></button>
+							</div></td>
+
+						</tr>
+						<tr>
+							<th colSpan={3} scope="row">GERAR SENHA</th>
+
+						</tr>
+						<tr>
+							<td colSpan={3} scope="row">
+								<div class="input-group ">
+
+									<input type="text" autoComplete="off" name="senha" id="senha" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+									<button class="btn btn-outline-secondary" onClick={(e) => { gerarSenha(e) }} type="button" id="btn-alterar">  <i class="bi bi-arrow-repeat"></i></button>
+								</div>
+							</td>
+
+						</tr>
+						<tr>
+							<th colSpan={3} scope="row">ENDEREÇO</th>
+
+						</tr>
+						<tr>
+							<td colSpan={3} scope="row"><div class="input-group ">
+
+								<input type="text" autoComplete="off" disabled='disabled' name="endereco" id="endereco" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								<button class="btn btn-outline-secondary" onClick={(e) => { alterarEndereco(e) }} type="button" id="btn-alterar"><small>Alterar</small> <i class="bi bi-pencil-square"></i></button>
+							</div></td>
+
+						</tr>
+						<tr>
+							<td colSpan={3} scope="row">
+								<div class="input-group ">
+
+									<button type="button" class="btn btn-primary w-100" id="btnAdicionarClientes" onClick={(e) => { addNovoCliente(e) }}> <i class="bi bi-pencil-square"></i> Cadastrar</button>
+								</div>
+							</td>
+
+						</tr>
+
+					</tbody>
+
+				</table>
+
+
 
 			</div>
-			<div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
-				<i class="bi bi-exclamation-triangle p-2"></i>
-				{msgError !== null && msgError}
+		)
 
-			</div>
-			<h4 className="mb-2 mt-2 pb-2">Estabelecimento/Cliente</h4>
+	}
 
-			<table class="table table-bordered ">
-				<thead>
-					<tr>
-						<th colSpan={5} scope="col">Nome</th>
-					</tr>
-				</thead>
-
-				<tbody>
-
-					<tr>
-
-						<td colSpan={3} scope="row">
-							<div class="input-group">
-								<input type="text" name="nome" autoComplete="off" id="nome" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th colSpan={3} scope="row">Sobrenome</th>
-					</tr>
-					<tr>
-						<td colSpan={3} scope="row">
-							<div class="input-group">
-								<input type="text" autoComplete="off" name="sobrenome" id="sobrenome" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th colSpan={3} scope="row">E-mail</th>
-					</tr>
-					<tr>
-						<td colSpan={3} scope="row">
-							<div class="input-group">
-								<input type="email" autoComplete="off" name="email" id="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">CPF</th>
-						<th scope="row">RG</th>
-						<th scope="row">CNPJ</th>
-					</tr>
-					<tr>
-						<td scope="row">
-							<div class="input-group">
-
-								<input type="text" autoComplete="off" name="cpf" id="cpf" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-							</div>
-						</td>
-						<td scope="row">
-							<div class="input-group">
-
-								<input type="text" autoComplete="off" name="rg" id="rg" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-							</div>
-						</td>
-						<td scope="row">
-							<div class="input-group">
-
-								<input type="text" autoComplete="off" name="cnpj" id="cnpj" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-							</div>
-						</td>
-
-					</tr>
-					<tr>
-						<th colSpan={3} scope="row">CEP</th>
-
-					</tr>
-					<tr>
-						<td colSpan={3} scope="row"><div class="input-group ">
-
-							<input type="text" autoComplete="off" name="cep" id="cep" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-							<button class="btn btn-outline-secondary" type="button" onClick={(e) => { consultarCep(e) }} id="button-addon1"><small>Consultar</small> <i class="bi bi-search"></i></button>
-						</div></td>
-
-					</tr>
-					<tr>
-						<th colSpan={3} scope="row">GERAR SENHA</th>
-
-					</tr>
-					<tr>
-						<td colSpan={3} scope="row">
-							<div class="input-group ">
-
-								<input type="text" autoComplete="off" name="senha" id="senha" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-								<button class="btn btn-outline-secondary" onClick={(e) => { gerarSenha(e) }} type="button" id="btn-alterar">  <i class="bi bi-arrow-repeat"></i></button>
-							</div>
-						</td>
-
-					</tr>
-					<tr>
-						<th colSpan={3} scope="row">ENDEREÇO</th>
-
-					</tr>
-					<tr>
-						<td colSpan={3} scope="row"><div class="input-group ">
-
-							<input type="text" autoComplete="off" disabled='disabled' name="endereco" id="endereco" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-							<button class="btn btn-outline-secondary" onClick={(e) => { alterarEndereco(e) }} type="button" id="btn-alterar"><small>Alterar</small> <i class="bi bi-pencil-square"></i></button>
-						</div></td>
-
-					</tr>
-					<tr>
-						<td colSpan={3} scope="row">
-							<div class="input-group ">
-
-								<button type="button" class="btn btn-primary w-100" id="btnAdicionarClientes" onClick={(e) => { addNovoCliente(e) }}> <i class="bi bi-pencil-square"></i> Cadastrar</button>
-							</div>
-						</td>
-
-					</tr>
-
-				</tbody>
-
-			</table>
-
-
-
-		</div >
-	)
-
-}
 export default Clientes;

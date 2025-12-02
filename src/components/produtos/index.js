@@ -7,7 +7,6 @@ import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context';
 import axios from "axios";
 import UploadImagens from "../upload_imagens";
-
 const $ = require("jquery");
 
 const Produto = () => {
@@ -24,8 +23,6 @@ const Produto = () => {
 	const [sessaoUser, setSessaoUser] = useState([]);
 	const [listCateg, setListCateg] = useState(null);
 	const [listProduto, setListProduto] = useState([]);
-
-	
 
 	//HOOK MSG ERROS
 	const [displayError, setDisplayError] = useState('none');
@@ -190,7 +187,7 @@ const Produto = () => {
 				if (status == 'success') {
 					var btnAdicionar = $('#btnAdicionar');
 					var data = JSON.parse(res);
-					console.log(data)
+				
 					let arrProduto = [data];
 
 					setListProduto(arrProduto);
@@ -259,10 +256,10 @@ return (
 							<label for="categorias" class="form-label">Categoria</label>
 							<select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">
 								<option >Selecione</option>
-								{listCateg && listCateg.map((e) => {
+								{/*listCateg && listCateg.map((e) => {
 									return (<option key={e.id} value={e.cod}>{e.nome}</option>)
 								})}
-								{listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}
+								{listCateg == null ?? <option value={null} >Nenhuma categoria!</option>*/}
 
 							</select>
 

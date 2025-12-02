@@ -46,7 +46,7 @@ const TabelaUsuario = () => {
         var cod_estabelecimento = dataUser;
 
         if (cod_estabelecimento !== 'null') {
-            const param_api_list_usuario = `?api=getPerfilUsuarios`;
+            const param_api_list_usuario = `?api=getUsuarios`;
             var obj = { 'id': cod_estabelecimento };
 
             $.post(urlApi + nameApi + param_api_list_usuario, obj, (res, status) => {
@@ -54,7 +54,7 @@ const TabelaUsuario = () => {
                 if (status == 'success') {
 
                     var data = JSON.parse(res);
-                    console.log('usuarios',data)
+                  
                  
                     setUsuarios(data);
                 }

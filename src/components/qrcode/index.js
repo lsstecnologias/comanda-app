@@ -26,6 +26,8 @@ var ssid = "IONE_SENA";
 
 const QRCode = () => {
     //dimensao-logomarca-valor-http://localhost:3001/?mesa=3
+    	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+	sessionStorage.setItem('modal_notas', 'hide');
     const { sessao, status, redirect_login, thumb_logo, Sair } = useContext(UserContext);
     (sessao) ?? Sair();
     const [tamLogo, setTamLogo] = useState(0);

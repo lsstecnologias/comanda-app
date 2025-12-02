@@ -1,4 +1,6 @@
 const Template = () => {
+    	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+	sessionStorage.setItem('modal_notas', 'hide');
     return (
 
        

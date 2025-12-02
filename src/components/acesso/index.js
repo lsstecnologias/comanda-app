@@ -4,6 +4,8 @@ import { UserContext } from '../context';
 import 'animate.css';
 import md5 from 'md5';
 const Acesso = () => {
+    	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+	sessionStorage.setItem('modal_notas', 'hide');
     const [emailLogin, setEmailLogin] = useState(null);
     const [senha, setSenha] = useState(null);
 
@@ -16,7 +18,7 @@ const Acesso = () => {
 
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
-    const param_api_get_usuarios = "?api=getUsuarios";
+    const param_api_get_usuarios = "?api=getLoginUsuarios";
     useEffect(() => {
         // Registrar o cliente estabelecimento, qunando for liberar o acesso
         // const param_api_list_perfil_usuarios ="?api=getPerfilUsuarios";
@@ -53,7 +55,7 @@ const Acesso = () => {
             ObjSessao.senha = "";
 
         }
-        //REQUISIÇAO - REALIZAR A REQUISIÇAO BACKEND SEM PASSAR O ID
+        //REQUISIÇAO - REALIZAR A REQUISIÇAO GET BACKEND SEM PASSAR O ID
         fetch(urlApi + nameApi + param_api_get_usuarios)
             .then(async (e) => {
                 return await e.json();

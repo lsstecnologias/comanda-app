@@ -1,4 +1,5 @@
 import './style.css';
+import bg_img from './e-digit-commerce.png';
 import { useEffect, useState,useContext } from 'react';
 import { UserContext } from '../context';
 import 'animate.css';
@@ -156,8 +157,8 @@ const Acesso = () => {
                         <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
                     </form>
                 </div>
-                <div class="overflow-hidden col-lg-7 text-center text-lg-start" style={{ maxHeight: "30vh" }}> <div class="container px-5">
-                    <img src="https://getbootstrap.com/docs/5.3/examples/heroes/bootstrap-docs.png" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" width="700" height="500" loading="lazy" />
+                <div class="overflow-hidden col-lg-7 text-center text-lg-start animate__animated animate__fadeIn" style={{ maxHeight: "30vh" }}> <div class="container px-5">
+                    <img src={bg_img} class="img-fluid border rounded-3 shadow-sm mb-4" alt="Example image" width="700" height="500" loading="lazy" />
                 </div>
                 </div>
 

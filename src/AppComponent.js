@@ -4,6 +4,7 @@ import Header from './components/header';
 import TelaPrincipal from './components/TelaPrincipal';
 import UserProvider from './components/context';
 import $ from 'jquery';
+import bg_logo  from './bg_logo.png';
 
 function AppComponent() {
     // const { nome, perfil, senha, status } = useContext(UserContext);
@@ -11,10 +12,10 @@ function AppComponent() {
     // console.log(params);
 
     //PERIMITE EXIBIR MODAL DE MODAL
- sessionStorage.setItem('modal_notas','show');
-     
-   
-  
+    sessionStorage.setItem('modal_notas', 'show');
+
+
+
     return (
         <UserProvider >
             <Header />
@@ -23,20 +24,19 @@ function AppComponent() {
                 <div class="modal-dialog  modal-dialog-centered modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Modal title</h5>
+                           
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <p>Modal body text goes here.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                        <div class="modal-body d-flex align-items-center justify-content-center">
+
+
+                            <img src={bg_logo} class="img-fluid  mb-4" alt="Example image" width="700" height="500"  />
+
+
                         </div>
                     </div>
                 </div>
             </div>
-
         </UserProvider>
 
     )

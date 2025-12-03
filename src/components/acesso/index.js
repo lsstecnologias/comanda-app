@@ -1,12 +1,12 @@
 import './style.css';
-import bg_img from './e-digit-commerce.png';
-import { useEffect, useState,useContext } from 'react';
+import bg_logo from './bg_logo.png';
+import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context';
 import 'animate.css';
 import md5 from 'md5';
 const Acesso = () => {
-    	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
-	sessionStorage.setItem('modal_notas', 'hide');
+    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+    sessionStorage.setItem('modal_notas', 'hide');
     const [emailLogin, setEmailLogin] = useState(null);
     const [senha, setSenha] = useState(null);
 
@@ -78,7 +78,7 @@ const Acesso = () => {
                     let cod_estabelecimento = (dataSession[0].cod_estabelecimento);
                     sessionStorage.setItem("user_admin", JSON.stringify(dataSession))
                     sessionStorage.setItem('cod_estabelecimento', cod_estabelecimento);
-                    sessionStorage.setItem('modal_notas','show');
+                    sessionStorage.setItem('modal_notas', 'show');
                     window.location.href = url;
 
                 }
@@ -129,7 +129,11 @@ const Acesso = () => {
         <div class="container-fluid col-xl-10 col-xxl-8 px-4 py-5">
             <div class="row g-lg-5  animate__animated animate__fadeIn">
                 <div class="col-md-10 mx-auto col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded">
-
+                    <div class="overflow-hidden col-lg-7 text-center text-lg-center animate__animated animate__fadeIn" style={{ maxHeight: "40vh",margin:"0 auto" }}>
+                    
+                        <img src={bg_logo} class="img-fluid  mb-4" alt="Example image" width="1000" height="500" loading="lazy" />
+                  
+                </div>
                     <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
                         <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn" style={{ display: displaySuccess }} role="alert">
                             <i class="bi bi-check-circle p-2"></i>
@@ -157,10 +161,7 @@ const Acesso = () => {
                         <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
                     </form>
                 </div>
-                <div class="overflow-hidden col-lg-7 text-center text-lg-start animate__animated animate__fadeIn" style={{ maxHeight: "30vh" }}> <div class="container px-5">
-                    <img src={bg_img} class="img-fluid border rounded-3 shadow-sm mb-4" alt="Example image" width="700" height="500" loading="lazy" />
-                </div>
-                </div>
+                
 
             </div>
             <p class="mt-3 mb-3 text-center text-body-secondary">lsstecnologias&copy;2025</p>

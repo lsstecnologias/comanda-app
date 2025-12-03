@@ -24,12 +24,12 @@ const TabelaProduto = () => {
     const [msgSuccess, setMsgSuccess] = useState(null);
 
     //PAGINACAO
-     const [currentPage, setCurrentPage] = useState(1);
-     const [postsPerPage] = useState(2);
-     const indexOfLastPost = currentPage * postsPerPage;
-     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-     const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
-     <ListPagina />
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(2);
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+    <ListPagina />
 
 
 
@@ -109,22 +109,24 @@ const TabelaProduto = () => {
                     </tbody>
                 </table>
                 {data.length == 0 &&
-                    <div class="alert alert-light" role="alert">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                    <div class="d-flex align-items-center alert alert-light fade show" style={{ display: displayError }} role="alert">
 
+                        <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
+                            <span class="visually-hidden">Loading...</span>
                         </div>
+
+                        {msgError !== null && msgError}
 
                     </div>
                 }
-                
+
                 <Pagination
                     postsPerPage={postsPerPage}
                     totalPosts={data.length}
                     setCurrentPage={setCurrentPage}
                     currentPage={currentPage}
                 />
-               { /* <ModalEditProdutos data_id={id} /> */} 
+                { /* <ModalEditProdutos data_id={id} /> */}
             </div>
 
         </div>

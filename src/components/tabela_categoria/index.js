@@ -80,19 +80,22 @@ const TabelaCategoria = () => {
          $.post(urlApi + nameApi + param_api_list_categ, obj, (res, status) => {
           
                var dataArr =  JSON.parse(res);
-            console.log(dataArr)
+            
 
                if (Array.isArray(dataArr) && dataArr.length == 0) {
                   setDisplayError("block");
                   setMsgError("Adicione categoria para o seu item!");
-                  /*  setDisplaySuccess("none");
-                    setMsgSuccess(null);
-                 alert('Nenhuma categoria adicionada')*/
+                  
+                  /* 
+                   setDisplaySuccess("none");
+                   setMsgSuccess(null);
+                   alert('Nenhuma categoria adicionada')
+                   */
                
                } else {
 
                   setData(dataArr);
-
+                 
 
 
                }

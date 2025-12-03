@@ -85,7 +85,7 @@ const TabelaProduto = () => {
                             <th scope="col">Nome </th>
                             <th scope="col">Categ.</th>
                             <th scope="col">Preço unit.</th>
-                            <th scope="col">Ações</th>
+                            <th colSpan={2} class="text-end" scope="col">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -98,9 +98,13 @@ const TabelaProduto = () => {
                                     <td className='lh-1 fw-light'>{val.item}</td>
                                     <td className='lh-1 fw-light'>{val.nome}</td>
                                     <td className='lh-1 fw-light'>{val.preco}</td>
-                                    <td>
-                                        <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
-                                        <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button>
+                                    <td className='text-end'>
+                                        {/* <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
+                                        <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
+                                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                            <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
+                                            <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
+                                        </div>
                                     </td>
                                 </tr>
                             )
@@ -114,8 +118,8 @@ const TabelaProduto = () => {
                         <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
-
-                        {msgError !== null && msgError}
+                        <p className='mt-3'>Adicione um novo item a sua lista!</p>
+                        {/*msgError !== null && msgError*/}
 
                     </div>
                 }

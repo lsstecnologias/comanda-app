@@ -84,8 +84,9 @@ const TabelaProduto = () => {
                             <th scope="col">Cod.</th>
                             <th scope="col">Nome </th>
                             <th scope="col">Categ.</th>
-                            <th scope="col">Preço unit.</th>
-                            <th colSpan={2} class="text-end" scope="col">Ações</th>
+                            <th scope="col">Preço.</th>
+                            <th scope="col">Qtd</th>
+                            <th class="text-end" scope="col">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -98,6 +99,7 @@ const TabelaProduto = () => {
                                     <td className='lh-1 fw-light'>{val.item}</td>
                                     <td className='lh-1 fw-light'>{val.nome}</td>
                                     <td className='lh-1 fw-light'>{val.preco}</td>
+                                    <td className='lh-1 fw-light'>{val.quantidade}</td>
                                     <td className='text-end'>
                                         {/* <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                                         <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}

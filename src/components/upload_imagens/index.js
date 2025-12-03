@@ -88,7 +88,7 @@ const UploadImagens = () => {
         <div class="container mt-4 comanda">
             <h4 className="m-2 mt-2 pb-2"><i class="bi bi-image"></i> Imagens</h4>
             <div className='container'>
-                <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+                {/*<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
                     <i class="bi bi-check-circle p-2"></i>
                     {msgSuccess !== null && msgSuccess}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -97,7 +97,7 @@ const UploadImagens = () => {
                     <i class="bi bi-exclamation-triangle p-2"></i>
                     {msgError !== null && msgError}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                </div>*/}
                 <input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileUser(e.target.files[0]) }} placeholder="Another input placeholder" />
 
                 <button type="button" class="btn w-100 btn-sm btn-primary mt-4" onClick={carregarImagens}> <i class="bi fs-5 bi-cloud-arrow-up"></i> Carregar imagem</button>

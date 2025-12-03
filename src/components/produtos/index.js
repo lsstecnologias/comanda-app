@@ -22,7 +22,7 @@ const Produto = () => {
 
 	const [sessaoUser, setSessaoUser] = useState([]);
 	const [listCateg, setListCateg] = useState(null);
-	const [listProduto, setListProduto] = useState([]);
+	const [selectedFileItem, setSelectedFileItem] = useState(null);
 
 	//HOOK MSG ERROS
 	const [displayError, setDisplayError] = useState('none');
@@ -62,7 +62,11 @@ const Produto = () => {
 			alert("Nenhum cliente estabelecimento");
 			Sair();
 		}
+		if (status) {
+			const { cod, id, cod_estabelecimento, nome, sobrenome, status, perfil, data_post, data_image_post } = sessao;
+			setSessaoUser({ cod, id, cod_estabelecimento, nome, sobrenome, status, perfil, data_post, data_image_post });
 
+		}
 
 
 
@@ -125,7 +129,7 @@ const Produto = () => {
 		let desc = $("#descItemInput");
 		let qtd = $("#qtItemInput");
 		let preco = $("#precoUnitInput");
-		let cod = Math.floor(Math.random() * (777 + 0)) - 1;
+		var cod = Math.floor(Math.random() * (777 + 0)) - 1;
 
 		var objProduto = { cod_item: cod, id_estabelecimento: "", item: "", desc: "", qtd: "", preco: "", data_post: "", categoria_id: "" };
 
@@ -182,11 +186,47 @@ const Produto = () => {
 		var cod_estabelecimento = dataUser;
 
 		if (cod_estabelecimento !== 'null') {
+			var inputFoto = $("#inputFoto");
 			const param_api_save_usuario = `?api=setProdutos`;
 			objProduto.id_estabelecimento = cod_estabelecimento;
+			const param_api_save_img = "?api=setUploadFileItem";
+			/*POSTA IMAGEM */
+			if (selectedFileItem !== null) {
+
+				const formData = new FormData();
+				
+				formData.append("arquivo", selectedFileItem);
+				formData.append("usuario", JSON.stringify(sessao));
+				formData.append("produto", JSON.stringify(objProduto));
+
+				
+				console.log(selectedFileItem);
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange = function () {
+					if (xhr.readyState == 4) {
+						var res = xhr.responseText;
+						console.log(res)
+						if (res) {
+							let data = JSON.parse(res)
+							console.log(data)
+							if (data.status) {
+								inputFoto.addClass("is-valid").removeClass("is-invalid");
+								setSelectedFileItem("")
+							} else {
+								inputFoto.addClass("is-invalid").removeClass("is-valid");
+
+							}
+
+						}
+					}
+				}
+				xhr.open("POST", urlApi + nameApi + param_api_save_img);
+				xhr.send(formData);
 
 
+			}
 
+			//POSTA DETALHES DO ITEM
 			$.post(urlApi + nameApi + param_api_save_usuario, objProduto, (res, status) => {
 				var btnAdicionar = $('#btnAdicionar');
 				if (status == 'success') {
@@ -204,14 +244,14 @@ const Produto = () => {
 						setDisplaySuccess("none");
 						setMsgSuccess(null);
 						btnAdicionar.attr({ "disabled": false });
-					
+
 					} else {
 						setDisplaySuccess("block");
 						setMsgSuccess("Novo item adicionado!");
 
 						setDisplayError("none");
 						setMsgError(null);
-							btnAdicionar.attr({ "disabled": "disabled" });
+						btnAdicionar.attr({ "disabled": "disabled" });
 					}
 
 				} else {
@@ -231,7 +271,15 @@ const Produto = () => {
 
 
 	}
-
+	const carregarImagensItem = () => {
+		const param_api_save_img = "?api=setUploadFileItem";
+		//  let inputFoto = $("#inputFoto");
+		// inputFoto.addClass("is-valid").removeClass("is-invalid").val(null);
+		if (selectedFileItem !== null) {
+			console.log(`${'nome'}` + '_' + selectedFileItem.name)
+			console.log(selectedFileItem)
+		}
+	}
 
 	const fecharModal = () => {
 		window.location.reload();
@@ -285,7 +333,10 @@ const Produto = () => {
 
 
 							</div>
+							<div class="mb-3">
+								<input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileItem(e.target.files[0]) }} placeholder="Another input placeholder" />
 
+							</div>
 							<div class="mb-3">
 								<label for="qtItemInput" class="form-label">Quantidade</label>
 								<input type="number" min="1" class="form-control" id="qtItemInput" onChange={(e) => { setQuant(e.target.value) }} autocomplete="off" placeholder="0" />

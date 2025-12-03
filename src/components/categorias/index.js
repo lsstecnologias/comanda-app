@@ -114,9 +114,6 @@ const Categorias = () => {
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }}></button>
                 </div>
 
-               
-
-
                 <div class="input-group  mb-3 mt-2" style={{ display: 'inline-flex' }}>
                     <button class="btn btn-primary btn-sm " type="button" onClick={(e) => { addNvCategoria(e) }} > <i class="bi bi-plus-circle-dotted fs-4"></i> </button>
                     <input type="text" class="form-control animate__animated  animate__fadeIn " id="inpt_categoria" autocomplete="off"  placeholder="Nome da categoria" aria-label="Categoria do produto" aria-describedby="button-addon2" />

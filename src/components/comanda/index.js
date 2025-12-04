@@ -8,11 +8,11 @@ const Comanda = () => {
    sessionStorage.setItem('modal_notas', 'hide');
    const { cod } = useParams();
 
-   const { Sair, thumb_logo,sessao } = useContext(UserContext);
-console.log(sessao)
+   const { Sair, thumb_logo, sessao } = useContext(UserContext);
+   console.log(sessao)
    const [data, setData] = useState([]);
-    const dataUser = sessionStorage.getItem("cod_estabelecimento");
-      var cod_estabelecimento = dataUser;
+   const dataUser = sessionStorage.getItem("cod_estabelecimento");
+   var cod_estabelecimento = dataUser;
    const urlApi = 'http://10.10.10.6/';
    const nameApi = 'api_comanda/';
    const param_api_get_produtos = "?api=getProdutos";
@@ -44,8 +44,8 @@ console.log(sessao)
 
    }
    useEffect(() => {
-     
-     
+
+
 
       if (cod_estabelecimento !== 'null') {
 
@@ -86,28 +86,35 @@ console.log(sessao)
 
    return (
       <div className="container comanda">
-         <h4 className="mb-2 mt-2 pb-2 "><i class="bi bi-clipboard2"></i>Comanda</h4>
+         <h4 className="mb-2 mt-2 pb-2 ">Comanda</h4>
          <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
             <div class="row d-flex align-items-center justify-content-between text-center text-secondary flex-row p-0 m-0 ">
-               <div class="col-4 border">
-                  <p class="mb-0 ">ESTABELECIMENTO</p>                    
-                <p className="fs-2 mb-0 mt-0 t-0"> {sessao.cod_estabelecimento ? sessao.cod_estabelecimento : 'S/N'}</p> 
+               <div class="col-4 border p-1">
+                  <p class="mb-0 lh-1">ESTABELECIMENTO</p>
+                  <p className="fs-2 mb-0 mt-0 t-0"> {sessao.cod_estabelecimento ? sessao.cod_estabelecimento : 'S/N'}</p>
                </div>
-               <div class="col-4 border ">
-                  
-                  <p class="mb-0 pb-0 mt-0">CLIENTE <i class="bi bi-clipboard2"></i></p>
-                 <p className="fs-2 mb-0 mt-0 t-0"> N° {cod ? cod : 'S/N'}</p> 
-                 
+               <div class="col-4 border p-1">
+
+                  <p class="mb-0 pb-0 mt-0 lh-1">CLIENTE <i class="bi bi-clipboard2"></i></p>
+                  <p className="fs-2 mb-0 mt-0 t-0"> N° {cod ? cod : 'S/N'}</p>
+
                </div>
-               <div class="col-4 border">
-                   <p class="mb-0 pb-0 mt-0 ml-0 text-center"> FUNCIONÁRIO </p>
-                   <div class="mt-1">
-                     <div class="form-label">
-                        <select  class="form-select input-sm w-100 text-center" disabled={true} name="cars" id="cars">
-                           <option value={sessao.cod}>{sessao.nome ? sessao.nome : 'S/N'}</option>
+               <div class="col-4 border p-1">
+
+                  <div class=" p-2">
+                     <div class="form-label p-0">
+                        <select class="form-select input-sm w-100 text-center" disabled={true} name="cars" id="cars">
+                           <option value={sessao.cod}>Funcionário {sessao.nome ? sessao.nome : 'S/N'}</option>
                         </select>
                      </div>
-                   </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
+            <div className="row">
+               <div class="col-12">
+                  <button class="btn btn-sm w-100 btn-primary "><i class="bi bi-arrow-repeat fs-4"></i> Gerar Comanda</button>
                </div>
             </div>
          </div>
@@ -163,17 +170,45 @@ console.log(sessao)
 
                </table>
                {data.length == 0 &&
-                  <div class="container-fluid  d-flex align-items-center alert alert-light"  role="alert">
+                  <div class="container-fluid  d-flex align-items-center alert alert-light" role="alert">
                      <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
                         <span class="visually-hidden">Loading...</span>
                      </div>
-                     
+
 
                   </div>
                }
             </article>
          </div>
+         <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
+            <div class="row  p-0 m-0 ">
+               <div class="col-sm-4 border p-1">
+                  teste
+               </div>
+               <div class="col-sm-8 border p-1">
+                  teste
+               </div>
+
+            </div>
+
+            <div class="row d-flex p-0 m-0 ">
+               <div class="col-sm-12 border p-1">
+                  TOTAL
+               </div>
+
+
+            </div>
+            <div class="row ">
+               <div class="col-12  mt-2 ">
+                  <button class="btn btn-primary btn-sm w-100 "><i class="bi bi-cash-coin fs-4"></i> Finalizar Atendimento</button>
+               </div>            
+              
+            </div>
+
+         </div>
       </div>
+
+
    )
 }
 export default Comanda;

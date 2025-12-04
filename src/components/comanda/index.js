@@ -1,17 +1,18 @@
-import { useEffect, useState,useContext } from "react"
-import { Link,useParams } from 'react-router-dom';
+import { useEffect, useState, useContext } from "react"
+import { Link, useParams } from 'react-router-dom';
 import { UserContext } from '../../components/context';
 import axios from 'axios';
 const $ = require("jquery");
 const Comanda = () => {
    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
    sessionStorage.setItem('modal_notas', 'hide');
-    const { cod } = useParams();
-    
-   const { Sair, thumb_logo } = useContext(UserContext);
-    
-   const [data, setData] = useState([]);
+   const { cod } = useParams();
 
+   const { Sair, thumb_logo,sessao } = useContext(UserContext);
+console.log(sessao)
+   const [data, setData] = useState([]);
+    const dataUser = sessionStorage.getItem("cod_estabelecimento");
+      var cod_estabelecimento = dataUser;
    const urlApi = 'http://10.10.10.6/';
    const nameApi = 'api_comanda/';
    const param_api_get_produtos = "?api=getProdutos";
@@ -43,29 +44,19 @@ const Comanda = () => {
 
    }
    useEffect(() => {
-      const config = {
-         method: "GET",
-         headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Credentials': 'true',
-            'mode': 'no-cors'
-         }
-      };
-
-      const dataUser = sessionStorage.getItem("cod_estabelecimento");
-      var cod_estabelecimento = dataUser;
+     
+     
 
       if (cod_estabelecimento !== 'null') {
-        
+
          var obj = { 'id': cod_estabelecimento };
 
-         $.post(urlApi + nameApi + param_api_get_produtos , obj, (res, status) => {
+         $.post(urlApi + nameApi + param_api_get_produtos, obj, (res, status) => {
 
             if (status == 'success') {
 
                var data = JSON.parse(res);
-              
+
                for (var i = 0; i < data.length; i++) {
                   data[i].subtotal = 0;
                }
@@ -78,7 +69,7 @@ const Comanda = () => {
          alert("Nenhum cliente estabelecimento");
          Sair();
       }
-      
+
       /*
             axios.get(urlApi + nameApi + param_api_get_produtos, config)
                .then((res) => {
@@ -91,11 +82,36 @@ const Comanda = () => {
                }).catch((error) => { alert("Error: parametros API " + error) });
       */
    }, [setData]);
- 
- 
+
+
    return (
       <div className="container comanda">
-         <h4 className="mb-2 mt-2 pb-2 ">Comanda {cod}<i class="bi bi-clipboard2"></i></h4>
+         <h4 className="mb-2 mt-2 pb-2 "><i class="bi bi-clipboard2"></i>Comanda</h4>
+         <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
+            <div class="row d-flex align-items-center justify-content-between text-center text-secondary flex-row p-0 m-0 ">
+               <div class="col-4 border">
+                  <p class="mb-0 ">ESTABELECIMENTO</p>                    
+                <p className="fs-2 mb-0 mt-0 t-0"> {sessao.cod_estabelecimento ? sessao.cod_estabelecimento : 'S/N'}</p> 
+               </div>
+               <div class="col-4 border ">
+                  
+                  <p class="mb-0 pb-0 mt-0">CLIENTE <i class="bi bi-clipboard2"></i></p>
+                 <p className="fs-2 mb-0 mt-0 t-0"> N° {cod ? cod : 'S/N'}</p> 
+                 
+               </div>
+               <div class="col-4 border">
+                   <p class="mb-0 pb-0 mt-0 ml-0 text-center"> FUNCIONÁRIO </p>
+                   <div class="mt-1">
+                     <div class="form-label">
+                        <select  class="form-select input-sm w-100 text-center" disabled={true} name="cars" id="cars">
+                           <option value={sessao.cod}>{sessao.nome ? sessao.nome : 'S/N'}</option>
+                        </select>
+                     </div>
+                   </div>
+               </div>
+            </div>
+         </div>
+
          <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
 
             <article>
@@ -147,11 +163,11 @@ const Comanda = () => {
 
                </table>
                {data.length == 0 &&
-                  <div class="container-fluid alert alert-light" role="alert">
-                     <div class="spinner-border" role="status">
+                  <div class="container-fluid  d-flex align-items-center alert alert-light"  role="alert">
+                     <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
                         <span class="visually-hidden">Loading...</span>
-
                      </div>
+                     
 
                   </div>
                }

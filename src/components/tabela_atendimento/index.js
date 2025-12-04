@@ -39,31 +39,59 @@ const TabelaAtendimento = () => {
       window.location.reload();
    }
    useEffect(() => {
-      const param_api_lista_atendimentos = '?api=getAtendimentos';
-      const config = {
-         method: "GET",
-         headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Credentials': 'true',
-            'mode': 'no-cors'
+      /* const param_api_lista_atendimentos = '?api=getAtendimentos';
+       const config = {
+          method: "GET",
+          headers: {
+             'Access-Control-Allow-Origin': '*',
+             'Access-Control-Allow-Headers': '*',
+             'Access-Control-Allow-Credentials': 'true',
+             'mode': 'no-cors'
+          }
+       };
+       axios.get(urlApi + nameApi + param_api_lista_atendimentos, config)
+          .then(async (res) => {
+             var vl = await res.data;
+             setDataClientes(vl);
+ 
+          }).catch((error) => {
+             alert("Error: parametros API " + error)
+          });*/
+
+      const dataUser = sessionStorage.getItem("cod_estabelecimento");
+      var cod_estabelecimento = dataUser;
+    
+         if (cod_estabelecimento !== 'null') {
+            const param_api_get_atendimento = "?api=getAtendimentos";
+           
+            let obj = {id:dataUser}
+            $.post(urlApi + nameApi + param_api_get_atendimento , obj, (res, status) => {
+              console.log(res)
+               let data = JSON.parse(res)
+               if (status == 'success') {
+                    setDataClientes(data);
+                  
+ 
+               } else {
+                   setDisplayError("block");
+                   setMsgError("Erro: !");
+                   setDisplaySuccess("none");
+                   setMsgSuccess(null);
+ 
+               }
+
+            })
+         } else {
+            alert("Nenhum cliente estabelecimento");
+           // Sair();
          }
-      };
-      axios.get(urlApi + nameApi + param_api_lista_atendimentos, config)
-         .then(async (res) => {
-            var vl = await res.data;
-            setDataClientes(vl);
 
-         }).catch((error) => {
-            alert("Error: parametros API " + error)
-         });
-
-   }, [setDataClientes]);
+      }, [setDataClientes]);
 
    return (
       <div class="container-fluid m-0 p-0  categorias">
          <div class="container">
-            <h4 className="mb-3 ">Clientes <i class="bi bi-people-fill"></i></h4>
+            <h4 className="mb-3 ">Atendimentos <i class="bi bi-people-fill"></i></h4>
             <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
                <i class="bi bi-check-circle-fill p-2"></i>
                {msgSuccess !== null && msgSuccess}
@@ -110,7 +138,7 @@ const TabelaAtendimento = () => {
                               <div class="btn-group" role="group" aria-label="Basic outlined example">
                                  <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
 
-                                 <button type="button"  onClick={() => deleteItem(val.id)}  class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
+                                 <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
                               </div>
 
                            </td>
@@ -121,12 +149,14 @@ const TabelaAtendimento = () => {
                </tbody>
             </table>
             {dataClientes.length == 0 &&
-               <div class="alert alert-light" role="alert">
-                  <div class="spinner-border" role="status">
+                <div class="d-flex align-items-center alert alert-light fade show" style={{ display: displayError }} role="alert">
+                
+                  <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
                      <span class="visually-hidden">Loading...</span>
-
                   </div>
-
+                  <p>
+                     {"Nenhum item relacionado ao atendimento ou estabelecimento!"}
+                  </p>
                </div>
             }
          </div>

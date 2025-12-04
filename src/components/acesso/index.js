@@ -156,15 +156,15 @@ const Acesso = () => {
                                 <input type="checkbox" value="remember-me" /> <small> Remember me</small>
                             </label>
                         </div>
-                        <button class="w-100 btn btn-sm btn-primary" onClick={(e) => { validarForm(e) }} type="button"><i class="bi fs-5 bi-box-arrow-in-right"></i> Entrar</button>
+                        <button class="w-100 btn btn-sm btn-primary" id="btnAcesso" onClick={(e) => { validarForm(e) }} type="button"><i class="bi fs-5 bi-box-arrow-in-right"></i> Entrar</button>
                         <hr class="my-4" />
-                        <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+                        <small class="text-body-secondary text-center">lsstecnologias&copy;2025</small>
                     </form>
                 </div>
                 
 
             </div>
-            <p class="mt-3 mb-3 text-center text-body-secondary">lsstecnologias&copy;2025</p>
+           
         </div>
     )
 }

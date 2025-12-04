@@ -9,6 +9,10 @@
     z-index: 2;
     
 }
+#btnAcesso{
+    background: #3D3588;
+background: linear-gradient(0deg, rgba(61, 53, 136, 1) 0%, rgba(39, 94, 159, 1) 54%, rgba(14, 142, 186, 1) 100%);
+}
 
 .form-signin input[type="email"] {
     margin-bottom: -1px;

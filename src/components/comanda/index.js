@@ -9,8 +9,15 @@ const Comanda = () => {
    const { cod } = useParams();
 
    const { Sair, thumb_logo, sessao } = useContext(UserContext);
-   console.log(sessao)
+
    const [data, setData] = useState([]);
+   const [getComanda, setComanda] = useState(false);
+
+   const [displayError, setDisplayError] = useState('none');
+   const [displaySuccess, setDisplaySuccess] = useState('none');
+   const [msgError, setMsgError] = useState(null);
+   const [msgSuccess, setMsgSuccess] = useState(null);
+
    const dataUser = sessionStorage.getItem("cod_estabelecimento");
    var cod_estabelecimento = dataUser;
    const urlApi = 'http://10.10.10.6/';
@@ -43,10 +50,40 @@ const Comanda = () => {
       }
 
    }
+   const registrarComanda = (e) => {
+      e.preventDefault();
+      let data_atual = new Date();
+      let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
+
+      const param_api_save_comanda = "?api=setComandas";
+      const funcionarioCod = $('#funcionario');
+      const funcCod = funcionarioCod.val() ?? false;
+      const clienteCod = cod ? cod : false;
+      const estCod = sessao.cod_estabelecimento ? sessao.cod_estabelecimento : false;
+      if (estCod !== false) {
+         let obj_comanda = { func_cod: funcCod, cliente_cod: clienteCod, est_cod: estCod, data_post: data_post }
+
+         $.post(urlApi + nameApi + param_api_save_comanda, obj_comanda, (res, status) => {
+            if (status == 'success') {
+               if (res == '1') {
+                  
+                  setComanda(true);
+                  
+               }else{
+                  setComanda(false)
+               }
+
+            }
+
+         })
+      } else {
+         alert("Nenhum cliente estabelecimento");
+         Sair();
+      }
+
+   }
+
    useEffect(() => {
-
-
-
       if (cod_estabelecimento !== 'null') {
 
          var obj = { 'id': cod_estabelecimento };
@@ -81,17 +118,30 @@ const Comanda = () => {
       
                }).catch((error) => { alert("Error: parametros API " + error) });
       */
-   }, [setData]);
-
-
+   }, [setData,setComanda]);
+   console.log(getComanda)
+   const fecharModal = () => {
+      window.location.reload();
+   }
    return (
       <div className="container comanda">
          <h4 className="mb-2 mt-2 pb-2 ">Comanda</h4>
          <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
+            <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+               <i class="bi bi-clock p-2"></i>
+               {msgSuccess !== null && msgSuccess}
+               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }}></button>
+            </div>
+            <div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+               <i class="bi bi-exclamation-triangle p-2"></i>
+               {msgError !== null && msgError}
+
+            </div>
             <div class="row d-flex align-items-center justify-content-between text-center text-secondary flex-row p-0 m-0 ">
                <div class="col-4 border p-1">
                   <p class="mb-0 lh-1">ESTABELECIMENTO</p>
                   <p className="fs-2 mb-0 mt-0 t-0"> {sessao.cod_estabelecimento ? sessao.cod_estabelecimento : 'S/N'}</p>
+
                </div>
                <div class="col-4 border p-1">
 
@@ -103,8 +153,8 @@ const Comanda = () => {
 
                   <div class=" p-2">
                      <div class="form-label p-0">
-                        <select class="form-select input-sm w-100 text-center" disabled={true} name="cars" id="cars">
-                           <option value={sessao.cod}>Funcionário {sessao.nome ? sessao.nome : 'S/N'}</option>
+                        <select class="form-select input-sm w-100 text-center" disabled={true} id="funcionario">
+                           <option value={sessao.cod} selected>Funcionário {sessao.nome ? sessao.nome : 'S/N'}</option>
                         </select>
                      </div>
                   </div>
@@ -114,11 +164,11 @@ const Comanda = () => {
          <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
             <div className="row">
                <div class="col-12">
-                  <button class="btn btn-sm w-100 btn-primary "><i class="bi bi-arrow-repeat fs-4"></i> Gerar Comanda</button>
+                  <button class="btn btn-sm w-100 btn-primary" onClick={(e) => { registrarComanda(e) }}><i class="bi bi-arrow-repeat fs-4"></i> Gerar Comanda</button>
                </div>
             </div>
          </div>
-
+         {getComanda == true &&
          <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
 
             <article>
@@ -180,6 +230,7 @@ const Comanda = () => {
                }
             </article>
          </div>
+         }
          <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
             <div class="row  p-0 m-0 ">
                <div class="col-sm-4 border p-1">
@@ -201,8 +252,8 @@ const Comanda = () => {
             <div class="row ">
                <div class="col-12  mt-2 ">
                   <button class="btn btn-primary btn-sm w-100 "><i class="bi bi-cash-coin fs-4"></i> Finalizar Atendimento</button>
-               </div>            
-              
+               </div>
+
             </div>
 
          </div>

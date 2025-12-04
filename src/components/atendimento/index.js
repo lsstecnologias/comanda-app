@@ -10,8 +10,8 @@ import $ from 'jquery';
 
 const Atendimento = () => {
   const { sessao, status, redirect_login, Sair } = useContext(UserContext);
-//PERIMITE NÃO EXIBIR MODAL DE NOTAS
-		sessionStorage.setItem('modal_notas', 'hide');
+  //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+  sessionStorage.setItem('modal_notas', 'hide');
   const [sessaoUser, setSessaoUser] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [buscarCliente, setBuscarCliente] = useState("");
@@ -103,7 +103,7 @@ const Atendimento = () => {
   }
 
   const validarAtendimento = (e) => {
-    
+
     e.preventDefault();
     let data_atual = new Date();
     let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
@@ -181,7 +181,7 @@ const Atendimento = () => {
 
 
     if (objAtendimento.cod_atendimento == null || objAtendimento.cod_atendente == null || objAtendimento.cod_cliente == null || objAtendimento.cliente == null || objAtendimento.data_endereco == null || objAtendimento.data_atendimento == null || objAtendimento.data_post == null) {
-    
+
 
       setDisplaySuccess("none");
       setMsgSuccess(null);
@@ -206,7 +206,7 @@ const Atendimento = () => {
               setMsgSuccess("Atendimento registrado!");
               setDisplayError("none");
               setMsgError(null);
-
+              window.location.href = '/admin/lista-atendimento'
             } else {
               setDisplaySuccess("none");
               setMsgSuccess(null);
@@ -269,16 +269,12 @@ const Atendimento = () => {
 
     let data_cep = $('#cep');
     data_cep.mask('00000000');
-
-
     const getCliente = () => {
       axios.get(urlApi + nameApi + param_api_get_clientes, config)
         .then((res) => {
           if (res.status == 200) {
             setClientes(res.data);
-
           }
-
         }).catch((error) => { alert("Error: parametros API " + error) });
 
     }
@@ -290,7 +286,7 @@ const Atendimento = () => {
     <div className="container comanda">
       <div class="container animate__animated animate__fadeIn">
 
-        <h4 className="mb-4 mt-4">Atendimentos <i class="bi bi-clock"></i></h4>
+        <h4 className="mb-4 mt-4">Novo Atendimento <i class="bi bi-clock"></i></h4>
         <div class="container p-0 m-0">
           <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
             <i class="bi bi-clock p-2"></i>
@@ -329,10 +325,10 @@ const Atendimento = () => {
                 <td colspan="2">
                   <td class="lh-3 fw-light">Cliente</td>
                   <div class="input-group  mt-2 mb-2">
-
+                    <button class="btn btn-success " type="button" onClick={() => validarBusca()} id="button-addon2">Confirmar <i class="bi bi-check2-all"></i></button>
                     <input list="clientes" class='form-select form-control' id="inpt_buscar" value={buscarCliente} onChange={(e) => setBuscarCliente(e.target.value)} placeholder='Encontrar cliente...' aria-describedby="button-addon2" />
 
-                    <button class="btn btn-success " type="button" onClick={() => validarBusca()} id="button-addon2">Buscar <i class="bi bi-search"></i> </button>
+
 
                     <datalist id="clientes" className='p-4'>
                       {clientes && clientes.map((vl) => { return <option className='p-4' value={vl.nome} /> })}

@@ -57,8 +57,8 @@ const Header = () => {
                       <li class="nav-item dropdown">
                         <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administrador</Link>
                         <ul class="dropdown-menu fw-light">
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/meus-clientes">Clientes</Link></li>
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/listar-clientes">Listar Clientes</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/estabelecimento">Estabelecimento</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/listar-estabelecimento">Listar Estabelecimento</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/keygen">Keygen</Link></li>
                         </ul>
                      </li>

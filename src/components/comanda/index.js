@@ -66,11 +66,15 @@ const Comanda = () => {
          $.post(urlApi + nameApi + param_api_save_comanda, obj_comanda, (res, status) => {
             if (status == 'success') {
                if (res == '1') {
-                  
+                  setMsgSuccess(`Comanda refente atendimento Cod N°.${clienteCod} foi gerado!`)
+                  setDisplaySuccess('block')
                   setComanda(true);
-                  
-               }else{
+                  $('#btnComanda').attr({ disabled: true })
+
+               } else {
                   setComanda(false)
+                  setMsgError('Erro ao gerar a comanda')
+                  setDisplayError('block')
                }
 
             }
@@ -87,7 +91,7 @@ const Comanda = () => {
       if (cod_estabelecimento !== 'null') {
 
          var obj = { 'id': cod_estabelecimento };
-
+         
          $.post(urlApi + nameApi + param_api_get_produtos, obj, (res, status) => {
 
             if (status == 'success') {
@@ -118,7 +122,7 @@ const Comanda = () => {
       
                }).catch((error) => { alert("Error: parametros API " + error) });
       */
-   }, [setData,setComanda]);
+   }, [setData, setComanda]);
    console.log(getComanda)
    const fecharModal = () => {
       window.location.reload();
@@ -128,9 +132,9 @@ const Comanda = () => {
          <h4 className="mb-2 mt-2 pb-2 ">Comanda</h4>
          <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
             <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-               <i class="bi bi-clock p-2"></i>
+               <i class="bi bi-clipboard2 p-2"></i>
                {msgSuccess !== null && msgSuccess}
-               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }}></button>
+               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
                <i class="bi bi-exclamation-triangle p-2"></i>
@@ -161,102 +165,117 @@ const Comanda = () => {
                </div>
             </div>
          </div>
+
+         {getComanda == true &&
+            <>
+               <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
+
+                  <article>
+                     <table class="table table-bordered align-right table-responsive">
+                        <thead class="align-end">
+                           <tr>
+                              <th class="fw-medium">Produto</th>
+                              <th class="fw-medium">Quant.</th>
+                              <th class="fw-medium">Preço</th>
+                              <th class="fw-medium">SubTotal</th>
+                           </tr>
+                        </thead>
+
+                        <tbody>
+                           {data && data.map((valor) => {
+
+                              return (
+                                 <tr key={valor.id}>
+                                    <td>
+                                       <p class="lh-1 fw-light text-start m-0">{valor.nome} {valor.descricao}</p>
+
+                                    </td>
+                                    <td class=" d-flex align-items-center justify-content-center">
+                                       <div class="input-group input-group-sm d-flex align-items-center ">
+                                          <input type="number" min="1" class="form-control" id={"inpt-qt-id-" + valor.id} aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
+                                          <div class="input-group-text" onClick={() => { marcarQuantidade(valor.id, valor.preco) }}>
+                                             <input class="form-check-input mt-0" type="checkbox" name="block-qtd" style={{ display: "none" }} id={"check-inpt-" + valor.id} />
+                                             <i class="bi bi-lock-fill"></i>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td>
+                                       <div className="d-flex align-items-center justify-content-center mt-2" >
+                                          <p class="lh-1 fw-light  ">{valor && valor.preco}</p>
+                                       </div>
+                                    </td>
+                                    <td>
+                                       <div class="d-subtotal">
+                                          <input type='text' id={"inpt-subtotal-" + valor.id} class="form-control" disabled />
+
+                                       </div>
+                                    </td>
+
+                                 </tr>
+                              )
+                           })}
+
+                        </tbody>
+
+                     </table>
+                     {data.length == 0 &&
+                        <div class="container-fluid  d-flex align-items-center alert alert-light" role="alert">
+                           <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
+                              <span class="visually-hidden">Loading...</span>
+                           </div>
+
+
+                        </div>
+                     }
+                  </article>
+               </div>
+               <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
+                  <div class="row  p-0 m-0 ">
+                     <div class="col-sm-4 border p-1">
+                        teste
+                     </div>
+                     <div class="col-sm-8 border p-1">
+                        teste
+                     </div>
+
+                  </div>
+
+                  <div class="row d-flex p-0 m-0 ">
+                     <div class="col-sm-12 border p-1">
+                        TOTAL
+                     </div>
+
+                  </div>
+                  {getComanda == false &&
+                     <div class="d-flex align-items-center alert alert-light fade show" style={{ display: displayError }} role="alert">
+
+                        <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
+                           <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p className='mt-3'>Adicione um novo item a sua lista!</p>
+                        {/*msgError !== null && msgError*/}
+
+                     </div>
+                  }
+                  <div class="row ">
+                     <div class="col-12  mt-2 ">
+                        <button class="btn btn-primary btn-sm w-100 "><i class="bi bi-cash-coin fs-4"></i> Finalizar Atendimento</button>
+                     </div>
+
+                  </div>
+
+
+               </div>
+            </>
+         }
          <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
             <div className="row">
                <div class="col-12">
-                  <button class="btn btn-sm w-100 btn-primary" onClick={(e) => { registrarComanda(e) }}><i class="bi bi-arrow-repeat fs-4"></i> Gerar Comanda</button>
+                  <button class="btn btn-sm w-100 btn-primary" id="btnComanda" onClick={(e) => { registrarComanda(e) }}><i class="bi bi-arrow-repeat fs-4"></i> Gerar Comanda</button>
                </div>
             </div>
          </div>
-         {getComanda == true &&
-         <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
 
-            <article>
-               <table class="table table-bordered align-right table-responsive">
-                  <thead class="align-end">
-                     <tr>
-                        <th class="fw-medium">Produto</th>
-                        <th class="fw-medium">Quant.</th>
-                        <th class="fw-medium">Preço</th>
-                        <th class="fw-medium">SubTotal</th>
-                     </tr>
-                  </thead>
-
-                  <tbody>
-                     {data && data.map((valor) => {
-
-                        return (
-                           <tr key={valor.id}>
-                              <td>
-                                 <p class="lh-1 fw-light text-start m-0">{valor.nome} {valor.descricao}</p>
-
-                              </td>
-                              <td class=" d-flex align-items-center justify-content-center">
-                                 <div class="input-group input-group-sm d-flex align-items-center ">
-                                    <input type="number" min="1" class="form-control" id={"inpt-qt-id-" + valor.id} aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
-                                    <div class="input-group-text" onClick={() => { marcarQuantidade(valor.id, valor.preco) }}>
-                                       <input class="form-check-input mt-0" type="checkbox" name="block-qtd" style={{ display: "none" }} id={"check-inpt-" + valor.id} />
-                                       <i class="bi bi-lock-fill"></i>
-                                    </div>
-                                 </div>
-                              </td>
-                              <td>
-                                 <div className="d-flex align-items-center justify-content-center mt-2" >
-                                    <p class="lh-1 fw-light  ">{valor && valor.preco}</p>
-                                 </div>
-                              </td>
-                              <td>
-                                 <div class="d-subtotal">
-                                    <input type='text' id={"inpt-subtotal-" + valor.id} class="form-control" disabled />
-
-                                 </div>
-                              </td>
-
-                           </tr>
-                        )
-                     })}
-
-                  </tbody>
-
-               </table>
-               {data.length == 0 &&
-                  <div class="container-fluid  d-flex align-items-center alert alert-light" role="alert">
-                     <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
-                        <span class="visually-hidden">Loading...</span>
-                     </div>
-
-
-                  </div>
-               }
-            </article>
-         </div>
-         }
-         <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
-            <div class="row  p-0 m-0 ">
-               <div class="col-sm-4 border p-1">
-                  teste
-               </div>
-               <div class="col-sm-8 border p-1">
-                  teste
-               </div>
-
-            </div>
-
-            <div class="row d-flex p-0 m-0 ">
-               <div class="col-sm-12 border p-1">
-                  TOTAL
-               </div>
-
-
-            </div>
-            <div class="row ">
-               <div class="col-12  mt-2 ">
-                  <button class="btn btn-primary btn-sm w-100 "><i class="bi bi-cash-coin fs-4"></i> Finalizar Atendimento</button>
-               </div>
-
-            </div>
-
-         </div>
       </div>
 
 

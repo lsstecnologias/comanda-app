@@ -10,6 +10,8 @@ import axios from "axios";
 const TabelaCliente = () => {
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
+    //PERIMITE NÃO EXIBIR MODAL INICIAL DE NOTAS
+	sessionStorage.setItem('modal_notas', 'hide');
 
     var [clienteEstablecimento, setClienteEstablecimento] = useState([]);
     const [codUser, setCodUser] = useState("");
@@ -23,10 +25,60 @@ const TabelaCliente = () => {
     const currentPosts = clienteEstablecimento.slice(indexOfFirstPost, indexOfLastPost);
     <ListPagina />
 
-    const param_api_delete_estabelecimentos = '?api=deleteEstabelecimentos';
-    const param_api_list_estabelecimentos = "?api=getEstabelecimentos";
+    const param_api_delete_estabelecimentos  = '?api=deleteEstabelecimentos';
+    const param_api_list_estabelecimentos    = "?api=getEstabelecimentos";
+    const param_api_get_lojaEstabelecimentos = "?api=getLojaEstabelecimentos";
     const editItem = (id) => { setId(id); }
 
+
+    const gerarJsonVitrine = (e) => {
+        e.preventDefault();
+
+
+        const dataUser = sessionStorage.getItem("cod_estabelecimento");
+        var cod_estabelecimento = dataUser;
+        let obj = { 'id': cod_estabelecimento };
+        $.post(urlApi + nameApi + param_api_get_lojaEstabelecimentos, obj, (res, status) => {
+            function downloadJSON(data, filename) {
+                const json = JSON.stringify(data);
+                const blob = new Blob([json], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a); 
+                URL.revokeObjectURL(url); 
+                
+              
+                   
+
+            }
+
+            const myData = JSON.parse(res);
+            var arr=[];
+            myData.forEach(element => {
+              var {cod,cod_estabelecimento,descricao,email,item,nome,preco,quantidade} = element;
+              arr.push({cod,cod_estabelecimento,descricao,email,item,nome,preco,quantidade});
+              
+            });
+            
+            const fileName = `${cod_estabelecimento}.json`;
+           
+            downloadJSON(arr, fileName)
+        });
+
+
+
+
+
+
+
+
+    }
 
     const deleteEstabelecimento = (id) => {
         if (id !== null || id !== undefined) {
@@ -58,7 +110,7 @@ const TabelaCliente = () => {
 
     return (
         <div class="container table-responsive produtos mt-4">
-            <h4 className="mb-2 mt-2 pb-2">Lista Estabelecimento</h4>
+            <h4 className="mb-2 mt-2 pb-2 "><i class="bi bi-shop-window m-2"></i> Estabelecimento cliente</h4>
             <table class="table caption-top animate__animated animate__fadeIn ">
 
                 <thead>
@@ -67,21 +119,34 @@ const TabelaCliente = () => {
                         <th scope="col">Cod. </th>
                         <th scope="col">Nome</th>
                         <th scope="col">Perfil</th>
-                        <th className="text-end" scope="col">Ações</th>
+                        <th scope="col">Visualizar</th>
+
+                        <th className="col text-end">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {currentPosts && currentPosts.map((e) => {
+                    {currentPosts && currentPosts.map((val) => {
 
                         return (
-                            <tr key={e.id}>
+                            <tr key={val.id}>
 
-                                <td className='lh-1 fw-light'>{e.cod}</td>
-                                <td className='lh-1 fw-light'>{e.nome}</td>
-                                <td className='lh-1 fw-light'>{e.perfil == 's' ? 'Super' : 'User'}</td>
+                                <td className='fw-light'>{val.cod}</td>
+                                <td className='fw-light'>{val.nome}</td>
+
+                                <td className='fw-light'>{val.perfil == 's' ? 'Super' : 'User'}</td>
+                                <td className='fw-light'><button class="btn btn-sm btn-outline-primary" onClick={(e) => { gerarJsonVitrine(e) }}> <i class="bi bi-eye"></i> Vitrine</button></td>
                                 <td className="d-flex align-items-center justify-content-end">
-                                    <button data-bs-toggle="modal" onClick={() => editItem(e.id)} data-bs-target={"#editUsuario-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
-                                    <button class="btn btn-sm btn-outline-secondary bi bi-x-lg" onClick={() => deleteEstabelecimento(e.id)}></button>
+
+                                    <td className='text-end'>
+                                        {/*<button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
+                                         <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button>*/}
+                                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                            <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editUsuario-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
+
+                                            <button type="button" onClick={() => deleteEstabelecimento(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
+                                        </div>
+                                    </td>
+
                                 </td>
 
                             </tr>

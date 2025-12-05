@@ -5,7 +5,9 @@ const Template = () => {
 
        
             <div className="container produtos">
-                <div class="row">
+                <h2>EM DESENVOLVIMENTO !</h2>
+            {/*
+            <div class="row">
                     <div class="col-4">
                         1
                     </div>
@@ -34,6 +36,7 @@ const Template = () => {
                     col-sm-4
                 </div>
             </div>
+            */}
         </div>
         
     )

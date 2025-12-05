@@ -11,7 +11,7 @@ var md5 = require('md5');
 
 
 const Clientes = () => {
-	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+	//PERIMITE NÃO EXIBIR MODAL INICIAL DE NOTAS
 	sessionStorage.setItem('modal_notas', 'hide');
 	const [nomeUser, setNomeUser] = useState("");
 	const [emailLoginUser, setEmailLoginUser] = useState("");
@@ -247,7 +247,7 @@ const Clientes = () => {
 					{msgError !== null && msgError}
 
 				</div>
-				<h4 className="mb-2 mt-2 pb-2">Estabelecimento/Cliente</h4>
+				<h4 className="mb-2 mt-2 pb-2 "><i class="bi bi-shop-window m-2"></i> Estabelecimento cliente</h4>
 
 				<table class="table table-bordered ">
 					<thead>

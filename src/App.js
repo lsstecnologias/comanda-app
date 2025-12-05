@@ -28,7 +28,7 @@ function App() {
   sessionStorage.setItem('modal_notas', 'hide');
   const [statusTela, setStatusTela] = useState('');
  
-
+  
   window.addEventListener('load', () => {
     $('#preloader').hide(500);
     setStatusTela("block");
@@ -55,8 +55,8 @@ function App() {
               
             <Route path="produto" element={<Produto />} />
             <Route path="agendamento-pedido" element={<AgendamentoPedido />} />
-            <Route path="meus-clientes" element={<Clientes />} />
-            <Route path="listar-clientes" element={<TabelaCliente />} />
+            <Route path="estabelecimento" element={<Clientes />} />
+            <Route path="listar-estabelecimento" element={<TabelaCliente />} />
             <Route path="usuario" element={<Usuarios />} />
             <Route path="imagens" element={<UploadImagens />} />
             <Route path="categoria" element={<Categorias />} />

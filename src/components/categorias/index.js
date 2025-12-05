@@ -76,7 +76,7 @@ const Categorias = () => {
             if (cod_estabelecimento !== 'null') {
                 const param_api_save_categoria = "?api=setCategorias";
                 obj_categoria.id_estabelecimento = cod_estabelecimento;
-            
+                
                 $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
                     window.location.reload()
                     /*
@@ -115,7 +115,7 @@ const Categorias = () => {
                 </div>
 
                 <div class="input-group  mb-3 mt-2" style={{ display: 'inline-flex' }}>
-                    <button class="btn btn-primary btn-sm " type="button" onClick={(e) => { addNvCategoria(e) }} > <i class="bi bi-plus-circle-dotted fs-4"></i> </button>
+                    <button class="btn btn-primary btn-sm " type="button" onClick={(e) => { addNvCategoria(e) }} > Adicionar <i class="bi bi-plus-circle-dotted "></i> </button>
                     <input type="text" class="form-control animate__animated  animate__fadeIn " id="inpt_categoria" autocomplete="off"  placeholder="Nome da categoria" aria-label="Categoria do produto" aria-describedby="button-addon2" />
                     
                 </div>

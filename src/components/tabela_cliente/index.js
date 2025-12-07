@@ -1,5 +1,6 @@
 import { error } from "jquery";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from '../context';
 import ListPagina from "../../ListPagina";
 import ModalEditUsuarios from "../modalEditUsuarios";
 import $ from 'jquery';
@@ -12,6 +13,7 @@ const TabelaCliente = () => {
     const nameApi = 'api_comanda/';
     //PERIMITE NÃO EXIBIR MODAL INICIAL DE NOTAS
 	sessionStorage.setItem('modal_notas', 'hide');
+     const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
     var [clienteEstablecimento, setClienteEstablecimento] = useState([]);
     const [codUser, setCodUser] = useState("");
@@ -25,7 +27,7 @@ const TabelaCliente = () => {
     const currentPosts = clienteEstablecimento.slice(indexOfFirstPost, indexOfLastPost);
     <ListPagina />
 
-    const param_api_delete_estabelecimentos  = '?api=deleteEstabelecimentos';
+    const param_api_delete_estabelecimentos  = "?api=deleteEstabelecimentos";
     const param_api_list_estabelecimentos    = "?api=getEstabelecimentos";
     const param_api_get_lojaEstabelecimentos = "?api=getLojaEstabelecimentos";
     const editItem = (id) => { setId(id); }
@@ -37,45 +39,11 @@ const TabelaCliente = () => {
 
         const dataUser = sessionStorage.getItem("cod_estabelecimento");
         var cod_estabelecimento = dataUser;
-        let obj = { 'id': cod_estabelecimento };
-        $.post(urlApi + nameApi + param_api_get_lojaEstabelecimentos, obj, (res, status) => {
-            function downloadJSON(data, filename) {
-                const json = JSON.stringify(data);
-                const blob = new Blob([json], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-
-                
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a); 
-                URL.revokeObjectURL(url); 
-                
-              
-                   
-
-            }
-
-            const myData = JSON.parse(res);
-            var arr=[];
-            myData.forEach(element => {
-              var {cod,cod_estabelecimento,descricao,email,item,nome,preco,quantidade} = element;
-              arr.push({cod,cod_estabelecimento,descricao,email,item,nome,preco,quantidade});
-              
-            });
-            
-            const fileName = `${cod_estabelecimento}.json`;
-           
-            downloadJSON(arr, fileName)
+        let obj = {'sessao':sessao};
+        $.post(urlApi + nameApi + param_api_get_lojaEstabelecimentos, obj, (res) => {
+           console.log(res)
+          
         });
-
-
-
-
-
-
 
 
     }
@@ -100,10 +68,10 @@ const TabelaCliente = () => {
             }
         };
         axios.get(urlApi + nameApi + param_api_list_estabelecimentos, config)
-            .then((res) => {
+        .then((res) => {
 
-                setClienteEstablecimento(res.data)
-            }).catch((error) => { alert("Error: parametros API " + error) });
+            setClienteEstablecimento(res.data)
+        }).catch((error) => { alert("Error: parametros API " + error) });
 
 
     }, [setClienteEstablecimento]);
@@ -138,8 +106,10 @@ const TabelaCliente = () => {
                                 <td className="d-flex align-items-center justify-content-end">
 
                                     <td className='text-end'>
-                                        {/*<button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
-                                         <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button>*/}
+                                        {/*
+                                            <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
+                                            <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button>
+                                         */}
                                         <div class="btn-group" role="group" aria-label="Basic outlined example">
                                             <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editUsuario-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
 

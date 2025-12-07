@@ -69,11 +69,11 @@ const AgendamentoPedido = () => {
                      return (
                         <tr key={val.id}>
 
-                           <td className='lh-1 fw-light'>{val.cod_atendimento}</td>
-                           <td className='lh-1 fw-light'>{val.cod_atendente}</td>
-                           <td className='lh-1 fw-light'>{val.data_atendimento}</td>
+                           <td className='fw-light'>{val.cod_atendimento}</td>
+                           <td className='fw-light'>{val.cod_atendente}</td>
+                           <td className='fw-light'>{val.data_atendimento}</td>
                      
-                           <td className='lh-1 fw-light' ><button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-person-fill-gear"></i></button></td>
+                           <td className='fw-light' ><button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-person-fill-gear"></i></button></td>
 
                         </tr>
                      )

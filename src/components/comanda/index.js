@@ -67,8 +67,9 @@ const Comanda = () => {
             if (status == 'success') {
                if (res == '1') {
                   setMsgSuccess(`Comanda refente atendimento Cod N°.${clienteCod} foi gerado!`)
-                  setDisplaySuccess('block')
+                  setDisplaySuccess('block');
                   setComanda(true);
+                  
                   $('#btnComanda').attr({ disabled: true })
 
                } else {
@@ -131,7 +132,7 @@ const Comanda = () => {
       <div className="container comanda">
          <h4 className="mb-2 mt-2 pb-2 ">Comanda</h4>
          <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
-            <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+            <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn" style={{ display: displaySuccess }} role="alert">
                <i class="bi bi-clipboard2 p-2"></i>
                {msgSuccess !== null && msgSuccess}
                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

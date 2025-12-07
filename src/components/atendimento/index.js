@@ -103,7 +103,6 @@ const Atendimento = () => {
   }
 
   const validarAtendimento = (e) => {
-
     e.preventDefault();
     let data_atual = new Date();
     let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
@@ -111,12 +110,12 @@ const Atendimento = () => {
     const objAtendimento = { id_estabelecimento: null, cod_atendimento: null, cod_atendente: null, cod_cliente: null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
 
     objAtendimento.data_post = data_post;
-    let atendente = $('#atendente');
-    let cep = $('#cep');
-    let cod_atendimento = $('#cod_atendimento');
-    let data_atendimento = $('#data_atendimento');
-    let endereco = $('#data_endereco');
-    let inpt_buscar = $('#inpt_buscar');
+    let atendente            = $('#atendente');
+    let cep                  = $('#cep');
+    let cod_atendimento      = $('#cod_atendimento');
+    let data_atendimento     = $('#data_atendimento');
+    let endereco             = $('#data_endereco');
+    let inpt_buscar          = $('#inpt_buscar');
 
 
     if (cod_atendimento.val()) {
@@ -206,7 +205,8 @@ const Atendimento = () => {
               setMsgSuccess("Atendimento registrado!");
               setDisplayError("none");
               setMsgError(null);
-              window.location.href = '/admin/lista-atendimento'
+              window.location.href = '/admin/lista-atendimento';
+
             } else {
               setDisplaySuccess("none");
               setMsgSuccess(null);

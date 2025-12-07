@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import $ from 'jquery';
 import { v4 as uuidv4 } from 'uuid';
+import { useContext } from 'react';
+import { UserContext } from '../context';
 import Imagens from "../upload_imagens";
 import TabelaUsuario from "../tabela_usuario";
 
@@ -17,6 +19,7 @@ const Clientes = () => {
 	const [emailLoginUser, setEmailLoginUser] = useState("");
 	const [senhaUser, setSenhaUser] = useState("");
 	const [perfilUser, setPerfilUser] = useState("");
+	 const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 	//HOOK MSG ERROS
 	const [displayError, setDisplayError] = useState('none');
 	const [displaySuccess, setDisplaySuccess] = useState('none');

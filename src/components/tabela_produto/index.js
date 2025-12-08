@@ -96,10 +96,10 @@ const TabelaProduto = () => {
                             return (
                                 <tr key={val.id}>
                                     <td scope="row">{val.cod_estabelecimento}</td>
-                                    <td className='lh-1 fw-light'>{val.item}</td>
-                                    <td className='lh-1 fw-light'>{val.nome}</td>
-                                    <td className='lh-1 fw-light'>{val.preco}</td>
-                                    <td className='lh-1 fw-light'>{val.quantidade}</td>
+                                    <td className='fw-light'>{val.item}</td>
+                                    <td className='fw-light'>{val.nome}</td>
+                                    <td className='fw-light'>{val.preco}</td>
+                                    <td className='fw-light'>{val.quantidade}</td>
                                     <td className='text-end'>
                                         {/* <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                                         <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}

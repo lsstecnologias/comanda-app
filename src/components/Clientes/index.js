@@ -28,16 +28,16 @@ const Clientes = () => {
 
 	const addNovoCliente = (e) => {
 		e.preventDefault();
-		const nome 		= $("#nome");
-		const sobrenome = $("#sobrenome");
-		const email 	= $("#email");
-		const cpf 		= $("#cpf");
-		const cnpj 		= $("#cnpj");
-		const rg 		= $("#rg");
-		const cep 		= $("#cep");
-		const endereco  = $("#endereco");
-		const senha 	= $("#senha");
-		const btnAdicionar = $("#btnAdicionarClientes");
+		const nome 			= $("#nome");
+		const sobrenome 	= $("#sobrenome");
+		const email 		= $("#email");
+		const cpf 			= $("#cpf");
+		const cnpj 			= $("#cnpj");
+		const rg 			= $("#rg");
+		const cep 			= $("#cep");
+		const endereco  	= $("#endereco");
+		const senha 		= $("#senha");
+		const btnAdicionar  = $("#btnAdicionarClientes");
 
 		const fullUuid = uuidv4();
 		let data_atual = new Date();

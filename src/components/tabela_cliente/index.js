@@ -12,8 +12,8 @@ const TabelaCliente = () => {
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
     //PERIMITE NÃO EXIBIR MODAL INICIAL DE NOTAS
-	sessionStorage.setItem('modal_notas', 'hide');
-     const { sessao, status, redirect_login, Sair } = useContext(UserContext);
+    sessionStorage.setItem('modal_notas', 'hide');
+    const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
     var [clienteEstablecimento, setClienteEstablecimento] = useState([]);
     const [codUser, setCodUser] = useState("");
@@ -27,23 +27,42 @@ const TabelaCliente = () => {
     const currentPosts = clienteEstablecimento.slice(indexOfFirstPost, indexOfLastPost);
     <ListPagina />
 
-    const param_api_delete_estabelecimentos  = "?api=deleteEstabelecimentos";
-    const param_api_list_estabelecimentos    = "?api=getEstabelecimentos";
-    const param_api_get_lojaEstabelecimentos = "?api=getLojaEstabelecimentos";
+    const param_api_delete_estabelecimentos = "?api=deleteEstabelecimentos";
+    const param_api_list_estabelecimentos = "?api=getEstabelecimentos";
+    const param_api_get_lojaEstabelecimentos = "?api=getFileUser";
     const editItem = (id) => { setId(id); }
 
 
-    const gerarJsonVitrine = (e) => {
-        e.preventDefault();
+    const gerarJsonVitrine = () => {
+        const myData = {
+            product: "Laptop",
+            price: 1200,
+            inStock: true
+        };
 
+        const jsonString = JSON.stringify(myData, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
 
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        /*
         const dataUser = sessionStorage.getItem("cod_estabelecimento");
         var cod_estabelecimento = dataUser;
         let obj = {'sessao':sessao};
         $.post(urlApi + nameApi + param_api_get_lojaEstabelecimentos, obj, (res) => {
-           console.log(res)
+            const dataDir = JSON.parse(res);
+            console.log(dataDir)
           
-        });
+        });*/
+
+
+     
 
 
     }
@@ -68,10 +87,10 @@ const TabelaCliente = () => {
             }
         };
         axios.get(urlApi + nameApi + param_api_list_estabelecimentos, config)
-        .then((res) => {
+            .then((res) => {
 
-            setClienteEstablecimento(res.data)
-        }).catch((error) => { alert("Error: parametros API " + error) });
+                setClienteEstablecimento(res.data)
+            }).catch((error) => { alert("Error: parametros API " + error) });
 
 
     }, [setClienteEstablecimento]);
@@ -102,7 +121,7 @@ const TabelaCliente = () => {
                                 <td className='fw-light'>{val.nome}</td>
 
                                 <td className='fw-light'>{val.perfil == 's' ? 'Super' : 'User'}</td>
-                                <td className='fw-light'><button class="btn btn-sm btn-outline-primary" onClick={(e) => { gerarJsonVitrine(e) }}> <i class="bi bi-eye"></i> Vitrine</button></td>
+                                <td className='fw-light'><button class="btn btn-sm btn-outline-primary" onClick={() => { gerarJsonVitrine() }}> <i class="bi bi-eye"></i> Vitrine</button></td>
                                 <td className="d-flex align-items-center justify-content-end">
 
                                     <td className='text-end'>

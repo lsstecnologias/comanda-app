@@ -14,8 +14,8 @@ function UserProvider({ children }) {
         let url = protocolo + "//" + host + ':' + porta;
         window.location.href = url;
     }
- const dataUser = sessionStorage.getItem("user_admin");
-        var data = dataUser ? JSON.parse(dataUser) : [];
+    const dataUser = sessionStorage.getItem("user_admin");
+    var data = dataUser ? JSON.parse(dataUser) : [];
 
     useEffect(() => {
        

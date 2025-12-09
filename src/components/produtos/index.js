@@ -298,8 +298,8 @@ const Produto = () => {
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="staticnvProduto">Novo Produto</h1>
-							<button type="button" onClick={() => { fecharModal() }} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							<h1 class="modal-title fs-4" id="staticnvProduto">Novo Produto</h1>
+							<button type="button" onClick={() => { fecharModal() }} class="btn-sm btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
 							<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
@@ -313,16 +313,16 @@ const Produto = () => {
 
 							</div>
 							<div class="mb-3">
-								<label for="nomeItemInput" class="form-label">Nome item</label>
-								<input type="text" class="form-control " id="nomeItemInput" autocomplete="off" onChange={(e) => { setItem(e.target.value) }} placeholder="Nome item" />
+								<label for="nomeItemInput" class="form-label text-secondary fw-normal">Nome item</label>
+								<input type="text" class="form-control text-secondary fw-normal " id="nomeItemInput" autocomplete="off" onChange={(e) => { setItem(e.target.value) }} placeholder="Nome item" />
 							</div>
 							<div class="mb-3">
-								<label for="descItemInput" class="form-label">Descrição item</label>
-								<input type="text" class="form-control" id="descItemInput" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder="Detalhes" />
+								<label for="descItemInput" class="form-label text-secondary fw-normal">Descrição item</label>
+								<input type="text" class="form-control text-secondary fw-normal" id="descItemInput" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder="Detalhes" />
 							</div>
 							<div class="mb-3" id="categorias">
-								<label for="categorias" class="form-label">Categoria</label>
-								<select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">
+								<label for="categorias" class="form-label text-secondary fw-normal">Categoria</label>
+								<select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select text-secondary fw-normal">
 									<option >Selecione</option>
 									{listCateg && listCateg.map((e) => {
 										return (<option key={e.id} value={e.cod}>{e.nome}</option>)
@@ -334,17 +334,18 @@ const Produto = () => {
 
 							</div>
 							<div class="mb-3">
-								<input type="file" accept=".jpg, .jpeg, .png" class="form-control" id="inputFoto" name="img" onChange={(e) => { setSelectedFileItem(e.target.files[0]) }} placeholder="Another input placeholder" />
+								<label for="inputFoto" class="form-label text-secondary fw-normal">Imagem do item</label>
+								<input type="file" accept=".jpg, .jpeg, .png" class="form-control text-secondary fw-normal" id="inputFoto" name="img" onChange={(e) => { setSelectedFileItem(e.target.files[0]) }} placeholder="Another input placeholder" />
 
 							</div>
 							<div class="mb-3">
-								<label for="qtItemInput" class="form-label">Quantidade</label>
-								<input type="number" min="1" class="form-control" id="qtItemInput" onChange={(e) => { setQuant(e.target.value) }} autocomplete="off" placeholder="0" />
+								<label for="qtItemInput" class="form-label text-secondary fw-normal">Quantidade em estoque</label>
+								<input type="number" min="1" class="form-control text-secondary fw-normal" id="qtItemInput" onChange={(e) => { setQuant(e.target.value) }} autocomplete="off" placeholder="0" />
 
 							</div>
 
 							<div class="mb-3">
-								<label for="precoUnitInput" class="form-label">Preço unitário</label>
+								<label for="precoUnitInput" class="form-label text-secondary fw-normal">Preço unitário</label>
 
 								<NumericFormat
 									autoComplete="off"
@@ -361,7 +362,7 @@ const Produto = () => {
 						</div>
 						<div class="modal-footer">
 
-							<button type="button" onClick={(e) => { addNovoProduto(e) }} class="btn w-100 btn-primary" id="btnAdicionar" > <i class="bi bi-plus-circle"></i> Adicionar</button>
+							<button type="button" onClick={(e) => { addNovoProduto(e) }} class="btn w-100 btn-primary text-ligth fw-normal" id="btnAdicionar" > <i class="bi bi-plus-circle"></i> Adicionar</button>
 						</div>
 					</div>
 				</div>

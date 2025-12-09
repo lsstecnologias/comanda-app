@@ -66,7 +66,7 @@ const TabelaAtendimento = () => {
            
             let obj = {id:dataUser}
             $.post(urlApi + nameApi + param_api_get_atendimento , obj, (res, status) => {
-              console.log(res)
+   
                let data = JSON.parse(res)
                if (status == 'success') {
                     setDataClientes(data);

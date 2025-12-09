@@ -34,7 +34,8 @@ const TabelaCliente = () => {
 
 
     const gerarJsonVitrine = () => {
-        const myData = {
+     
+         /* const myData = {
             product: "Laptop",
             price: 1200,
             inStock: true
@@ -50,20 +51,25 @@ const TabelaCliente = () => {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        /*
+        URL.revokeObjectURL(url);*/
+        
         const dataUser = sessionStorage.getItem("cod_estabelecimento");
         var cod_estabelecimento = dataUser;
         let obj = {'sessao':sessao};
-        $.post(urlApi + nameApi + param_api_get_lojaEstabelecimentos, obj, (res) => {
-            const dataDir = JSON.parse(res);
-            console.log(dataDir)
-          
-        });*/
-
-
-     
-
+   
+        $.post(urlApi + nameApi + param_api_get_lojaEstabelecimentos, obj, (res,status) => {
+            
+           const dataDir = JSON.parse(res);
+            //console.log(dataDir)
+            dataDir['arquivo'].forEach(element => {
+                if(element !== '.' && element !== '..'){
+                    console.log(dataDir['caminho']+element)
+                }
+            });
+            
+            const x = dataDir['res'].map(e=>{ return e});
+            console.log(x)
+        });
 
     }
 

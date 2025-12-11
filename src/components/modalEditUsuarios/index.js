@@ -6,8 +6,8 @@ const ModalEditUsuarios = (data_id) => {
     var data = { data_id };
     var id = data.data_id;
     var idEdit = id.data_id;
- 	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
-		sessionStorage.setItem('modal_notas', 'hide');
+    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+    sessionStorage.setItem('modal_notas', 'hide');
 
     const [nomeUser, setNomeUser] = useState("");
     const [emailLoginUser, setEmailLoginUser] = useState("");
@@ -113,7 +113,7 @@ const ModalEditUsuarios = (data_id) => {
         window.location.reload();
     }
     useEffect(() => {
-     
+
 
         const dataUser = sessionStorage.getItem("cod_estabelecimento");
         var cod_estabelecimento = dataUser;
@@ -135,7 +135,7 @@ const ModalEditUsuarios = (data_id) => {
             })
         } else {
             alert("Nenhum cliente estabelecimento");
-           // Sair();
+            // Sair();
         }
 
 
@@ -146,7 +146,7 @@ const ModalEditUsuarios = (data_id) => {
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5"><i class="bi bi-pencil-square"></i> Editar Usuário</h1>
+                        <h1 class="modal-title fs-5"><i class="bi bi-person-fill-gear"></i> Acesso ao sistema</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
                     </div>
 
@@ -162,37 +162,19 @@ const ModalEditUsuarios = (data_id) => {
 
                         </div>
 
-                        {vlFilter && vlFilter.map(e => {
-                            return (
-                                <div key={e.id}>
-                                    <div class="mb-3">
-                                        <label for="nomeInput" class="form-label">Nome</label>
-                                        <input type="text" class="form-control" id="nomeInput" onChange={(e) => { setNomeUser(e.target.value) }} placeholder={e.nome} autocomplete="off" />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="perfilUser" class="form-label">Perfil</label>
-                                        <select id="perfilUser" onChange={(e) => { setPerfilUser(e.target.value) }} class="form-select">
-                                            <option value={e.perfil} selected>{e.perfil == 'a' ? "Administrador" : "Usuário"}</option>
-                                            <option value="u">Usuário</option>
-                                            <option value="a">Administrador</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="loginEmailInput" class="form-label">E-mail</label>
-                                        <input type="email" class="form-control" id="loginEmailInput" onChange={(e) => { setEmailLoginUser(e.target.value) }} placeholder={e.email} autocomplete="off" />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="senhaInput" class="form-label">Senha</label>
-                                        <input type="password" class="form-control w-20" id="senhaInput" onChange={(e) => { setSenhaUser(e.target.value) }} placeholder="••••••" autocomplete="off" />
 
-                                    </div>
-                                </div>
-                            )
+                        <div class="form-check form-switch m-4 ml-0 l-0">
+                            <input class="form-check-input p-2" type="checkbox" value="" id="checkNativeSwitch" switch />
+                                <label class="form-check-label text-secondary" for="checkNativeSwitch">
+                                    Adicionar como usuário
+                                </label>
+                        </div>
 
-                        })}
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary w-100" id="btnEditarUsuario" onClick={(e) => { editUsuario(e) }}> <i class="bi bi-pencil-square"></i> Editar</button>
+
+
+                        <div class="modal-footer m-0 p-0">
+                            <button type="button" class="btn btn-sm btn-primary w-100 m-0" id="btnEditarUsuario" onClick={(e) => { editUsuario(e) }}><i class="bi bi-check2-circle"></i> Confirmar</button>
                         </div>
 
                     </div>

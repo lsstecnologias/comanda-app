@@ -50,12 +50,8 @@ const TabelaUsuario = () => {
             var obj = { 'id': cod_estabelecimento };
 
             $.post(urlApi + nameApi + param_api_list_usuario, obj, (res, status) => {
-
                 if (status == 'success') {
-
                     var data = JSON.parse(res);
-                  
-                 
                     setUsuarios(data);
                 }
 
@@ -82,7 +78,7 @@ const TabelaUsuario = () => {
                         <th scope="col">Cod. </th>
                         <th scope="col">Nome</th>
                         <th scope="col">Perfil</th>
-                        <th scope="col">Ações</th>
+                        <th scope="col" class="text-end">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -91,12 +87,17 @@ const TabelaUsuario = () => {
                         return (
                             <tr key={e.id}>
                                 <th scope="row">{e.id}</th>
-                                <td className='lh-1 fw-light'>{e.cod}</td>
-                                <td className='lh-1 fw-light'>{e.nome}</td>
-                                <td className='lh-1 fw-light'>{e.perfil == 's' ? 'super' : 'admin'}</td>
-                                <td>
-                                    <button data-bs-toggle="modal" data-bs-target={"#editUsuario-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
-                                    <button class="btn btn-sm btn-outline-secondary bi bi-x-lg" onClick={() => deleteUsuario(e.id)}></button>
+                                <td className=' fw-light'>{e.cod}</td>
+                                <td className=' fw-light'>{e.nome}</td>
+                                <td className=' fw-light'>{e.perfil == 's' ? 'super' : 'admin'}</td>
+                                <td className="text-end">
+                                    
+                                    
+                                     <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target={"#editUsuario-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
+
+                                            <button type="button" onClick={() => deleteUsuario(e.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
+                                        </div>
                                 </td>
 
                             </tr>

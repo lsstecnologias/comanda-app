@@ -154,9 +154,9 @@ const TabelaAtendimento = () => {
                   <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
                      <span class="visually-hidden">Loading...</span>
                   </div>
-                  <p>
+                  
                      {"Nenhum item relacionado ao atendimento ou estabelecimento!"}
-                  </p>
+                  
                </div>
             }
          </div>

@@ -135,10 +135,10 @@ const TabelaCategoria = () => {
                   {currentPosts && currentPosts.map((val) => {
                      return (
                         <tr key={val.id}>
-                           <th scope="row" >{val.cod}</th>
+                           <th scope="row" className='fw-light'>{val.cod}</th>
 
-                           <td className='lh-1 fw-light'>{val.nome}</td>
-                           <td className='lh-1 fw-light'>{val.data_post}</td>
+                           <td className='fw-light'>{val.nome}</td>
+                           <td className='fw-light'>{val.data_post}</td>
 
                            <td className='text-end'>
                               {/*  <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>

@@ -12,7 +12,7 @@ const Atendimento = () => {
   const { sessao, status, redirect_login, Sair } = useContext(UserContext);
   //PERIMITE NÃO EXIBIR MODAL DE NOTAS
   sessionStorage.setItem('modal_notas', 'hide');
-  const [sessaoUser, setSessaoUser] = useState([]);
+
   const [clientes, setClientes] = useState([]);
   const [buscarCliente, setBuscarCliente] = useState("");
   const [codCliente, setCodCliente] = useState("");
@@ -44,15 +44,32 @@ const Atendimento = () => {
     let data_cep = $('#cep');
     let data_endereco = $('#data_endereco');
     data_cep.mask('00000000');
+
     if (datacep) {
       $.get("https://viacep.com.br/ws/" + datacep + "/json/", async (res, status) => {
-        console.log(res)
+
         if (status == 'success') {
 
-          let data_str = `${await res.logradouro} - ${await res.localidade} ${await res.uf} - ${await res.regiao} ${await res.bairro} - ${await res.cep}`;
-          data_endereco.val(data_str)
-          data_cep.addClass("is-valid").removeClass("is-invalid");
-          data_endereco.addClass("is-valid").removeClass("is-invalid");
+
+          
+          if (res) {
+
+            let val = res;
+            let data_str = `${await val.logradouro} - ${await val.localidade} ${await val.uf} - ${await val.regiao} ${await val.bairro} - ${await val.cep}`;
+            data_endereco.val(data_str)
+            data_cep.addClass("is-valid").removeClass("is-invalid");
+            data_endereco.addClass("is-valid").removeClass("is-invalid");
+           
+            
+
+          }
+          if(res.erro){
+            data_cep.addClass("is-invalid").removeClass("is-valid");
+            data_endereco.addClass("is-invalid").removeClass("is-valid");
+            data_endereco.val(null);
+          }
+          
+
 
         } else {
           data_cep.addClass("is-invalid").removeClass("is-valid");
@@ -63,7 +80,7 @@ const Atendimento = () => {
     } else {
       data_cep.addClass("is-invalid").removeClass("is-valid");
       data_endereco.addClass("is-invalid").removeClass("is-valid");
-      data_endereco.val(null)
+      data_endereco.val(null);
     }
 
 
@@ -81,13 +98,12 @@ const Atendimento = () => {
 
           const data = JSON.parse(res);
           const { nome, cod } = data[0] ?? false;
-
-
           if (nome && cod) {
             inptBuscar.addClass("is-valid").removeClass("is-invalid");
             setBuscarCliente(nome);
             setCodCliente(cod);
-            setMessagem("")
+            setMessagem("");
+
           } else {
             setBuscarCliente("");
             setCodCliente("");
@@ -110,12 +126,12 @@ const Atendimento = () => {
     const objAtendimento = { id_estabelecimento: null, cod_atendimento: null, cod_atendente: null, cod_cliente: null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
 
     objAtendimento.data_post = data_post;
-    let atendente            = $('#atendente');
-    let cep                  = $('#cep');
-    let cod_atendimento      = $('#cod_atendimento');
-    let data_atendimento     = $('#data_atendimento');
-    let endereco             = $('#data_endereco');
-    let inpt_buscar          = $('#inpt_buscar');
+    let atendente = $('#atendente');
+    let cep = $('#cep');
+    let cod_atendimento = $('#cod_atendimento');
+    let data_atendimento = $('#data_atendimento');
+    let endereco = $('#data_endereco');
+    let inpt_buscar = $('#inpt_buscar');
 
 
     if (cod_atendimento.val()) {
@@ -261,11 +277,7 @@ const Atendimento = () => {
     window.location.reload();
   }
   useEffect(() => {
-    if (status == true) {
 
-      setSessaoUser(sessao);
-
-    }
 
     let data_cep = $('#cep');
     data_cep.mask('00000000');
@@ -310,12 +322,12 @@ const Atendimento = () => {
                 <td>
                   <div class="input-group">
                     <select class="form-select  form-control" id="atendente">
-                      <option value={sessaoUser.cod} selected>{sessaoUser.nome}</option>
+                      <option value={sessao.cod} selected>{sessao.nome}</option>
                     </select>
                   </div>
                 </td>
                 <td colspan="2">
-                  <div class="input-group ">
+                  <div class="input-group  ">
                     <input type="text" class="form-control" id="cod_atendimento" placeholder="N° Atendimento" aria-label="Recipient’s username" aria-describedby="button-addon2" />
                     <button class="btn btn-secondary" onClick={() => { gerarCodAtendimento() }} type="button" id="button-addon2">  <i class="bi bi-arrow-repeat"></i></button>
                   </div>
@@ -323,7 +335,7 @@ const Atendimento = () => {
               </tr>
               <tr>
                 <td colspan="2">
-                  <td class="lh-3 fw-light">Cliente</td>
+                  <td class="lh-3 fw-medium">Cliente</td>
                   <div class="input-group  mt-2 mb-2">
                     <button class="btn btn-success " type="button" onClick={() => validarBusca()} id="button-addon2">Confirmar <i class="bi bi-check2-all"></i></button>
                     <input list="clientes" class='form-select form-control' id="inpt_buscar" value={buscarCliente} onChange={(e) => setBuscarCliente(e.target.value)} placeholder='Encontrar cliente...' aria-describedby="button-addon2" />
@@ -339,7 +351,7 @@ const Atendimento = () => {
               </tr>
               <tr>
                 <td colspan="2">
-                  <td class="fw-light">Data do Atendimento</td>
+                  <td class="fw-medium">Data do Atendimento</td>
                   <div class="input-group mt-2 mb-2 ">
                     <input type='date' class="form-control" id="data_atendimento" />
                   </div>
@@ -347,7 +359,7 @@ const Atendimento = () => {
               </tr>
               <tr>
                 <td colspan="2">
-                  <td class="fw-light">CEP</td>
+                  <td class="fw-medium">CEP</td>
                   <div class="input-group mt-2 mb-2 ">
                     <input type='text' class="form-control" id="cep" value={datacep} placeholder='CEP' onChange={(e) => setDataCep(e.target.value)} />
                     <button class="btn btn-success" type="button" onClick={() => validarCep()} id="button-addon2"><i class="bi bi-search"></i> </button>
@@ -358,7 +370,7 @@ const Atendimento = () => {
               </tr>
               <tr>
                 <td colspan="2">
-                  <td class="fw-light">Endereço</td>
+                  <td class="fw-medium">Endereço</td>
                   <div class="input-group mt-2 mb-2 ">
                     <input type='text' class="form-control" placeholder='Endereço' id="data_endereco" />
 

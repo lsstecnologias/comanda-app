@@ -3,6 +3,7 @@ import { Outlet, useParams } from 'react-router-dom';
 import Header from './components/header';
 import TelaPrincipal from './components/TelaPrincipal';
 import UserProvider from './components/context';
+
 import $ from 'jquery';
 import bg_logo  from './bg_logo.png';
 

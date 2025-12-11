@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import $ from 'jquery';
 import Imagens from "../upload_imagens";
 import TabelaUsuario from "../tabela_usuario";
 import axios from "axios";
 import Header from '../header';
 
+import { UserContext } from '../context';
 var md5 = require('md5');
 
 
 const Usuarios = () => {
     //PERIMITE NÃO EXIBIR MODAL DE NOTAS
     sessionStorage.setItem('modal_notas', 'hide');
+
+     const { sessao, status, redirect_login, Sair } = useContext(UserContext);
+    
     const [nomeUser, setNomeUser] = useState("");
     const [emailLoginUser, setEmailLoginUser] = useState("");
     const [senhaUser, setSenhaUser] = useState("");
@@ -24,11 +28,11 @@ const Usuarios = () => {
     const addNovoUsuario = (e) => {
         e.preventDefault();
 
-        let nome = $("#nomeInput");
-        let senha = $("#senhaInput");
-        let loginEmail = $("#loginEmailInput");
-        let perfil = $("#perfilUser");
-        let cod = Math.floor(Math.random() * (777 + 0)) - 1;
+        let nome        = $("#nomeInput");
+        let senha       = $("#senhaInput");
+        let loginEmail  = $("#loginEmailInput");
+        let perfil      = $("#perfilUser");
+        let cod         = Math.floor(Math.random() * (777 + 0)) - 1;
 
         var objUsuario = { cod_user: cod,cod_estabelecimento:"", nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
 
@@ -104,61 +108,15 @@ const Usuarios = () => {
             })
         } else {
             alert("Nenhum cliente estabelecimento");
-           // Sair();
+            Sair();
         }
 
-        /*
-        const paramApi_save_usuario = "?api=setUsuarios";
-        $.post(urlApi + nameApi + paramApi_save_usuario, objUsuario, (res, status) => {
-            if (status === "success") {
-                if (res == "null" && res == null) {
-                    setStatusMsgErro("block");
-                    $('#btnAdicionar').attr({ "disabled": false });
-                } else {
-                    setStatusMsgErro("none");
-                }
-                if (res == 1 || res == "true" || res == true) {
-                    setStatusMsgSuccess("block");
-                    $('#btnAdicionar').attr({ "disabled": "disabled" });
-                } else {
-                    setStatusMsgSuccess("none");
-                }
-            } else {
-                alert("Error: parametros API")
-            }
-
-        })*/
+      
     }
     const fecharModal = () => {
         window.location.reload();
     }
-    /*  const carregarImagens = () => {
-          const paramApi_save_img = "?api=setUploadFile";
-          let inputFoto = $("#inputFoto");
-  
-          if (selectedFileUser !== null) {
-              var formData = new FormData();
-             
-              
-              formData.append("arquivo", selectedFileUser);
-  
-              var xhr = new XMLHttpRequest();
-              xhr.onreadystatechange = function () {
-                  if (xhr.readyState == 4) {
-                      var resposta = xhr.responseText;
-                      console.log(resposta)
-                      inputFoto.addClass("is-valid").removeClass("is-invalid");
-                  }
-              }
-  
-              //fazer o envio do nosso request
-              xhr.open("POST", urlApi + nameApi + paramApi_save_img);
-              xhr.send(formData);
-  
-          }
-  
-  
-      }*/
+    
     useEffect(() => {
         // $('#rgInput').mask('00.000.000-00');
         // $('#cepInput').mask('0000000');

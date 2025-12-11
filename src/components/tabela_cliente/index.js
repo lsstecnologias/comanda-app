@@ -16,7 +16,8 @@ const TabelaCliente = () => {
     const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
     var [clienteEstablecimento, setClienteEstablecimento] = useState([]);
-    const [codUser, setCodUser] = useState("");
+    const [codItem, setCodItem] = useState([]);
+    const [cod, setCod] = useState([]);
     const [id, setId] = useState(null);
 
     //PAGINACAO
@@ -30,45 +31,83 @@ const TabelaCliente = () => {
     const param_api_delete_estabelecimentos = "?api=deleteEstabelecimentos";
     const param_api_list_estabelecimentos = "?api=getEstabelecimentos";
     const param_api_get_lojaEstabelecimentos = "?api=getFileUser";
+    const param_api_update_thumb_img = "?api=setUpdateThumb";
     const editItem = (id) => { setId(id); }
 
 
     const gerarJsonVitrine = () => {
-     
-         /* const myData = {
-            product: "Laptop",
-            price: 1200,
-            inStock: true
-        };
 
-        const jsonString = JSON.stringify(myData, null, 2);
-        const blob = new Blob([jsonString], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
+        /* const myData = {
+           product: "Laptop",
+           price: 1200,
+           inStock: true
+       };
 
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'data.json';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);*/
-        
+       const jsonString = JSON.stringify(myData, null, 2);
+       const blob = new Blob([jsonString], { type: 'application/json' });
+       const url = URL.createObjectURL(blob);
+
+       const a = document.createElement('a');
+       a.href = url;
+       a.download = 'data.json';
+       document.body.appendChild(a);
+       a.click();
+       document.body.removeChild(a);
+       URL.revokeObjectURL(url);*/
+
         const dataUser = sessionStorage.getItem("cod_estabelecimento");
         var cod_estabelecimento = dataUser;
-        let obj = {'sessao':sessao};
-   
-        $.post(urlApi + nameApi + param_api_get_lojaEstabelecimentos, obj, (res,status) => {
-            
-           const dataDir = JSON.parse(res);
-            //console.log(dataDir)
-            dataDir['arquivo'].forEach(element => {
-                if(element !== '.' && element !== '..'){
-                    console.log(dataDir['caminho']+element)
+        let obj = { 'sessao': sessao };
+
+        $.post(urlApi + nameApi + param_api_get_lojaEstabelecimentos, obj, async (res, status) => {
+           
+            const dataDir = JSON.parse(res);
+
+            //SALVA O CAMINHO DAS IMAGEN NA TABELA PRODUTO
+            await dataDir['arquivo'].forEach(element => {
+                if (element !== '.' && element !== '..') {
+
+                    const wordsArray = element.split('_');
+                    const cod_est = wordsArray[0];
+                    const cod_items = wordsArray[3];
+                   
+                    
+                    var obj = { cod_est: cod_est, cod_item: cod_items, thumb:dataDir['host']+ dataDir['caminho'] + element }
+                    $.post(urlApi + nameApi + param_api_update_thumb_img, obj, async (res, status) => {
+                       if(status == 'success'){
+                             console.log("Semeando imagem: [PROGRESS]...");
+                            if(res == '1'){
+                                console.log("Imagem semeada:[Ok]",res);
+                            }else{
+                                console.log("Imagem semeada:[RE-CONFIRMA][OK]",res);
+                            }
+                       }else{
+                            console.log("Erro ao semear imagem!")
+                       }
+                    })
                 }
             });
+          
+
+           
             
-            const x = dataDir['res'].map(e=>{ return e});
-            console.log(x)
+            const dataItens = dataDir['res'].filter((e) => { return e });
+            const jsonString = JSON.stringify(dataItens, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${cod_estabelecimento}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+
+           
+
+
         });
 
     }

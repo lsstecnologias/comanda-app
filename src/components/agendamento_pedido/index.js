@@ -22,27 +22,15 @@ const AgendamentoPedido = () => {
    const editItem = (id) => { setId(id); }
 
    useEffect(() => {
-      const param_api_lista_atendimentos = '?api=getAtendimentos';
-      const config = {
-         method: "GET",
-         headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Credentials': 'true',
-            'mode': 'no-cors'
+      const param_api_lista_atendimentos = '?api=getAllAtendimentos';
+          
+      $.get(urlApi+nameApi+param_api_lista_atendimentos ,(res,status)=>{
+         if(status == 'success'){
+           const dataResult = JSON.parse(res);
+           setData(dataResult)
          }
-      };
-
-      
-      axios.get(urlApi + nameApi + param_api_lista_atendimentos, config)
-      .then(async (res) => {
-         var vl = await res.data;
-         
-         setData(vl)
-      }).catch((error) => {
-         alert("Error: parametros API " + error)
-      });
-      
+      })
+     
    }, [setData]);
 
 

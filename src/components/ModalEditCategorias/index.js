@@ -60,7 +60,7 @@ const ModalEditCategorias = (data_id) => {
        
         
         const param_api_update_categorias = "?api=updateCategorias";
-        console.log(objCategoria)
+        
         
         $.post(urlApi + nameApi + param_api_update_categorias, objCategoria, (res, status) => {
 
@@ -68,7 +68,7 @@ const ModalEditCategorias = (data_id) => {
           
             if (status === "success") {
                 if (res == 0 || res == null) {
-                    setMsgError("Erro ao atualizar usuário!");
+                    setMsgError("Erro ao atualizar, categoria!");
                     setDisplayError("block");
                     editarUsuario.attr({ "disabled": false });
 
@@ -78,7 +78,7 @@ const ModalEditCategorias = (data_id) => {
                 }
                 if (res == 1) {
                     setDisplaySuccess("block");
-                    setMsgSuccess("Usuário atualizado!");
+                    setMsgSuccess("Valor categoria, atualizado!");
                     editarUsuario.attr({ "disabled": "disabled" });
 
                 } else {

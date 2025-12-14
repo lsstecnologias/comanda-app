@@ -1,7 +1,7 @@
 import { useEffect, useState,useContext } from "react";
 import $ from 'jquery';
 import Imagens from "../upload_imagens";
-import TabelaUsuario from "../tabela_usuario";
+import Tabelausuarios from "../tabela_usuario";
 import axios from "axios";
 import Header from '../header';
 
@@ -183,7 +183,7 @@ const Usuarios = () => {
                     </div>
                 </div>
             </div>
-            <TabelaUsuario />
+            <Tabelausuarios />
 
         </div >
     )

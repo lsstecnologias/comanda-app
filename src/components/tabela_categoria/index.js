@@ -39,7 +39,7 @@ const TabelaCategoria = () => {
          $.post(urlApi + nameApi + param_api_delete_categoria, objId, () => { window.location.reload() })
       }
    }
-   const editItem = (id) => { setId(id); }
+   const editCateg = (id) => { setId(id); }
 
 
 
@@ -73,35 +73,27 @@ const TabelaCategoria = () => {
       const dataUser = sessionStorage.getItem("cod_estabelecimento");
       var cod_estabelecimento = dataUser;
       if (cod_estabelecimento !== 'null') {
-         const param_api_list_categ = `?api=getCategorias`;
+         const param_api_list_categ = `?api=getAllCategorias`;
 
          var obj = { 'id': cod_estabelecimento };
 
          $.post(urlApi + nameApi + param_api_list_categ, obj, (res, status) => {
           
-               var dataArr =  JSON.parse(res);
-            
-
-               if (Array.isArray(dataArr) && dataArr.length == 0) {
-                  setDisplayError("block");
-                  setMsgError("Adicione categoria para o seu item!");
-                  
-                  /* 
-                   setDisplaySuccess("none");
-                   setMsgSuccess(null);
-                   alert('Nenhuma categoria adicionada')
-                   */
+            var dataArr =  JSON.parse(res);
+            if (Array.isArray(dataArr) && dataArr.length == 0) {
+               setDisplayError("block");
+               setMsgError("Adicione categoria para o seu item!");
                
-               } else {
-
-                  setData(dataArr);
-                 
-
-
-               }
-
-
+               /* 
+                  setDisplaySuccess("none");
+                  setMsgSuccess(null);
+                  alert('Nenhuma categoria adicionada')
+                  */
             
+            } else {
+               setData(dataArr);
+               
+            }            
 
          })
       } else {
@@ -119,8 +111,8 @@ const TabelaCategoria = () => {
 
          </div>
 
-         <div className='container m-0 p-0 table-responsive animate__animated animate__fadeIn'>
-            <table class="table m-0 p-0  caption-top animate__animated animate__fadeIn">
+         
+            <table class="table m-0 p-0  table-responsive   animate__animated animate__fadeIn">
                <caption>Lista categorias</caption>
                <thead>
                   <tr>
@@ -144,7 +136,7 @@ const TabelaCategoria = () => {
                               {/*  <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                               <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
                               <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                 <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
+                                 <button type="button" data-bs-toggle="modal" onClick={() => editCateg(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
 
                                  <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
                               </div>
@@ -167,8 +159,8 @@ const TabelaCategoria = () => {
 
                </div>
             }
-            {/* <ModalEditCategorias data_id={id} /> */}
-            {console.log(data)}
+            <ModalEditCategorias data_id={id} />
+           
             <Pagination
                postsPerPage={postsPerPage}
                totalPosts={data.length}
@@ -176,7 +168,7 @@ const TabelaCategoria = () => {
                currentPage={currentPage}
             />
 
-         </div>
+         
       </div>
 
    )

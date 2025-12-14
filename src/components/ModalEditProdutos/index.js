@@ -1,87 +1,141 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useContext } from 'react';
 import { NumericFormat } from 'react-number-format';
 import axios from "axios";
+import { UserContext } from '../context';
 const $ = require("jquery");
 
 const ModalEditProdutos = (data_id) => {
+    const { GetSession, sessao, Sair, status } = useContext(UserContext);
     const [valorPreco, setPreco] = useState();
     const [valorItem, setItem] = useState();
     const [valorDesc, setDesc] = useState();
     const [valorQt, setQuant] = useState();
     const [valorCateg, setCategorias] = useState();
     const [listCateg, setListCateg] = useState(null);
+    const [objProduto, setObjProduto] = useState([]);
 
-    // const [listCateg, setListCateg] = useState(null);
 
     //HOOK MSG ERROS
     const [displayError, setDisplayError] = useState('none');
     const [displaySuccess, setDisplaySuccess] = useState('none');
     const [msgError, setMsgError] = useState(null);
     const [msgSuccess, setMsgSuccess] = useState(null);
-
-    const [dataFilter, setDataFilter] = useState([]);
+    const [selectedFileItem, setSelectedFileItem] = useState(null);
+    const [dataItem, setData] = useState([]);
     const [edit, setEdit] = useState([]);
 
-    const fecharModal = () => {
-        window.location.reload();
-    }
+    const dataUser = sessionStorage.getItem("cod_estabelecimento");
+    var cod_estabelecimento = dataUser;
 
     var data = { data_id };
     var id = data.data_id;
     var idEdit = id.data_id;
+    const fecharModal = () => {
+        window.location.reload();
+    }
 
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
-    const vlFilter = dataFilter.filter(e => { return e.id === idEdit });
+
+    const data_filter = dataItem.filter(e => { return e.id == idEdit });
+    /*
+    const uploadImg = (e) => {
+        e.preventDefault();
+
+        let imgInpt = $("#imgItemInputEdit");
+        var cod_estabelecimento = dataUser;
+        //VALIDA IMAGEM
+        const param_api_save_img = "?api=setUploadFileItem";
+
+        if (selectedFileItem !== undefined && selectedFileItem !== null) {
+
+            const formData = new FormData();
+            console.log(selectedFileItem)
+            formData.append("arquivo", selectedFileItem);
+            formData.append("usuario", JSON.stringify(sessao));
+            formData.append("produto", JSON.stringify(objProduto));
+            console.log(formData)
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    var res = xhr.responseText;
+
+                    if (res) {
+                        let data = JSON.parse(res)
+                        console.log(data)
+                        if (data.status) {
+                            imgInpt.addClass("is-valid").removeClass("is-invalid");
+
+                        } else {
+                            imgInpt.addClass("is-invalid").removeClass("is-valid");
+
+                        }
+
+                    }
+                }
+            }
+            xhr.open("POST", urlApi + nameApi + param_api_save_img);
+            xhr.send(formData);
+
+        } else {
+            imgInpt.addClass("is-invalid").removeClass("is-valid");
+        }
+    }
+    
+*/
+
 
     const editNovoProduto = (e) => {
         e.preventDefault();
-        // let nome = $("#nomeItemInputEdit");
-        //let desc = $("#descItemInputEdit");
-        //let qtd = $("#qtItemInputEdit");
-        // let preco = $("#precoUnitInputEdit");
+        let nome = $("#nomeItemInputEdit");
+        let desc = $("#descItemInputEdit");
+        let qtd = $("#qtItemInputEdit");
+        let preco = $("#precoUnitInputEdit");
+        let categ = $("#categItemInputEdit");
+        var imgInpt = $("#imgItemInputEdit");
 
-        var objProduto = { id: idEdit, item: "", desc: "", id_categoria: "", qtd: "", preco: "", data_post: "" };
+        var objProduto = { id: idEdit, id_estabelecimento: "", desc: "", id_categoria: "", qtd: "", preco: "", data_post: "" };
 
         if (valorCateg !== undefined && valorCateg !== "") {
-            //preco.addClass("is-valid").removeClass("is-invalid");
+            categ.addClass("is-valid").removeClass("is-invalid");
             objProduto.id_categoria = valorCateg;
         } else {
-            // preco.addClass("is-invalid").removeClass("is-valid");
-            objProduto.id_categoria = vlFilter[0].cod;
+            categ.addClass("is-invalid").removeClass("is-valid");
+            objProduto.id_categoria = data_filter[0].cod;
         }
 
         if (valorPreco !== undefined && valorPreco !== "") {
-            //preco.addClass("is-valid").removeClass("is-invalid");
+            preco.addClass("is-valid").removeClass("is-invalid");
             objProduto.preco = valorPreco;
         } else {
-            // preco.addClass("is-invalid").removeClass("is-valid");
-            objProduto.preco = vlFilter[0].preco;
+            preco.addClass("is-invalid").removeClass("is-valid");
+            objProduto.preco = data_filter[0].preco;
         }
 
         if (valorItem !== undefined && valorItem !== "") {
-            // nome.addClass("is-valid").removeClass("is-invalid");
+            nome.addClass("is-valid").removeClass("is-invalid");
             objProduto.item = valorItem;
 
         } else {
-            // nome.addClass("is-invalid").removeClass("is-valid");
-            objProduto.item = vlFilter[0].item;
+            nome.addClass("is-invalid").removeClass("is-valid");
+            objProduto.item = data_filter[0].item;
         }
 
         if (valorDesc !== undefined && valorDesc !== "") {
-            // desc.addClass("is-valid").removeClass("is-invalid");
+            desc.addClass("is-valid").removeClass("is-invalid");
             objProduto.desc = valorDesc;
         } else {
-            //  desc.addClass("is-invalid").removeClass("is-valid");
-            objProduto.desc = vlFilter[0].descricao;
+            desc.addClass("is-invalid").removeClass("is-valid");
+            objProduto.desc = data_filter[0].descricao;
         }
 
         if (valorQt !== undefined && valorQt !== "") {
-            //  qtd.addClass("is-valid").removeClass("is-invalid");
+            qtd.addClass("is-valid").removeClass("is-invalid");
             objProduto.qtd = valorQt;
         } else {
-            // qtd.addClass("is-invalid").removeClass("is-valid");
-            objProduto.qtd = vlFilter[0].quantidade;
+            qtd.addClass("is-invalid").removeClass("is-valid");
+            objProduto.qtd = data_filter[0].quantidade;
         }
 
         let data_atual = new Date();
@@ -90,68 +144,135 @@ const ModalEditProdutos = (data_id) => {
             objProduto.data_post = data_post;
         }
 
-        const paramApi_edit_produto = "?api=updateItem";
+        const dataUser = sessionStorage.getItem("cod_estabelecimento");
+        var cod_estabelecimento = dataUser;
+       
 
-        $.post(urlApi + nameApi + paramApi_edit_produto, objProduto, (res, status) => {
-            var editarProduto = $('#btnEditarProduto')
-            if (status === "success") {
+        const param_api_edit_produto = "?api=updateItem";
+        
 
-                if (res == 0 || res === null) {
-                    setDisplayError("block");
-                    setMsgError("Erro ao atualizar o item!");
-                    editarProduto.attr({ "disabled": false });
-                } else {
-                    setDisplayError("none");
-                    setMsgError(null);
+        if (cod_estabelecimento !== 'null') {
+           
+           // const param_api_save_usuario = `?api=setProdutos`;
+            objProduto.id_estabelecimento = cod_estabelecimento;
+            const param_api_save_img = "?api=setUploadFileItem";
+            /*POSTA IMAGEM */
+            if (selectedFileItem !== null) {
+
+                const formData = new FormData();
+                console.log(objProduto)
+                formData.append("arquivo", selectedFileItem);
+                formData.append("usuario", JSON.stringify(sessao));
+                formData.append("produto", JSON.stringify(objProduto));
+
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+                        var res = xhr.responseText;
+                        var inputFoto = $("#imgItemInputEdit");
+                        
+                        if (res) {
+                            let data = JSON.parse(res)
+
+                            if (data.status) {
+                                inputFoto.addClass("is-valid").removeClass("is-invalid");
+                                setSelectedFileItem("")
+                            } else {
+                                inputFoto.addClass("is-invalid").removeClass("is-valid");
+
+                            }
+
+                        }
+                    }
                 }
+                xhr.open("POST", urlApi + nameApi + param_api_save_img);
+                xhr.send(formData);
 
-                if (res == 1) {
 
-                    setDisplaySuccess("block");
-                    setMsgSuccess("O item foi atualizado!");
-                    editarProduto.attr({ "disabled": "disabled" });
-                } else {
-                    setDisplaySuccess("none");
-                    setMsgSuccess(null);
-                }
-            } else {
-                alert("Error: parametros API")
             }
 
-        })
+          
+           
+        } else {
+            alert("Nenhum cliente estabelecimento");
+            Sair();
+        }
+                  
+         $.post(urlApi + nameApi + param_api_edit_produto, objProduto, (res, status) => {
+             var editarProduto = $('#btnEditarProduto');
+             if (status === "success") {
+ 
+                 if (res == 0 || res === null) {
+                     setDisplayError("block");
+                     setMsgError("Erro ao atualizar o item!");
+                     editarProduto.attr({ "disabled": false });
+ 
+                 } else {
+                     setDisplayError("none");
+                     setMsgError(null);
+                 }
+ 
+                 if (res == 1) {
+                     setDisplaySuccess("block");
+                     setMsgSuccess("O item foi atualizado!");
+                     editarProduto.attr({ "disabled": "disabled" });
+ 
+                 } else {
+                     setDisplaySuccess("none");
+                     setMsgSuccess(null);
+                 }
+ 
+             } else {
+                 alert("Error: parametros API");
+             }
+ 
+         })
+
     }
+
+
+    const param_api_lista_produto = '?api=getProdutos';
+    const param_api_get_categoria = "?api=getCategorias";
+    //setDataFilter(null)
+    // console.log(sessao.cod_estabelecimento)
+
     useEffect(() => {
-        const param_api_lista_produto = '?api=getProdutos';
-        // const param_api_get_categoria = "?api=getCategoria";
-        const config = {
+        //FAZ A REQUISICAO PARA MOSTRAR OS DADOS QUE VAI SER EDITADO NOS INPUTS
 
-            method: "get",
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Credentials': 'true',
-                'mode': 'no-cors'
-            }
-        };
-        axios.get(urlApi + nameApi + param_api_lista_produto, config)
-            .then((res) => {
-                var vl = res.data;
-                setDataFilter(vl)
-            }).catch((error) => { alert("Error: parametros API " + error) });
+        const dataUser = sessionStorage.getItem("cod_estabelecimento");
+        var cod_estabelecimento = dataUser;
 
-        const param_api_get_categorias = "?api=getCategorias";
+        if (cod_estabelecimento !== 'null') {
 
-        axios.get(urlApi + nameApi + param_api_get_categorias, config)
-            .then(async (res) => {
-                var vl = await res.data;
-                console.log(vl)
-                setListCateg(vl);
+            let obj = { 'id': cod_estabelecimento }
 
-            }).catch((error) => { alert("Error: parametros API " + error) });
+            $.post(urlApi + nameApi + param_api_lista_produto, obj, (res, status) => {
+
+                if (status == 'success') {
+                    const result = JSON.parse(res);
+                    setData(result)
+
+                } else {
+                    alert("Error: parametros API!")
+                }
+
+            })
+            $.post(urlApi + nameApi + param_api_get_categoria, obj, (res, status) => {
+
+                if (status == 'success') {
+                    const result = JSON.parse(res);
+                    setListCateg(result)
+                } else {
+                    alert("Error: parametros API!")
+                }
+
+            })
+        }
 
 
 
-    }, [setDataFilter, setEdit]);
+    }, [setData, setEdit]);
+
 
     return (
         <div class="modal fade" id={"editProduto-" + idEdit} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticeditProduto" aria-hidden="true">
@@ -173,7 +294,7 @@ const ModalEditProdutos = (data_id) => {
                     </div>
                     <div class="modal-body">
 
-                        {vlFilter && vlFilter.map(e => {
+                        {data_filter && data_filter.map(e => {
 
                             return (
                                 <div key={e.id}>
@@ -186,17 +307,22 @@ const ModalEditProdutos = (data_id) => {
                                         <label for="descItemInput" class="form-label">Descrição item</label>
                                         <input type="text" class="form-control" id="descItemInputEdit" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder={e.descricao} />
                                     </div>
-                                    <label for="descItemInput" class="form-label"> Categoria</label>
-                                    <div class="input-group mb-3" id="categorias">
+                                    <label for="descItemInput" class="form-label"> Categorias</label>
+                                    <div class=" mb-3" >
 
-                                      {/*  <select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select">
+                                        {
+                                            <select id="categItemInputEdit" onChange={(e) => { setCategorias(e.target.value) }} class="form-control">
 
-                                            <option value={e.cod} selected>{e.nome}</option>
-                                            listCateg && listCateg.map((e) => {
-                                                return (<option key={e.id} value={e.cod}>{e.nome}</option>)
-                                            })}
-                                            {listCateg == null ?? <option value={null} >Nenhuma categoria!</option>
-                                        </select>*/}
+                                                <option value={e.cod} selected>{e.nome}</option>
+                                                {
+                                                    listCateg && listCateg.map((e) => {
+                                                        return (<option class="form-control" key={e.id} value={e.cod}>{e.nome}</option>)
+                                                    })
+                                                }
+                                                {listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}
+                                            </select>
+                                        }
+
 
                                     </div>
 
@@ -218,12 +344,18 @@ const ModalEditProdutos = (data_id) => {
                                             }}
                                         />
                                     </div>
+
+
                                 </div>
+
                             )
                         })}
+
+                     
                     </div>
 
                     <div class="modal-footer">
+
                         <button type="button" onClick={(e) => { editNovoProduto(e) }} class="btn w-100 btn-primary" id="btnEditarProduto"> <i class="bi bi-pencil-square"></i> Editar</button>
                     </div>
                 </div>

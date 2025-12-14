@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import md5 from 'md5';
 import axios from 'axios';
 import $ from 'jquery';
-const ModalEditUsuarios = (data_id) => {
+const ModalEditEstabelecimentos = (data_id) => {
     var data = { data_id };
     var id = data.data_id;
     var idEdit = id.data_id;
@@ -142,11 +142,11 @@ const ModalEditUsuarios = (data_id) => {
     }, [setDataFilter, setEdit]);
 
     return (
-        <div class="modal fade" id={"editUsuario-" + idEdit} tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticeditUsuario" aria-hidden="true">
+        <div class="modal fade" id={"editEstabelecimento-" + idEdit} tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticeditEstab" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5"><i class="bi bi-person-fill-gear"></i> Atualizar usuário</h1>
+                        <h1 class="modal-title fs-5"><i class="bi bi-person-fill-gear"></i> Acesso ao sistema</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
                     </div>
 
@@ -164,8 +164,10 @@ const ModalEditUsuarios = (data_id) => {
 
 
                         <div class="form-check form-switch m-4 ml-0 l-0">
-                          
-                            
+                            <input class="form-check-input p-2" type="checkbox" value="" id="checkNativeSwitch" switch />
+                                <label class="form-check-label text-secondary" for="checkNativeSwitch">
+                                    Adicionar como usuário
+                                </label>
                         </div>
 
 
@@ -182,4 +184,4 @@ const ModalEditUsuarios = (data_id) => {
     )
 
 }
-export default ModalEditUsuarios;
+export default ModalEditEstabelecimentos;

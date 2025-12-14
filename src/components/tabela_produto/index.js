@@ -32,7 +32,6 @@ const TabelaProduto = () => {
     <ListPagina />
 
 
-
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
 
@@ -81,10 +80,11 @@ const TabelaProduto = () => {
                     <caption>Lista produtos</caption>
                     <thead>
                         <tr>
-                            <th scope="col">Cod.</th>
-                            <th scope="col">Nome </th>
-                            <th scope="col">Categ.</th>
-                            <th scope="col">Preço.</th>
+                            <th scope="col">Cod</th>
+                            <th scope="col">Item </th>
+                            <th scope="col">Desc</th>
+                            <th scope="col">Categ</th>
+                            <th scope="col">Preço</th>
                             <th scope="col">Qtd</th>
                             <th class="text-end" scope="col">Ações</th>
                         </tr>
@@ -96,15 +96,17 @@ const TabelaProduto = () => {
                             return (
                                 <tr key={val.id}>
                                     <td scope="row">{val.cod_estabelecimento}</td>
-                                    <td className='fw-light'>{val.item}</td>
-                                    <td className='fw-light'>{val.nome}</td>
+                                    <td className='fw-light lh-1'>{val.item}</td>
+                                    <td className='fw-light'>{val.descricao}</td>
+                                    <td className='fw-light'>{val.nome}</td>                                                                     
                                     <td className='fw-light'>{val.preco}</td>
                                     <td className='fw-light'>{val.quantidade}</td>
                                     <td className='text-end'>
                                         {/* <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                                         <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
+                                        
                                         <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                            <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
+                                            <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
                                             <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
                                         </div>
                                     </td>
@@ -132,7 +134,7 @@ const TabelaProduto = () => {
                     setCurrentPage={setCurrentPage}
                     currentPage={currentPage}
                 />
-                { /* <ModalEditProdutos data_id={id} /> */}
+              <ModalEditProdutos data_id={id} />
             </div>
 
         </div>

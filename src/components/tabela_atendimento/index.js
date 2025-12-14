@@ -83,7 +83,7 @@ const TabelaAtendimento = () => {
             })
          } else {
             alert("Nenhum cliente estabelecimento");
-           // Sair();
+           //Sair();
          }
 
       }, [setDataClientes]);
@@ -125,19 +125,14 @@ const TabelaAtendimento = () => {
                                <Link class="btn btn-sm btn-secondary" to="/admin/agendamento-pedido" >Agendamentos <i class="bi bi-clock-history"></i> </Link> */}
                               <div class="btn-group" role="group" aria-label="Basic outlined example">
                                  <Link type="button" class="btn btn-sm btn-outline-primary" to={`/admin/comanda/${val.cod_cliente}`}> <i class="bi bi-card-list"></i></Link>
-
                                  <Link type="button" class="btn btn-sm btn-outline-primary" to="/admin/agendamento-pedido" > <i class="bi bi-clock-history"></i></Link>
                               </div>
-
                            </td>
-
-
                            <td class="text-end">
                               {/*<button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                               <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
                               <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                 <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
-
+                                 <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editEstabelecimento-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
                                  <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
                               </div>
 
@@ -155,7 +150,7 @@ const TabelaAtendimento = () => {
                      <span class="visually-hidden">Loading...</span>
                   </div>
                   
-                     {"Nenhum item relacionado ao atendimento ou estabelecimento!"}
+                  {"Nenhum item relacionado ao atendimento ou estabelecimento!"}
                   
                </div>
             }

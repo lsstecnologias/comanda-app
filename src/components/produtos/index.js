@@ -40,10 +40,9 @@ const Produto = () => {
 	useEffect(() => {
 
 
-
-
 		const dataUser = sessionStorage.getItem("cod_estabelecimento");
 		var cod_estabelecimento = dataUser;
+
 		if (cod_estabelecimento !== 'null') {
 			const param_api_list_categ = `?api=getCategorias`;
 
@@ -161,6 +160,7 @@ const Produto = () => {
 		if (valorDesc !== undefined && valorDesc !== "") {
 			desc.addClass("is-valid").removeClass("is-invalid");
 			objProduto.desc = valorDesc;
+			
 		} else {
 			desc.addClass("is-invalid").removeClass("is-valid");
 			objProduto.desc = null;
@@ -189,6 +189,7 @@ const Produto = () => {
 			var inputFoto = $("#inputFoto");
 			const param_api_save_usuario = `?api=setProdutos`;
 			objProduto.id_estabelecimento = cod_estabelecimento;
+
 			const param_api_save_img = "?api=setUploadFileItem";
 			/*POSTA IMAGEM */
 			if (selectedFileItem !== null) {
@@ -199,16 +200,14 @@ const Produto = () => {
 				formData.append("usuario", JSON.stringify(sessao));
 				formData.append("produto", JSON.stringify(objProduto));
 
-				
-				console.log(selectedFileItem);
 				var xhr = new XMLHttpRequest();
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState == 4) {
 						var res = xhr.responseText;
-						console.log(res)
+					
 						if (res) {
 							let data = JSON.parse(res)
-							console.log(data)
+							
 							if (data.status) {
 								inputFoto.addClass("is-valid").removeClass("is-invalid");
 								setSelectedFileItem("")
@@ -231,11 +230,7 @@ const Produto = () => {
 				var btnAdicionar = $('#btnAdicionar');
 				if (status == 'success') {
 					var btnAdicionar = $('#btnAdicionar');
-					//var data = JSON.parse(res);
-
-
-					console.log(res == 'null')
-					//setListProduto(arrProduto);
+				
 
 					if (res == 'null') {
 						setDisplayError("block");

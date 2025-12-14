@@ -76,10 +76,11 @@ const Categorias = () => {
             if (cod_estabelecimento !== 'null') {
                 const param_api_save_categoria = "?api=setCategorias";
                 obj_categoria.id_estabelecimento = cod_estabelecimento;
-                
+                console.log(obj_categoria)
                 $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
                     window.location.reload()
-                    /*
+                    console.log(res)
+                    
                     if (status == 'success') {
                         setStatusFormAddCateg("none");
                         $("#addCategorias").val("");
@@ -91,7 +92,7 @@ const Categorias = () => {
                         setDisplaySuccess("none");
                         setMsgSuccess(null);
 
-                    }*/
+                    }
 
                 })
             } else {

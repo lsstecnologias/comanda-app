@@ -2,7 +2,7 @@ import { error } from "jquery";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from '../context';
 import ListPagina from "../../ListPagina";
-import ModalEditUsuarios from "../modalEditUsuarios";
+import ModalEditEstabelecimentos from "../modalEditEstabelecimentos";
 import $ from 'jquery';
 import Pagination from "../../ListPagina";
 import axios from "axios";
@@ -75,14 +75,14 @@ const TabelaCliente = () => {
                     var obj = { cod_est: cod_est, cod_item: cod_items, thumb:dataDir['host']+ dataDir['caminho'] + element }
                     $.post(urlApi + nameApi + param_api_update_thumb_img, obj, async (res, status) => {
                        if(status == 'success'){
-                             console.log("Semeando imagem: [PROGRESS]...");
+                             console.log("Semeando imagem [PROGRESS]...");
                             if(res == '1'){
-                                console.log("Imagem semeada:[Ok]",res);
+                                console.log("Imagem semeada [OK]...",res);
                             }else{
-                                console.log("Imagem semeada:[RE-CONFIRMA][OK]",res);
+                                console.log("Imagem semeada [RE-CONFIRMA][OK]...",res);
                             }
                        }else{
-                            console.log("Erro ao semear imagem!")
+                            console.log("Imagem semeada [ERROR]...")
                        }
                     })
                 }
@@ -132,10 +132,10 @@ const TabelaCliente = () => {
             }
         };
         axios.get(urlApi + nameApi + param_api_list_estabelecimentos, config)
-            .then((res) => {
+        .then((res) => {
 
-                setClienteEstablecimento(res.data)
-            }).catch((error) => { alert("Error: parametros API " + error) });
+            setClienteEstablecimento(res.data)
+        }).catch((error) => { alert("Error: parametros API " + error) });
 
 
     }, [setClienteEstablecimento]);
@@ -175,7 +175,7 @@ const TabelaCliente = () => {
                                             <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button>
                                          */}
                                         <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                            <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editUsuario-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
+                                            <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editEstabelecimento-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
 
                                             <button type="button" onClick={() => deleteEstabelecimento(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
                                         </div>
@@ -210,7 +210,7 @@ const TabelaCliente = () => {
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
             />
-            <ModalEditUsuarios data_id={id} />
+            <ModalEditEstabelecimentos data_id={id} />
 
         </div>
     )

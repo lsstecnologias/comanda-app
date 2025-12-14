@@ -9,7 +9,7 @@ import $ from 'jquery';
 import Pagination from "../../ListPagina";
 
 
-const TabelaUsuario = () => {
+const Tabelausuarios = () => {
     //PERIMITE NÃO EXIBIR MODAL DE NOTAS
 		sessionStorage.setItem('modal_notas', 'hide');
     const urlApi = 'http://10.10.10.6/';
@@ -131,4 +131,4 @@ const TabelaUsuario = () => {
 
 };
 
-export default TabelaUsuario;
+export default Tabelausuarios;

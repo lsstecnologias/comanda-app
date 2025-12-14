@@ -21,19 +21,30 @@ const ModalEditCategorias = (data_id) => {
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
     const vlFilter = dataFilter.filter(e => { return e.id === idEdit });
-
+   
 
     const editCategoria = (e) => {
         e.preventDefault();
- 
+        const cod_estabelecimento = sessionStorage.getItem("cod_estabelecimento");
 
-        var objCategoria = { id: idEdit, cod: "", nome: "", data_post: "" };
+        var inptUsuario = $('#inpt-categorias');
+        var objCategoria = { id: idEdit, cod: "",cod_estabelecimento:cod_estabelecimento,  nome: "", data_post: "" };
+
+         if (objCategoria.cod !== undefined && objCategoria.cod !== "") {
+            
+            objCategoria.cod =  vlFilter[0].cod;
+             inptUsuario.addClass("is-invalid").removeClass("is-valid");
+        } else {
+           inptUsuario.addClass("is-invalid").removeClass("is-valid");
+            objCategoria.nome = vlFilter[0].cod;
+        }
+
 
         if (nvCateg !== undefined && nvCateg !== "") {
-            // nome.addClass("is-valid").removeClass("is-invalid");
+             inptUsuario.addClass("is-valid").removeClass("is-invalid");
             objCategoria.nome = nvCateg;
         } else {
-            //nome.addClass("is-invalid").removeClass("is-valid");
+           inptUsuario.addClass("is-invalid").removeClass("is-valid");
             objCategoria.nome = vlFilter[0].nome;
         }
 
@@ -43,16 +54,18 @@ const ModalEditCategorias = (data_id) => {
         if (objCategoria.data_post == "") {
             objCategoria.data_post = data_post;
         }
-         if (objCategoria.cod == "") {
+        if (objCategoria.cod == "") {
             objCategoria.cod = vlFilter[0].cod;
         }
-
+       
+        
         const param_api_update_categorias = "?api=updateCategorias";
-
+        console.log(objCategoria)
+        
         $.post(urlApi + nameApi + param_api_update_categorias, objCategoria, (res, status) => {
 
             var editarUsuario = $('#btnCategorias');
-            console.log(res)
+          
             if (status === "success") {
                 if (res == 0 || res == null) {
                     setMsgError("Erro ao atualizar usuário!");
@@ -77,39 +90,52 @@ const ModalEditCategorias = (data_id) => {
             }
 
         })
-    }
+    } 
     const fecharModal = () => {
         window.location.reload();
     }
+        console.log(vlFilter)
     useEffect(() => {
 
+          const dataUser = sessionStorage.getItem("cod_estabelecimento");
+      var cod_estabelecimento = dataUser;
+      if (cod_estabelecimento !== 'null') {
+         const param_api_list_categ = `?api=getAllCategorias`;
 
-        const param_api_get_categorias = "?api=getCategorias";
-        const config = {
+         var obj = { 'id': cod_estabelecimento };
 
-            method: "GET",
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Credentials': 'true',
-                'mode': 'no-cors'
-            }
-        };
-        axios.get(urlApi + nameApi + param_api_get_categorias, config)
-            .then((res) => {
-                var vl = res.data;
-                setDataFilter(vl);
+         $.post(urlApi + nameApi + param_api_list_categ, obj, (res, status) => {
+          
+            var dataArr =  JSON.parse(res);
+            if (Array.isArray(dataArr) && dataArr.length == 0) {
+               setDisplayError("block");
+               setMsgError("Adicione categoria para o seu item!");
+               
+               /* 
+                  setDisplaySuccess("none");
+                  setMsgSuccess(null);
+                  alert('Nenhuma categoria adicionada')
+                  */
+            
+            } else {
+              setDataFilter(dataArr);
+               
+            }            
 
-            }).catch((error) => { alert("Error: parametros API " + error) });
-
+         })
+      } else {
+         alert("Nenhum cliente estabelecimento");
+         //Sair();
+      }
     }, [setDataFilter, setEdit]);
 
     return (
-        <div class="modal fade" id={"editCategoria-" + idEdit} tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticeditCategoria" aria-hidden="true">
+
+        <div class="modal fade " id={"editCategoria-" + idEdit} tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticeditCategoria" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5"><i class="bi bi-pencil-square"></i> Editar categoria</h1>
+                        <h1 class="modal-title fs-5"><i class="bi bi-pencil-square"></i> Editar categoria(s)</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
                     </div>
 

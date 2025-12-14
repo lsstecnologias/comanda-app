@@ -46,7 +46,6 @@ const AgendamentoPedido = () => {
 
                      <th scope="col fw-light">Cod. Atendimento</th>
                      <th scope="col fw-light">Atendente</th>
-
                      <th scope="col fw-light">Data Atendimento</th>
                      <th scope="col" > </th>
                   </tr>
@@ -59,9 +58,8 @@ const AgendamentoPedido = () => {
 
                            <td className='fw-light'>{val.cod_atendimento}</td>
                            <td className='fw-light'>{val.cod_atendente}</td>
-                           <td className='fw-light'>{val.data_atendimento}</td>
-                     
-                           <td className='fw-light' ><button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-person-fill-gear"></i></button></td>
+                           <td className='fw-light'>{val.data_atendimento}</td>                     
+                           <td className='fw-light'><button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-person-fill-gear"></i></button></td>
 
                         </tr>
                      )

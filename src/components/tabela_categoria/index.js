@@ -129,7 +129,7 @@ const TabelaCategoria = () => {
                         <tr key={val.id}>
                            <th scope="row" className='fw-light'>{val.cod}</th>
 
-                           <td className='fw-light'>{val.nome}</td>
+                           <td className='fw-light'>{val.categoria}</td>
                            <td className='fw-light'>{val.data_post}</td>
 
                            <td className='text-end'>
@@ -137,7 +137,6 @@ const TabelaCategoria = () => {
                               <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
                               <div class="btn-group" role="group" aria-label="Basic outlined example">
                                  <button type="button" data-bs-toggle="modal" onClick={() => editCateg(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
-
                                  <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
                               </div>
                            </td>

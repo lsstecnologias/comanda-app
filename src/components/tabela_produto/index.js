@@ -14,7 +14,7 @@ const TabelaProduto = () => {
     sessionStorage.setItem('modal_notas', 'hide');
     const { GetSession, sessao, Sair, status } = useContext(UserContext);
 
-    const [data, setData] = useState([]);
+    const [dataProdutos, setDataProdutos] = useState([]);
     const [id, setId] = useState();
 
     //HOOK MSG ERROS
@@ -28,7 +28,7 @@ const TabelaProduto = () => {
     const [postsPerPage] = useState(2);
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+    const currentPosts = dataProdutos.slice(indexOfFirstPost, indexOfLastPost);
     <ListPagina />
 
 
@@ -47,19 +47,18 @@ const TabelaProduto = () => {
     useEffect(() => {
 
         //REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
-        const dataUser = sessionStorage.getItem("cod_estabelecimento");
-        var cod_estabelecimento = dataUser;
+        const id_estabelecimento = sessionStorage.getItem("cod_estabelecimento");
+        
 
-        if (cod_estabelecimento !== 'null') {
+        if (id_estabelecimento !== 'null') {
             const param_api_list_produto = `?api=getProdutos`;
 
-            var obj = { 'id': cod_estabelecimento };
+            var obj = { 'id': id_estabelecimento };
             $.post(urlApi + nameApi + param_api_list_produto, obj, (res, status) => {
 
                 if (status == 'success') {
                     var data = JSON.parse(res);
-                    setData(data);
-
+                    setDataProdutos(data);                   
 
                 } else {
                     alert("Error: parametros API!")
@@ -71,7 +70,7 @@ const TabelaProduto = () => {
             Sair();
         }
 
-    }, [setData]);
+    }, [setDataProdutos]);
 
     return (
         <div class="container-fluid m-0 p-0 mt-4 ">
@@ -80,12 +79,11 @@ const TabelaProduto = () => {
                     <caption>Lista produtos</caption>
                     <thead>
                         <tr>
-                            <th scope="col">Cod</th>
-                            <th scope="col">Item </th>
+                            <th scope="col">Est.</th>
+                            <th scope="col">Cod.</th>
+                            <th scope="col">Item</th>
                             <th scope="col">Desc</th>
-                            <th scope="col">Categ</th>
-                            <th scope="col">Preço</th>
-                            <th scope="col">Qtd</th>
+                            <th scope="col">Categ</th>                                             
                             <th class="text-end" scope="col">Ações</th>
                         </tr>
                     </thead>
@@ -95,19 +93,21 @@ const TabelaProduto = () => {
 
                             return (
                                 <tr key={val.id}>
-                                    <td scope="row">{val.cod_estabelecimento}</td>
-                                    <td className='fw-light lh-1'>{val.item}</td>
+                                    <td scope="row">{val.estabelecimento_id}</td>
+                                    <td className='fw-light'>{val.cod_item}</td>
+                                    <td className='fw-light'>{val.item}</td>
                                     <td className='fw-light'>{val.descricao}</td>
-                                    <td className='fw-light'>{val.nome}</td>                                                                     
-                                    <td className='fw-light'>{val.preco}</td>
-                                    <td className='fw-light'>{val.quantidade}</td>
+                                    <td className='fw-light'>{val.categoria}</td>
+                              
+                                   
                                     <td className='text-end'>
                                         {/* <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                                         <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
-                                        
+
                                         <div class="btn-group" role="group" aria-label="Basic outlined example">
                                             <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
                                             <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -116,7 +116,7 @@ const TabelaProduto = () => {
 
                     </tbody>
                 </table>
-                {data.length == 0 &&
+                {dataProdutos.length == 0 &&
                     <div class="d-flex align-items-center alert alert-light fade show" style={{ display: displayError }} role="alert">
 
                         <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
@@ -130,16 +130,16 @@ const TabelaProduto = () => {
 
                 <Pagination
                     postsPerPage={postsPerPage}
-                    totalPosts={data.length}
+                    totalPosts={dataProdutos.length}
                     setCurrentPage={setCurrentPage}
                     currentPage={currentPage}
                 />
-              <ModalEditProdutos data_id={id} />
+                
             </div>
-
+            <ModalEditProdutos data_id={id} />
         </div>
 
     )
-
+ 
 }
 export default TabelaProduto;

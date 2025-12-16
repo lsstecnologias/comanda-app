@@ -31,7 +31,7 @@ const Categorias = () => {
         let data_atual = new Date();
         let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 
-        const obj_categoria = { id_estabelecimento: "", cod: "", nome: "", data_post: "" };
+        const obj_categoria = { id_estabelecimento: "", cod: "", categoria: "", data_post: "" };
         //Valida hora-data e cod da categoria do item
         if (obj_categoria.data_post == "" && obj_categoria.cod == "") {
             obj_categoria.data_post = data_post;
@@ -41,14 +41,14 @@ const Categorias = () => {
         //Valida os campos
         if (categ_input.val()) {
            categ_input.addClass("is-valid").removeClass("is-invalid");
-            obj_categoria.nome = categ_input.val();
+            obj_categoria.categoria = categ_input.val();
         } else {
 
             setDisplayError("block");
             setMsgError("Preencha os campo!");
 
             categ_input.addClass("is-invalid").removeClass("is-valid");
-            obj_categoria.nome = null;
+            obj_categoria.categoria = null;
 
         }
 

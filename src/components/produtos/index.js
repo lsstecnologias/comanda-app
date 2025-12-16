@@ -40,35 +40,29 @@ const Produto = () => {
 	useEffect(() => {
 
 
-		const dataUser = sessionStorage.getItem("cod_estabelecimento");
-		var cod_estabelecimento = dataUser;
+		const codEstabelecimento = sessionStorage.getItem("cod_estabelecimento");
 
-		if (cod_estabelecimento !== 'null') {
-			const param_api_list_categ = `?api=getCategorias`;
+		const listarCategorias = (codEstabelecimento) => {
+			if (codEstabelecimento !== 'null') {
+				const param_api_list_categ = `?api=getAllCategorias`;
+				var obj = { 'id': codEstabelecimento };
+				$.post(urlApi + nameApi + param_api_list_categ, obj, (res, status) => {
+					var dataArr = JSON.parse(res);
+					if (Array.isArray(dataArr) && dataArr.length > 0) {
+						setListCateg(dataArr);
+					} else {
+						setListCateg(null);
+					}
+				})
 
-			var obj = { 'id': cod_estabelecimento };
-
-			$.post(urlApi + nameApi + param_api_list_categ, obj, (res, status) => {
-
-				var dataArr = JSON.parse(res);
-				if (Array.isArray(dataArr) && dataArr.length > 0) {
-					setListCateg(dataArr);
-				} else {
-					setListCateg(null);
-				}
-			})
-		} else {
-			alert("Nenhum cliente estabelecimento");
-			Sair();
+			} else {
+				alert("Nenhum cliente estabelecimento");
+				Sair();
+			}
 		}
-		if (status) {
-			const { cod, id, cod_estabelecimento, nome, sobrenome, status, perfil, data_post, data_image_post } = sessao;
-			setSessaoUser({ cod, id, cod_estabelecimento, nome, sobrenome, status, perfil, data_post, data_image_post });
+		listarCategorias(codEstabelecimento)
 
-		}
-
-
-
+		
 	}, [setListCateg, setSessaoUser]);
 
 	/*
@@ -123,20 +117,23 @@ const Produto = () => {
 		}*/
 	const addNovoProduto = (e) => {
 		e.preventDefault();
-
-		let nome = $("#nomeItemInput");
-		let desc = $("#descItemInput");
-		let qtd = $("#qtItemInput");
-		let preco = $("#precoUnitInput");
-		var cod = Math.floor(Math.random() * (777 + 0)) - 1;
-
-		var objProduto = { cod_item: cod, id_estabelecimento: "", item: "", desc: "", qtd: "", preco: "", data_post: "", categoria_id: "" };
-
-		if (valorCateg !== undefined && valorCateg !== "") {
-			preco.addClass("is-valid").removeClass("is-invalid");
-			objProduto.categoria_id = valorCateg;
+		//imgItemInput	
+		let categInput 	= $('#categItemInput');
+		let nome	    = $("#nomeItemInput");
+		let desc 		= $("#descItemInput");
+		let qtd 		= $("#qtItemInput");
+		let preco		= $("#precoUnitInput");
+		var cod			= `${ Math.floor(Math.random() * (777 + 0))-1}`;
+	
+		//REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
+		const codEstabelecimento = sessionStorage.getItem("cod_estabelecimento");
+		var objProduto = { cod_item: cod, estabelecimento_id: codEstabelecimento, item: "",  desc: "", qtd: "",categoria_id: "" , preco: "", data_post: ""};
+		
+		if (categInput.val()) {
+			categInput.addClass("is-valid").removeClass("is-invalid");
+			objProduto.categoria_id = categInput.val();
 		} else {
-			preco.addClass("is-invalid").removeClass("is-valid");
+			categInput.addClass("is-invalid").removeClass("is-valid");
 			objProduto.categoria_id = null;
 		}
 
@@ -160,7 +157,7 @@ const Produto = () => {
 		if (valorDesc !== undefined && valorDesc !== "") {
 			desc.addClass("is-valid").removeClass("is-invalid");
 			objProduto.desc = valorDesc;
-			
+
 		} else {
 			desc.addClass("is-invalid").removeClass("is-valid");
 			objProduto.desc = null;
@@ -181,21 +178,18 @@ const Produto = () => {
 			objProduto.data_post = data_post;
 		}
 
-		//REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
-		const dataUser = sessionStorage.getItem("cod_estabelecimento");
-		var cod_estabelecimento = dataUser;
 
-		if (cod_estabelecimento !== 'null') {
-			var inputFoto = $("#inputFoto");
-			const param_api_save_usuario = `?api=setProdutos`;
-			objProduto.id_estabelecimento = cod_estabelecimento;
+		//POSTA ITEM DO PRODUTO
+		//VERIFICA SE EXISTE O CODIGO DO ESTABELECIMENTO PARA REALIZAR A POSTAGEM
 
-			const param_api_save_img = "?api=setUploadFileItem";
-			/*POSTA IMAGEM */
+		if (codEstabelecimento !== 'null') {
+			// var imgInpt = $("#imgItemInput");
+			/*const param_api_save_img = "?api=setUploadFileItem";
+			
 			if (selectedFileItem !== null) {
 
 				const formData = new FormData();
-				
+
 				formData.append("arquivo", selectedFileItem);
 				formData.append("usuario", JSON.stringify(sessao));
 				formData.append("produto", JSON.stringify(objProduto));
@@ -204,15 +198,15 @@ const Produto = () => {
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState == 4) {
 						var res = xhr.responseText;
-					
+
 						if (res) {
 							let data = JSON.parse(res)
 							
 							if (data.status) {
-								inputFoto.addClass("is-valid").removeClass("is-invalid");
+								imgInpt.addClass("is-valid").removeClass("is-invalid");
 								setSelectedFileItem("")
 							} else {
-								inputFoto.addClass("is-invalid").removeClass("is-valid");
+								imgInpt.addClass("is-invalid").removeClass("is-valid");
 
 							}
 
@@ -221,16 +215,20 @@ const Produto = () => {
 				}
 				xhr.open("POST", urlApi + nameApi + param_api_save_img);
 				xhr.send(formData);
+				imgInpt.addClass("is-valid").removeClass("is-invalid");
 
-
-			}
-
-			//POSTA DETALHES DO ITEM
-			$.post(urlApi + nameApi + param_api_save_usuario, objProduto, (res, status) => {
+			}else{
+				imgInpt.addClass("is-invalid").removeClass("is-valid");
+			}*/
+			//POST ITEM
+			const param_api_save_produto = '?api=setProdutos';
+			
+			$.post(urlApi + nameApi + param_api_save_produto, objProduto, (res, status) => {
 				var btnAdicionar = $('#btnAdicionar');
+				console.log(res);
 				if (status == 'success') {
 					var btnAdicionar = $('#btnAdicionar');
-				
+
 
 					if (res == 'null') {
 						setDisplayError("block");
@@ -243,7 +241,6 @@ const Produto = () => {
 					} else {
 						setDisplaySuccess("block");
 						setMsgSuccess("Novo item adicionado!");
-
 						setDisplayError("none");
 						setMsgError(null);
 						btnAdicionar.attr({ "disabled": "disabled" });
@@ -255,7 +252,7 @@ const Produto = () => {
 					btnAdicionar.attr({ "disabled": false });
 
 				}
-
+					
 
 
 			})
@@ -263,18 +260,10 @@ const Produto = () => {
 			alert("Nenhum cliente estabelecimento");
 			Sair();
 		}
-
+		
 
 	}
-	const carregarImagensItem = () => {
-		const param_api_save_img = "?api=setUploadFileItem";
-		//  let inputFoto = $("#inputFoto");
-		// inputFoto.addClass("is-valid").removeClass("is-invalid").val(null);
-		if (selectedFileItem !== null) {
-			console.log(`${'nome'}` + '_' + selectedFileItem.name)
-			console.log(selectedFileItem)
-		}
-	}
+	
 
 	const fecharModal = () => {
 		window.location.reload();
@@ -298,12 +287,12 @@ const Produto = () => {
 						</div>
 						<div class="modal-body">
 							<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-								<i class="bi bi-check-circle p-2"></i>
+								<i class="bi bi-check-circle p-2 ml-0"></i>
 								{msgSuccess !== null && msgSuccess}
 
 							</div>
 							<div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
-								<i class="bi bi-exclamation-triangle p-2"></i>
+								<i class="bi bi-exclamation-triangle p-2 pl-2"></i>
 								{msgError !== null && msgError}
 
 							</div>
@@ -316,11 +305,11 @@ const Produto = () => {
 								<input type="text" class="form-control text-secondary fw-normal" id="descItemInput" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder="Detalhes" />
 							</div>
 							<div class="mb-3" id="categorias">
-								<label for="categorias" class="form-label text-secondary fw-normal">Categoria</label>
-								<select id="categorias" onChange={(e) => { setCategorias(e.target.value) }} class="form-select text-secondary fw-normal">
-									<option >Selecione</option>
+								<label for="categItemInput" class="form-label text-secondary fw-normal">Categoria</label>
+								<select id="categItemInput" onChange={(e) => { setCategorias(e.target.value) }} class="form-select text-secondary fw-normal">
+									
 									{listCateg && listCateg.map((e) => {
-										return (<option key={e.id} value={e.cod}>{e.nome}</option>)
+										return (<option key={e.id} value={e.cod}>{e.categoria}</option>)
 									})}
 									{listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}
 
@@ -328,14 +317,10 @@ const Produto = () => {
 
 
 							</div>
-							<div class="mb-3">
-								<label for="inputFoto" class="form-label text-secondary fw-normal">Imagem do item</label>
-								<input type="file" accept=".jpg, .jpeg, .png" class="form-control text-secondary fw-normal" id="inputFoto" name="img" onChange={(e) => { setSelectedFileItem(e.target.files[0]) }} placeholder="Another input placeholder" />
-
-							</div>
+							
 							<div class="mb-3">
 								<label for="qtItemInput" class="form-label text-secondary fw-normal">Quantidade em estoque</label>
-								<input type="number" min="1" class="form-control text-secondary fw-normal" id="qtItemInput" onChange={(e) => { setQuant(e.target.value) }} autocomplete="off" placeholder="0" />
+								<input type="number" min="1" class="form-control text-secondary fw-normal " id="qtItemInput" onChange={(e) => { setQuant(e.target.value) }} autocomplete="off" placeholder="0" />
 
 							</div>
 

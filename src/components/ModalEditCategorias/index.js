@@ -28,7 +28,7 @@ const ModalEditCategorias = (data_id) => {
         const cod_estabelecimento = sessionStorage.getItem("cod_estabelecimento");
 
         var inptUsuario = $('#inpt-categorias');
-        var objCategoria = { id: idEdit, cod: "",cod_estabelecimento:cod_estabelecimento,  nome: "", data_post: "" };
+        var objCategoria = { id: idEdit, cod: "",cod_estabelecimento:cod_estabelecimento,  categoria: "", data_post: "" };
 
          if (objCategoria.cod !== undefined && objCategoria.cod !== "") {
             
@@ -36,16 +36,16 @@ const ModalEditCategorias = (data_id) => {
              inptUsuario.addClass("is-invalid").removeClass("is-valid");
         } else {
            inptUsuario.addClass("is-invalid").removeClass("is-valid");
-            objCategoria.nome = vlFilter[0].cod;
+            objCategoria.cod = vlFilter[0].cod;
         }
 
 
         if (nvCateg !== undefined && nvCateg !== "") {
              inptUsuario.addClass("is-valid").removeClass("is-invalid");
-            objCategoria.nome = nvCateg;
+            objCategoria.categoria = nvCateg;
         } else {
            inptUsuario.addClass("is-invalid").removeClass("is-valid");
-            objCategoria.nome = vlFilter[0].nome;
+            objCategoria.categoria = vlFilter[0].categoria;
         }
 
         let data_atual = new Date();
@@ -115,7 +115,7 @@ const ModalEditCategorias = (data_id) => {
                   setDisplaySuccess("none");
                   setMsgSuccess(null);
                   alert('Nenhuma categoria adicionada')
-                  */
+                */
             
             } else {
               setDataFilter(dataArr);
@@ -158,7 +158,7 @@ const ModalEditCategorias = (data_id) => {
                                 <div key={e.id}>
                                     <div class="input-group  mb-3 mt-2" style={{ display: 'inline-flex' }}>
                                         <button class="btn btn-outline-primary  animate__animated animate__fadeIn" id="btnCategorias" type="button" onClick={(e) => { editCategoria(e) }} ><i class="bi bi-pencil-square"></i> Editar</button>
-                                        <input type="text" class="form-control" id="inpt-categorias" autocomplete="off" onChange={(e) => { setNvCateg(e.target.value) }} placeholder={e.nome} aria-describedby="button-addon2" />
+                                        <input type="text" class="form-control" id="inpt-categorias" autocomplete="off" onChange={(e) => { setNvCateg(e.target.value) }} placeholder={e.categoria} aria-describedby="button-addon2" />
 
                                     </div>
                                 </div>

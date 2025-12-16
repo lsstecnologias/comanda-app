@@ -5,13 +5,18 @@ import { UserContext } from '../context';
 const $ = require("jquery");
 
 const ModalEditProdutos = (data_id) => {
+
+    var data = { data_id };
+    var id = data.data_id;
+    var idEdit = id.data_id;
+
     const { GetSession, sessao, Sair, status } = useContext(UserContext);
     const [valorPreco, setPreco] = useState();
     const [valorItem, setItem] = useState();
     const [valorDesc, setDesc] = useState();
     const [valorQt, setQuant] = useState();
     const [valorCateg, setCategorias] = useState();
-    const [listCateg, setListCateg] = useState(null);
+    const [listCateg, setListCateg] = useState([]);
     const [objProduto, setObjProduto] = useState([]);
 
 
@@ -21,15 +26,10 @@ const ModalEditProdutos = (data_id) => {
     const [msgError, setMsgError] = useState(null);
     const [msgSuccess, setMsgSuccess] = useState(null);
     const [selectedFileItem, setSelectedFileItem] = useState(null);
-    const [dataItem, setData] = useState([]);
-    const [edit, setEdit] = useState([]);
+    const [dataItem, setDataItem] = useState([]);
+    const [editProduto, setEditProduto] = useState([]);
 
-    const dataUser = sessionStorage.getItem("cod_estabelecimento");
-    var cod_estabelecimento = dataUser;
 
-    var data = { data_id };
-    var id = data.data_id;
-    var idEdit = id.data_id;
     const fecharModal = () => {
         window.location.reload();
     }
@@ -38,52 +38,7 @@ const ModalEditProdutos = (data_id) => {
     const nameApi = 'api_comanda/';
 
     const data_filter = dataItem.filter(e => { return e.id == idEdit });
-    /*
-    const uploadImg = (e) => {
-        e.preventDefault();
 
-        let imgInpt = $("#imgItemInputEdit");
-        var cod_estabelecimento = dataUser;
-        //VALIDA IMAGEM
-        const param_api_save_img = "?api=setUploadFileItem";
-
-        if (selectedFileItem !== undefined && selectedFileItem !== null) {
-
-            const formData = new FormData();
-            console.log(selectedFileItem)
-            formData.append("arquivo", selectedFileItem);
-            formData.append("usuario", JSON.stringify(sessao));
-            formData.append("produto", JSON.stringify(objProduto));
-            console.log(formData)
-
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    var res = xhr.responseText;
-
-                    if (res) {
-                        let data = JSON.parse(res)
-                        console.log(data)
-                        if (data.status) {
-                            imgInpt.addClass("is-valid").removeClass("is-invalid");
-
-                        } else {
-                            imgInpt.addClass("is-invalid").removeClass("is-valid");
-
-                        }
-
-                    }
-                }
-            }
-            xhr.open("POST", urlApi + nameApi + param_api_save_img);
-            xhr.send(formData);
-
-        } else {
-            imgInpt.addClass("is-invalid").removeClass("is-valid");
-        }
-    }
-    
-*/
 
 
     const editNovoProduto = (e) => {
@@ -93,9 +48,17 @@ const ModalEditProdutos = (data_id) => {
         let qtd = $("#qtItemInputEdit");
         let preco = $("#precoUnitInputEdit");
         let categ = $("#categItemInputEdit");
-        var imgInpt = $("#imgItemInputEdit");
+         const estabelecimento_id = sessionStorage.getItem("cod_estabelecimento");
+        var objProduto = { id: idEdit, estabelecimento_id: "", desc: "", id_categoria: "", qtd: "", preco: "", data_post: "" };
 
-        var objProduto = { id: idEdit, id_estabelecimento: "", desc: "", id_categoria: "", qtd: "", preco: "", data_post: "" };
+        
+        if (estabelecimento_id !== undefined && estabelecimento_id !== "") {
+          
+            objProduto.estabelecimento_id = estabelecimento_id;
+        } else {
+           Sair();
+            objProduto.estabelecimento_id = null;
+        }
 
         if (valorCateg !== undefined && valorCateg !== "") {
             categ.addClass("is-valid").removeClass("is-invalid");
@@ -144,19 +107,19 @@ const ModalEditProdutos = (data_id) => {
             objProduto.data_post = data_post;
         }
 
-        const dataUser = sessionStorage.getItem("cod_estabelecimento");
-        var cod_estabelecimento = dataUser;
+
+
+
+
        
 
-        const param_api_edit_produto = "?api=updateItem";
-        
 
-        if (cod_estabelecimento !== 'null') {
-           
-           // const param_api_save_usuario = `?api=setProdutos`;
-            objProduto.id_estabelecimento = cod_estabelecimento;
+        if (estabelecimento_id !== 'null') {
+
+            const param_api_save_usuario = `?api=setProdutos`;
+            objProduto.estabelecimento_id = estabelecimento_id;
             const param_api_save_img = "?api=setUploadFileItem";
-            /*POSTA IMAGEM */
+            /*POSTA IMAGEM 
             if (selectedFileItem !== null) {
 
                 const formData = new FormData();
@@ -170,7 +133,7 @@ const ModalEditProdutos = (data_id) => {
                     if (xhr.readyState == 4) {
                         var res = xhr.responseText;
                         var inputFoto = $("#imgItemInputEdit");
-                        
+
                         if (res) {
                             let data = JSON.parse(res)
 
@@ -190,96 +153,103 @@ const ModalEditProdutos = (data_id) => {
 
 
             }
+        */
 
-          
-           
+
         } else {
             alert("Nenhum cliente estabelecimento");
             Sair();
         }
-                  
-         $.post(urlApi + nameApi + param_api_edit_produto, objProduto, (res, status) => {
-             var editarProduto = $('#btnEditarProduto');
-             if (status === "success") {
- 
-                 if (res == 0 || res === null) {
-                     setDisplayError("block");
-                     setMsgError("Erro ao atualizar o item!");
-                     editarProduto.attr({ "disabled": false });
- 
-                 } else {
-                     setDisplayError("none");
-                     setMsgError(null);
-                 }
- 
-                 if (res == 1) {
-                     setDisplaySuccess("block");
-                     setMsgSuccess("O item foi atualizado!");
-                     editarProduto.attr({ "disabled": "disabled" });
- 
-                 } else {
-                     setDisplaySuccess("none");
-                     setMsgSuccess(null);
-                 }
- 
-             } else {
-                 alert("Error: parametros API");
-             }
- 
-         })
+            const param_api_edit_produto = "?api=updateItem";
+        $.post(urlApi + nameApi + param_api_edit_produto, objProduto, (res, status) => {
+            var editarProduto = $('#btnEditarProduto');
+            if (status === "success") {
+
+                if (res == 0 || res === null) {
+                    setDisplayError("block");
+                    setMsgError("Erro ao atualizar o item!");
+                    editarProduto.attr({ "disabled": false });
+
+                } else {
+                    setDisplayError("none");
+                    setMsgError(null);
+                }
+
+                if (res == 1) {
+                    setDisplaySuccess("block");
+                    setMsgSuccess("O item foi atualizado!");
+                    editarProduto.attr({ "disabled": "disabled" });
+
+                } else {
+                    setDisplaySuccess("none");
+                    setMsgSuccess(null);
+                }
+
+            } else {
+                alert("Error: parametros API");
+            }
+
+        })
 
     }
-
-
-    const param_api_lista_produto = '?api=getProdutos';
-    const param_api_get_categoria = "?api=getCategorias";
-    //setDataFilter(null)
-    // console.log(sessao.cod_estabelecimento)
 
     useEffect(() => {
         //FAZ A REQUISICAO PARA MOSTRAR OS DADOS QUE VAI SER EDITADO NOS INPUTS
 
-        const dataUser = sessionStorage.getItem("cod_estabelecimento");
-        var cod_estabelecimento = dataUser;
+        const estabelecimento_id = sessionStorage.getItem("cod_estabelecimento");
+        //FUNCAO QUE LISTA PRODUTOS
+        const listarProdutos = (estabelecimento_id) => {
+            if (estabelecimento_id !== 'null') {
+                const param_api_list_produto = `?api=getProdutos`;
+                var obj = { 'id': estabelecimento_id };
+                $.post(urlApi + nameApi + param_api_list_produto, obj, (res, status) => {
+                    if (status == 'success') {
+                        var data = JSON.parse(res);
+                        setDataItem(data);
 
-        if (cod_estabelecimento !== 'null') {
+                    } else {
+                        alert("Error: parametros API!")
+                    }
 
-            let obj = { 'id': cod_estabelecimento }
+                })
+            } else {
+                alert("Nenhum cliente estabelecimento");
+                Sair();
+            }
 
-            $.post(urlApi + nameApi + param_api_lista_produto, obj, (res, status) => {
-
-                if (status == 'success') {
-                    const result = JSON.parse(res);
-                    setData(result)
-
-                } else {
-                    alert("Error: parametros API!")
-                }
-
-            })
-            $.post(urlApi + nameApi + param_api_get_categoria, obj, (res, status) => {
-
-                if (status == 'success') {
-                    const result = JSON.parse(res);
-                    setListCateg(result)
-                } else {
-                    alert("Error: parametros API!")
-                }
-
-            })
         }
+        //FUNCAO QUE LISTA CATEGORIAS
+        listarProdutos(estabelecimento_id)
+        
+        const listarCategorias = (estabelecimento_id) => {
+            if (estabelecimento_id !== 'null') {
+                const param_api_list_categ = `?api=getAllCategorias`;
+                var obj = { 'id': estabelecimento_id };
+                $.post(urlApi + nameApi + param_api_list_categ, obj, (res, status) => {
+                    var dataArr = JSON.parse(res);
+                    if (Array.isArray(dataArr) && dataArr.length > 0) {
+                        setListCateg(dataArr);
+                    } else {
+                        setListCateg(null);
+                    }
+                })
 
+            } else {
+                alert("Nenhum cliente estabelecimento");
+                Sair();
+            }
+        }
+        listarCategorias(estabelecimento_id)
+        
 
-
-    }, [setData, setEdit]);
-
+    }, [setEditProduto, setListCateg, setDataItem]);
 
     return (
         <div class="modal fade" id={"editProduto-" + idEdit} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticeditProduto" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticnvProduto"><i class="bi bi-pencil-square"></i> Editar Produto {idEdit}</h1>
+                        <h1 class="modal-title fs-5" id="staticnvProduto"><i class="bi bi-pencil-square"></i> Editar Produto N {idEdit}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
                     </div>
                     <div class="m-3 alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
@@ -300,23 +270,23 @@ const ModalEditProdutos = (data_id) => {
                                 <div key={e.id}>
 
                                     <div class="mb-3">
-                                        <label for="nomeItemInput" class="form-label">Nome item</label>
-                                        <input type="text" class="form-control " id="nomeItemInputEdit" autocomplete="off" onChange={(e) => { setItem(e.target.value) }} placeholder={e.item} />
+                                        <label for="nomeItemInput" class="form-label  text-secondary fw-normal">Nome item</label>
+                                        <input type="text" class="form-control text-secondary fw-normal" id="nomeItemInputEdit" autocomplete="off" onChange={(e) => { setItem(e.target.value) }} placeholder={e.item} />
                                     </div>
                                     <div class="mb-3">
-                                        <label for="descItemInput" class="form-label">Descrição item</label>
-                                        <input type="text" class="form-control" id="descItemInputEdit" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder={e.descricao} />
+                                        <label for="descItemInput" class="form-label  text-secondary fw-normal">Descrição item</label>
+                                        <input type="text" class="form-control text-secondary fw-normal" id="descItemInputEdit" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder={e.descricao} />
                                     </div>
-                                    <label for="descItemInput" class="form-label"> Categorias</label>
+                                    <label for="descItemInput" class="form-label  text-secondary fw-normal"> Categorias</label>
                                     <div class=" mb-3" >
 
                                         {
                                             <select id="categItemInputEdit" onChange={(e) => { setCategorias(e.target.value) }} class="form-control">
 
-                                                <option value={e.cod} selected>{e.nome}</option>
+                                                <option value={e.cod} selected>{e.categoria}</option>
                                                 {
                                                     listCateg && listCateg.map((e) => {
-                                                        return (<option class="form-control" key={e.id} value={e.cod}>{e.nome}</option>)
+                                                        return (<option class="form-control text-secondary fw-normal" key={e.id} value={e.cod}>{e.categoria}</option>)
                                                     })
                                                 }
                                                 {listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}
@@ -327,16 +297,16 @@ const ModalEditProdutos = (data_id) => {
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="qtItemInput" class="form-label">Quantidade</label>
-                                        <input type="number" min="1" class="form-control" id="qtItemInputEdit" autocomplete="off" onChange={(e) => { setQuant(e.target.value); }} placeholder={e.quantidade} />
+                                        <label for="qtItemInput" class="form-label  text-secondary fw-normal">Quantidade</label>
+                                        <input type="number" min="1" class="form-control text-secondary fw-normal" id="qtItemInputEdit" autocomplete="off" onChange={(e) => { setQuant(e.target.value); }} placeholder={e.quantidade} />
                                     </div>
                                     <div class="mb-3">
-                                        <label for="precoUnitInput" class="form-label">Preço unitário</label>
+                                        <label for="precoUnitInput" class="form-label  text-secondary fw-normal">Preço unitário</label>
 
                                         <NumericFormat
                                             autoComplete="off"
                                             thousandSeparator=","
-                                            class="form-control" id="precoUnitInputEdit" placeholder={"R$ " + e.preco} onChange={(e) => { setPreco(e.target.value) }}
+                                            class="form-control  text-secondary fw-normal " id="precoUnitInputEdit" placeholder={"R$ " + e.preco} onChange={(e) => { setPreco(e.target.value) }}
                                             decimalScale={2}
                                             fixedDecimalScale={true}
                                             onValueChange={(values) => {
@@ -351,12 +321,12 @@ const ModalEditProdutos = (data_id) => {
                             )
                         })}
 
-                     
+
                     </div>
 
                     <div class="modal-footer">
 
-                        <button type="button" onClick={(e) => { editNovoProduto(e) }} class="btn w-100 btn-primary" id="btnEditarProduto"> <i class="bi bi-pencil-square"></i> Editar</button>
+                        <button type="button" onClick={(e) => { editNovoProduto(e) }} class="btn w-100 btn-primary fw-normal" id="btnEditarProduto"> <i class="bi bi-pencil-square"></i> Editar</button>
                     </div>
                 </div>
 
@@ -364,5 +334,6 @@ const ModalEditProdutos = (data_id) => {
         </div>
 
     )
+
 }
 export default ModalEditProdutos;

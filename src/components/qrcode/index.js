@@ -70,7 +70,7 @@ const QRCode = () => {
             <div style={{ maxWidth: '800px', height: '500px' }} class="container text-center table-responsive card d-flex  align-self-center justify-content-start" >
 
 
-<h3 className="mb-2 text-start mt-2 pb-2 ">GEN <i class="bi bi-qr-code"></i> QR</h3>
+                <h3 className="mb-2 text-start mt-2 pb-2 ">GEN <i class="bi bi-qr-code"></i> QR</h3>
                 
                 <table id="printJS-form" class="table align-middle " >
                     <tr class="align-middle">
@@ -82,7 +82,7 @@ const QRCode = () => {
                     </tr>
                     <tr class="align-middle">
                         <td className='text-center'>
-                            <div class=" qrcodeContent m-4 d-flex align-items-center justify-content-center m-0 p-0">
+                            <div class="qrcodeContent m-4 d-flex align-items-center justify-content-center m-0 p-0">
                                 <img id="qrcode" className='card p-2 border' src={imagem} width={tamW ?? 340} />
                             </div>
                         </td>
@@ -117,16 +117,20 @@ const QRCode = () => {
                     {msgError !== null && msgError}
 
                 </div>
+                
                 <div class="input-group mt-3  w-100 ">
                     <input type="text" class="form-control" value={titulo} placeholder="Titulo" onChange={(e) => { setTitulo(e.target.value) }} aria-label="Example text with button addon" aria-describedby="button-addon1" />
+
                 </div>
                 <div class="input-group mt-3  w-100 ">
                     <input type="text" class="form-control" value={subTitulo} placeholder="SubTitulo" onChange={(e) => { setSubTitulo(e.target.value) }} aria-label="Example text with button addon" aria-describedby="button-addon1" />
                 </div>
                 <div class="input-group mt-3  w-100 ">
+                    <span class="input-group-text" id="basic-addon2">@example.com</span>
                     <input type="text" class="form-control" value={valorQR} placeholder="Cole o link" onChange={(e) => { setValorQR(e.target.value) }} aria-label="Example text with button addon" aria-describedby="button-addon1" />
+                    
                 </div>
-
+                
                 <div class="input-group mt-3  w-100 ">
                     <label for="range4" class="form-label">Aumentar logo</label>
                     <input type="range" class="form-range" min="0" max="500" value={tamLogo} onChange={(e) => { setTamLogo(e.target.value) }} id="range4" />
@@ -142,6 +146,7 @@ const QRCode = () => {
                     <button class="btn btn-secondary w-50" type="button" onClick={() => { geraQR() }} value="gerar" ><i class="bi fs-5 bi-arrow-repeat"></i> Gerar QR</button>
                     <button className='btn btn-sm btn-primary w-50' onClick={() => { printJS('printJS-form', 'html') }}><i class="bi bi-printer-fill fs-5"></i>  Imprimir</button>
                 </div>
+               
             </div>
         </div>
     )

@@ -118,13 +118,11 @@ const TabelaProduto = () => {
                 </table>
                 {dataProdutos.length == 0 &&
                     <div class="d-flex align-items-center alert alert-light fade show" style={{ display: displayError }} role="alert">
-
                         <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                         <p className='mt-3'>Adicione um novo item a sua lista!</p>
                         {/*msgError !== null && msgError*/}
-
                     </div>
                 }
 

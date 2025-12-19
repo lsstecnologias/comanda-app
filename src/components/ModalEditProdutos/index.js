@@ -43,83 +43,77 @@ const ModalEditProdutos = (data_id) => {
 
     const editNovoProduto = (e) => {
         e.preventDefault();
-        let nome = $("#nomeItemInputEdit");
-        let desc = $("#descItemInputEdit");
-        let qtd = $("#qtItemInputEdit");
-        let preco = $("#precoUnitInputEdit");
-        let categ = $("#categItemInputEdit");
-         const estabelecimento_id = sessionStorage.getItem("cod_estabelecimento");
-        var objProduto = { id: idEdit, estabelecimento_id: "", desc: "", id_categoria: "", qtd: "", preco: "", data_post: "" };
+        let nome                    = $("#nomeItemInputEdit");
+        let desc                    = $("#descItemInputEdit");
+        let qtd                     = $("#qtItemInputEdit");
+        let preco                   = $("#precoUnitInputEdit");
+        let categ                   = $("#categItemInputEdit");
+        const estabelecimento_id    = sessionStorage.getItem("cod_estabelecimento");
+
+        var obj_produto = { id: idEdit, estabelecimento_id: "", desc: "", id_categoria: "", qtd: "", preco: "", data_post: "" };
 
         
         if (estabelecimento_id !== undefined && estabelecimento_id !== "") {
           
-            objProduto.estabelecimento_id = estabelecimento_id;
+            obj_produto.estabelecimento_id = estabelecimento_id;
         } else {
            Sair();
-            objProduto.estabelecimento_id = null;
+           obj_produto.estabelecimento_id = null;
         }
 
         if (valorCateg !== undefined && valorCateg !== "") {
             categ.addClass("is-valid").removeClass("is-invalid");
-            objProduto.id_categoria = valorCateg;
+            obj_produto.id_categoria = valorCateg;
         } else {
             categ.addClass("is-invalid").removeClass("is-valid");
-            objProduto.id_categoria = data_filter[0].cod;
+            obj_produto.id_categoria = data_filter[0].cod;
         }
 
         if (valorPreco !== undefined && valorPreco !== "") {
             preco.addClass("is-valid").removeClass("is-invalid");
-            objProduto.preco = valorPreco;
+            obj_produto.preco = valorPreco;
         } else {
             preco.addClass("is-invalid").removeClass("is-valid");
-            objProduto.preco = data_filter[0].preco;
+            obj_produto.preco = data_filter[0].preco;
         }
 
         if (valorItem !== undefined && valorItem !== "") {
             nome.addClass("is-valid").removeClass("is-invalid");
-            objProduto.item = valorItem;
+            obj_produto.item = valorItem;
 
         } else {
             nome.addClass("is-invalid").removeClass("is-valid");
-            objProduto.item = data_filter[0].item;
+            obj_produto.item = data_filter[0].item;
         }
 
         if (valorDesc !== undefined && valorDesc !== "") {
             desc.addClass("is-valid").removeClass("is-invalid");
-            objProduto.desc = valorDesc;
+            obj_produto.desc = valorDesc;
         } else {
             desc.addClass("is-invalid").removeClass("is-valid");
-            objProduto.desc = data_filter[0].descricao;
+            obj_produto.desc = data_filter[0].descricao;
         }
 
         if (valorQt !== undefined && valorQt !== "") {
             qtd.addClass("is-valid").removeClass("is-invalid");
-            objProduto.qtd = valorQt;
+            obj_produto.qtd = valorQt;
         } else {
             qtd.addClass("is-invalid").removeClass("is-valid");
-            objProduto.qtd = data_filter[0].quantidade;
+            obj_produto.qtd = data_filter[0].quantidade;
         }
 
         let data_atual = new Date();
         let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
-        if (objProduto.data_post == "") {
-            objProduto.data_post = data_post;
+        if (obj_produto.data_post == "") {
+            obj_produto.data_post = data_post;
         }
-
-
-
-
-
-       
-
-
         if (estabelecimento_id !== 'null') {
 
             const param_api_save_usuario = `?api=setProdutos`;
             objProduto.estabelecimento_id = estabelecimento_id;
             const param_api_save_img = "?api=setUploadFileItem";
-            /*POSTA IMAGEM 
+            /*POSTA IMAGEM
+             
             if (selectedFileItem !== null) {
 
                 const formData = new FormData();
@@ -153,14 +147,15 @@ const ModalEditProdutos = (data_id) => {
 
 
             }
-        */
+            */
 
 
         } else {
             alert("Nenhum cliente estabelecimento");
             Sair();
         }
-            const param_api_edit_produto = "?api=updateItem";
+        
+        const param_api_edit_produto = "?api=updateItem";
         $.post(urlApi + nameApi + param_api_edit_produto, objProduto, (res, status) => {
             var editarProduto = $('#btnEditarProduto');
             if (status === "success") {

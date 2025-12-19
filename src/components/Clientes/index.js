@@ -19,7 +19,7 @@ const Clientes = () => {
 	const [emailLoginUser, setEmailLoginUser] = useState("");
 	const [senhaUser, setSenhaUser] = useState("");
 	const [perfilUser, setPerfilUser] = useState("");
-	 const { sessao, status, redirect_login, Sair } = useContext(UserContext);
+	const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 	//HOOK MSG ERROS
 	const [displayError, setDisplayError] = useState('none');
 	const [displaySuccess, setDisplaySuccess] = useState('none');
@@ -42,9 +42,9 @@ const Clientes = () => {
 		const fullUuid = uuidv4();
 		let data_atual = new Date();
 		let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
-		var codCliente = fullUuid.substring(0, 7)
+		var cliente_id = fullUuid.substring(0, 7)
 
-		const obj_cliente = { cod: codCliente, nome: "", sobrenome: "", email: "", senha: "", cpf: "", rg: "", cnpj: "", cep: "", endereco: "", data_post: data_post };
+		const obj_cliente = { cod: cliente_id , nome: "", sobrenome: "", email: "", senha: "", cpf: "", rg: "", cnpj: "", cep: "", endereco: "", data_post: data_post };
 
 
 		if (nome.val()) {

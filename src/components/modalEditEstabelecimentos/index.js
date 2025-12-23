@@ -144,9 +144,6 @@ const ModalEditEstabelecimentos = (data_id) => {
                     setDataFilter(data);
                     //cod: "75624fa"
 
-
-
-
                 }
 
 
@@ -159,7 +156,7 @@ const ModalEditEstabelecimentos = (data_id) => {
 
 
     }, [setDataFilter, setAcessoUsuario, setEdit]);
-
+    console.log(dataFilter)
     return (
         <div class="modal fade" id={"editEstabelecimento-" + idEdit} tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticeditEstab" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">

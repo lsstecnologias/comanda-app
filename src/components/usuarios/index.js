@@ -1,4 +1,4 @@
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import $ from 'jquery';
 import Imagens from "../upload_imagens";
 import Tabelausuarios from "../tabela_usuario";
@@ -13,8 +13,8 @@ const Usuarios = () => {
     //PERIMITE NÃO EXIBIR MODAL DE NOTAS
     sessionStorage.setItem('modal_notas', 'hide');
 
-     const { sessao, status, redirect_login, Sair } = useContext(UserContext);
-    
+    const { sessao, status, redirect_login, Sair } = useContext(UserContext);
+
     const [nomeUser, setNomeUser] = useState("");
     const [emailLoginUser, setEmailLoginUser] = useState("");
     const [senhaUser, setSenhaUser] = useState("");
@@ -28,13 +28,13 @@ const Usuarios = () => {
     const addNovoUsuario = (e) => {
         e.preventDefault();
 
-        let nome        = $("#nomeInput");
-        let senha       = $("#senhaInput");
-        let loginEmail  = $("#loginEmailInput");
-        let perfil      = $("#perfilUser");
-        let cod         = Math.floor(Math.random() * (777 + 0)) - 1;
+        let nome = $("#nomeInput");
+        let senha = $("#senhaInput");
+        let loginEmail = $("#loginEmailInput");
+        let perfil = $("#perfilUser");
+        let cod = Math.floor(Math.random() * (777 + 0)) - 1;
 
-        var objUsuario = { cod_user: cod,cod_estabelecimento:"", nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
+        var objUsuario = { cod_user: cod, cod_estabelecimento: "", nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
 
         if (nomeUser !== undefined && nomeUser !== "") {
             nome.addClass("is-valid").removeClass("is-invalid");
@@ -102,7 +102,7 @@ const Usuarios = () => {
                 } else {
                     alert("Error: parametros API")
                 }
-            
+
 
 
             })
@@ -111,12 +111,12 @@ const Usuarios = () => {
             Sair();
         }
 
-      
+
     }
     const fecharModal = () => {
         window.location.reload();
     }
-    
+
     useEffect(() => {
         // $('#rgInput').mask('00.000.000-00');
         // $('#cepInput').mask('0000000');
@@ -135,6 +135,7 @@ const Usuarios = () => {
             <button type="button" class="btn w-100 btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#novoUsuario">
                 <i class="bi bi-person-fill-add"></i> Novo
             </button>
+
 
             <div class="modal fade" id="novoUsuario" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="novoUsuario" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -183,7 +184,46 @@ const Usuarios = () => {
                     </div>
                 </div>
             </div>
-            <Tabelausuarios />
+           
+
+            <div class="accordion mt-4" id="accordionPanelsStayOpenExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                           <i class="bi bi-people-fill "></i> USUÁRIOS
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                             <Tabelausuarios />
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                           LISTA DE ESTABELECIMENTO
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <strong>This is the second item’s accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                            Accordion Item #3
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <strong>This is the third item’s accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div >
     )

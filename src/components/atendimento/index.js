@@ -51,7 +51,7 @@ const Atendimento = () => {
         if (status == 'success') {
 
 
-          
+
           if (res) {
 
             let val = res;
@@ -59,16 +59,16 @@ const Atendimento = () => {
             data_endereco.val(data_str)
             data_cep.addClass("is-valid").removeClass("is-invalid");
             data_endereco.addClass("is-valid").removeClass("is-invalid");
-           
-            
+
+
 
           }
-          if(res.erro){
+          if (res.erro) {
             data_cep.addClass("is-invalid").removeClass("is-valid");
             data_endereco.addClass("is-invalid").removeClass("is-valid");
             data_endereco.val(null);
           }
-          
+
 
 
         } else {
@@ -93,15 +93,16 @@ const Atendimento = () => {
       const param_api_find_clientes = "?api=findClientes";
       $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente }, async (res, status) => {
 
-
         if (status == 'success') {
 
           const data = JSON.parse(res);
-          const { nome, cod } = data[0] ?? false;
-          if (nome && cod) {
+
+          const { nome, cliente_id } = data[0] ?? false;
+          if (nome && cliente_id) {
+
             inptBuscar.addClass("is-valid").removeClass("is-invalid");
             setBuscarCliente(nome);
-            setCodCliente(cod);
+            setCodCliente(cliente_id);
             setMessagem("");
 
           } else {
@@ -120,7 +121,7 @@ const Atendimento = () => {
 
   const validarAtendimento = (e) => {
     e.preventDefault();
-    let data_atual = new Date();
+    const data_atual = new Date();
     let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 
     const objAtendimento = { id_estabelecimento: null, cod_atendimento: null, cod_atendente: null, cod_cliente: null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
@@ -259,6 +260,16 @@ const Atendimento = () => {
 
   }
 
+  //VALOR PARA DATA ATUAL, INPUT
+
+  const mostrarDataAtual = () => {
+    let d = new Date();
+    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+  }
+
+
+
+
   const gerarCodAtendimento = () => {
     let cod_atendimento = $('#cod_atendimento');
     var cod = Math.floor(Math.random() * (777 + 0)) - 1;
@@ -277,7 +288,6 @@ const Atendimento = () => {
     window.location.reload();
   }
   useEffect(() => {
-
 
     let data_cep = $('#cep');
     data_cep.mask('00000000');
@@ -353,7 +363,7 @@ const Atendimento = () => {
                 <td colspan="2">
                   <td class="fw-medium">Data do Atendimento</td>
                   <div class="input-group mt-2 mb-2 ">
-                    <input type='date' class="form-control" id="data_atendimento" />
+                    <input type='date' class="form-control" id="data_atendimento" value={mostrarDataAtual()} min="1900-01-01" />
                   </div>
                 </td>
               </tr>
@@ -374,6 +384,21 @@ const Atendimento = () => {
                   <div class="input-group mt-2 mb-2 ">
                     <input type='text' class="form-control" placeholder='Endereço' id="data_endereco" />
 
+                  </div>
+
+                </td>
+
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <td class="fw-medium">Status do Atendimento</td>
+                  <div class="input-group mt-2 mb-2 ">
+                    <select type='text' class="form-select" id="status_pos">
+                      <option>Selecione</option>
+                      <option value="">Em atendimento</option>
+                      <option value="">Atendimento finalizado</option>
+                    </select>
+                  
                   </div>
 
                 </td>

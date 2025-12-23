@@ -188,7 +188,7 @@ const Comanda = () => {
                               return (
                                  <tr key={valor.id}>
                                     <td>
-                                       <p class="lh-1 fw-light text-start m-0">{valor.nome} {valor.descricao}</p>
+                                       <p class="lh-1 fw-light text-start m-0">{valor.item} {valor.descricao}</p>
 
                                     </td>
                                     <td class=" d-flex align-items-center justify-content-center">

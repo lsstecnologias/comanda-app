@@ -17,7 +17,7 @@ import AgendamentoPedido from './components/agendamento_pedido';
 import Template from './components/template';
 
 import { UserContext } from './components/context';
-import Clientes from './components/Clientes';
+import Estabelecimento from './components/Estabelecimento';
 import Sistema from './components/sistema';
 import TabelaCliente from './components/tabela_cliente';
 import TelaPrincipal from './components/TelaPrincipal';
@@ -55,7 +55,7 @@ function App() {
               
             <Route path="produto" element={<Produto />} />
             <Route path="agendamento-pedido" element={<AgendamentoPedido />} />
-            <Route path="estabelecimento" element={<Clientes />} />
+            <Route path="estabelecimento" element={<Estabelecimento />} />
             <Route path="listar-estabelecimento" element={<TabelaCliente />} />
             <Route path="usuario" element={<Usuarios />} />
             <Route path="imagens" element={<UploadImagens />} />

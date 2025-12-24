@@ -75,9 +75,9 @@ const Acesso = () => {
                     //let protocolo = window.location.protocol;
                     let pathDir = window.location.pathname;
                     let url = pathDir + 'admin';
-                    let cod_estabelecimento = (dataSession[0].cod_estabelecimento);
+                    const estabelecimento_id = (dataSession[0].estabelecimento_id);
                     sessionStorage.setItem("user_admin", JSON.stringify(dataSession))
-                    sessionStorage.setItem('cod_estabelecimento', cod_estabelecimento);
+                    sessionStorage.setItem('estabelecimento_id', estabelecimento_id);
                     sessionStorage.setItem('modal_notas', 'show');
                     window.location.href = url;
 
@@ -85,7 +85,7 @@ const Acesso = () => {
 
 
             }).catch(error => {
-                alert("ERRO: verificar os serviços ou recursos API" + error)
+                alert("ERRO: verifique os serviços ou recursos do API -" + error)
             });
     }
 

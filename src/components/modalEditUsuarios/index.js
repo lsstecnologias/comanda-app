@@ -115,27 +115,28 @@ const ModalEditUsuarios = (data_id) => {
     useEffect(() => {
 
 
-        const dataUser = sessionStorage.getItem("cod_estabelecimento");
-        var cod_estabelecimento = dataUser;
+        const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
+ 
 
-        if (cod_estabelecimento !== 'null') {
+        if ( estabelecimento_id  !== 'null') {
             const param_api_list_usuario = `?api=getPerfilUsuarios`;
-            var obj = { 'id': cod_estabelecimento };
+           
 
-            $.post(urlApi + nameApi + param_api_list_usuario, obj, (res, status) => {
+            $.post(urlApi + nameApi + param_api_list_usuario, (res, status) => {
 
                 if (status == 'success') {
-
+                        console.log(res)
                     var data = JSON.parse(res);
                     let arr = [data];
                     setDataFilter(arr);
+                    console.log(res)
                 }
 
 
             })
         } else {
             alert("Nenhum cliente estabelecimento");
-            // Sair();
+            //Sair();
         }
 
 

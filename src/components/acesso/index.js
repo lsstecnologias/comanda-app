@@ -76,7 +76,9 @@ const Acesso = () => {
                     let pathDir = window.location.pathname;
                     let url = pathDir + 'admin';
                     const estabelecimento_id = (dataSession[0].estabelecimento_id);
-                    sessionStorage.setItem("user_admin", JSON.stringify(dataSession))
+                    const status = (dataSession[0].status);
+                    sessionStorage.setItem("user_admin", JSON.stringify(dataSession));
+                    sessionStorage.setItem("status", status)
                     sessionStorage.setItem('estabelecimento_id', estabelecimento_id);
                     sessionStorage.setItem('modal_notas', 'show');
                     window.location.href = url;

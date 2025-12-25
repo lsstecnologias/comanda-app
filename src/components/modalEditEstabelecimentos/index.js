@@ -131,13 +131,13 @@ const ModalEditEstabelecimentos = (data_id) => {
 
     useEffect(() => {
 
-        const estabelecimento_id = sessionStorage.getItem("cod_estabelecimento");
+        const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
         if (estabelecimento_id !== 'null') {
             const param_api_list_usuario = `?api=getPerfilUsuarios`;
-            var obj = { 'id': estabelecimento_id };
+           
 
-            $.post(urlApi + nameApi + param_api_list_usuario, obj, (res, status) => {
+            $.post(urlApi + nameApi + param_api_list_usuario, (res, status) => {
 
                 if (status == 'success') {
                     var data = JSON.parse(res);

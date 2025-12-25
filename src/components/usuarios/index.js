@@ -77,14 +77,14 @@ const Usuarios = () => {
             objUsuario.data_post = data_post;
         }
 
-        const dataUser = sessionStorage.getItem("cod_estabelecimento");
-        var cod_estabelecimento = dataUser;
+        const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
+       
 
-        if (cod_estabelecimento !== 'null') {
+        if (estabelecimento_id  !== 'null') {
             const param_api_list_usuario = `?api=setUsuarios`;
-            objUsuario.cod_estabelecimento = cod_estabelecimento;
+            objUsuario.cod_estabelecimento = estabelecimento_id ;
 
-            $.post(urlApi + nameApi + param_api_list_usuario, objUsuario, (res, status) => {
+            $.post(urlApi + nameApi + param_api_list_usuario, objUsuario,(res, status) => {
 
                 if (status === "success") {
                     if (res == "null" && res == null) {
@@ -190,7 +190,7 @@ const Usuarios = () => {
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                           <i class="bi bi-people-fill "></i> USUÁRIOS
+                           USUÁRIOS
                         </button>
                     </h2>
                     <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
@@ -210,22 +210,9 @@ const Usuarios = () => {
                             <strong>This is the second item’s accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
                         </div>
                     </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-                            Accordion Item #3
-                        </button>
-                    </h2>
-                    <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
-                        <div class="accordion-body">
-                            <strong>This is the third item’s accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                        </div>
-                    </div>
-                </div>
+                </div>               
             </div>
-
-        </div >
+        </div>
     )
 
 }

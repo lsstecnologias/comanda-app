@@ -148,11 +148,9 @@ const TabelaCliente = () => {
                 <thead>
                     <tr>
 
-                        <th scope="col">Cod. </th>
+                        <th scope="col">Est.</th>
                         <th scope="col">Nome</th>
-                        <th scope="col">Perfil</th>
-                        <th scope="col">Visualizar</th>
-
+                        <th scope="col">Ver</th>                       
                         <th className="col text-end">Ações</th>
                     </tr>
                 </thead>
@@ -162,10 +160,10 @@ const TabelaCliente = () => {
                         return (
                             <tr key={val.id}>
 
-                                <td className='fw-light'>{val.cod}</td>
+                                <td className='fw-light'>{val.estabelecimento_id}</td>
                                 <td className='fw-light'>{val.nome}</td>
 
-                                <td className='fw-light'>{val.perfil == 's' ? 'Super' : 'User'}</td>
+                             
                                 <td className='fw-light'><button class="btn btn-sm btn-outline-primary" onClick={() => { gerarJsonVitrine() }}> <i class="bi bi-eye"></i> Vitrine</button></td>
                                 <td className="d-flex align-items-center justify-content-end">
 

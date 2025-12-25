@@ -68,8 +68,9 @@ const Header = () => {
                </div>
                <div class="nav-item dropdown">
                   <a class="nav-link  fw-light">
-                     <small> Olá, {sessao.nome}</small> <small> { sessao.cod_estabelecimento }</small>
+                     <small> Olá, {sessao.nome}</small> <small> { sessao.cod }</small>
                   </a>
+                 
                   
                   <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                      <button class="btn btn-outline-primary btn-sm w-100"> <i class="bi bi-lock-fill"></i> <small>Acesso </small></button>

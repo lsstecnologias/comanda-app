@@ -42,16 +42,18 @@ const Tabelausuarios = () => {
 
     useEffect(() => {
 	
-        const dataUser = sessionStorage.getItem("cod_estabelecimento");
-        var cod_estabelecimento = dataUser;
+        const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
+       
 
-        if (cod_estabelecimento !== 'null') {
+        if ( estabelecimento_id !== 'null') {
             const param_api_list_usuario = `?api=getUsuarios`;
-            var obj = { 'id': cod_estabelecimento };
+            var obj = { 'id':  estabelecimento_id};
 
             $.post(urlApi + nameApi + param_api_list_usuario, obj, (res, status) => {
                 if (status == 'success') {
                     var data = JSON.parse(res);
+                    
+                    console.log(res)
                     setUsuarios(data);
                 }
 

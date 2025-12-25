@@ -34,22 +34,24 @@ const Estabelecimento = () => {
 	const addNovoClienteEstabelecimento = (e) => {
 		e.preventDefault();
 		const nome 		= $("#nome");
-		//const sobrenome = $("#sobrenome");
+		const sobrenome = $("#sobrenome");
 		const email 	= $("#email");		
 		const resenha 	= $("#re-senha");		
 		const senha 	= $("#senha");
-		const btnAdicionar = $("#btnAdicionarClientes");
+		const perfil    = $("#perfil");
+		const btnCadastrar = $("#btnCadastrar");
 
 		const fullUuid = uuidv4();
 		let data_atual = new Date();
-		let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
+		let data_post = data_atual.toLocaleTimeString()+"-"+data_atual.toLocaleDateString().toString();
 		var estabelecimento_id = fullUuid.substring(0, 7)
 
 		//Establegecimento = nome - sobrenome - cpf - rg - cep - endereco - perfil-status - data_post//
 		//const obj_est = { cliente_id: cliente_id, nome: "",  email: "", senha: "", cpf: "", rg: "", cep: "", endereco: "", data_post: data_post };
 		//
+		//ADICIONAR LOGICA ENTRE NOVO ESTABELECIMENTO OU USUARIO DO ESTABELECIMENTO
 	
-		const obj_cli = { cod_user: estabelecimento_id, cod_estabelecimento: estabelecimento_id, nome_user: "", login_email: "", senha_user: "", perfil_user: "s", data_post: data_post };
+		const obj_cli = { cod_user: estabelecimento_id, cod_estabelecimento: estabelecimento_id, nome_user: "", login_email: "", senha_user: "", perfil_user: "",status_user:"n", data_post: data_post };
 
 		if (nome.val()) {
 			obj_cli.nome_user = nome.val();
@@ -62,16 +64,25 @@ const Estabelecimento = () => {
 		}
 
 
-		//ESTABELECIMENTO
-		/*
 		if (sobrenome.val()) {
-			obj_cliente.sobrenome = sobrenome.val();
+			obj_cli.sobrenome = sobrenome.val();
 			sobrenome.addClass("is-valid").removeClass("is-invalid");
 
 		} else {
-			obj_cliente.sobrenome = null;
+			obj_cli.sobrenome = null;
 			sobrenome.addClass("is-invalid").removeClass("is-valid");
-		}*/
+		}
+		
+
+		if (perfil.val()) {
+			obj_cli.perfil_user = perfil.val();
+			perfil.addClass("is-valid").removeClass("is-invalid");
+
+		} else {
+			obj_cli.perfil_user = null;
+			perfil.addClass("is-invalid").removeClass("is-valid");
+		}
+
 
 		function validateEmail(email) {
 			const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -116,15 +127,18 @@ const Estabelecimento = () => {
 			
 			if (status == "success") {
 				if (res == 1) {
-					$("#senha").val("");
+					
 					setDisplaySuccess("block");
 					setMsgSuccess("Novo usuário, adicionado!");
 					setDisplayError("none")
+					btnCadastrar.attr("disabled",true)
 					setMsgError(null);
+					
 				} else {
 					setDisplaySuccess("none");
 					setDisplayError("block")
 					setMsgError("Error: verifique os campos!");
+					btnCadastrar.attr("disabled",false)
 					setMsgSuccess(null);
 				}
 			} else {
@@ -211,7 +225,7 @@ const Estabelecimento = () => {
 
 	return (
 		<div className="container usuario table-responsive mt-3 animate__animated animate__fadeIn">
-			<h3 className="mb-2 mt-2 pb-2 "><i class="bi bi-shop-window"></i> Estabelecimento cliente</h3>
+			<h3 className="mb-3 mt-2 pb-2 "><i class="bi bi-shop-window"></i> Estabelecimento cliente</h3>
 
 			<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
 				<i class="bi bi-check-circle p-2"></i>
@@ -237,12 +251,12 @@ const Estabelecimento = () => {
 
 						<td scope="row">
 							<div class="input-group">
-								<input type="text" name="nome" autoComplete="off" id="nome" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								<input type="text" name="nome" autoComplete="off" id="nome" placeholder="Nome" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
 							</div>
 						</td>
 						<td scope="row">
 							<div class="input-group">
-								<input type="text" autoComplete="off" name="sobrenome" id="sobrenome" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								<input type="text" autoComplete="off" name="sobrenome" id="sobrenome"  placeholder="Sobrenome" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
 							</div>
 						</td>
 					</tr>
@@ -264,7 +278,7 @@ const Estabelecimento = () => {
 						<td colSpan={3} scope="row">
 							<div class="input-group ">
 
-								<input type={typeSenha} autoComplete="off" name="senha" onChange={(e) => setSenhaUser(e.target.value)} id="senha" placeholder="Sete dígitos com letras e numeros " class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								<input type={typeSenha} autoComplete="off" name="senha" onChange={(e) => setSenhaUser(e.target.value)} id="senha" placeholder="••••••"  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
 								<button class="btn btn-outline-secondary" onClick={(e) => { exibirSenha(e) }} type="button" id="btn-exibir"> <i class="bi bi-eye"></i> </button>
 								<button class="btn btn-outline-secondary" onClick={(e) => { gerarSenha(e) }} type="button" id="btn-exibir"> <i class="bi bi-arrow-repeat"></i></button>
 							</div>
@@ -280,9 +294,26 @@ const Estabelecimento = () => {
 						<td colSpan={3} scope="row">
 							<div class="input-group ">
 
-								<input type={typeReSenha} autoComplete="off" name="resenha" onChange={(e) => setReSenhaUser(e.target.value)} id="re-senha" placeholder="Confirme a sua senha" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+								<input type={typeReSenha} autoComplete="off" name="resenha" onChange={(e) => setReSenhaUser(e.target.value)} id="re-senha" placeholder="••••••"  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
 								<button class="btn btn-outline-secondary" onClick={(e) => { exibirReSenha(e) }} type="button" id="btn-exibir">  <i class="bi bi-eye"></i></button>
 
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th colSpan={3} scope="row">PERFIL DE ACESSO</th>
+
+					</tr>
+					<tr>
+						<td colSpan={3} scope="row">
+							<div class="input-group ">
+								<select class="form-select" id="perfil">
+									<option value="">Selecione</option>
+									<option value="s">Super usuário</option>
+									<option value="u">Usuário</option>
+									<option valus="a">Administrador</option>
+								</select>
+							
 							</div>
 						</td>
 					</tr>
@@ -291,7 +322,7 @@ const Estabelecimento = () => {
 						<td colSpan={3} scope="row">
 							<div class="input-group ">
 
-								<button type="button" class="btn btn-primary w-100"  id="btnAcesso"  onClick={(e) => { addNovoClienteEstabelecimento(e) }}> <i class="bi bi-pencil-square"></i> Cadastrar</button>
+								<button type="button" class="btn btn-primary w-100" id="btnCadastrar"  onClick={(e) => { addNovoClienteEstabelecimento(e) }}> <i class="bi bi-pencil-square"></i> Cadastrar</button>
 							</div>
 						</td>
 

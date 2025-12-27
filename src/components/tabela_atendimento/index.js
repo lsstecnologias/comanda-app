@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ModalEditProdutos from '../ModalEditProdutos';
 import ModalEditCategorias from '../ModalEditCategorias';
 import { Link } from 'react-router-dom';
+import ModalEditAtendimentos from '../modalEditAtendimentos';
 
 
 const $ = require("jquery");
@@ -10,7 +11,7 @@ const $ = require("jquery");
 const TabelaAtendimento = () => {
    sessionStorage.setItem('modal_notas', 'hide');
    const [dataClientes, setDataClientes] = useState([]);
-
+   const [codCliente,setCodCliente] = useState();
 
    const [displayError, setDisplayError] = useState('none');
    const [displaySuccess, setDisplaySuccess] = useState('none');
@@ -34,10 +35,16 @@ const TabelaAtendimento = () => {
          setMsgError(null);
       }
    }
-   const editItem = (id) => { setId(id); }
+
+   const editItem = (id,cod_cliente) => {
+       setId(id);
+       
+       setCodCliente(cod_cliente)
+  }
    const fecharModal = () => {
       window.location.reload();
    }
+  
    useEffect(() => {
       /* const param_api_lista_atendimentos = '?api=getAtendimentos';
        const config = {
@@ -58,19 +65,19 @@ const TabelaAtendimento = () => {
              alert("Error: parametros API " + error)
           });*/
 
-      const dataUser = sessionStorage.getItem("cod_estabelecimento");
-      var cod_estabelecimento = dataUser;
+      const id_estabelecimento = sessionStorage.getItem("id_estabelecimento");
+     
     
-         if (cod_estabelecimento !== 'null') {
+         if (id_estabelecimento !== 'null') {
             const param_api_get_atendimento = "?api=getAtendimentos";
            
-            let obj = {id:dataUser}
+            let obj = {id:id_estabelecimento}
             $.post(urlApi + nameApi + param_api_get_atendimento , obj, (res, status) => {
    
                let data = JSON.parse(res)
                if (status == 'success') {
                     setDataClientes(data);
-                  
+                   
  
                } else {
                    setDisplayError("block");
@@ -132,7 +139,7 @@ const TabelaAtendimento = () => {
                               {/*<button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                               <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
                               <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                 <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editEstabelecimento-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
+                                 <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id,val.cod_cliente)} data-bs-target={"#editAtendimento-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
                                  <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
                               </div>
 
@@ -154,6 +161,7 @@ const TabelaAtendimento = () => {
                   
                </div>
             }
+            <ModalEditAtendimentos data_id={id} data_cod={codCliente}/>
          </div>
       </div>
 

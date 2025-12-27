@@ -32,12 +32,13 @@ const TabelaCliente = () => {
     const param_api_list_estabelecimentos = "?api=getEstabelecimentos";
     const param_api_get_lojaEstabelecimentos = "?api=getFileUser";
     const param_api_update_thumb_img = "?api=setUpdateThumb";
+    const param_api_update_status_atendimento = "?api=mudarStatusAtendimento";
     const editItem = (id) => { setId(id); }
 
-
+/*
     const gerarJsonVitrine = () => {
 
-        /* const myData = {
+         const myData = {
            product: "Laptop",
            price: 1200,
            inStock: true
@@ -53,7 +54,7 @@ const TabelaCliente = () => {
        document.body.appendChild(a);
        a.click();
        document.body.removeChild(a);
-       URL.revokeObjectURL(url);*/
+       URL.revokeObjectURL(url);
 
         const dataUser = sessionStorage.getItem("cod_estabelecimento");
         var cod_estabelecimento = dataUser;
@@ -110,7 +111,7 @@ const TabelaCliente = () => {
 
         });
 
-    }
+    }*/
 
     const deleteEstabelecimento = (id) => {
         if (id !== null || id !== undefined) {
@@ -164,7 +165,7 @@ const TabelaCliente = () => {
                                 <td className='fw-light'>{val.nome}</td>
 
                              
-                                <td className='fw-light'><button class="btn btn-sm btn-outline-primary" onClick={() => { gerarJsonVitrine() }}> <i class="bi bi-eye"></i> Vitrine</button></td>
+                                <td className='fw-light'><button class="btn btn-sm btn-outline-primary" > <i class="bi bi-eye"></i> Vitrine</button></td>
                                 <td className="d-flex align-items-center justify-content-end">
 
                                     <td className='text-end'>

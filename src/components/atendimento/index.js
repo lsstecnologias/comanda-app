@@ -22,6 +22,8 @@ const Atendimento = () => {
   const [displaySuccess, setDisplaySuccess] = useState('none');
   const [msgError, setMsgError] = useState(null);
   const [msgSuccess, setMsgSuccess] = useState(null);
+  const [statusAtendimento, setStatusAtendimento] = useState(null);
+  const [statusPosAtendimento, setPosStatusAtendimento] = useState();
 
   const [datacep, setDataCep] = useState("");
 
@@ -38,6 +40,7 @@ const Atendimento = () => {
       'mode': 'cors'
     }
   };
+
 
 
   const validarCep = () => {
@@ -88,37 +91,38 @@ const Atendimento = () => {
 
   const validarBusca = () => {
     var inptBuscar = $('#inpt_buscar');
+    const param_api_find_clientes = "?api=findClientes";
+
 
     if (inptBuscar.val()) {
-      const param_api_find_clientes = "?api=findClientes";
-      $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente }, async (res, status) => {
+      $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente }, (res, status) => {
 
         if (status == 'success') {
 
           const data = JSON.parse(res);
 
           const { nome, cliente_id } = data[0] ?? false;
+
           if (nome && cliente_id) {
 
             inptBuscar.addClass("is-valid").removeClass("is-invalid");
             setBuscarCliente(nome);
             setCodCliente(cliente_id);
             setMessagem("");
+            alert(cliente_id)
 
           } else {
-            setBuscarCliente("");
-            setCodCliente("");
+            setCodCliente(cliente_id);
+
             inptBuscar.addClass("is-invalid").removeClass("is-valid");
           }
+         }else {
+          inptBuscar.addClass("is-invalid").removeClass("is-valid");
+          setMessagem("Cliente não encontrado!")
         }
-      });
-
-    } else {
-      inptBuscar.addClass("is-invalid").removeClass("is-valid");
-      setMessagem("Cliente não encontrado!")
+      })
     }
-  }
-
+ }
   const validarAtendimento = (e) => {
     e.preventDefault();
     const data_atual = new Date();
@@ -197,16 +201,12 @@ const Atendimento = () => {
 
 
     if (objAtendimento.cod_atendimento == null || objAtendimento.cod_atendente == null || objAtendimento.cod_cliente == null || objAtendimento.cliente == null || objAtendimento.data_endereco == null || objAtendimento.data_atendimento == null || objAtendimento.data_post == null) {
-
-
       setDisplaySuccess("none");
       setMsgSuccess(null);
       setDisplayError("block");
       setMsgError("Preencha os campos!");
 
-
     } else {
-
       const dataUser = sessionStorage.getItem("cod_estabelecimento");
       var cod_estabelecimento = dataUser;
 
@@ -241,12 +241,12 @@ const Atendimento = () => {
       $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
         if (status == "success") {
           if (res == 1) {
-
+  
             setDisplaySuccess("block");
             setMsgSuccess("Atendimento registrado!");
             setDisplayError("none");
             setMsgError(null);
-
+  
           } else {
             setDisplaySuccess("none");
             setMsgSuccess(null);
@@ -259,17 +259,11 @@ const Atendimento = () => {
     }
 
   }
-
   //VALOR PARA DATA ATUAL, INPUT
-
   const mostrarDataAtual = () => {
     let d = new Date();
     return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
   }
-
-
-
-
   const gerarCodAtendimento = () => {
     let cod_atendimento = $('#cod_atendimento');
     var cod = Math.floor(Math.random() * (777 + 0)) - 1;
@@ -283,7 +277,25 @@ const Atendimento = () => {
     }
 
   }
+  /*
+    const statusPos=()=>{
+       
+    }
+    statusPos();*/
+  
+ /* const mudarStatusAtendimento = (e) => {
+    e.preventDefault();
 
+    console.log(statusAtendimento)
+    const param_api_update_status = '?api=setUpdateStatus';
+    var obj_status = {status_pos:statusAtendimento}
+    $.post(urlApi+nameApi+param_api_update_status,obj_status,(res,status)=>{
+      console.log(res)
+    })
+  }*/
+
+
+  
   const fecharModal = () => {
     window.location.reload();
   }
@@ -302,7 +314,11 @@ const Atendimento = () => {
     }
     getCliente();
 
-  }, [setBuscarCliente, setMessagem]);
+
+
+
+
+  }, [setBuscarCliente, setMessagem, setPosStatusAtendimento]);
 
   return (
     <div className="container comanda">
@@ -349,9 +365,6 @@ const Atendimento = () => {
                   <div class="input-group  mt-2 mb-2">
                     <button class="btn btn-success " type="button" onClick={() => validarBusca()} id="button-addon2">Confirmar <i class="bi bi-check2-all"></i></button>
                     <input list="clientes" class='form-select form-control' id="inpt_buscar" value={buscarCliente} onChange={(e) => setBuscarCliente(e.target.value)} placeholder='Encontrar cliente...' aria-describedby="button-addon2" />
-
-
-
                     <datalist id="clientes" className='p-4'>
                       {clientes && clientes.map((vl) => { return <option className='p-4' value={vl.nome} /> })}
                     </datalist>
@@ -389,21 +402,7 @@ const Atendimento = () => {
                 </td>
 
               </tr>
-              <tr>
-                <td colspan="2">
-                  <td class="fw-medium">Status do Atendimento</td>
-                  <div class="input-group mt-2 mb-2 ">
-                    <select type='text' class="form-select" id="status_pos">
-                      <option>Selecione</option>
-                      <option value="">Em atendimento</option>
-                      <option value="">Atendimento finalizado</option>
-                    </select>
-                  
-                  </div>
 
-                </td>
-
-              </tr>
 
             </tbody>
           </table>

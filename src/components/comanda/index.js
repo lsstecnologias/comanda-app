@@ -59,7 +59,8 @@ const Comanda = () => {
       const funcionarioCod = $('#funcionario');
       const funcCod = funcionarioCod.val() ?? false;
       const clienteCod = cod ? cod : false;
-      const estCod = sessao.cod_estabelecimento ? sessao.cod_estabelecimento : false;
+
+      const estCod = sessao.estabelecimento_id ? sessao.estabelecimento_id : false;
       if (estCod !== false) {
          let obj_comanda = { func_cod: funcCod, cliente_cod: clienteCod, est_cod: estCod, data_post: data_post }
 
@@ -124,10 +125,11 @@ const Comanda = () => {
                }).catch((error) => { alert("Error: parametros API " + error) });
       */
    }, [setData, setComanda]);
-   console.log(getComanda)
+      console.log(sessao)
    const fecharModal = () => {
       window.location.reload();
    }
+   
    return (
       <div className="container comanda">
          <h4 className="mb-2 mt-2 pb-2 ">Comanda</h4>
@@ -145,7 +147,7 @@ const Comanda = () => {
             <div class="row d-flex align-items-center justify-content-between text-center text-secondary flex-row p-0 m-0 ">
                <div class="col-4 border p-1">
                   <p class="mb-0 lh-1">ESTABELECIMENTO</p>
-                  <p className="fs-2 mb-0 mt-0 t-0"> {sessao.cod_estabelecimento ? sessao.cod_estabelecimento : 'S/N'}</p>
+                  <p className="fs-2 mb-0 mt-0 t-0"> {sessao.estabelecimento_id ? sessao.estabelecimento_id : 'S/N'}</p>
 
                </div>
                <div class="col-4 border p-1">

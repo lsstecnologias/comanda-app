@@ -1,0 +1,13 @@
+.status-msg{
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:4px;
+
+
+}
+.status-msg p {
+    margin-left:10px;
+    margin-bottom: 0px;
+    
+}

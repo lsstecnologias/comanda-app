@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context';
+import './style.css';
 import md5 from 'md5';
 import axios from 'axios';
 import $ from 'jquery';
-import { Await } from 'react-router-dom';
+
 
 const ModalEditAtendimentos = (data_id, data_cliente) => {
 	var data = { data_id, data_cliente };
@@ -147,31 +148,36 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 
 	const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
-	const  getPosStatusAtendimento=()=> {
+	const getPosStatusAtendimento = () => {
 		const param_api_get_status_cod = "?api=getPosStatusAtendimentos";
 		var obj = { cliente_id: codEdit, estabelecimento_id: estabelecimento_id };
 		$.post(urlApi + nameApi + param_api_get_status_cod, obj, async (res, status) => {
-		  var data_pos = await JSON.parse(res);
-		  
-		  const { cliente_id,estabelecimento_id,id,status_pos} = await data_pos[0] ?? data_pos;
-		  console.log(status_pos)
-		  var str_op = `
-		  <option value=${status_pos} >${status_pos}</option> 
-		  <option value=${1} >1</option>
-		   <option value=${2} >2</option> 
-		  `;
-			$('#form-status').html(str_op )
-			//setStatusPosAtendimento(data_pos);
-			/*if (status == "success") {
-				var data_pos =  JSON.parse(resp);
-				//setStatusPosAtendimento(data_pos);
-				
-				
-			}*/
+			var data_pos = await JSON.parse(res);
+
+			const { cliente_id, estabelecimento_id, id, status_pos } = await data_pos[0] ?? data_pos;
+			if (status_pos == '0') {
+				var str_msg = `<div class="alert alert-warning status-msg" role="alert">
+				<div class="spinner-border text-warning" role="status">
+				<span class="visually-hidden">Loading...</span>
+				</div><p class='text-center ml-4'>Aguardando Atendimento!</p>
+				</div>`;
 
 
-		})	
-		
+				
+
+			}else if(status_pos == '1'){
+				var str_msg = `<div class="alert alert-success status-msg" role="alert">
+				<div class="spinner-border text-success" role="status">
+				<span class="visually-hidden">Loading...</span>
+				</div><p class='text-center ml-4'>Em Atendimento!</p>
+				</div>`;
+
+			}
+
+			$('#status-atendimento').html(str_msg);
+
+		})
+
 	}
 	getPosStatusAtendimento();
 
@@ -212,19 +218,21 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 	const mudarStatusAtendimento = (e) => {
 		e.preventDefault();
 
+		alert(statusAtendimento)
+		/*
 		const param_api_update_status = '?api=setUpdateStatus';
 		var obj_status = { status_pos: statusAtendimento }
 		$.post(urlApi + nameApi + param_api_update_status, obj_status, (res, status) => {
 			console.log(res)
 		})
-
+		*/
 	}
 	return (
 		<div class="modal fade" id={"editAtendimento-" + idEdit} tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticAtendimento" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h1 class="modal-title fs-5"><i class="bi bi-person-fill-gear"></i> Status atendimento, ID {idEdit}</h1>
+						<h1 class="modal-title fs-5"><i class="bi bi-person-fill-gear"></i> Status atendimento</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
 					</div>
 
@@ -240,15 +248,17 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 
 						</div>
 
-						<td class="fw-medium">Status do Atendimento:</td>
+						
+						<div id="status-atendimento"> </div>
+						<td class="fw-medium">Mudar Status: </td>
 						<div class="input-group mt-2 mb-2  ">
 
 
 							<select type='text' class="form-select " id="form-status" onChange={(e) => { setStatusAtendimento(e.target.value) }}>
 								<option>Selecione</option>
-								
-								<option value="1">Em atendimento</option>
-								<option value="2">Atendimento finalizado</option>
+								<option value='1' >Em Atendimento</option>
+								<option value='2' >Atendimento finalizado</option>
+
 							</select>
 
 							<button onClick={(e) => { mudarStatusAtendimento(e) }} class="btn btn-sm btn-primary">Atualizar</button>

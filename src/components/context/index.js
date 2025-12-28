@@ -35,7 +35,7 @@ function UserProvider({ children }) {
     const Sair = () => {
         setStatus(false);
         sessionStorage.removeItem("user_admin");
-        sessionStorage.removeItem("cod_estabelecimento");
+        sessionStorage.removeItem("estabelecimento_id");
         sessionStorage.clear();
         redirect_login();
         

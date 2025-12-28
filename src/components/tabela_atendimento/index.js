@@ -65,7 +65,7 @@ const TabelaAtendimento = () => {
              alert("Error: parametros API " + error)
           });*/
 
-      const id_estabelecimento = sessionStorage.getItem("id_estabelecimento");
+      const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
      
     
          if (id_estabelecimento !== 'null') {

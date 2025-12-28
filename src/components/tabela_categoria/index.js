@@ -70,12 +70,12 @@ const TabelaCategoria = () => {
       }
       */
 
-      const dataUser = sessionStorage.getItem("cod_estabelecimento");
-      var cod_estabelecimento = dataUser;
-      if (cod_estabelecimento !== 'null') {
+      const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
+     
+      if (estabelecimento_id !== 'null') {
          const param_api_list_categ = `?api=getAllCategorias`;
 
-         var obj = { 'id': cod_estabelecimento };
+         var obj = { 'id': estabelecimento_id };
 
          $.post(urlApi + nameApi + param_api_list_categ, obj, (res, status) => {
           

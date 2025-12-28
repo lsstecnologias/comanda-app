@@ -163,9 +163,9 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 				</div>`;
 
 
-				
 
-			}else if(status_pos == '1'){
+
+			} else if (status_pos == '1') {
 				var str_msg = `<div class="alert alert-success status-msg" role="alert">
 				<div class="spinner-border text-success" role="status">
 				<span class="visually-hidden">Loading...</span>
@@ -218,14 +218,19 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 	const mudarStatusAtendimento = (e) => {
 		e.preventDefault();
 
-		alert(statusAtendimento)
-		/*
-		const param_api_update_status = '?api=setUpdateStatus';
-		var obj_status = { status_pos: statusAtendimento }
-		$.post(urlApi + nameApi + param_api_update_status, obj_status, (res, status) => {
-			console.log(res)
-		})
-		*/
+	
+		if (statusAtendimento !== null) {
+			const param_api_update_status = '?api=setUpdateStatusAtendimentos';
+			var obj_status = { status_pos: statusAtendimento, cliente_id:codEdit }
+			
+			$.post(urlApi + nameApi + param_api_update_status, obj_status, (res, status) => {
+				console.log(res)
+			})
+		}else{
+			alert("Selecione o status do atendimento!");
+		}
+
+
 	}
 	return (
 		<div class="modal fade" id={"editAtendimento-" + idEdit} tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticAtendimento" aria-hidden="true">
@@ -248,14 +253,14 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 
 						</div>
 
-						
+
 						<div id="status-atendimento"> </div>
 						<td class="fw-medium">Mudar Status: </td>
 						<div class="input-group mt-2 mb-2  ">
 
 
 							<select type='text' class="form-select " id="form-status" onChange={(e) => { setStatusAtendimento(e.target.value) }}>
-								<option>Selecione</option>
+								<option value={null}>Selecione</option>
 								<option value='1' >Em Atendimento</option>
 								<option value='2' >Atendimento finalizado</option>
 

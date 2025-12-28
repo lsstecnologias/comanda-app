@@ -93,40 +93,41 @@ const Atendimento = () => {
     var inptBuscar = $('#inpt_buscar');
     const param_api_find_clientes = "?api=findClientes";
 
-
+    const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
     if (inptBuscar.val()) {
-      $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente }, (res, status) => {
+      $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente,estabelecimento_id:estabelecimento_id}, (res, status) => {
 
         if (status == 'success') {
+         console.log(res);
+          /* const data = JSON.parse(res);
+            
+            const { nome, cliente_id } = data[0] ?? false;
 
-          const data = JSON.parse(res);
+            if (nome && cliente_id) {
 
-          const { nome, cliente_id } = data[0] ?? false;
+              inptBuscar.addClass("is-valid").removeClass("is-invalid");
+              setBuscarCliente(nome);
+              setCodCliente(cliente_id);
+              setMessagem("");
+              alert(cliente_id)
 
-          if (nome && cliente_id) {
+            } else {
+              setCodCliente(cliente_id);
 
-            inptBuscar.addClass("is-valid").removeClass("is-invalid");
-            setBuscarCliente(nome);
-            setCodCliente(cliente_id);
-            setMessagem("");
-            alert(cliente_id)
-
-          } else {
-            setCodCliente(cliente_id);
-
+              inptBuscar.addClass("is-invalid").removeClass("is-valid");
+            }
+          }else {
             inptBuscar.addClass("is-invalid").removeClass("is-valid");
-          }
-         }else {
-          inptBuscar.addClass("is-invalid").removeClass("is-valid");
-          setMessagem("Cliente não encontrado!")
+            setMessagem("Cliente não encontrado!")
+          }*/
         }
-      })
+      });
     }
  }
   const validarAtendimento = (e) => {
     e.preventDefault();
     const data_atual = new Date();
-    let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
+    let data_post = data_atual.toLocaleTimeString()+"-"+data_atual.toLocaleDateString().toString();
 
     const objAtendimento = { id_estabelecimento: null, cod_atendimento: null, cod_atendente: null, cod_cliente: null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
 
@@ -207,12 +208,12 @@ const Atendimento = () => {
       setMsgError("Preencha os campos!");
 
     } else {
-      const dataUser = sessionStorage.getItem("cod_estabelecimento");
-      var cod_estabelecimento = dataUser;
+      const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
+      
 
-      if (cod_estabelecimento !== 'null') {
+      if (estabelecimento_id !== 'null') {
 
-        objAtendimento.id_estabelecimento = cod_estabelecimento;
+        objAtendimento.id_estabelecimento = estabelecimento_id;
 
         $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
           if (status == "success") {
@@ -303,6 +304,7 @@ const Atendimento = () => {
 
     let data_cep = $('#cep');
     data_cep.mask('00000000');
+    //MUDAR
     const getCliente = () => {
       axios.get(urlApi + nameApi + param_api_get_clientes, config)
         .then((res) => {
@@ -408,7 +410,7 @@ const Atendimento = () => {
           </table>
           <div class="container-fluid p-0 m-0 mt-4">
 
-            <button class="btn btn-md btn-primary w-100" onClick={(e) => { validarAtendimento(e) }} type="button"> <i class="bi bi-pencil-square"></i> Registrar Atendimento</button>
+            <button class="btn btn-md btn-primary w-100 btn-edigit" onClick={(e) => { validarAtendimento(e) }} type="button"> <i class="bi bi-pencil-square"></i> Registrar Atendimento</button>
           </div>
         </div>
 

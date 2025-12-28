@@ -18,8 +18,8 @@ const Comanda = () => {
    const [msgError, setMsgError] = useState(null);
    const [msgSuccess, setMsgSuccess] = useState(null);
 
-   const dataUser = sessionStorage.getItem("cod_estabelecimento");
-   var cod_estabelecimento = dataUser;
+   const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
+
    const urlApi = 'http://10.10.10.6/';
    const nameApi = 'api_comanda/';
    const param_api_get_produtos = "?api=getProdutos";
@@ -90,9 +90,9 @@ const Comanda = () => {
    }
 
    useEffect(() => {
-      if (cod_estabelecimento !== 'null') {
+      if (estabelecimento_id !== 'null') {
 
-         var obj = { 'id': cod_estabelecimento };
+         var obj = { 'id': estabelecimento_id };
          
          $.post(urlApi + nameApi + param_api_get_produtos, obj, (res, status) => {
 
@@ -186,11 +186,11 @@ const Comanda = () => {
 
                         <tbody>
                            {data && data.map((valor) => {
-
+                              console.log(data)
                               return (
                                  <tr key={valor.id}>
                                     <td>
-                                       <p class="lh-1 fw-light text-start m-0">{valor.nome} {valor.descricao}</p>
+                                       <p class="lh-1 fw-light text-start m-0">{valor.item} {valor.descricao}</p>
 
                                     </td>
                                     <td class=" d-flex align-items-center justify-content-center">

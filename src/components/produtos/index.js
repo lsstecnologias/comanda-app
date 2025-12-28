@@ -40,12 +40,12 @@ const Produto = () => {
 	useEffect(() => {
 
 
-		const codEstabelecimento = sessionStorage.getItem("cod_estabelecimento");
+		const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
-		const listarCategorias = (codEstabelecimento) => {
-			if (codEstabelecimento !== 'null') {
+		const listarCategorias = (estabelecimento_id) => {
+			if (estabelecimento_id !== 'null') {
 				const param_api_list_categ = `?api=getAllCategorias`;
-				var obj = { 'id': codEstabelecimento };
+				var obj = { 'id': estabelecimento_id };
 				$.post(urlApi + nameApi + param_api_list_categ, obj, (res, status) => {
 					var dataArr = JSON.parse(res);
 					if (Array.isArray(dataArr) && dataArr.length > 0) {
@@ -60,7 +60,7 @@ const Produto = () => {
 				Sair();
 			}
 		}
-		listarCategorias(codEstabelecimento)
+		listarCategorias(estabelecimento_id)
 
 		
 	}, [setListCateg, setSessaoUser]);

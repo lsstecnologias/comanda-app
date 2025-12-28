@@ -47,7 +47,7 @@ const TabelaProduto = () => {
     useEffect(() => {
 
         //REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
-        const id_estabelecimento = sessionStorage.getItem("cod_estabelecimento");
+        const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
         
 
         if (id_estabelecimento !== 'null') {

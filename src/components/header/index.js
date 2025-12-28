@@ -8,11 +8,11 @@ import $ from 'jquery';
 
 
 const Header = () => {
-   const {sessao, Sair, thumb_logo } = useContext(UserContext);
-  
-   useEffect(()=>{
-      console.log(sessao,thumb_logo)
-   },[]);
+   //const [statusSessao,setStatusSessao] = useState("");
+
+   //const [perfilSessao,setPerfilSessao] = useState("");
+   const { sessao, Sair, thumb_logo } = useContext(UserContext);
+
    return (
       <div className="container-fluid bg-body-tertiary mb-4 fixed-top m-0 p-0" >
 
@@ -25,14 +25,14 @@ const Header = () => {
 
                <div class="collapse navbar-collapse  animate__animated animate__fadeIn" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto mb-lg-0">
-                
+
                      <li class="nav-item  dropdown">
-                       <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Minha loja</Link>
+                        <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Minha loja</Link>
                         <ul class="dropdown-menu fw-light">
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/imagens">Imagens</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/template-view">Template</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/qr">Gerar QR-Code</Link></li>
-                      
+
                         </ul>
                      </li>
 
@@ -41,7 +41,7 @@ const Header = () => {
                         <ul class="dropdown-menu fw-light">
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/atendimento">Novo Atendimentos</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/lista-atendimento">Lista de Atendimentos</Link></li>
-                      
+
                         </ul>
 
                      </li>
@@ -50,17 +50,24 @@ const Header = () => {
                         <ul class="dropdown-menu fw-light">
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/produto">Adicionar Item</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/categoria">Adicionar Categoria</Link></li>
-                              <li><Link class="dropdown-item fw-light nav-link" to="/admin/comanda">Comandas</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/comanda">Comandas</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="">Pesquisas</Link></li>
                         </ul>
                      </li>
-                      <li class="nav-item dropdown">
-                        <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administrador</Link>
-                        <ul class="dropdown-menu fw-light">
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/estabelecimento">Estabelecimento</Link></li>
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/listar-estabelecimento">Listar Estabelecimento</Link></li>
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/keygen">Keygen</Link></li>
-                        </ul>
+                     <li class="nav-item dropdown">
+                        {sessao.status == "o" && sessao.perfil == "o" ?
+                           <>
+                              <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administrador</Link>
+                              <ul class="dropdown-menu fw-light">
+                                 <li><Link class="dropdown-item fw-light nav-link" to="/admin/estabelecimento">Estabelecimento</Link></li>
+                                 <li><Link class="dropdown-item fw-light nav-link" to="/admin/listar-estabelecimento">Listar Estabelecimento</Link></li>
+                                 <li><Link class="dropdown-item fw-light nav-link" to="/admin/keygen">Keygen</Link></li>
+                              </ul>
+                           </>
+                           :
+                           <>
+                           </>
+                        }
                      </li>
 
                   </ul>
@@ -68,10 +75,10 @@ const Header = () => {
                </div>
                <div class="nav-item dropdown">
                   <a class="nav-link  fw-light">
-                     <small> Olá, {sessao.nome}</small> <small> { sessao.cod }</small>
+                     <small> Olá, {sessao.nome}</small> <small> {sessao.cod}</small>
                   </a>
-                 
-                  
+
+
                   <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                      <button class="btn btn-outline-primary btn-sm w-100"> <i class="bi bi-lock-fill"></i> <small>Acesso </small></button>
                   </a>
@@ -87,9 +94,9 @@ const Header = () => {
             </div >
 
          </nav>
-         
-            
-        </div>
+
+
+      </div>
    );
 
 }

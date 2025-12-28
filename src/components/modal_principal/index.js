@@ -4,12 +4,14 @@ import ModalIndex from './modal_index';
 const ModalPrincipal = () => {
 
 	
-
+		//atualizar status do estabelecimento
+		//
 	   const status = sessionStorage.getItem('status');
 
 	return (
 		<div>
-			{status == 'n' ?
+			{//para exibir coloca n,
+			status == 'a' ?
 				<div>
 					<ModalFormEstabelecimento />
 				</div>

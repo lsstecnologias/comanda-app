@@ -30,18 +30,7 @@ const Atendimento = () => {
   const urlApi = 'http://10.10.10.6/';
   const nameApi = 'api_comanda/';
   const param_api_get_clientes = "?api=getClientes";
-
-  const config = {
-    method: "GET",
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': '*',
-      'Access-Control-Allow-Credentials': 'true',
-      'mode': 'cors'
-    }
-  };
-
-
+  const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
   const validarCep = () => {
     let data_cep = $('#cep');
@@ -93,42 +82,41 @@ const Atendimento = () => {
     var inptBuscar = $('#inpt_buscar');
     const param_api_find_clientes = "?api=findClientes";
 
-    const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
+
     if (inptBuscar.val()) {
-      $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente,estabelecimento_id:estabelecimento_id}, (res, status) => {
+      $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente, estabelecimento_id: estabelecimento_id }, (res, status) => {
 
         if (status == 'success') {
-         console.log(res);
-          /* const data = JSON.parse(res);
-            
-            const { nome, cliente_id } = data[0] ?? false;
 
-            if (nome && cliente_id) {
+          const data = JSON.parse(res);
 
-              inptBuscar.addClass("is-valid").removeClass("is-invalid");
-              setBuscarCliente(nome);
-              setCodCliente(cliente_id);
-              setMessagem("");
-              alert(cliente_id)
+          const { nome, cliente_id } = data[0] ?? false;
 
-            } else {
-              setCodCliente(cliente_id);
+          if (nome && cliente_id) {
 
-              inptBuscar.addClass("is-invalid").removeClass("is-valid");
-            }
-          }else {
+            inptBuscar.addClass("is-valid").removeClass("is-invalid");
+            setBuscarCliente(nome);
+            setCodCliente(cliente_id);
+            setMessagem("");
+            alert(cliente_id)
+
+          } else {
+            setCodCliente(cliente_id);
+
             inptBuscar.addClass("is-invalid").removeClass("is-valid");
-            setMessagem("Cliente não encontrado!")
-          }*/
+          }
+        } else {
+          inptBuscar.addClass("is-invalid").removeClass("is-valid");
+          setMessagem("Cliente não encontrado!")
         }
-      });
+
+      })
     }
- }
+  }
   const validarAtendimento = (e) => {
     e.preventDefault();
     const data_atual = new Date();
-    let data_post = data_atual.toLocaleTimeString()+"-"+data_atual.toLocaleDateString().toString();
-
+    let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
     const objAtendimento = { id_estabelecimento: null, cod_atendimento: null, cod_atendente: null, cod_cliente: null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
 
     objAtendimento.data_post = data_post;
@@ -138,7 +126,6 @@ const Atendimento = () => {
     let data_atendimento = $('#data_atendimento');
     let endereco = $('#data_endereco');
     let inpt_buscar = $('#inpt_buscar');
-
 
     if (cod_atendimento.val()) {
       cod_atendimento.addClass("is-valid").removeClass("is-invalid");
@@ -208,8 +195,6 @@ const Atendimento = () => {
       setMsgError("Preencha os campos!");
 
     } else {
-      const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
-      
 
       if (estabelecimento_id !== 'null') {
 
@@ -242,12 +227,12 @@ const Atendimento = () => {
       $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
         if (status == "success") {
           if (res == 1) {
-  
+   
             setDisplaySuccess("block");
             setMsgSuccess("Atendimento registrado!");
             setDisplayError("none");
             setMsgError(null);
-  
+   
           } else {
             setDisplaySuccess("none");
             setMsgSuccess(null);
@@ -283,20 +268,20 @@ const Atendimento = () => {
        
     }
     statusPos();*/
+
+  /* const mudarStatusAtendimento = (e) => {
+     e.preventDefault();
   
- /* const mudarStatusAtendimento = (e) => {
-    e.preventDefault();
-
-    console.log(statusAtendimento)
-    const param_api_update_status = '?api=setUpdateStatus';
-    var obj_status = {status_pos:statusAtendimento}
-    $.post(urlApi+nameApi+param_api_update_status,obj_status,(res,status)=>{
-      console.log(res)
-    })
-  }*/
+     console.log(statusAtendimento)
+     const param_api_update_status = '?api=setUpdateStatus';
+     var obj_status = {status_pos:statusAtendimento}
+     $.post(urlApi+nameApi+param_api_update_status,obj_status,(res,status)=>{
+       console.log(res)
+     })
+   }*/
 
 
-  
+
   const fecharModal = () => {
     window.location.reload();
   }
@@ -306,19 +291,24 @@ const Atendimento = () => {
     data_cep.mask('00000000');
     //MUDAR
     const getCliente = () => {
-      axios.get(urlApi + nameApi + param_api_get_clientes, config)
-        .then((res) => {
-          if (res.status == 200) {
-            setClientes(res.data);
-          }
-        }).catch((error) => { alert("Error: parametros API " + error) });
+      $.post(urlApi + nameApi + param_api_get_clientes, { estabelecimento_id: estabelecimento_id }, (res, status) => {
+        if (status == 'success') {
+
+
+          var data_cliente = JSON.parse(res);
+        
+        
+               setClientes(data_cliente);
+          
+
+        } else {
+          alert("Error: parametros API ");
+        }
+
+      })
 
     }
     getCliente();
-
-
-
-
 
   }, [setBuscarCliente, setMessagem, setPosStatusAtendimento]);
 

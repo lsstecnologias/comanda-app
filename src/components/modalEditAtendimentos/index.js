@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useMemo, useCallback } from 'react';
 import { UserContext } from '../context';
 import './style.css';
 import md5 from 'md5';
@@ -14,12 +14,12 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 
 	//COD usuario 
 	var codEdit = id.data_cod;
+	const fetchCodEdit = useMemo(() => { if (codEdit !== undefined) { return codEdit; } }, [codEdit]);
 
+	//alert(codusuarios)
 	///sessionStorage.setItem("cliente_id", idEdit);
 	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
 	sessionStorage.setItem('modal_notas', 'hide');
-	const { GetSession, sessao, Sair, status } = useContext(UserContext);
-
 
 	const [nomeUser, setNomeUser] = useState("");
 	const [emailLoginUser, setEmailLoginUser] = useState("");
@@ -36,118 +36,18 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 
 	const [dataFilter, setDataFilter] = useState([]);
 	const [IDEdit, setEdit] = useState("");
-	const [IDCEdit, setCodEdit] = useState("");
+	const [statusTipoMsg, setStatusTipoMsg] = useState("");
 
 	const urlApi = 'http://10.10.10.6/';
 	const nameApi = 'api_comanda/';
-	/*	const vlFilter = dataFilter.filter(e => { return e.cliente_id == idEdit});
-	console.log(vlFilter)
-	
-		
-			const vincularAcessoUsuarioSistema = () => {
-				 var checkBox = document.getElementById("myCheck");
-	  
-				 const { id, cod, cod_estabelecimento, cpf, data_post, email, endereco, nome, perfil, senha, status } = vlFilter[0] && vlFilter[0];
-				 console.log(cpf)
-	  
-				 if (checkBox.checked == true) {
-					  setAcessoUsuario(true)
-				 } else {
-					  setAcessoUsuario(false)
-				 }
-			}
-		  
-				 const editUsuario = (e) => {
-					  e.preventDefault();
-					  /*
-					  let nome = $("#nomeInput");
-					  let senha = $("#senhaInput");
-					  let loginEmail = $("#loginEmailInput");
-					  let perfil = $("#perfilUser");
-					  // let cod = Math.floor(Math.random() * (777 - 0)) + 1;
-		   
-					  var objUsuario = { id: idEdit, cod_user: vlFilter[0].cod, nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
-		   
-					  if (nomeUser !== undefined && nomeUser !== "") {
-							// nome.addClass("is-valid").removeClass("is-invalid");
-							objUsuario.nome_user = nomeUser;
-					  } else {
-							//nome.addClass("is-invalid").removeClass("is-valid");
-							objUsuario.nome_user = vlFilter[0].nome;
-					  }
-		   
-					  if (emailLoginUser !== undefined && emailLoginUser !== "") {
-							//loginEmail.addClass("is-valid").removeClass("is-invalid");
-							objUsuario.login_email = emailLoginUser;
-					  } else {
-							//loginEmail.addClass("is-invalid").removeClass("is-valid");
-							objUsuario.login_email = vlFilter[0].email;
-					  }
-		   
-					  if (senhaUser !== undefined && senhaUser !== "") {
-							// senha.addClass("is-valid").removeClass("is-invalid");
-							objUsuario.senha_user = md5(senhaUser);
-					  } else {
-							//senha.addClass("is-invalid").removeClass("is-valid");
-							objUsuario.senha_user = vlFilter[0].senha;
-					  }
-		   
-					  if (perfilUser !== undefined && perfilUser !== "") {
-							//perfil.addClass("is-valid").removeClass("is-invalid");
-							objUsuario.perfil_user = perfilUser;
-		   
-					  } else {
-							// perfil.addClass("is-invalid").removeClass("is-valid");
-							objUsuario.perfil_user = vlFilter[0].perfil;
-		   
-					  }
-		   
-					  let data_atual = new Date();
-					  let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
-		   
-					  if (objUsuario.data_post == "") {
-							objUsuario.data_post = data_post;
-					  }
-		   
-					  const param_api_update_usuario = "?api=updateUsuarios";
-		   
-					  $.post(urlApi + nameApi + param_api_update_usuario, objUsuario, (res, status) => {
-		   
-							var editarUsuario = $('#btnEditarUsuario')
-							if (status === "success") {
-								 if (res === "null" || res === null) {
-									  setMsgError("Erro ao atualizar usuário!");
-									  setDisplayError("block");
-									  editarUsuario.attr({ "disabled": false });
-								 } else {
-									  setDisplayError("none");
-									  setMsgError(null);
-								 }
-								 if (res == 1 || res == "true" || res == true) {
-									  setMsgSuccess("Usuário atualizado!");
-									  setDisplaySuccess("block");
-									  editarUsuario.attr({ "disabled": "disabled" });
-								 } else {
-									  setDisplaySuccess("none");
-									  setMsgSuccess(null);
-								 }
-							} else {
-								 alert("Error: parametros API")
-							}
-		   
-					  })
-				 }
-				 */
 
-	const fecharModal = () => {
-		window.location.reload();
-	}
-	function nEdit(idEdit) {
-		setEdit(idEdit)
-	}
 
+	const param_api_update_status = '?api=setUpdateStatusAtendimentos';
 	const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
+	const obj_status_atendimento = { cliente_id: codEdit, estabelecimento_id: estabelecimento_id }
+	const fecharModal = () => { window.location.reload(); }
 
+	/*
 	const getPosStatusAtendimento = () => {
 		const param_api_get_status_cod = "?api=getPosStatusAtendimentos";
 		var obj = { cliente_id: codEdit, estabelecimento_id: estabelecimento_id };
@@ -155,6 +55,7 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 			var data_pos = await JSON.parse(res);
 
 			const { cliente_id, estabelecimento_id, id, status_pos } = await data_pos[0] ?? data_pos;
+			console.log(status_pos)
 			if (status_pos == '0') {
 				var str_msg = `<div class="alert alert-warning status-msg" role="alert">
 				<div class="spinner-border text-warning" role="status">
@@ -180,56 +81,63 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 
 	}
 	getPosStatusAtendimento();
+	*/
+
+	var { status_pos } = statusPosAtendimento[0] ?? [];
+	const call = useCallback((status_pos) => {
+
+		if (status_pos == "1") {
+			return { "tipo": "warning" };
+
+		} else if (status_pos == "2") {
+			return { "tipo": "success" };
+
+		} else if (status_pos == "3") {
+			return { "tipo": "danger" };
+		}
 
 
-	/*	*/
 
-	//const obj = { usuario_id: cliente_id };
+	}, [statusTipoMsg]);
 
-	//REcuperar o valor atual - mudar de status
-	/*
-	if (cliente_id !== undefined) {
-			const param = '?api=setStatus';
+	const status_msg = call(status_pos) !== undefined ? call(status_pos) : '';
 
-			//var obj_usuario = { usuario_id: cliente_id };
-			console.log(cliente_id)
-			$.get(urlApi + nameApi + param, (res, status) => {
+	useEffect(() => {
+		
+		
+		if (status_msg.tipo !== undefined) {
+			return status_msg.tipo;
+		}
 
+		const statusAtendimento = () => {
+			const param_api_get_status_cod = "?api=getPosStatusAtendimentos";
+			$.post(urlApi + nameApi + param_api_get_status_cod, obj_status_atendimento, (res, status) => {
 				if (status == 'success') {
-					var data = JSON.parse(res);
-					const caros = data.filter(item => item.cliente_id == `${cliente_id}`);
-					//cod: "75624fa"
-					console.log(caros)
-
+					let data_status = JSON.parse(res);
+					setStatusPosAtendimento(data_status);
+				} else {
+					alert("Error: parametros API ");
 				}
 
-
 			})
+
 		}
-*/
-	useEffect(() => {
+		statusAtendimento();
 
-
-		nEdit(idEdit);
-
-	}, [setDataFilter, setAcessoUsuario, setEdit, setStatusPosAtendimento]);
-
+	}, [setDataFilter, setAcessoUsuario, setEdit, setStatusPosAtendimento, fetchCodEdit, setStatusTipoMsg]);
 
 	const mudarStatusAtendimento = (e) => {
 		e.preventDefault();
 
-	
 		if (statusAtendimento !== null) {
-			const param_api_update_status = '?api=setUpdateStatusAtendimentos';
-			var obj_status = { status_pos: statusAtendimento, cliente_id:codEdit }
-			
-			$.post(urlApi + nameApi + param_api_update_status, obj_status, (res, status) => {
+
+
+			$.post(urlApi + nameApi + param_api_update_status, obj_status_atendimento, (res, status) => {
 				console.log(res)
 			})
-		}else{
+		} else {
 			alert("Selecione o status do atendimento!");
 		}
-
 
 	}
 	return (
@@ -254,7 +162,14 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 						</div>
 
 
-						<div id="status-atendimento"> </div>
+						<div id="status-atendimento">
+							<div class={`alert alert-${status_msg.tipo !== undefined ? status_msg.tipo : ''} status-msg`} id="msgPosicao" role="alert">
+								<div class={`spinner-grow text-${status_msg.tipo !== undefined ? status_msg.tipo : ''}`} role="status">
+									<span class="visually-hidden">Loading...</span>
+								</div>
+								<p class='text-center ml-4 text-uppercase fw-semibold'>{`${'teste'}`}</p>
+							</div>
+						</div>
 						<td class="fw-medium">Mudar Status: </td>
 						<div class="input-group mt-2 mb-2  ">
 

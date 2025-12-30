@@ -80,7 +80,7 @@ const Header = () => {
 
 
                   <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                     <button class="btn btn-outline-primary btn-sm w-100"> <i class="bi bi-lock-fill"></i> <small>Acesso </small></button>
+                     <button class="btn btn-primary btn-sm w-100 btn-edigit"> <i class="bi bi-lock-fill"></i> <small>Acesso </small></button>
                   </a>
                   <ul class="dropdown-menu">
                      <li><Link class="dropdown-item fw-light" to="/admin/usuario"> <i class="bi  fs-5 bi-person-fill"></i> Usuários</Link></li>

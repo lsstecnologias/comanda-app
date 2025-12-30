@@ -272,8 +272,8 @@ const Produto = () => {
 	return (
 		<div className="container-fluid mt-3 produtos">
 			<div className="container p-0 animate__animated  animate__fadeIn">
-				<h4 className="mb-2 mt-2 pb-2 ">Produtos</h4>
-				<button type="button" class="btn w-100 btn-primary" data-bs-toggle="modal" data-bs-target="#nvProduto">
+				<h4 className="mb-4 mt-2 pb-2 "><i class="bi bi-box-fill"></i> Produtos</h4>
+				<button type="button" class="btn w-100 btn-primary btn-edigit" data-bs-toggle="modal" data-bs-target="#nvProduto">
 					<i class="bi bi-plus-circle-dotted fs-4 "></i> <p>Novo Produto</p>
 				</button>
 			</div>

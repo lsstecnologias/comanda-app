@@ -108,15 +108,15 @@ const Categorias = () => {
     return (
         <div class="container-fluid mt-4 categorias">
             <div class="container  p-0 ">
-                <h4 className="mb-2 mt-2 pb-2 ">Categorias</h4>
+                <h4 className="mb-4 mt-2 pb-2 "><i class="bi bi-box-fill"></i> Categorias</h4>
                 <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-                    <i class="bi bi-check-circle-fill p-2"></i>
+                 
                     {msgSuccess !== null && msgSuccess}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }}></button>
                 </div>
 
                 <div class="input-group  mb-3 mt-2" style={{ display: 'inline-flex' }}>
-                    <button class="btn btn-primary btn-sm " type="button" onClick={(e) => { addNvCategoria(e) }} > Adicionar <i class="bi bi-plus-circle-dotted "></i> </button>
+                    <button class="btn btn-primary btn-sm btn-edigit" type="button" onClick={(e) => { addNvCategoria(e) }} > Adicionar <i class="bi bi-plus-circle-dotted "></i> </button>
                     <input type="text" class="form-control animate__animated  animate__fadeIn " id="inpt_categoria" autocomplete="off"  placeholder="Nome da categoria" aria-label="Categoria do produto" aria-describedby="button-addon2" />
                     
                 </div>

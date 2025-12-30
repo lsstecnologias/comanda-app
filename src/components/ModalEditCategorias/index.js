@@ -157,7 +157,7 @@ const ModalEditCategorias = (data_id) => {
                             return (
                                 <div key={e.id}>
                                     <div class="input-group  mb-3 mt-2" style={{ display: 'inline-flex' }}>
-                                        <button class="btn btn-outline-primary  animate__animated animate__fadeIn" id="btnCategorias" type="button" onClick={(e) => { editCategoria(e) }} ><i class="bi bi-pencil-square"></i> Editar</button>
+                                        <button class="btn btn-outline-primary  animate__animated animate__fadeIn " id="btnCategorias" type="button" onClick={(e) => { editCategoria(e) }} ><i class="bi bi-pencil-square"></i> Editar</button>
                                         <input type="text" class="form-control" id="inpt-categorias" autocomplete="off" onChange={(e) => { setNvCateg(e.target.value) }} placeholder={e.categoria} aria-describedby="button-addon2" />
 
                                     </div>

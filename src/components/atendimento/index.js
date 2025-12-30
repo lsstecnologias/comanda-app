@@ -82,7 +82,6 @@ const Atendimento = () => {
     var inptBuscar = $('#inpt_buscar');
     const param_api_find_clientes = "?api=findClientes";
 
-
     if (inptBuscar.val()) {
       $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente, estabelecimento_id: estabelecimento_id }, (res, status) => {
 
@@ -117,7 +116,7 @@ const Atendimento = () => {
     e.preventDefault();
     const data_atual = new Date();
     let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
-    const objAtendimento = { id_estabelecimento: null, cod_atendimento: null, cod_atendente: null, cod_cliente: null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
+    const objAtendimento = { estabelecimento_id: null, cod_atendimento: null, cod_atendente: null, cod_cliente: null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
 
     objAtendimento.data_post = data_post;
     let atendente = $('#atendente');
@@ -198,9 +197,10 @@ const Atendimento = () => {
 
       if (estabelecimento_id !== 'null') {
 
-        objAtendimento.id_estabelecimento = estabelecimento_id;
+        objAtendimento.estabelecimento_id = estabelecimento_id;
 
         $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
+         
           if (status == "success") {
             if (res == 1) {
 
@@ -289,18 +289,12 @@ const Atendimento = () => {
 
     let data_cep = $('#cep');
     data_cep.mask('00000000');
-    //MUDAR
+   
     const getCliente = () => {
       $.post(urlApi + nameApi + param_api_get_clientes, { estabelecimento_id: estabelecimento_id }, (res, status) => {
         if (status == 'success') {
-
-
           var data_cliente = JSON.parse(res);
-        
-        
-               setClientes(data_cliente);
-          
-
+          setClientes(data_cliente);
         } else {
           alert("Error: parametros API ");
         }
@@ -316,7 +310,8 @@ const Atendimento = () => {
     <div className="container comanda">
       <div class="container animate__animated animate__fadeIn">
 
-        <h4 className="mb-4 mt-4">Novo Atendimento <i class="bi bi-clock"></i></h4>
+        <h4 className="mb-4 mt-4"><i class="bi bi-clock"></i> Novo Atendimento </h4>
+      
         <div class="container p-0 m-0">
           <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
             <i class="bi bi-clock p-2"></i>

@@ -20,7 +20,7 @@ const Keygen = () => {
     },[setChave]);
     return (
         <div className="container mt-2 usuario">
-            <h4 className="mb-2 mt-2 pb-2">Keygen <i class="bi bi-key"></i></h4>
+            <h4 className="mb-4 mt-2 pb-2">Keygen <i class="bi bi-key"></i></h4>
             <h5 className="mb-2  pb-2">Licença de acesso</h5>
 
 

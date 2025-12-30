@@ -225,7 +225,7 @@ const Estabelecimento = () => {
 
 	return (
 		<div className="container usuario table-responsive mt-3 animate__animated animate__fadeIn">
-			<h3 className="mb-3 mt-2 pb-2 "><i class="bi bi-shop-window"></i> Estabelecimento cliente</h3>
+			<h3 className="mb-4 mt-2 pb-2 "><i class="bi bi-shop-window"></i> Estabelecimentos clientes</h3>
 
 			<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
 				<i class="bi bi-check-circle p-2"></i>
@@ -322,7 +322,7 @@ const Estabelecimento = () => {
 						<td colSpan={3} scope="row">
 							<div class="input-group ">
 
-								<button type="button" class="btn btn-primary w-100" id="btnCadastrar"  onClick={(e) => { addNovoClienteEstabelecimento(e) }}> <i class="bi bi-pencil-square"></i> Cadastrar</button>
+								<button type="button" class="btn btn-primary w-100 btn-edigit" id="btnCadastrar"  onClick={(e) => { addNovoClienteEstabelecimento(e) }}> <i class="bi bi-pencil-square"></i> Cadastrar</button>
 							</div>
 						</td>
 

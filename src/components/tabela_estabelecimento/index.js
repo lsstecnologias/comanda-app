@@ -143,7 +143,7 @@ const TabelaCliente = () => {
 
     return (
         <div class="container table-responsive produtos mt-4">
-            <h4 className="mb-2 mt-2 pb-2 "><i class="bi bi-shop-window m-2"></i> Estabelecimento cliente</h4>
+            <h4 className="mb-4 mt-2 pb-2 ">Estabelecimentos  <i class="bi bi-shop-window m-2"></i></h4>
             <table class="table caption-top animate__animated animate__fadeIn ">
 
                 <thead>

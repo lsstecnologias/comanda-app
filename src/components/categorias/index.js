@@ -108,7 +108,7 @@ const Categorias = () => {
     return (
         <div class="container-fluid mt-4 categorias">
             <div class="container  p-0 ">
-                <h4 className="mb-4 mt-2 pb-2 "><i class="bi bi-box-fill"></i> Categorias</h4>
+                <h4 className="mb-4 mt-2 pb-2 ">Categorias <i class="bi bi-box-fill"></i></h4>
                 <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
                  
                     {msgSuccess !== null && msgSuccess}

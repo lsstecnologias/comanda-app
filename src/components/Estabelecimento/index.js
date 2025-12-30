@@ -7,7 +7,7 @@ import Imagens from "../upload_imagens";
 import TabelaUsuario from "../tabela_usuario";
 
 import Header from '../header';
-import TabelaCliente from "../tabela_cliente";
+import TabelaCliente from "../tabela_estabelecimento";
 
 var md5 = require('md5');
 
@@ -225,7 +225,7 @@ const Estabelecimento = () => {
 
 	return (
 		<div className="container usuario table-responsive mt-3 animate__animated animate__fadeIn">
-			<h3 className="mb-4 mt-2 pb-2 "><i class="bi bi-shop-window"></i> Estabelecimentos clientes</h3>
+			<h4 className="mb-4 mt-2 pb-2 ">Estabelecimentos <i class="bi bi-shop-window m-2"></i></h4>
 
 			<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
 				<i class="bi bi-check-circle p-2"></i>

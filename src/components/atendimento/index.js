@@ -310,7 +310,7 @@ const Atendimento = () => {
     <div className="container comanda">
       <div class="container animate__animated animate__fadeIn">
 
-        <h4 className="mb-4 mt-4"><i class="bi bi-clock"></i> Novo Atendimento </h4>
+        <h4 className="mb-4 mt-4"> Novo Atendimento <i class="bi bi-clock"></i></h4>
       
         <div class="container p-0 m-0">
           <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">

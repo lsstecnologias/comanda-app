@@ -86,7 +86,7 @@ const TabelaAtendimento = () => {
    return (
       <div class="container-fluid m-0 p-0  categorias">
          <div class="container">
-            <h4 className="mb-4"><i class="bi bi-people-fill"></i> Atendimentos </h4>
+            <h4 className="mb-4">Atendimentos <i class="bi bi-people-fill"></i></h4>
             <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
                <i class="bi bi-check-circle-fill p-2"></i>
                {msgSuccess !== null && msgSuccess}

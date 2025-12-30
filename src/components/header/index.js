@@ -50,7 +50,7 @@ const Header = () => {
                         <ul class="dropdown-menu fw-light">
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/produto">Adicionar Item</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/categoria">Adicionar Categoria</Link></li>
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/comanda">Comandas</Link></li>
+                          
                            <li><Link class="dropdown-item fw-light nav-link" to="">Pesquisas</Link></li>
                         </ul>
                      </li>

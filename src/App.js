@@ -19,7 +19,7 @@ import Template from './components/template';
 import { UserContext } from './components/context';
 import Estabelecimento from './components/Estabelecimento';
 import Sistema from './components/sistema';
-import TabelaCliente from './components/tabela_cliente';
+import TabelaCliente from './components/tabela_estabelecimento';
 import TelaPrincipal from './components/TelaPrincipal';
 
 const $ = require("jquery");

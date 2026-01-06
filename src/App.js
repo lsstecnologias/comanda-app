@@ -21,6 +21,7 @@ import Estabelecimento from './components/Estabelecimento';
 import Sistema from './components/sistema';
 import TabelaCliente from './components/tabela_estabelecimento';
 import TelaPrincipal from './components/TelaPrincipal';
+import Pagamento from './components/pagamento';
 
 const $ = require("jquery");
 
@@ -61,6 +62,7 @@ function App() {
             <Route path="imagens" element={<UploadImagens />} />
             <Route path="categoria" element={<Categorias />} />
             <Route path="template-view" element={<Template />} />
+            <Route path="pagamento" element={<Pagamento />} />
             <Route path="sistema" element={<Sistema />} />
             <Route path="comanda/:cod" element={<Comanda />} />
             <Route path="qr" element={<QRCode />} />

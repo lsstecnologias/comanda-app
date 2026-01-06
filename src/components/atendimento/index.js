@@ -101,7 +101,7 @@ const Atendimento = () => {
 
           } else {
             setCodCliente(cliente_id);
-
+            setBuscarCliente(nome);
             inptBuscar.addClass("is-invalid").removeClass("is-valid");
           }
         } else {
@@ -198,7 +198,6 @@ const Atendimento = () => {
       if (estabelecimento_id !== 'null') {
 
         objAtendimento.estabelecimento_id = estabelecimento_id;
-
         $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
          
           if (status == "success") {
@@ -246,10 +245,10 @@ const Atendimento = () => {
 
   }
   //VALOR PARA DATA ATUAL, INPUT
-  const mostrarDataAtual = () => {
-    let d = new Date();
-    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-  }
+  //const mostrarDataAtual = () => {
+   // let d = new Date();
+   // return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+ // }
   const gerarCodAtendimento = () => {
     let cod_atendimento = $('#cod_atendimento');
     var cod = Math.floor(Math.random() * (777 + 0)) - 1;
@@ -363,7 +362,7 @@ const Atendimento = () => {
                 <td colspan="2">
                   <td class="fw-medium">Data do Atendimento</td>
                   <div class="input-group mt-2 mb-2 ">
-                    <input type='date' class="form-control" id="data_atendimento" value={mostrarDataAtual()} min="1900-01-01" />
+                    <input type='date' class="form-control" id="data_atendimento"  min="1900-01-01" />
                   </div>
                 </td>
               </tr>

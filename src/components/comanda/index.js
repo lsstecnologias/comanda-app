@@ -132,7 +132,7 @@ const Comanda = () => {
    
    return (
       <div className="container comanda">
-         <h3 className="mb-4 mt-2 pb-2 "><i class="bi bi-card-checklist"></i> Comanda</h3>
+         <h3 className="mb-4 mt-2 pb-2 ">Comanda <i class="bi bi-card-checklist"></i></h3>
          <div class="container-fluid animate__animated animate__fadeIn p-0 m-0 mt-4">
             <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn" style={{ display: displaySuccess }} role="alert">
                <i class="bi bi-clipboard2 p-2"></i>

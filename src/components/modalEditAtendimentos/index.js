@@ -113,7 +113,7 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 							$('#btnAtualizar').attr("disabled",true);
 						}
 				}
-			
+		
 			})
 		} else {
 			alert("Selecione o status do atendimento!");

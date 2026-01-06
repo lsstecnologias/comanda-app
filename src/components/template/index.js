@@ -1,11 +1,17 @@
+
+import { useCallback, useEffect } from "react";
+import Editor from "./Editor";
 const Template = () => {
-    	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
-	sessionStorage.setItem('modal_notas', 'hide');
+    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+    sessionStorage.setItem('modal_notas', 'hide');
+ 
     return (
 
-       
-            <div className="container produtos">
-                <h2>EM DESENVOLVIMENTO !</h2>
+        
+        <div className="container produtos">
+            <h2>EM DESENVOLVIMENTO !</h2>
+           
+        <Editor />
             {/*
             <div class="row">
                     <div class="col-4">
@@ -38,7 +44,7 @@ const Template = () => {
             </div>
             */}
         </div>
-        
+
     )
 
 }

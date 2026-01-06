@@ -11,6 +11,7 @@ const Header = () => {
    //const [statusSessao,setStatusSessao] = useState("");
 
    //const [perfilSessao,setPerfilSessao] = useState("");
+   
    const { sessao, Sair, thumb_logo } = useContext(UserContext);
 
    return (
@@ -61,7 +62,8 @@ const Header = () => {
                               <ul class="dropdown-menu fw-light">
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/estabelecimento">Estabelecimento</Link></li>
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/listar-estabelecimento">Listar Estabelecimento</Link></li>
-                                 <li><Link class="dropdown-item fw-light nav-link" to="/admin/keygen">Keygen</Link></li>
+                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/pagamento">Pagamento</Link></li>
+                                 <li><Link class="dropdown-item fw-light nav-link" to="/admin/keygen">Licenças e chave</Link></li>
                               </ul>
                            </>
                            :

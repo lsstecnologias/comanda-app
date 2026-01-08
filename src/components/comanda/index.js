@@ -4,7 +4,7 @@ import { useEffect, useState, useContext } from "react"
 import { Link, useParams } from 'react-router-dom';
 import { UserContext } from '../../components/context';
 import axios from 'axios';
-
+import HeaderComanda from './HeaderComanda.js';
 
 
 const NovaComanda = () => {
@@ -31,77 +31,8 @@ const NovaComanda = () => {
    const urlApi = 'http://10.10.10.6/';
    const nameApi = 'api_comanda/';
    const param_api_get_produtos = "?api=getProdutos";
-   $("#qtd-" + Id).mask("0000");
-   /*
-      const calcularTotal = (e) => {
-         e.preventDefault();
-   
-         alert(qtd)
-   
-   
-      }
-   
-      const marcarQuantidade = (id, preco) => {
-   
-         var inpt_qt = $("#inpt-qt-id-" + id);
-         var inpt_subtotal = $("#inpt-subtotal-" + id);
-         var check = $("#check-inpt-" + id);
-         var qt = inpt_qt.val();
-   
-   
-         if (!isNaN(qt) && qt !== null && qt !== "") {
-            setQtd(qt);
-            var subtotal = (qt * preco).toFixed(2);
-            inpt_subtotal.val(subtotal);
-   
-            if (check[0].value == 'on') {
-               inpt_qt.attr({ "disabled": true })
-               inpt_qt.addClass("is-valid").removeClass("is-invalid");
-               check[0].value = "off";
-               //   setSubTotal(total[i]);
-   
-               /*  
-               var tam = total.length;
-                total.push(subtotal);
-                
-                setTotal(total);
-              
-               console.log(total)
-               const numerosUnicos = [...new Set(total)];
-               console.log(numerosUnicos);
-                
-                soma += parseFloat(subtotal);
-                console.log(soma)*/
-   /*total.push(subtotal);
 
-  
-   total.forEach(numero => {
-      soma += parseFloat(numero);
 
-   });
-
-   for(var i=0;i < total.length;i++){
-     console.log(total[i])
-  }
-  
-
-   alert("OK")
-   //REALIZA A SOMA
-   // console.log(soma);
-
-} else {
-   inpt_qt.attr({ "disabled": false });
-   inpt_qt.addClass("is-valid");
-   check[0].value = "on";
-
-   alert("KO")
-}
-
-} else {
-inpt_qt.addClass("is-invalid").removeClass("is-valid");
-}
-
-} */
    /*
    const registrarComanda = (e) => {
       e.preventDefault();
@@ -144,20 +75,18 @@ inpt_qt.addClass("is-invalid").removeClass("is-valid");
    // $('.inpt-qtd').mask('00000');
    function calcularSubtotal(id) {
       $("#qtd-" + id).mask("0000");
-      let qtd = $(`#qtd-${id}`).val();
-      let dataf = data.filter((element) => { return element.id == id });
-      dataf[0].qtd = qtd
+      let qtd     = $(`#qtd-${id}`).val();
+      let dataf   = data.filter((element) => { return element.id == id });
+
+      dataf[0].qtd      = qtd;
       dataf[0].subtotal = (dataf[0].qtd * dataf[0].preco).toFixed(2);
+
       $(`#subtotal-${id}`).val(dataf[0].subtotal);
-      //setSubtotal(dataf[0].subtotal)    
-      //$(`#subtotal-${id}`).val(dataf[0].subtotal)    
-      //let total = $(`#subtotal-${id}`).val()
 
       let soma = 0;
-      data.forEach(element => {
-         soma += parseFloat(element.subtotal);
-      });
+      data.forEach(element => {  soma += parseFloat(element.subtotal);  });
       $('#total').val(soma)
+
    }
    useEffect(() => {
 
@@ -190,19 +119,9 @@ inpt_qt.addClass("is-invalid").removeClass("is-valid");
          Sair();
       }
 
-      /*
-      axios.get(urlApi + nameApi + param_api_get_produtos, config)
-         .then((res) => {
-            var vl = res.data;
-            for (var i = 0; i < vl.length; i++) {
-               vl[i].subtotal = 0;
-            }
-            setData(vl);
 
-         }).catch((error) => { alert("Error: parametros API " + error) });
-      */
    }, [setData, setComanda, setId]);
-   console.log(data)
+  
    const fecharModal = () => {
       window.location.reload();
    }
@@ -210,6 +129,7 @@ inpt_qt.addClass("is-invalid").removeClass("is-valid");
    return (
       <div className="container comanda">
          <h3 className=" mt-2 pb-2 ">Comanda <i class="bi bi-card-checklist"></i></h3>
+         <HeaderComanda />
          <div class="container-fluid">
             <table class="table">
                <thead>
@@ -235,7 +155,7 @@ inpt_qt.addClass("is-invalid").removeClass("is-valid");
                               </div>
 
                            </td>
-                           <td class="lh-1 fw-bolder" >{element.preco}</td>
+                           <td class=" fw-normal" >R$ {element.preco}</td>
                            <td><input type="text" class="form-control" id={`subtotal-${element.id}`} disabled="disabled" /></td>
                         </tr>
                      )
@@ -267,10 +187,10 @@ inpt_qt.addClass("is-invalid").removeClass("is-valid");
                <div class="row  p-0 m-0 ">
 
                   <div class="col-sm-12 ">
-                     <p class="fw-bolder">TOTAL R$ </p>
+                     <p class="fw-normal">TOTAL R$ </p>
                      <input class="form-control" id="total" disabled={true} />
                   </div>
-                  
+
                </div>
                <div class="row  p-0 m-0 ">
                   <div class="col-sm-12 mt-2">

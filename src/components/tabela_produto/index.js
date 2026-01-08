@@ -25,7 +25,7 @@ const TabelaProduto = () => {
 
     //PAGINACAO
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage] = useState(2);
+    const [postsPerPage] = useState(4);
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = dataProdutos.slice(indexOfFirstPost, indexOfLastPost);
@@ -95,8 +95,8 @@ const TabelaProduto = () => {
                                 <tr key={val.id}>
                                     <td scope="row">{val.estabelecimento_id}</td>
                                     <td className='fw-light'>{val.cod_item}</td>
-                                    <td className='fw-light'>{val.item}</td>
-                                    <td className='fw-light'>{val.descricao}</td>
+                                    <td className='fw-light lh-1'>{val.item}</td>
+                                    <td className='fw-light lh-1'>{val.descricao}</td>
                                     <td className='fw-light'>{val.categoria}</td>
                               
                                    

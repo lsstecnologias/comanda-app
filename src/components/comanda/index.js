@@ -4,7 +4,7 @@ import { useEffect, useState, useContext } from "react"
 import { Link, useParams } from 'react-router-dom';
 import { UserContext } from '../../components/context';
 import axios from 'axios';
-import HeaderComanda from './HeaderComanda.js';
+import HeaderComanda from './headerComanda.js';
 
 
 const NovaComanda = () => {
@@ -90,23 +90,17 @@ const NovaComanda = () => {
    }
    useEffect(() => {
 
-
       if (estabelecimento_id !== 'null') {
-
          var obj = { 'id': estabelecimento_id };
 
          $.post(urlApi + nameApi + param_api_get_produtos, obj, (res, status) => {
-
             if (status == 'success') {
-
                var data = JSON.parse(res);
-
-               console.log(data);
-
                for (var i = 0; i < data.length; i++) {
                   data[i].subtotal = 0
                   data[i].qutdcomanda = 0;
                   $("#qtd-" + data[i].id).mask("00000000");
+
                }
                setData(data);
 
@@ -119,13 +113,9 @@ const NovaComanda = () => {
          Sair();
       }
 
-
    }, [setData, setComanda, setId]);
   
-   const fecharModal = () => {
-      window.location.reload();
-   }
-
+   
    return (
       <div className="container comanda">
          <h3 className=" mt-2 pb-2 ">Comanda <i class="bi bi-card-checklist"></i></h3>
@@ -134,12 +124,10 @@ const NovaComanda = () => {
             <table class="table">
                <thead>
                   <tr>
-
                      <th>Item</th>
                      <th>Quantidade</th>
                      <th>Preco</th>
                      <th class="text-end">Subtotal</th>
-
                   </tr>
                </thead>
                <tbody>
@@ -176,7 +164,7 @@ const NovaComanda = () => {
                         <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
                            <span class="visually-hidden">Loading...</span>
                         </div>
-                        Nenhum produto ou cliente para a comanda
+                        Nenhum produto ou cliente para a comanda!
 
 
                      </div>

@@ -62,7 +62,7 @@ const Produto = () => {
 		}
 		listarCategorias(estabelecimento_id)
 
-		
+
 	}, [setListCateg, setSessaoUser]);
 
 	/*
@@ -118,17 +118,17 @@ const Produto = () => {
 	const addNovoProduto = (e) => {
 		e.preventDefault();
 		//imgItemInput	
-		let categInput 	= $('#categItemInput');
-		let nome	    = $("#nomeItemInput");
-		let desc 		= $("#descItemInput");
-		let qtd 		= $("#qtItemInput");
-		let preco		= $("#precoUnitInput");
-		var cod			= `${ Math.floor(Math.random() * (777 + 0))-1}`;
-	
+		let categInput = $('#categItemInput');
+		let nome = $("#nomeItemInput");
+		let desc = $("#descItemInput");
+		let qtd = $("#qtItemInput");
+		let preco = $("#precoUnitInput");
+		var cod = `${Math.floor(Math.random() * (777 + 0)) - 1}`;
+
 		//REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
 		const codEstabelecimento = sessionStorage.getItem("cod_estabelecimento");
-		var objProduto = { cod_item: cod, estabelecimento_id: codEstabelecimento, item: "",  desc: "", qtd: "",categoria_id: "" , preco: "", data_post: ""};
-		
+		var objProduto = { cod_item: cod, estabelecimento_id: codEstabelecimento, item: "", desc: "", qtd: "", categoria_id: "", preco: "", data_post: "" };
+
 		if (categInput.val()) {
 			categInput.addClass("is-valid").removeClass("is-invalid");
 			objProduto.categoria_id = categInput.val();
@@ -222,7 +222,7 @@ const Produto = () => {
 			}*/
 			//POST ITEM
 			const param_api_save_produto = '?api=setProdutos';
-			
+
 			$.post(urlApi + nameApi + param_api_save_produto, objProduto, (res, status) => {
 				var btnAdicionar = $('#btnAdicionar');
 				console.log(res);
@@ -252,7 +252,7 @@ const Produto = () => {
 					btnAdicionar.attr({ "disabled": false });
 
 				}
-					
+
 
 
 			})
@@ -260,10 +260,10 @@ const Produto = () => {
 			alert("Nenhum cliente estabelecimento");
 			Sair();
 		}
-		
+
 
 	}
-	
+
 
 	const fecharModal = () => {
 		window.location.reload();
@@ -272,10 +272,17 @@ const Produto = () => {
 	return (
 		<div className="container-fluid mt-3 produtos">
 			<div className="container p-0 animate__animated  animate__fadeIn">
-				<h4 className="mb-4 mt-2 pb-2 "> Produtos <i class="bi bi-box-fill"></i></h4>
-				<button type="button" class="btn w-100 btn-primary btn-edigit" data-bs-toggle="modal" data-bs-target="#nvProduto">
-					<i class="bi bi-plus-circle-dotted fs-4 "></i> <p>Novo Produto</p>
-				</button>
+				<div class="row d-flex align-items-center  justify-content-between">
+					<div class="col-sm-7 "><h4> Produtos <i class="bi bi-box-fill"></i></h4></div>
+					<div class="col-sm-5 text-end">
+
+						<button type="button" class="btn btn-sm btn-primary btn-edigit" data-bs-toggle="modal" data-bs-target="#nvProduto">
+							 Novo Produto <i class="bi bi-box-fill"></i>
+						</button>
+					</div>
+				</div>
+
+
 			</div>
 
 			<div class="modal fade" id="nvProduto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticnvProduto" aria-hidden="true">
@@ -307,7 +314,7 @@ const Produto = () => {
 							<div class="mb-3" id="categorias">
 								<label for="categItemInput" class="form-label text-secondary fw-normal">Categoria</label>
 								<select id="categItemInput" onChange={(e) => { setCategorias(e.target.value) }} class="form-select text-secondary fw-normal">
-									
+
 									{listCateg && listCateg.map((e) => {
 										return (<option key={e.id} value={e.cod}>{e.categoria}</option>)
 									})}
@@ -317,7 +324,7 @@ const Produto = () => {
 
 
 							</div>
-							
+
 							<div class="mb-3">
 								<label for="qtItemInput" class="form-label text-secondary fw-normal">Quantidade em estoque</label>
 								<input type="number" min="1" class="form-control text-secondary fw-normal " id="qtItemInput" onChange={(e) => { setQuant(e.target.value) }} autocomplete="off" placeholder="0" />

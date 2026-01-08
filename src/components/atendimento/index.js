@@ -41,9 +41,6 @@ const Atendimento = () => {
       $.get("https://viacep.com.br/ws/" + datacep + "/json/", async (res, status) => {
 
         if (status == 'success') {
-
-
-
           if (res) {
 
             let val = res;

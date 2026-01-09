@@ -35,12 +35,14 @@ const TabelaProduto = () => {
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
 
-    const paramApi_delete_item = '?api=deleteItem';
+   
     const deleteItem = (id) => {
-        if (id !== null || id !== undefined) {
+       /* if (id !== null || id !== undefined) {
+        const paramApi_delete_item = '?api=deleteItem';
             let objId = { "id": id };
             $.post(urlApi + nameApi + paramApi_delete_item, objId, () => { window.location.reload() })
-        }
+        }*/
+       setId(id)
     }
     const editItem = (id) => { setId(id); }
 
@@ -106,7 +108,7 @@ const TabelaProduto = () => {
 
                                         <div class="btn-group" role="group" aria-label="Basic outlined example">
                                             <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
-                                            <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
+                                            <button type="button" data-bs-toggle="modal" onClick={() => deleteItem(val.id)} data-bs-target={"#deleteProduto-" + id} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
 
                                         </div>
                                     </td>

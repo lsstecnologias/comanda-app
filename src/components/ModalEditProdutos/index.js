@@ -39,7 +39,11 @@ const ModalEditProdutos = (data_id) => {
 
 	const data_filter = dataItem.filter(e => { return e.id == idEdit });
 
-
+	const paramApi_delete_item = '?api=deleteItem';
+	const deleteItemProduto = () => {
+		$.post(urlApi + nameApi + paramApi_delete_item, {"id":idEdit}, () => { window.location.reload()  })
+		
+	}
 
 	const editNovoProduto = (e) => {
 		e.preventDefault();
@@ -241,94 +245,112 @@ const ModalEditProdutos = (data_id) => {
 	}, [setEditProduto, setListCateg, setDataItem]);
 
 	return (
-		<div class="modal fade" id={"editProduto-" + idEdit} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticeditProduto" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="staticnvProduto"><i class="bi bi-pencil-square"></i> Editar Produto N {idEdit}</h1>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
+		<>
+			<div class="modal fade" id={"editProduto-" + idEdit} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticeditProduto" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="staticnvProduto"><i class="bi bi-pencil-square"></i> Alterar o Produto</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
+						</div>
+						<div class="m-3 alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
+							<i class="bi bi-check-circle p-2"></i>
+							{msgSuccess !== null && msgSuccess}
+
+						</div>
+						<div class="m-3 alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
+							<i class="bi bi-exclamation-triangle p-2"></i>
+							{msgError !== null && msgError}
+
+						</div>
+						<div class="modal-body">
+
+							{data_filter && data_filter.map((e) => {
+								console.log(e)
+								return (
+									<div key={e.id}>
+
+										<div class="mb-3">
+											<label for="nomeItemInput" class="form-label  text-secondary fw-normal">Nome item</label>
+											<input type="text" class="form-control text-secondary fw-normal" id="nomeItemInputEdit" autocomplete="off" onChange={(e) => { setItem(e.target.value) }} placeholder={e.item} />
+										</div>
+										<div class="mb-3">
+											<label for="descItemInput" class="form-label  text-secondary fw-normal">Descrição item</label>
+											<input type="text" class="form-control text-secondary fw-normal" id="descItemInputEdit" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder={e.descricao} />
+										</div>
+										<label for="descItemInput" class="form-label  text-secondary fw-normal"> Categorias</label>
+										<div class=" mb-3" >
+
+											{
+												<select id="categItemInputEdit" onChange={(e) => { setCategorias(e.target.value) }} class="form-control">
+
+													<option value={e.cod} selected>{e.categoria}</option>
+													{
+														listCateg && listCateg.map((e) => {
+															return (<option class="form-control text-secondary fw-normal" key={e.id} value={e.cod}>{e.categoria}</option>)
+														})
+													}
+													{listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}
+												</select>
+											}
+
+
+										</div>
+
+										<div class="mb-3">
+											<label for="qtItemInput" class="form-label  text-secondary fw-normal">Quantidade</label>
+											<input type="number" min="1" class="form-control text-secondary fw-normal" id="qtItemInputEdit" autocomplete="off" onChange={(e) => { setQuant(e.target.value); }} placeholder={e.quantidade} />
+										</div>
+										<div class="mb-3">
+											<label for="precoUnitInput" class="form-label  text-secondary fw-normal">Preço unitário</label>
+
+											<NumericFormat
+												autoComplete="off"
+												thousandSeparator=","
+												class="form-control  text-secondary fw-normal " id="precoUnitInputEdit" placeholder={"R$ " + e.preco} onChange={(e) => { setPreco(e.target.value) }}
+												decimalScale={2}
+												fixedDecimalScale={true}
+												onValueChange={(values) => {
+													setPreco(values);
+												}}
+											/>
+										</div>
+
+
+									</div>
+
+								)
+							})}
+
+
+						</div>
+
+						<div class="modal-footer">
+
+							<button type="button" onClick={(e) => { editNovoProduto(e) }} class="btn w-100 btn-primary fw-normal" id="btnEditarProduto"> <i class="bi bi-pencil-square"></i> Editar</button>
+						</div>
 					</div>
-					<div class="m-3 alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-						<i class="bi bi-check-circle p-2"></i>
-						{msgSuccess !== null && msgSuccess}
 
-					</div>
-					<div class="m-3 alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
-						<i class="bi bi-exclamation-triangle p-2"></i>
-						{msgError !== null && msgError}
+				</div>
+			</div>
+			<div class="modal fade" id={"deleteProduto-" + idEdit} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-body">
 
-					</div>
-					<div class="modal-body">
+							{data_filter && data_filter.map((element) => {
+								return (<p class="text-danger fw-bolder p-2 mb-0"><i class="bi bi-exclamation-triangle-fill fs-3"></i> Confirmar para excluir o item, <u> {element.item}.</u></p>);
+							})}
+						</div>
 
-						{data_filter && data_filter.map((e) => {
-							console.log(e)
-							return (
-								<div key={e.id}>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary btn-edigit w-100" onClick={() => { deleteItemProduto() }} data-dismiss="modal"><i class="bi bi-check-all"></i> Confirmar!</button>
 
-									<div class="mb-3">
-										<label for="nomeItemInput" class="form-label  text-secondary fw-normal">Nome item</label>
-										<input type="text" class="form-control text-secondary fw-normal" id="nomeItemInputEdit" autocomplete="off" onChange={(e) => { setItem(e.target.value) }} placeholder={e.item} />
-									</div>
-									<div class="mb-3">
-										<label for="descItemInput" class="form-label  text-secondary fw-normal">Descrição item</label>
-										<input type="text" class="form-control text-secondary fw-normal" id="descItemInputEdit" autocomplete="off" onChange={(e) => { setDesc(e.target.value) }} placeholder={e.descricao} />
-									</div>
-									<label for="descItemInput" class="form-label  text-secondary fw-normal"> Categorias</label>
-									<div class=" mb-3" >
-
-										{
-											<select id="categItemInputEdit" onChange={(e) => { setCategorias(e.target.value) }} class="form-control">
-
-												<option value={e.cod} selected>{e.categoria}</option>
-												{
-													listCateg && listCateg.map((e) => {
-														return (<option class="form-control text-secondary fw-normal" key={e.id} value={e.cod}>{e.categoria}</option>)
-													})
-												}
-												{listCateg == null ?? <option value={null} >Nenhuma categoria!</option>}
-											</select>
-										}
-
-
-									</div>
-
-									<div class="mb-3">
-										<label for="qtItemInput" class="form-label  text-secondary fw-normal">Quantidade</label>
-										<input type="number" min="1" class="form-control text-secondary fw-normal" id="qtItemInputEdit" autocomplete="off" onChange={(e) => { setQuant(e.target.value); }} placeholder={e.quantidade} />
-									</div>
-									<div class="mb-3">
-										<label for="precoUnitInput" class="form-label  text-secondary fw-normal">Preço unitário</label>
-
-										<NumericFormat
-											autoComplete="off"
-											thousandSeparator=","
-											class="form-control  text-secondary fw-normal " id="precoUnitInputEdit" placeholder={"R$ " + e.preco} onChange={(e) => { setPreco(e.target.value) }}
-											decimalScale={2}
-											fixedDecimalScale={true}
-											onValueChange={(values) => {
-												setPreco(values);
-											}}
-										/>
-									</div>
-
-
-								</div>
-
-							)
-						})}
-
-
-					</div>
-
-					<div class="modal-footer">
-
-						<button type="button" onClick={(e) => { editNovoProduto(e) }} class="btn w-100 btn-primary fw-normal" id="btnEditarProduto"> <i class="bi bi-pencil-square"></i> Editar</button>
+						</div>
 					</div>
 				</div>
-
 			</div>
-		</div>
-
+		</>
 	)
 
 }

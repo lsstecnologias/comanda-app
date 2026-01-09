@@ -126,8 +126,8 @@ const Produto = () => {
 		var cod = `${Math.floor(Math.random() * (777 + 0)) - 1}`;
 
 		//REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
-		const codEstabelecimento = sessionStorage.getItem("cod_estabelecimento");
-		var objProduto = { cod_item: cod, estabelecimento_id: codEstabelecimento, item: "", desc: "", qtd: "", categoria_id: "", preco: "", data_post: "" };
+		const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
+		var objProduto = { cod_item: cod, estabelecimento_id: estabelecimento_id, item: "", desc: "", qtd: "", categoria_id: "", preco: "", data_post: "" };
 
 		if (categInput.val()) {
 			categInput.addClass("is-valid").removeClass("is-invalid");
@@ -182,7 +182,7 @@ const Produto = () => {
 		//POSTA ITEM DO PRODUTO
 		//VERIFICA SE EXISTE O CODIGO DO ESTABELECIMENTO PARA REALIZAR A POSTAGEM
 
-		if (codEstabelecimento !== 'null') {
+		if (estabelecimento_id !== 'null') {
 			// var imgInpt = $("#imgItemInput");
 			/*const param_api_save_img = "?api=setUploadFileItem";
 			
@@ -228,8 +228,6 @@ const Produto = () => {
 				console.log(res);
 				if (status == 'success') {
 					var btnAdicionar = $('#btnAdicionar');
-
-
 					if (res == 'null') {
 						setDisplayError("block");
 						setMsgError("Preencha os campos!");
@@ -277,7 +275,7 @@ const Produto = () => {
 					<div class="col-sm-5 text-end">
 
 						<button type="button" class="btn btn-sm btn-primary btn-edigit" data-bs-toggle="modal" data-bs-target="#nvProduto">
-							 Novo Produto <i class="bi bi-box-fill"></i>
+							Novo Produto <i class="bi bi-box-fill"></i>
 						</button>
 					</div>
 				</div>

@@ -79,7 +79,7 @@ const TabelaProduto = () => {
                     <caption>Lista produtos</caption>
                     <thead>
                         <tr>
-                            <th scope="col">Est.</th>
+                          
                             <th scope="col">Cod.</th>
                             <th scope="col">Item</th>
                             <th scope="col">Desc</th>
@@ -93,8 +93,8 @@ const TabelaProduto = () => {
 
                             return (
                                 <tr key={val.id}>
-                                    <td scope="row">{val.estabelecimento_id}</td>
-                                    <td className='fw-light'>{val.cod_item}</td>
+                          
+                                    <td className='fw-light' scope="row">{val.cod_item}</td>
                                     <td className='fw-light lh-1'>{val.item}</td>
                                     <td className='fw-light lh-1'>{val.descricao}</td>
                                     <td className='fw-light'>{val.categoria}</td>

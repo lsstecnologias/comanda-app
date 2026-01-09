@@ -28,11 +28,11 @@ const Usuarios = () => {
     const addNovoUsuario = (e) => {
         e.preventDefault();
 
-        let nome = $("#nomeInput");
-        let senha = $("#senhaInput");
-        let loginEmail = $("#loginEmailInput");
-        let perfil = $("#perfilUser");
-        let cod = Math.floor(Math.random() * (777 + 0)) - 1;
+        let nome        = $("#nomeInput");
+        let senha       = $("#senhaInput");
+        let loginEmail  = $("#loginEmailInput");
+        let perfil      = $("#perfilUser");
+        let cod         = Math.floor(Math.random() * (777 + 0)) - 1;
 
         var objUsuario = { cod_user: cod, cod_estabelecimento: "", nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
 
@@ -79,7 +79,6 @@ const Usuarios = () => {
 
         const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
        
-
         if (estabelecimento_id  !== 'null') {
             const param_api_list_usuario = `?api=setUsuarios`;
             objUsuario.cod_estabelecimento = estabelecimento_id ;
@@ -130,12 +129,18 @@ const Usuarios = () => {
     return (
         <div className="container mt-2 usuario">
 
-            <h4 className="mb-2 mt-2 pb-2">Usuários  <i class="bi bi-person-fill"></i> </h4>
+            <div className="container p-0 animate__animated  animate__fadeIn">
+				<div class="row d-flex align-items-center  justify-content-between">
+					<div class="col-sm-7 "> <h4 className="mb-2 mt-2 pb-2">Usuários  <i class="bi bi-person-fill"></i> </h4></div>
+					<div class="col-sm-5 text-end">
 
-            <button type="button" class="btn w-100 btn-primary mt-2 btn-edigit" data-bs-toggle="modal" data-bs-target="#novoUsuario">
-                <i class="bi bi-person-fill-add"></i> Novo
-            </button>
+						<button type="button" class="btn btn-sm btn-primary btn-edigit mt-2" data-bs-toggle="modal" data-bs-target="#novoUsuario">
+							Novo usuário <i class="bi bi-person-fill-add"></i>
+						</button>
+					</div>
+				</div>
 
+			</div>
 
             <div class="modal fade" id="novoUsuario" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="novoUsuario" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">

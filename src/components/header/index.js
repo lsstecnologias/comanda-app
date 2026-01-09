@@ -60,7 +60,7 @@ const Header = () => {
                            <>
                               <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administrador</Link>
                               <ul class="dropdown-menu fw-light">
-                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/comanda">Comanda</Link></li>
+                                 
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/estabelecimento">Estabelecimento</Link></li>
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/listar-estabelecimento">Listar Estabelecimento</Link></li>
                                   <li><Link class="dropdown-item fw-light nav-link" to="/admin/pagamento">Pagamento</Link></li>
@@ -77,19 +77,16 @@ const Header = () => {
 
                </div>
                <div class="nav-item dropdown">
-                  <a class="nav-link  fw-light">
-                     <small> Olá, {sessao.nome}</small> <small> {sessao.cod}</small>
-                  </a>
-
-
+                  
                   <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                     <button class="btn btn-primary btn-sm w-100 btn-edigit"> <i class="bi bi-lock-fill"></i> <small>Acesso </small></button>
+                     <button class="btn btn-primary btn-sm w-100 btn-edigit">  <small>Acesso <i class="bi bi-lock-fill"></i> </small></button>
                   </a>
                   <ul class="dropdown-menu">
-                     <li><Link class="dropdown-item fw-light" to="/admin/usuario"> <i class="bi  fs-5 bi-person-fill"></i> Usuários</Link></li>
-                     <li><Link class="dropdown-item fw-light" to="/admin/sistema"> <i class="bi bi-gear-fill"></i> Sistema</Link></li>
-                     <li><button class="btn btn-sm btn-primary dropdown-item" onClick={() => Sair()} > <i class="bi fs-5 bi-box-arrow-left"></i> Sair</button></li>
-                     <li class="fw-light p-4 pb-0 pt-0"><small> {sessao.nome}</small> <small> {sessao.cod_estabelecimento}</small></li>
+                     <li><Link class="dropdown-item fw-light" to="/admin/usuario">  Usuários <i class="bi  fs-5 bi-person-fill"></i></Link></li>
+                     <li><Link class="dropdown-item fw-light" to="/admin/sistema">  Sistema <i class="bi bi-gear-fill"></i></Link></li>
+                     <li><button class="btn btn-sm btn-primary dropdown-item" onClick={() => Sair()} >Sair <i class="bi fs-5 bi-box-arrow-left"></i></button></li>
+                     <hr class="dropdown-divider" />
+                     <li class="fw-light p-2 pb-0 pt-0 text-center "><small> {sessao.nome} {sessao.cod} </small></li>
                   </ul>
 
                </div>

@@ -280,7 +280,6 @@ const Produto = () => {
 					</div>
 				</div>
 
-
 			</div>
 
 			<div class="modal fade" id="nvProduto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticnvProduto" aria-hidden="true">

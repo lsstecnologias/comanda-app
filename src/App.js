@@ -61,8 +61,7 @@ function App() {
             <Route path="listar-estabelecimento" element={<TabelaCliente />} />
             <Route path="usuario" element={<Usuarios />} />
             <Route path="imagens" element={<UploadImagens />} />
-            <Route path="categoria" element={<Categorias />} />
-            <Route path="comanda" element={<NovaComanda />} />
+            <Route path="categoria" element={<Categorias />} />            
             <Route path="template-view" element={<Template />} />
             <Route path="pagamento" element={<Pagamento />} />
             <Route path="sistema" element={<Sistema />} />

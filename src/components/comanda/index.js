@@ -32,6 +32,12 @@ const NovaComanda = () => {
    const nameApi = 'api_comanda/';
    const param_api_get_produtos = "?api=getProdutos";
 
+   const salvarComanda=(param=null)=>{
+      if(param !== null){
+       sessionStorage.setItem('produtos',JSON.stringify(param));
+      }
+      return;
+   }
 
    /*
    const registrarComanda = (e) => {
@@ -73,20 +79,30 @@ const NovaComanda = () => {
 
    }*/
    // $('.inpt-qtd').mask('00000');
+    var salvarItem=[];
    function calcularSubtotal(id) {
       $("#qtd-" + id).mask("0000");
       let qtd     = $(`#qtd-${id}`).val();
+
       let dataf   = data.filter((element) => { return element.id == id });
 
       dataf[0].qtd      = qtd;
       dataf[0].subtotal = (dataf[0].qtd * dataf[0].preco).toFixed(2);
-
+      dataf[0].total = 0;
       $(`#subtotal-${id}`).val(dataf[0].subtotal);
 
       let soma = 0;
       data.forEach(element => {  soma += parseFloat(element.subtotal);  });
+      dataf[0].total=soma;
       $('#total').val(soma)
-
+     
+      if(qtd == 0 && qtd == ''){
+         
+      }
+     
+      salvarItem.push({id:id,qtd:dataf[0].qtd,subtotal:dataf[0].subtotal});
+      salvarComanda(salvarItem);
+      
    }
    useEffect(() => {
 
@@ -143,7 +159,7 @@ const NovaComanda = () => {
                               </div>
 
                            </td>
-                           <td class=" fw-normal" >R$ {element.preco}</td>
+                           <td class="fw-normal" >R$ {element.preco}</td>
                            <td><input type="text" class="form-control" id={`subtotal-${element.id}`} disabled="disabled" /></td>
                         </tr>
                      )
@@ -183,7 +199,7 @@ const NovaComanda = () => {
                <div class="row  p-0 m-0 ">
                   <div class="col-sm-12 mt-2">
 
-                     <button class="btn btn-secondary btn-edigit w-100"><i class="bi bi-check2-all"></i> Salvar</button>
+                     <button class="btn btn-secondary btn-edigit w-100" onClick={()=>{ salvarComanda()}}><i class="bi bi-check2-all"></i> Salvar</button>
                   </div>
                </div>
 

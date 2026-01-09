@@ -12,20 +12,33 @@ const Keygen = () => {
         }
            
     }
-
+    $('#chaveLicenca').mask('000-000-000');
     useEffect(()=>{
-        $('#chaveLicenca').mask('000-000-000-000');
+        $('#chaveLicenca').mask('000-000-000');
     
         
     },[setChave]);
     return (
         <div className="container mt-2 usuario">
-            <h4 className="mb-4 mt-2 pb-2">Keygen <i class="bi bi-key"></i></h4>
+            <h4 className="mb-2 mt-2 pb-2">Keygen <i class="bi bi-key"></i></h4>
             <h5 className="mb-2  pb-2">Licença de acesso</h5>
 
+            <div class="container border">
+                <div class="row">
+                    <div class="col-sm-4 ">Data inicial</div>
+                    <div class="col-sm-4">Data de expiração</div>
+                    <div class="col-sm-4">Gerar número da Licença</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4"><input type="data" /></div>
+                    <div class="col-sm-4"><input type="data" /></div>
+                    <div class="col-sm-4"><input type="text" id="chaveLicenca" /><button>Gerar</button></div>
+                </div>
+
+            </div>
 
 
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <button type="button" class="btn btn-sm btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 Launch static backdrop modal
             </button>
 

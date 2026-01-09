@@ -266,7 +266,7 @@ const ModalEditProdutos = (data_id) => {
 						<div class="modal-body">
 
 							{data_filter && data_filter.map((e) => {
-								console.log(e)
+								
 								return (
 									<div key={e.id}>
 

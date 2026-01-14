@@ -25,6 +25,7 @@ const ModalEditUsuarios = (data_id) => {
 
 	const urlApi = 'http://10.10.10.6/';
 	const nameApi = 'api_comanda/';
+	console.log(idEdit)
 	const vlFilter = dataFilter.filter(e => { return e.id === idEdit });
 	const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 	console.log(vlFilter)
@@ -35,52 +36,64 @@ const ModalEditUsuarios = (data_id) => {
 		var loginEmail = $('#inpt-email');
 		var perfil = $('#inpt-perfil');
 
-		var objUsuario = { id: idEdit, estabelecimento_id: estabelecimento_id, cod_user: vlFilter[0].cod, nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
+		var objUsuario = {
+			id: idEdit,
+			estabelecimento_id: estabelecimento_id,
+			cod: vlFilter[0].cod,
+			nome: "",
+			email: "",
+			senha: "",
+			perfil: "",
+			status: 'a',
+			data_post: ""
+		};
 
 		if (senhaUser !== undefined && senhaUser !== "" && confirmSenhaUser !== undefined && confirmSenhaUser !== "") {
 			if (senhaUser == confirmSenhaUser) {
-
 				$('#senhaInputs').addClass("is-valid").removeClass("is-invalid");
 				$('#reSenhaInput').addClass('is-valid').removeClass("is-invalid");
+				objUsuario.senha = md5(senhaUser);
+				setMsgError(null);
+				setDisplayError("none");
 
-				objUsuario.senha_user = md5(senhaUser);
 			} else {
 				$('#senhaInputs').addClass("is-invalid").removeClass("is-valid");
 				$('#reSenhaInput').addClass('is-invalid').removeClass("is-valid");
-
-
+				setMsgError("A senha deve ser iguais!");
+				setDisplayError("block");
 			}
+
 		} else {
 			$('#senhaInputs').addClass("is-invalid").removeClass("is-valid");
 			$('#reSenhaInput').addClass('is-invalid').removeClass("is-valid");
+			setMsgError("Preencha o campo senha!");
+			setDisplayError("block");
 		}
 
 		if (nomeUser !== undefined && nomeUser !== "") {
 
-			objUsuario.nome_user = nomeUser;
+			objUsuario.nome = nomeUser;
 			nome.addClass("is-valid").removeClass("is-invalid");
 		} else {
 			nome.addClass("is-invalid").removeClass("is-valid");
-			objUsuario.nome_user = vlFilter[0].nome;
+			objUsuario.nome = vlFilter[0].nome;
 		}
 
 		if (emailLoginUser !== undefined && emailLoginUser !== "") {
 			loginEmail.addClass("is-valid").removeClass("is-invalid");
-			objUsuario.login_email = emailLoginUser;
+			objUsuario.email = emailLoginUser;
 		} else {
 			loginEmail.addClass("is-invalid").removeClass("is-valid");
-			objUsuario.login_email = vlFilter[0].email;
+			objUsuario.email = vlFilter[0].email;
 		}
-
-
 
 		if (perfilUser !== undefined && perfilUser !== "") {
 			perfil.addClass("is-valid").removeClass("is-invalid");
-			objUsuario.perfil_user = perfilUser;
+			objUsuario.perfil = perfilUser;
 
 		} else {
 			perfil.addClass("is-invalid").removeClass("is-valid");
-			objUsuario.perfil_user = vlFilter[0].perfil;
+			objUsuario.perfil = vlFilter[0].perfil;
 
 		}
 
@@ -91,22 +104,15 @@ const ModalEditUsuarios = (data_id) => {
 			objUsuario.data_post = data_post;
 		}
 		console.log(objUsuario)
-		/*
+
 		const param_api_update_usuario = "?api=updateUsuarios";
 
 		$.post(urlApi + nameApi + param_api_update_usuario, objUsuario, (res, status) => {
 
 			var editarUsuario = $('#btnEditarUsuario')
 			if (status === "success") {
-				if (res === "null" || res === null) {
-					setMsgError("Erro ao atualizar usuário!");
-					setDisplayError("block");
-					editarUsuario.attr({ "disabled": false });
-				} else {
-					setDisplayError("none");
-					setMsgError(null);
-				}
-				if (res == 1 || res == "true" || res == true) {
+				
+				if (res == "1") {
 					setMsgSuccess("Usuário atualizado!");
 					setDisplaySuccess("block");
 					editarUsuario.attr({ "disabled": "disabled" });
@@ -118,7 +124,7 @@ const ModalEditUsuarios = (data_id) => {
 				alert("Error: parametros API")
 			}
 
-		})*/
+		})
 	}
 	const fecharModal = () => {
 		window.location.reload();
@@ -130,9 +136,10 @@ const ModalEditUsuarios = (data_id) => {
 
 
 		if (estabelecimento_id !== 'null') {
-			const param_api_list_usuario = `?api=getPerfilUsuarios`;
+			const param_api_list_usuario = `?api=getUsuarios`;
 			$.post(urlApi + nameApi + param_api_list_usuario, (res, status) => {
 				if (status == 'success') {
+
 					var data = JSON.parse(res);
 					setDataFilter(data);
 

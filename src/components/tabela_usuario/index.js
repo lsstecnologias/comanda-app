@@ -87,7 +87,7 @@ const Tabelausuarios = () => {
 
 						return (
 							<tr key={e.id}>
-								<th scope="row">{e.cod}</th>
+								<th scope="row">{e.estabelecimento_id}</th>
 								<td className='fw-light'>{e.nome}</td>
 								<td className='fw-light'>{e.email}</td>
 								<td className='fw-light'>{e.perfil == 's' ? 'super' : 'admin'}</td>

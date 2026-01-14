@@ -1,4 +1,5 @@
 import axios from 'axios';
+import './style.css';
 import { useEffect, useState } from 'react';
 import ModalEditProdutos from '../ModalEditProdutos';
 import ModalEditCategorias from '../ModalEditCategorias';
@@ -40,15 +41,16 @@ const TabelaAtendimento = () => {
          setDisplayError("block");
          setMsgError("Cliente foi excluido!");
          $.post(urlApi + nameApi + param_api_delete_atendimentos, objId, () => { window.location.reload() })
+
       } else {
          setDisplayError("none");
          setMsgError(null);
+
       }
    }
 
    const editItem = (id, cod_cliente) => {
       setId(id);
-
       setCodCliente(cod_cliente)
    }
    const fecharModal = () => {
@@ -104,18 +106,17 @@ const TabelaAtendimento = () => {
                   <tr class="text-start">
 
                      <th scope="col">Cod.</th>
-                     <th scope="col">Nome</th>
-                     <th scope="col">Pedidos</th>
-                     <th scope="col" colSpan={2} class="text-end">Ações</th>
+                     <th scope="col">Nome</th>                   
+                     <th scope="col" colSpan={2} class="text-center">Ações</th>
                   </tr>
                </thead>
                <tbody>
                   {currentPosts && currentPosts.map((val) => {
                      return (
                         <tr key={val.id}>
-                           <td className='lh-1 fw-light'><b>{val.cod_cliente}</b></td>
-                           <td className='lh-1 fw-light'> {val.cliente}</td>
-                           <td className='lh-1 fw-light text-start '>
+                           <td className='fw-light'><b>{val.cod_cliente}</b></td>
+                           <td className=' fw-light'> {val.cliente}</td>
+                           <td className='lh-1 fw-light text-end '>
                               {/* <Link class="btn btn-sm btn-primary" to="/admin/agendamento-pedido" >Comanda <i class="bi bi-card-list"></i> </Link>
                                <Link class="btn btn-sm btn-secondary" to="/admin/agendamento-pedido" >Agendamentos <i class="bi bi-clock-history"></i> </Link> */}
                               <div class="btn-group" role="group" aria-label="Basic outlined example">
@@ -128,7 +129,7 @@ const TabelaAtendimento = () => {
                               <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
                               <div class="btn-group" role="group" aria-label="Basic outlined example">
                                  <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id, val.cod_cliente)} data-bs-target={"#editAtendimento-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
-                                 <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
+                                 <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary disable-link"> <i class="bi bi-x-lg"></i></button>
                               </div>
 
                            </td>

@@ -9,6 +9,7 @@ const Acesso = () => {
     sessionStorage.setItem('modal_notas', 'hide');
     const [emailLogin, setEmailLogin] = useState(null);
     const [senha, setSenha] = useState(null);
+    const [typeSenha,setTypeSenha] = useState("password");
 
     const [displayError, setDisplayError] = useState('none');
     const [displaySuccess, setDisplaySuccess] = useState('none');
@@ -127,15 +128,28 @@ const Acesso = () => {
                 </main>
             </div>
         )*/
+    const exibirSenha = (e) => {
+        e.preventDefault();
+
+        if (typeSenha == "password") {
+            setTypeSenha("text");
+
+        } else {
+            setTypeSenha("password");
+
+        }
+
+
+    }
     return (
         <div class="container-fluid col-xl-10 col-xxl-8 px-4 py-5">
             <div class="row g-lg-5  animate__animated animate__fadeIn">
                 <div class="col-md-10 mx-auto col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded">
-                    <div class="overflow-hidden col-lg-7 text-center text-lg-center animate__animated animate__fadeIn" style={{ maxHeight: "40vh",margin:"0 auto" }}>
-                    
+                    <div class="overflow-hidden col-lg-7 text-center text-lg-center animate__animated animate__fadeIn" style={{ maxHeight: "40vh", margin: "0 auto" }}>
+
                         <img src={bg_logo} class="img-fluid  mb-4" alt="Example image" width="1000" height="500" loading="lazy" />
-                  
-                </div>
+
+                    </div>
                     <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
                         <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn" style={{ display: displaySuccess }} role="alert">
                             <i class="bi bi-check-circle p-2"></i>
@@ -147,26 +161,32 @@ const Acesso = () => {
                             {msgError !== null && msgError}
 
                         </div>
-                        <div class="form-floating mb-3">
+                        <div class="form-floating  mb-3">
                             <input type="email" class="form-control" id="inpt_email" value={emailLogin} onChange={e => setEmailLogin(e.target.value)} autocomplete="off" placeholder="name@example.com" />
-                            <label for="finpt_email">E-mail</label> </div> <div class="form-floating mb-3">
-                            <input type="password" class="form-control" id="inpt_senha" value={senha} onChange={e => setSenha(e.target.value)} autocomplete="off" placeholder="" />
-                            <label for="inpt_senha">Senha</label>
+                            <label for="finpt_email">E-mail</label> </div> 
+                            <div class="form-floating mb-2">
+                            <input type={typeSenha} class="form-control" id="inpt_senha" value={senha} onChange={e => setSenha(e.target.value)} autocomplete="off" placeholder="" />
+                           
+                            <label for="inpt_senha">Senha </label>
                         </div>
-                        <div class="checkbox mb-3">
-                            <label>
-                                <input type="checkbox" value="remember-me" /> <small> Remember me</small>
-                            </label>
+                        <div class="checkbox mb-4 text-end">
+                            <button class="btn btn-sm " onClick={(e) => { exibirSenha(e) }}> <i class="bi bi-eye" ></i> Exibir senha</button>                               
+                           
                         </div>
+
                         <button class="w-100 btn btn-sm btn-primary" id="btnAcesso" onClick={(e) => { validarForm(e) }} type="button"><i class="bi fs-5 bi-box-arrow-in-right"></i> Entrar</button>
-                        <hr class="my-4" />
-                        <small class="text-body-secondary text-center">lsstecnologias&copy;2025</small>
+                        <br/>
+                        <div class="text-center mt-4 ">
+                            
+                            <small class="text-body-secondary m-0 p-0">lsstecnologias&copy;2025</small>
+                            </div>
+
                     </form>
                 </div>
-                
+
 
             </div>
-           
+
         </div>
     )
 }

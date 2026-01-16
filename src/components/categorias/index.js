@@ -41,12 +41,11 @@ const Categorias = () => {
         //Valida os campos
         if (categ_input.val()) {
            categ_input.addClass("is-valid").removeClass("is-invalid");
-            obj_categoria.categoria = categ_input.val();
-        } else {
+           obj_categoria.categoria = categ_input.val();
 
+        } else {
             setDisplayError("block");
             setMsgError("Preencha os campo!");
-
             categ_input.addClass("is-invalid").removeClass("is-valid");
             obj_categoria.categoria = null;
 
@@ -76,7 +75,7 @@ const Categorias = () => {
             if (cod_estabelecimento !== 'null') {
                 const param_api_save_categoria = "?api=setCategorias";
                 obj_categoria.id_estabelecimento = cod_estabelecimento;
-                console.log(obj_categoria)
+                
                 $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
                     window.location.reload()
                     console.log(res)

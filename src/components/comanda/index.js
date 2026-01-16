@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext,useState } from 'react';
 import { UserContext } from '../context';
 import Comanda from './comanda';
 import $ from 'jquery';
@@ -9,21 +9,24 @@ const HeaderComanda = () => {
 
    const { Sair, thumb_logo, sessao } = useContext(UserContext);
 
-   const urlApi = 'http://10.10.10.6/';
-   const nameApi = 'api_comanda/';
-   const data_atual = new Date();
-   const data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
+   const [exibirComanda,setExibirComanda] = useState(false);
 
    if (cod) {
-      const obj = { estabelecimento_id: sessao.estabelecimento_id, cliente_id: cod, funcionario_id: sessao.cod,data_post:data_post }
-      $.post(urlApi + nameApi + '?api=setComandas', obj)
-         .done((res) => {
+      const urlApi = 'http://10.10.10.6/';
+      const nameApi = 'api_comanda/';
 
+      const data_atual = new Date();
+      const data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
 
-            console.log(res);
-
+      const listarComanda = () => {
+         const obj = { estabelecimento_id: sessao.estabelecimento_id, cliente_id: cod, funcionario_id: sessao.cod, data_post: data_post }
+         $.post(urlApi + nameApi + '?api=setComandas', obj)
+         .done(() => {
+            setExibirComanda(true);
+            $('#btn-listarComanda').addClass('d-none');
 
          })
+      }
       return (
          <div class="container animate__animated animate__fadeIn p-0 mt-4 comanda">
             <div class="container-fluid">
@@ -42,7 +45,7 @@ const HeaderComanda = () => {
                   </div>
                   <div class="col-4 border p-1">
 
-                     <div class=" p-2">
+                     <div class="p-2">
                         <div class="form-label p-0">
                            <select class="form-select input-sm w-100 text-center" disabled={true} id="funcionario">
                               <option value={sessao.cod} selected>Funcionário {sessao.nome ? sessao.nome : 'S/N'}</option>
@@ -51,10 +54,9 @@ const HeaderComanda = () => {
                      </div>
                   </div>
                </div>
-               <button class="btn btn btn-edigit text-white w-100 mt-4" onClick={()=>listarComanda()}>Listar comanda</button>
+               <button class="btn btn btn-edigit text-white w-100 mt-4 animate__animated animate__fadeIn" id="btn-listarComanda" onClick={() => listarComanda()}>Listar comanda</button>
             </div>
-
-            <Comanda />
+            {exibirComanda ?  <Comanda /> : ""  }
          </div>
 
       )

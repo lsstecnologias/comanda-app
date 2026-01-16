@@ -8,6 +8,7 @@ import HeaderComanda from './index.js';
 
 
 const Comanda = () => {
+
    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
    sessionStorage.setItem('modal_notas', 'hide');
    const { cod } = useParams();
@@ -32,7 +33,7 @@ const Comanda = () => {
    const nameApi = 'api_comanda/';
    const param_api_get_produtos = "?api=getProdutos";
 
-   const salvarComanda = (param = null) => {
+  /* const salvarComanda = (param = null) => {
       if (param !== null) {
          sessionStorage.setItem('item_comanda', JSON.stringify(param));
       }
@@ -44,7 +45,7 @@ const Comanda = () => {
 
    }
 
-   const getItemSave = getDataCommanda();
+   const getItemSave = getDataCommanda();*/
    /*
    const registrarComanda = (e) => {
       e.preventDefault();
@@ -87,35 +88,59 @@ const Comanda = () => {
    // $('.inpt-qtd').mask('00000');
    var salvarItem = [];
    function calcularSubtotal(id) {
-      alert(id);
       $("#qtd-" + id).mask("0000");
       let qtd = $(`#qtd-${id}`).val();
 
-     const dataf = data.filter((element) => { return element.id === id });
-    
-       /*const dataS = getItemSave.filter((element) => {
-         if (element.id == id) {
-            element.qtd += parseInt(qtd);
-            return element
-         }
+      const dataf = data.filter((element) => { return element.id === id });
+
+      /*const dataS = getItemSave.filter((element) => {
+        if (element.id == id) {
+           element.qtd += parseInt(qtd);
+           return element
+        }
 
 
-      })*/
-   
+     })*/
+
       dataf[0].qtd_item_comanda = qtd;
-      dataf[0].subtotal_comanda = (dataf[0].qtd_item_comanda  * dataf[0].preco).toFixed(2);
+      dataf[0].subtotal_comanda = (dataf[0].qtd_item_comanda * dataf[0].preco).toFixed(2);
       dataf[0].total_comanda = 0;
       $(`#subtotal-${id}`).val(dataf[0].subtotal_comanda);
 
-      let soma = 0;
+      let soma = 0.0;
       data.forEach(element => { soma += parseFloat(element.subtotal_comanda); });
-      dataf[0].total_comanda = soma;
-      
+      dataf[0].total_comanda = parseFloat(soma);
+
       $('#total').val(soma)
       //REALIZAR REQUISição de update
-     console.log(dataf);
-     // salvarItem.push({ id: id, qtd: parseInt(dataf[0].qtd), subtotal: dataf[0].subtotal });
-     // salvarComanda(salvarItem);
+      //SE a quantidadde_item_comanda for diferente de zero
+      dataf.forEach((element)=>{
+         $.post(urlApi + nameApi + '?api=setUpdateComandas', element).done((res) => {
+            console.log(res);       
+
+         })
+
+
+      });
+     
+
+      
+
+      
+
+     
+
+   }
+
+   function salvarComanda() {
+      alert("OK")
+
+      var link = document.createElement('a');
+      link.download = 'nova_logo_2.png';
+      link.href = 'nova_logo_2.png';
+      link.click();
+
+
 
    }
    useEffect(() => {
@@ -127,7 +152,7 @@ const Comanda = () => {
                var data = JSON.parse(res);
                for (var i = 0; i < data.length; i++) {
                   data[i].subtotal_comanda = 0;
-                 
+
                   $("#qtd-" + data[i].id).mask("00000000");
 
                }
@@ -145,10 +170,10 @@ const Comanda = () => {
 
 
    return (
-      <div className="container mt-3 ">
-         
-    
-         <div class="container-fluid">
+      <div className="container mt-3 " >
+
+
+         <div class="container-fluid" >
             <table class="table">
                <thead>
                   <tr>

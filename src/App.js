@@ -10,7 +10,7 @@ import UploadImagens from './components/upload_imagens';
 import AppComponent from './AppComponent';
 import Acesso from './components/acesso';
 import Categorias from './components/categorias';
-import Keygen from './components/keygen';
+
 import QRCode from './components/qrcode';
 import Atendimento from './components/atendimento';
 import TabelaAtendimento from './components/tabela_atendimento';
@@ -23,6 +23,7 @@ import Sistema from './components/sistema';
 import TabelaCliente from './components/tabela_estabelecimento';
 import TelaPrincipal from './components/TelaPrincipal';
 import Pagamento from './components/pagamento';
+import Licenca from './components/licenca';
 
 const $ = require("jquery");
 
@@ -67,7 +68,7 @@ function App() {
             <Route path="sistema" element={<Sistema />} />
             <Route path="comanda/:cod" element={<Comanda />} />
             <Route path="qr" element={<QRCode />} />
-            <Route path="keygen" element={<Keygen />} />
+            <Route path="licenca" element={<Licenca />} />
             <Route path="atendimento" element={<Atendimento />} />
             <Route path="lista-atendimento" element={<TabelaAtendimento />} />
             <Route path="comanda" element={<Comanda />} />

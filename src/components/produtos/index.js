@@ -222,13 +222,14 @@ const Produto = () => {
 			}*/
 			//POST ITEM
 			const param_api_save_produto = '?api=setProdutos';
-
+			if(objProduto.item !== null  && objProduto.desc!== null  && objProduto.qtd !== null && objProduto.preco !== null  && objProduto.categoria_id !== null )
 			$.post(urlApi + nameApi + param_api_save_produto, objProduto, (res, status) => {
 				var btnAdicionar = $('#btnAdicionar');
 				console.log(res);
 				if (status == 'success') {
 					var btnAdicionar = $('#btnAdicionar');
-					if (res == 'null') {
+					
+					if (res !== "1") {
 						setDisplayError("block");
 						setMsgError("Preencha os campos!");
 
@@ -271,7 +272,7 @@ const Produto = () => {
 		<div className="container-fluid mt-3 produtos">
 			<div className="container p-0 animate__animated  animate__fadeIn">
 				<div class="row d-flex align-items-center  justify-content-between">
-					<div class="col-sm-7 "><h4> Produtos <i class="bi bi-box-fill"></i></h4></div>
+					<div class="col-sm-5"><h2> Produtos <i class="bi bi-box-fill"></i></h2></div>
 					<div class="col-sm-5 text-end">
 
 						<button type="button" class="btn btn-sm btn-primary btn-edigit" data-bs-toggle="modal" data-bs-target="#nvProduto">
@@ -286,7 +287,7 @@ const Produto = () => {
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h1 class="modal-title fs-4" id="staticnvProduto">Novo Produto</h1>
+							<h1 class="modal-title fs-4" id="staticnvProduto">Novo Produto <i class="bi bi-box-fill"></i> </h1>
 							<button type="button" onClick={() => { fecharModal() }} class="btn-sm btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
@@ -346,7 +347,7 @@ const Produto = () => {
 						</div>
 						<div class="modal-footer">
 
-							<button type="button" onClick={(e) => { addNovoProduto(e) }} class="btn w-100 btn-primary text-ligth fw-normal" id="btnAdicionar" > <i class="bi bi-plus-circle"></i> Adicionar</button>
+							<button type="button" onClick={(e) => { addNovoProduto(e) }} class="btn w-100 btn-primary text-ligth fw-normal btn-edigit" id="btnAdicionar" > <i class="bi bi-plus-circle"></i> Adicionar</button>
 						</div>
 					</div>
 				</div>

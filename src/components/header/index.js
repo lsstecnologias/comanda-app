@@ -64,7 +64,7 @@ const Header = () => {
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/estabelecimento">Estabelecimento</Link></li>
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/listar-estabelecimento">Listar Estabelecimento</Link></li>
                                   <li><Link class="dropdown-item fw-light nav-link" to="/admin/pagamento">Pagamento</Link></li>
-                                 <li><Link class="dropdown-item fw-light nav-link" to="/admin/keygen">Licenças e chave</Link></li>
+                                 <li><Link class="dropdown-item fw-light nav-link" to="/admin/licenca">Licenças e chave</Link></li>
                               </ul>
                            </>
                            :

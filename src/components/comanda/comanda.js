@@ -33,19 +33,14 @@ const Comanda = () => {
    const nameApi = 'api_comanda/';
    const param_api_get_produtos = "?api=getProdutos";
 
-  /* const salvarComanda = (param = null) => {
-      if (param !== null) {
-         sessionStorage.setItem('item_comanda', JSON.stringify(param));
-      }
-      return;
-   }
-   function getDataCommanda() {
-      var data = sessionStorage.getItem('item_comanda') ? JSON.parse(sessionStorage.getItem("item_comanda")) : []
-      return data;
 
+   function getCarrinho() {
+      const carrinhoJson = sessionStorage.getItem("item_comanda");
+      return carrinhoJson ? JSON.parse(carrinhoJson) : [];
    }
-
-   const getItemSave = getDataCommanda();*/
+   function saveCarrinho(carrinho) {
+      sessionStorage.setItem("item_comanda", JSON.stringify(carrinho));
+   }
    /*
    const registrarComanda = (e) => {
       e.preventDefault();
@@ -86,63 +81,72 @@ const Comanda = () => {
 
    }*/
    // $('.inpt-qtd').mask('00000');
-   var salvarItem = [];
+
    function calcularSubtotal(id) {
       $("#qtd-" + id).mask("0000");
       let qtd = $(`#qtd-${id}`).val();
-
-      const dataf = data.filter((element) => { return element.id === id });
-
-      /*const dataS = getItemSave.filter((element) => {
-        if (element.id == id) {
-           element.qtd += parseInt(qtd);
-           return element
-        }
-
-
-     })*/
-
-      dataf[0].qtd_item_comanda = qtd;
-      dataf[0].subtotal_comanda = (dataf[0].qtd_item_comanda * dataf[0].preco).toFixed(2);
-      dataf[0].total_comanda = 0;
-      $(`#subtotal-${id}`).val(dataf[0].subtotal_comanda);
-
-      let soma = 0.0;
-      data.forEach(element => { soma += parseFloat(element.subtotal_comanda); });
-      dataf[0].total_comanda = parseFloat(soma);
-
-      $('#total').val(soma)
-      //REALIZAR REQUISição de update
-      //SE a quantidadde_item_comanda for diferente de zero
-      dataf.forEach((element)=>{
-         $.post(urlApi + nameApi + '?api=setUpdateComandas', element).done((res) => {
-            console.log(res);       
-
-         })
-
-
-      });
+      const carrinho = getCarrinho();
+      const dataf = carrinho.find(element => element.id === id );
      
+      if (dataf) {
+         dataf.qtd_item_comanda = qtd;
+         dataf.subtotal_comanda = (dataf.qtd_item_comanda * dataf.preco).toFixed(2);
+         dataf.total_comanda = 0;
+         $(`#subtotal-${id}`).val(dataf.subtotal_comanda);
 
-      
+         let soma = 0.0;
+         carrinho.forEach(element => { soma += parseFloat(element.subtotal_comanda); });
+         dataf.total_comanda = parseFloat(soma);
 
-      
+         $('#total').val(soma)
+        
+ 
+        /*var x =dataf.find(element =>element.id === id);
+         console.log(x)*/
+      }else{
+          const item = data.find(item=> item.id === id);
+         carrinho.push({item})
+      } 
+
+      saveCarrinho(carrinho)
 
      
 
    }
+   function atualizarCarrinho() {
+       const carrinho = getCarrinho();
+     
+       const jsonString = JSON.stringify(carrinho, null, 2);
+       const blob = new Blob([jsonString], { type: 'application/json' });
+       const url = URL.createObjectURL(blob);
 
-   function salvarComanda() {
-      alert("OK")
-
-      var link = document.createElement('a');
-      link.download = 'nova_logo_2.png';
-      link.href = 'nova_logo_2.png';
-      link.click();
-
-
-
+       const a = document.createElement('a');
+       a.href = url;
+       a.download = estabelecimento_id+'.edigt';
+       document.body.appendChild(a);
+       a.click();
+       document.body.removeChild(a);
+       URL.revokeObjectURL(url);
    }
+/*
+   function salvarsComanda() {
+      alert("Salvar comanda")
+      
+     const jsonString = JSON.stringify(obj, null, 2);
+       const blob = new Blob([jsonString], { type: 'application/json' });
+       const url = URL.createObjectURL(blob);
+
+       const a = document.createElement('a');
+       a.href = url;
+       a.download = estabelecimento_id+'.cert.lss';
+       document.body.appendChild(a);
+       a.click();
+       document.body.removeChild(a);
+       URL.revokeObjectURL(url);
+
+
+
+   }*/
    useEffect(() => {
 
       if (estabelecimento_id !== 'null') {
@@ -157,7 +161,7 @@ const Comanda = () => {
 
                }
                setData(data);
-
+               saveCarrinho(data)
             }
 
          })
@@ -232,7 +236,7 @@ const Comanda = () => {
                <div class="row  p-0 m-0 ">
                   <div class="col-sm-12 mt-2">
 
-                     <button class="btn btn-secondary btn-edigit w-100" onClick={() => { salvarComanda() }}><i class="bi bi-check2-all"></i> Salvar</button>
+                     <button class="btn btn-secondary btn-edigit w-100" onClick={() => {  atualizarCarrinho() }}><i class="bi bi-check2-all"></i> Salvar</button>
                   </div>
                </div>
 

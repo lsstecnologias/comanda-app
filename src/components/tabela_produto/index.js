@@ -7,7 +7,8 @@ import DetalhesProdutos from '../modalDetalhesProdutos';
 import ListPagina from "../../ListPagina";
 import Pagination from "../../ListPagina";
 import { UserContext } from '../context';
-
+import ImagemProdutos from '../modalImagemProdutos';
+import 'animate.css';
 const $ = require("jquery");
 
 const TabelaProduto = () => {
@@ -26,7 +27,7 @@ const TabelaProduto = () => {
 
 	//PAGINACAO
 	const [currentPage, setCurrentPage] = useState(1);
-	const [postsPerPage] = useState(4);
+	const [postsPerPage] = useState(10);
 	const indexOfLastPost = currentPage * postsPerPage;
 	const indexOfFirstPost = indexOfLastPost - postsPerPage;
 	const currentPosts = dataProdutos.slice(indexOfFirstPost, indexOfLastPost);
@@ -73,15 +74,15 @@ const TabelaProduto = () => {
 
 	return (
 		<div class="container-fluid  mt-2 ">
-			<div class='container p-0 table-responsive'>
+			<div class='container p-0  animate__animated  animate_fadeIn table-responsive'>
 				<table class="table caption-top  animate__animated  animate_fadeIn">
-					<caption>Lista produtos</caption>
+					
 					<thead>
 						<tr>
 
-							<th scope="col">Detalhes</th>
-							<th scope="col">Item/Prod.</th>
-							<th scope="col">Imagem</th>
+							<th scope="col " className='fw-medium'>Detalhes</th>
+							<th scope="col"  className='fw-medium'>Item-Produto</th>
+							<th scope="col"  className='fw-medium'>Thumb</th>
 							
 							<th class="text-end" scope="col">Ações</th>
 						</tr>
@@ -93,9 +94,9 @@ const TabelaProduto = () => {
 							return (
 								<tr key={val.id}>
 
-									<td className='fw-light pt-4 '><button type="button" onClick={() => editItem(val.id)} data-bs-target={"#detalhesProduto-" + id} data-bs-toggle="modal" class="btn btn-edigit"><i class="bi bi-card-checklist text-white"></i> </button></td>
-									<td className='fw-light pt-4 m-0'>{val.item}</td>
-									<td className='fw-light '><img class="card p-1" src="https://placehold.co/50x50" /></td>
+									<td className='fw-light pt-4 '><button type="button" onClick={() => editItem(val.id)} data-bs-target={"#detalhesProduto-" + id} data-bs-toggle="modal" class="btn btn-sm btn-edigit-secondary"><i class="bi bi-card-checklist text-white"></i> </button></td>
+									<td className='fw-light lh-1 pt-4 m-0'>{val.item}</td>
+									<td className='fw-light'><img class="card p-1" src="https://placehold.co/50x50" /></td>
 									
 
 
@@ -104,9 +105,9 @@ const TabelaProduto = () => {
                                         <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
 
 										<div class="btn-group" role="group" aria-label="Basic outlined example">
-											<button type="button"  data-bs-toggle="modal"   onClick={() => editItem(val.id)} data-bs-target={"#imagemProduto-" + id}  class="btn btn-sm btn-outline-primary"><i class="bi bi-images"></i></button>
-											<button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
-											<button type="button" data-bs-toggle="modal" onClick={() => deleteItem(val.id)} data-bs-target={"#deleteProduto-" + id} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
+											<button type="button"  data-bs-toggle="modal"   onClick={() => editItem(val.id)} data-bs-target={"#imagemProduto-" + id}  class="btn text-white  btn-sm btn-outline-primary btn-edigit m-1"><i class="bi bi-images"></i></button>
+											<button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn text-white  btn-sm btn-outline-primary btn-edigit m-1"><i class="bi bi-pencil-square"></i></button>
+											<button type="button" data-bs-toggle="modal" onClick={() => deleteItem(val.id)} data-bs-target={"#deleteProduto-" + id} class="btn text-white  btn-sm  btn-outline-primary btn-edigit m-1 "> <i class="bi bi-x-lg"></i></button>
 
 										</div>
 									</td>
@@ -136,6 +137,7 @@ const TabelaProduto = () => {
 			</div>
 			<DetalhesProdutos data_id={id}/>
 			<ModalEditProdutos data_id={id} />
+			<ImagemProdutos data_id={id}/>
 		</div>
 
 	)

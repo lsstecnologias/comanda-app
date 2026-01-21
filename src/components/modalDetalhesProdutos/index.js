@@ -6,6 +6,8 @@ const DetalhesProdutos = (data_id) => {
 	var data = { data_id };
 	var id = data.data_id;
 	var idEdit = id.data_id;
+	sessionStorage.setItem('modal_notas', 'hide');
+
 	const urlApi = 'http://10.10.10.6/';
 	const nameApi = 'api_comanda/';
 	const [dataProdutos, setDataProdutos] = useState([]);
@@ -48,8 +50,8 @@ console.log(data_filter)
 						{data_filter && data_filter.map((e) => {
 
 							return (
-								<div key={e.id}>
-										
+								<div key={e.id} class="container" >
+									
 								</div>
 
 							)
@@ -58,10 +60,7 @@ console.log(data_filter)
 
 					</div>
 
-					<div class="modal-footer">
-
-						<button type="button" class="btn w-100 btn-primary fw-normal" id="btnEditarProduto"> <i class="bi bi-pencil-square"></i> Editar</button>
-					</div>
+					
 				</div>
 
 			</div>

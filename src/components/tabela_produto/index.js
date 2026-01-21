@@ -59,7 +59,7 @@ const TabelaProduto = () => {
 				if (status == 'success') {
 					var data = JSON.parse(res);
 					setDataProdutos(data);
-
+					
 				} else {
 					alert("Error: parametros API!")
 
@@ -73,15 +73,15 @@ const TabelaProduto = () => {
 	}, [setDataProdutos]);
 
 	return (
-		<div class="container-fluid  mt-2 ">
+		<div class="container-fluid  mt-3 ">
 			<div class='container p-0  animate__animated  animate_fadeIn table-responsive'>
 				<table class="table caption-top  animate__animated  animate_fadeIn">
 					
 					<thead>
 						<tr>
 
-							<th scope="col " className='fw-medium'>Detalhes</th>
-							<th scope="col"  className='fw-medium'>Item-Produto</th>
+							<th scope="col " className='fw-medium'> <i class="bi bi-plus"></i>Detalhes</th>
+							<th scope="col"  className='fw-medium'>Produto - Item</th>
 							<th scope="col"  className='fw-medium'>Thumb</th>
 							
 							<th class="text-end" scope="col">Ações</th>
@@ -96,18 +96,16 @@ const TabelaProduto = () => {
 
 									<td className='fw-light pt-4 '><button type="button" onClick={() => editItem(val.id)} data-bs-target={"#detalhesProduto-" + id} data-bs-toggle="modal" class="btn btn-sm btn-edigit-secondary"><i class="bi bi-card-checklist text-white"></i> </button></td>
 									<td className='fw-light lh-1 pt-4 m-0'>{val.item}</td>
-									<td className='fw-light'><img class="card p-1" src="https://placehold.co/50x50" /></td>
-									
-
-
+									<td className='fw-light'>{val.thumb_img ? <img class="card p-1" src={val.thumb_img} width={50} height={50} />: <img class="card p-1" src="https://placehold.co/50x50" />}	</td>
+			
 									<td className='text-end pt-4'>
 										{/* <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                                         <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
 
 										<div class="btn-group" role="group" aria-label="Basic outlined example">
-											<button type="button"  data-bs-toggle="modal"   onClick={() => editItem(val.id)} data-bs-target={"#imagemProduto-" + id}  class="btn text-white  btn-sm btn-outline-primary btn-edigit m-1"><i class="bi bi-images"></i></button>
-											<button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn text-white  btn-sm btn-outline-primary btn-edigit m-1"><i class="bi bi-pencil-square"></i></button>
-											<button type="button" data-bs-toggle="modal" onClick={() => deleteItem(val.id)} data-bs-target={"#deleteProduto-" + id} class="btn text-white  btn-sm  btn-outline-primary btn-edigit m-1 "> <i class="bi bi-x-lg"></i></button>
+											<button type="button"  data-bs-toggle="modal"   onClick={() => editItem(val.id)} data-bs-target={"#imagemProduto-" + id}  class="btn text-white rounded btn-sm btn-outline-primary btn-edigit m-1"><i class="bi bi-images"></i></button>
+											<button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn text-white rounded btn-sm btn-outline-primary btn-edigit m-1"><i class="bi bi-pencil-square"></i></button>
+											<button type="button" data-bs-toggle="modal" onClick={() => deleteItem(val.id)} data-bs-target={"#deleteProduto-" + id} class="btn text-white rounded btn-sm  btn-outline-primary btn-edigit m-1 "> <i class="bi bi-x-lg"></i></button>
 
 										</div>
 									</td>

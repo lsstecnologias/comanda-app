@@ -5,7 +5,7 @@ const ImagemProdutos = (data_id) => {
 	var data = { data_id };
 	var id = data.data_id;
 	var idEdit = id.data_id;
-
+	const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
 	const [images, setImages] = useState([]);
 	const [dataImagem, setDataImagem] = useState([]);
 	const maxNumber = 69;
@@ -16,19 +16,20 @@ const ImagemProdutos = (data_id) => {
 
 		const formData = new FormData();
 		formData.append("thumb_img", data_url);
-
-		/*var xhr = new XMLHttpRequest();
+		formData.append("id", idEdit);
+	
+		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function () {
-			 if (xhr.readyState == 4) {
-				  var res = xhr.responseText;
+			if (xhr.readyState == 4) {
+				var res = xhr.responseText;
 
-				  console.log(res);
-			 }
+				console.log(res);
+			}
 		}
 
 		//fazer o envio do nosso request
-		xhr.open("POST", 'http://10.10.10.6/api/?app=uploadImagem');
-		xhr.send(formData);*/
+		xhr.open("POST", 'http://10.10.10.6/api_comanda/?api=uploadImagem');
+		xhr.send(formData);
 		setImages(imageList);
 	};
 
@@ -37,14 +38,14 @@ const ImagemProdutos = (data_id) => {
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 className="">Imagens do produto <i class="bi bi-image"></i></h5>
+						<h5 className="">Imagens do produto - {idEdit} <i class="bi bi-image"></i></h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
 					</div>
 
 					<div class="modal-body ">
 
 						<ImageUploading
-							
+
 							value={images}
 							onChange={onChange}
 							maxNumber={maxNumber}
@@ -62,9 +63,6 @@ const ImagemProdutos = (data_id) => {
 							}) => (
 								// write your building UI
 								<div className="upload__image-wrapper">
-									
-									
-								
 									{imageList.map((image, index) => (
 										<div key={index} className="image-item d-flex align-items-center flex-column p-3 mb-3 card">
 											<img src={image.data_url} alt="" width="200" class="rounded" />
@@ -79,7 +77,7 @@ const ImagemProdutos = (data_id) => {
 										onClick={onImageUpload}
 										{...dragProps}
 									>
-										 <i class="bi bi-upload p-2"></i> Selecionar imagem
+										<i class="bi bi-upload p-2"></i> Selecionar imagem
 									</button>
 								</div>
 

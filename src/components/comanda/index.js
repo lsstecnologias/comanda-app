@@ -37,7 +37,7 @@ const HeaderComanda = () => {
                      <p className="fs-2 mb-0 mt-0 t-0"> {sessao.estabelecimento_id ? sessao.estabelecimento_id : 'S/N'}</p>
 
                   </div>
-                  <div class="col-4 text-center  p-1">
+                  <div class="col-4 text-center p-1">
 
                      <p class="mb-0 pb-0 mt-0 lh-1">CLIENTE <i class="bi bi-clipboard2"></i></p>
                      <p className="fs-2 mb-0 mt-0 t-0"> {cod ? cod : 'S/N'}</p>

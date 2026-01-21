@@ -3,6 +3,7 @@ import 'animate.css';
 import axios from 'axios';
 import { useEffect, useState, useContext } from 'react';
 import ModalEditProdutos from '../ModalEditProdutos';
+import DetalhesProdutos from '../modalDetalhesProdutos';
 import ListPagina from "../../ListPagina";
 import Pagination from "../../ListPagina";
 import { UserContext } from '../context';
@@ -78,10 +79,10 @@ const TabelaProduto = () => {
 					<thead>
 						<tr>
 
-							<th scope="col">Cod.</th>
-							<th scope="col">Item</th>
-							<th scope="col">Desc</th>
-							<th scope="col">Categ</th>
+							<th scope="col">Detalhes</th>
+							<th scope="col">Item/Prod.</th>
+							<th scope="col">Imagem</th>
+							
 							<th class="text-end" scope="col">Ações</th>
 						</tr>
 					</thead>
@@ -92,17 +93,18 @@ const TabelaProduto = () => {
 							return (
 								<tr key={val.id}>
 
-									<td className='fw-light' scope="row">{val.cod_item}</td>
-									<td className='fw-light lh-1'>{val.item}</td>
-									<td className='fw-light lh-1'>{val.descricao}</td>
-									<td className='fw-light'>{val.categoria}</td>
+									<td className='fw-light pt-4 '><button type="button" onClick={() => editItem(val.id)} data-bs-target={"#detalhesProduto-" + id} data-bs-toggle="modal" class="btn btn-edigit"><i class="bi bi-card-checklist text-white"></i> </button></td>
+									<td className='fw-light pt-4 m-0'>{val.item}</td>
+									<td className='fw-light '><img class="card p-1" src="https://placehold.co/50x50" /></td>
+									
 
 
-									<td className='text-end'>
+									<td className='text-end pt-4'>
 										{/* <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                                         <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
 
 										<div class="btn-group" role="group" aria-label="Basic outlined example">
+											<button type="button"  data-bs-toggle="modal"   onClick={() => editItem(val.id)} data-bs-target={"#imagemProduto-" + id}  class="btn btn-sm btn-outline-primary"><i class="bi bi-images"></i></button>
 											<button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editProduto-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
 											<button type="button" data-bs-toggle="modal" onClick={() => deleteItem(val.id)} data-bs-target={"#deleteProduto-" + id} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
 
@@ -132,6 +134,7 @@ const TabelaProduto = () => {
 				/>
 
 			</div>
+			<DetalhesProdutos data_id={id}/>
 			<ModalEditProdutos data_id={id} />
 		</div>
 

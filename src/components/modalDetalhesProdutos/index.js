@@ -1,0 +1,71 @@
+import { useEffect, useState, useContext } from 'react';
+import 'animate.css';
+const $ = require("jquery");
+
+const DetalhesProdutos = (data_id) => {
+	var data = { data_id };
+	var id = data.data_id;
+	var idEdit = id.data_id;
+	const urlApi = 'http://10.10.10.6/';
+	const nameApi = 'api_comanda/';
+	const [dataProdutos, setDataProdutos] = useState([]);
+	useEffect(() => {
+
+		//REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
+		const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
+		if (id_estabelecimento !== 'null') {
+			const param_api_list_produto = `?api=getProdutos`;
+			var obj = { 'id': id_estabelecimento };
+			$.post(urlApi + nameApi + param_api_list_produto, obj, (res, status) => {
+				if (status == 'success') {
+					var data = JSON.parse(res);
+					setDataProdutos(data);
+
+				} else {
+					alert("Error: parametros API!")
+
+				}
+			})
+		} else {
+			alert("Nenhum cliente estabelecimento");
+			//Sair();
+		}
+
+	}, [setDataProdutos]);
+const data_filter = dataProdutos.filter(e => {return e.id === idEdit} );
+console.log(data_filter)
+	return (
+		<div class="modal fade" id={"detalhesProduto-" + idEdit} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticeditProduto" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="staticnvProduto"> Detalhes do item <i class="bi bi-card-checklist"></i></h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+					</div>
+
+					<div class="modal-body">
+
+						{data_filter && data_filter.map((e) => {
+
+							return (
+								<div key={e.id}>
+										
+								</div>
+
+							)
+						})}
+
+
+					</div>
+
+					<div class="modal-footer">
+
+						<button type="button" class="btn w-100 btn-primary fw-normal" id="btnEditarProduto"> <i class="bi bi-pencil-square"></i> Editar</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	)
+}
+export default DetalhesProdutos;

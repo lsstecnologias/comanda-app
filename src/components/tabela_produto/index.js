@@ -60,6 +60,7 @@ const TabelaProduto = () => {
 					var data = JSON.parse(res);
 					setDataProdutos(data);
 					
+					
 				} else {
 					alert("Error: parametros API!")
 
@@ -75,15 +76,12 @@ const TabelaProduto = () => {
 	return (
 		<div class="container-fluid  mt-3 ">
 			<div class='container p-0  animate__animated  animate_fadeIn table-responsive'>
-				<table class="table caption-top  animate__animated  animate_fadeIn">
-					
+				<table class="table caption-top  animate__animated  animate_fadeIn">		
 					<thead>
 						<tr>
-
-							<th scope="col " className='fw-medium'> <i class="bi bi-plus"></i>Detalhes</th>
-							<th scope="col"  className='fw-medium'>Produto - Item</th>
-							<th scope="col"  className='fw-medium'>Thumb</th>
-							
+							<th scope="col" className='fw-bold'> <i class="bi bi-plus"></i>Detalhes</th>
+							<th scope="col" className='fw-bold'>Produto - Item</th>
+							<th scope="col" className='fw-bold'>Thumb</th>							
 							<th class="text-end" scope="col">Ações</th>
 						</tr>
 					</thead>
@@ -95,7 +93,7 @@ const TabelaProduto = () => {
 								<tr key={val.id}>
 
 									<td className='fw-light pt-4 '><button type="button" onClick={() => editItem(val.id)} data-bs-target={"#detalhesProduto-" + id} data-bs-toggle="modal" class="btn btn-sm btn-edigit-secondary"><i class="bi bi-card-checklist text-white"></i> </button></td>
-									<td className='fw-light lh-1 pt-4 m-0'>{val.item}</td>
+									<td className='fw-normal lh-1 pt-4 m-0'>{val.item}</td>
 									<td className='fw-light'>{val.thumb_img ? <img class="card p-1" src={val.thumb_img} width={50} height={50} />: <img class="card p-1" src="https://placehold.co/50x50" />}	</td>
 			
 									<td className='text-end pt-4'>

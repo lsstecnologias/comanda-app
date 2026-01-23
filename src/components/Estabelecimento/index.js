@@ -3,7 +3,7 @@ import $ from 'jquery';
 import { v4 as uuidv4 } from 'uuid';
 import { useContext } from 'react';
 import { UserContext } from '../context';
-import Imagens from "../upload_imagens";
+
 import TabelaUsuario from "../tabela_usuario";
 
 import Header from '../header';

@@ -15,15 +15,10 @@ const ModalIndex = () => {
                     </div>
                     <div class="modal-body d-flex align-items-center justify-content-center ">
                      
-                            <div class="col-sm-12 container-fluid">
-                               
-                                        <img src={bg_logo} class="img-fluid mb-3 ml-3" alt="Example image" width="240" height="300" style={{ marginLeft: '43px' }} />
-                                   
-                                
-
-
-                            </div>
-                        
+                        <div class="col-sm-12 container-fluid">                               
+                            <img src={bg_logo} class="img-fluid mb-3 ml-3" alt="Example image" width="240" height="300" style={{ marginLeft: '43px' }} />                          
+                        </div>
+                    
 
                     </div>
 

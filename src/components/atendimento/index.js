@@ -85,9 +85,7 @@ const Atendimento = () => {
         if (status == 'success') {
 
           const data = JSON.parse(res);
-
           const { nome, cliente_id } = data[0] ?? false;
-
           if (nome && cliente_id) {
 
             inptBuscar.addClass("is-valid").removeClass("is-invalid");

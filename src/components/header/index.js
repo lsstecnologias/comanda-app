@@ -11,7 +11,7 @@ const Header = () => {
    //const [statusSessao,setStatusSessao] = useState("");
 
    //const [perfilSessao,setPerfilSessao] = useState("");
-   
+
    const { sessao, Sair, thumb_logo } = useContext(UserContext);
 
    return (
@@ -30,7 +30,6 @@ const Header = () => {
                      <li class="nav-item  dropdown">
                         <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Minha loja</Link>
                         <ul class="dropdown-menu fw-light">
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/imagens">Imagens</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/template-view">Template</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/qr">Gerar QR-Code</Link></li>
 
@@ -51,7 +50,7 @@ const Header = () => {
                         <ul class="dropdown-menu fw-light">
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/produto">Adicionar Item</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/categoria">Adicionar Categoria</Link></li>
-                          
+
                            <li><Link class="dropdown-item fw-light nav-link" to="">Pesquisas</Link></li>
                         </ul>
                      </li>
@@ -60,10 +59,10 @@ const Header = () => {
                            <>
                               <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administrador</Link>
                               <ul class="dropdown-menu fw-light">
-                                 
+
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/estabelecimento">Estabelecimento</Link></li>
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/listar-estabelecimento">Listar Estabelecimento</Link></li>
-                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/pagamento">Pagamento</Link></li>
+                                 <li><Link class="dropdown-item fw-light nav-link" to="/admin/pagamento">Pagamento</Link></li>
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/licenca">Licenças e chave</Link></li>
                               </ul>
                            </>
@@ -77,7 +76,7 @@ const Header = () => {
 
                </div>
                <div class="nav-item dropdown">
-                  
+
                   <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                      <button class="btn btn-primary btn-sm w-100 btn-edigit">  <small>Acesso <i class="bi bi-lock-fill"></i> </small></button>
                   </a>

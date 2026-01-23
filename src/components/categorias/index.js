@@ -7,9 +7,11 @@ const Categorias = () => {
     //PERIMITE NÃO EXIBIR MODAL DE NOTAS
     sessionStorage.setItem('modal_notas', 'hide');
     const { GetSession, sessao, Sair, status } = useContext(UserContext);
+    const [acao, setAcao] = useState("");
 
-    const [valorCateg, setCategorias] = useState();
- 
+    const [resultBuscar, setResultBuscar] = useState([]);
+
+    const [dataFind, setDataFind] = useState("");
     //const [listCateg, setListCateg] = useState(null);
     const [statusFormAddCateg, setStatusFormAddCateg] = useState("none");
 
@@ -21,17 +23,47 @@ const Categorias = () => {
 
     const urlApi = 'http://10.10.10.6/';
     const nameApi = 'api_comanda/';
+    const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
+
     const fecharModal = () => {
         window.location.reload();
     }
-
-    const addNvCategoria = (e) => {
+    const buscarCategoria = (e) => {
         e.preventDefault();
-        let categ_input = $("#inpt_categoria");
+        let categ_input = $("#inpt_acao");
+
+        if (categ_input.val()) {
+            $.post(urlApi + nameApi + '?api=findCategorias', { estabelecimento_id: estabelecimento_id, buscar: categ_input.val() }).done((res) => {
+                console.log(res)
+                if (res !== "false") {
+                    var data = JSON.parse(res);
+
+                    var result = data.find((element) => element);
+
+                    setResultBuscar(data)
+                    setDataFind(result.categoria)
+                    categ_input.addClass('is-valid').removeClass('is-invalid')
+
+                }else{
+                     categ_input.addClass('is-invalid').removeClass('is-valid')
+                      setDataFind('Não encontrado!')
+                }
+            })
+            
+        } else {
+            categ_input.addClass('is-invalid').removeClass('is-valid')
+            return
+        }
+    }
+    const addNvCategoria = (e) => {
+
+        e.preventDefault();
+
+        let categ_input = $("#inpt_acao");
         let data_atual = new Date();
         let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 
-        const obj_categoria = { id_estabelecimento: "", cod: "", categoria: "", data_post: "" };
+        const obj_categoria = { estabelecimento_id: "", cod: "", categoria: "", data_post: "" };
         //Valida hora-data e cod da categoria do item
         if (obj_categoria.data_post == "" && obj_categoria.cod == "") {
             obj_categoria.data_post = data_post;
@@ -40,8 +72,8 @@ const Categorias = () => {
 
         //Valida os campos
         if (categ_input.val()) {
-           categ_input.addClass("is-valid").removeClass("is-invalid");
-           obj_categoria.categoria = categ_input.val();
+            categ_input.addClass("is-valid").removeClass("is-invalid");
+            obj_categoria.categoria = categ_input.val();
 
         } else {
             setDisplayError("block");
@@ -51,39 +83,38 @@ const Categorias = () => {
 
         }
 
-      /*  if (categ_input.val()) {
+        /*if (categ_input.val()) {
             setDisplaySuccess("block");
             setMsgSuccess("Nova categoria adicionada!");
             window.location.reload();
             setDisplayError("none");
             setMsgError(null);
-
+ 
             categ_input.addClass("is-valid").removeClass("is-invalid");
         } else {
             setDisplayError("block");
             setMsgError("Preencha os campo!");
-
+ 
             setDisplaySuccess("none");
             setMsgSuccess(null);
-             
+                
             categ_input.addClass("is-invalid").removeClass("is-valid");
         }*/
 
-        const dataUser = sessionStorage.getItem("cod_estabelecimento");
-        var cod_estabelecimento = dataUser;
-         if(categ_input.val()){  
-            if (cod_estabelecimento !== 'null') {
+        const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
+
+        if (categ_input.val() && acao === 'text') {
+            if (estabelecimento_id !== 'null') {
                 const param_api_save_categoria = "?api=setCategorias";
-                obj_categoria.id_estabelecimento = cod_estabelecimento;
-                
+                obj_categoria.estabelecimento_id = estabelecimento_id;
+
                 $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
                     window.location.reload()
                     console.log(res)
-                    
+
                     if (status == 'success') {
                         setStatusFormAddCateg("none");
                         $("#addCategorias").val("");
-                    
 
                     } else {
                         setDisplayError("block");
@@ -103,22 +134,47 @@ const Categorias = () => {
 
     }
 
-
     return (
         <div class="container-fluid mt-4 categorias">
             <div class="container  p-0 ">
                 <h4 className="mb-4 mt-2 pb-2 ">Categorias <i class="bi bi-box-fill"></i></h4>
                 <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
-                 
                     {msgSuccess !== null && msgSuccess}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => { fecharModal() }}></button>
                 </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-text btn-edigit-secondary text-white" id="basic-addon1">Acão <i class="bi bi-chevron-down fw-bolder "></i></span>
+                            <select class="form-select" onChange={(event) => { setAcao(event.target.value) }}>
+                                <option value="search">BUSCAR </option>
+                                <option value="text">ADICIONAR </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <button class="btn btn-primary btn-sm btn-edigit " onClick={(e) => { acao === 'text' ? addNvCategoria(e) : buscarCategoria(e) }} type="button" > {acao === 'text' ? <i class="bi bi-plus-circle"></i> : <i class="bi bi-search"></i>}  </button>
+                            <input type={acao === 'text' ? 'text' : 'search'} list="lista-categorias" value={dataFind} onChange={(event) => { setDataFind(event.target.value) }} class="form-control animate__animated  animate__fadeIn " id="inpt_acao" autocomplete="off" placeholder={acao === 'text' ? 'Nova categoria' : 'Buscar'} aria-describedby="button-addon2" />
 
-                <div class="input-group  mb-3 mt-2" style={{ display: 'inline-flex' }}>
-                    <button class="btn btn-primary btn-sm btn-edigit" type="button" onClick={(e) => { addNvCategoria(e) }} > Adicionar <i class="bi bi-plus-circle-dotted "></i> </button>
-                    <input type="text" class="form-control animate__animated  animate__fadeIn " id="inpt_categoria" autocomplete="off"  placeholder="Nome da categoria" aria-label="Categoria do produto" aria-describedby="button-addon2" />
-                    
+                            <datalist id="lista-categorias">
+                                {resultBuscar.map((element) => {
+
+                                    return <option value={element.categoria}></option>
+
+                                })}
+
+
+                            </datalist>
+
+                        </div>
+                    </div>
+
                 </div>
+
+
+            </div>
+            <div class="container p-0">
                 <TabelaCategoria />
             </div>
         </div>

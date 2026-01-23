@@ -34,8 +34,8 @@ const DetalhesProdutos = (data_id) => {
 		}
 
 	}, [setDataProdutos]);
-const data_filter = dataProdutos.filter(e => {return e.id === idEdit} );
-console.log(data_filter)
+	const data_filter = dataProdutos.filter(e => { return e.id === idEdit });
+	console.log(data_filter)
 	return (
 		<div class="modal fade" id={"detalhesProduto-" + idEdit} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticeditProduto" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
@@ -51,7 +51,30 @@ console.log(data_filter)
 
 							return (
 								<div key={e.id} class="container" >
-									
+									<strong>Cod.</strong>
+									<div class="border p-2 lh-1">
+										{e.cod_item}
+									</div>
+									<strong>Item</strong>
+									<div class="border p-2 mt-2 lh-1">
+										{e.item}
+									</div>
+									<strong>Descrição</strong>
+									<div class="border p-2 mt-2 lh-1">
+										{e.descricao}
+									</div>
+									<strong>Categoria</strong>
+									<div class="border p-2 mt-2">
+										{e.categoria}
+									</div>
+									<strong>Quantidade</strong>
+									<div class="border p-2 mt-2 lh-1">
+										{e.quantidade}
+									</div>
+									<strong>Preço</strong>
+									<div class="border p-2 mt-2 lh-1">
+										R$ {e.preco}
+									</div>
 								</div>
 
 							)
@@ -60,7 +83,7 @@ console.log(data_filter)
 
 					</div>
 
-					
+
 				</div>
 
 			</div>

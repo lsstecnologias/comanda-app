@@ -6,7 +6,7 @@ import { NumericFormat } from 'react-number-format';
 import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context';
 import axios from "axios";
-import UploadImagens from "../upload_imagens";
+
 const $ = require("jquery");
 
 const Produto = () => {
@@ -14,15 +14,15 @@ const Produto = () => {
 	sessionStorage.setItem('modal_notas', 'hide');
 	const { GetSession, sessao, Sair, status } = useContext(UserContext);
 
-	const [valorPreco, setPreco] = useState();
-	const [valorItem, setItem] = useState();
-	const [valorDesc, setDesc] = useState();
-	const [valorQt, setQuant] = useState();
-	const [valorCateg, setCategorias] = useState();
+	const [valorPreco, setPreco] 		= useState();
+	const [valorItem, setItem] 	 		= useState();
+	const [valorDesc, setDesc] 			= useState();
+	const [valorQt, setQuant] 			= useState();
+	const [valorCateg, setCategorias] 	= useState();
 
-	const [sessaoUser, setSessaoUser] = useState([]);
-	const [listCateg, setListCateg] = useState(null);
-	const [selectedFileItem, setSelectedFileItem] = useState(null);
+	const [sessaoUser, setSessaoUser] 	= useState([]);
+	const [listCateg, setListCateg] 	= useState(null);
+	
 
 	//HOOK MSG ERROS
 	const [displayError, setDisplayError] = useState('none');

@@ -1,9 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import $ from 'jquery';
-import Imagens from "../upload_imagens";
+
 import Tabelausuarios from "../tabela_usuario";
-import axios from "axios";
-import Header from '../header';
+
 
 import { UserContext } from '../context';
 var md5 = require('md5');
@@ -18,6 +17,7 @@ const Usuarios = () => {
     const [nomeUser, setNomeUser] = useState("");
     const [emailLoginUser, setEmailLoginUser] = useState("");
     const [senhaUser, setSenhaUser] = useState("");
+    const [senhaReUser, setReSenhaUser] = useState("");
     const [perfilUser, setPerfilUser] = useState("");
     const [statusMsgErro, setStatusMsgErro] = useState("none");
     const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
@@ -32,9 +32,28 @@ const Usuarios = () => {
         let senha       = $("#senhaInput");
         let loginEmail  = $("#loginEmailInput");
         let perfil      = $("#perfilUser");
+        let re_senha    = $("#senhaReInput");
         let cod         = Math.floor(Math.random() * (777 + 0)) - 1;
 
-        var objUsuario = { cod_user: cod, cod_estabelecimento: "", nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
+        var objUsuario = { cod_user: cod,estabelecimento_id: "", nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
+        
+       
+        if (senhaUser !== undefined && senhaUser !== "" && senhaReUser !== undefined && senhaReUser !== "") {
+
+			if (senhaUser === senhaReUser) {
+				objUsuario.senha_user = md5(senhaUser);
+				senha.addClass("is-valid").removeClass("is-invalid");
+				re_senha.addClass("is-valid").removeClass("is-invalid");
+			} else {
+				senha.addClass("is-invalid").removeClass("is-valid");
+				re_senha.addClass("is-invalid").removeClass("is-valid");
+			}
+
+		} else {
+			objUsuario.senha_user = null;
+			senha.addClass("is-invalid").removeClass("is-valid");
+			re_senha.addClass("is-invalid").removeClass("is-valid");
+		}
 
         if (nomeUser !== undefined && nomeUser !== "") {
             nome.addClass("is-valid").removeClass("is-invalid");
@@ -52,14 +71,7 @@ const Usuarios = () => {
             objUsuario.login_email = null;
         }
 
-        if (senhaUser !== undefined && senhaUser !== "" && senhaUser.length >= 6) {
-            senha.addClass("is-valid").removeClass("is-invalid");
-            objUsuario.senha_user = md5(senhaUser);
-        } else {
-            senha.addClass("is-invalid").removeClass("is-valid");
-            objUsuario.senha_user = null;
-        }
-
+        
         if (perfilUser !== undefined && perfilUser !== "") {
             perfil.addClass("is-valid").removeClass("is-invalid");
             objUsuario.perfil_user = perfilUser;
@@ -79,12 +91,14 @@ const Usuarios = () => {
 
         const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
        
-        if (estabelecimento_id  !== 'null') {
+        if (estabelecimento_id  !== 'null' && estabelecimento_id == '75624fa') {
             const param_api_list_usuario = `?api=setUsuarios`;
-            objUsuario.cod_estabelecimento = estabelecimento_id ;
+            objUsuario.estabelecimento_id = estabelecimento_id ;
 
+         
+           
             $.post(urlApi + nameApi + param_api_list_usuario, objUsuario,(res, status) => {
-
+            
                 if (status === "success") {
                     if (res == "null" && res == null) {
                         setStatusMsgErro("block");
@@ -101,10 +115,10 @@ const Usuarios = () => {
                 } else {
                     alert("Error: parametros API")
                 }
-
-
-
             })
+
+
+            
         } else {
             alert("Nenhum cliente estabelecimento");
             Sair();
@@ -168,7 +182,7 @@ const Usuarios = () => {
                                 <select id="perfilUser" onChange={(e) => { setPerfilUser(e.target.value) }} class="form-select">
                                     <option>Selecione</option>
                                     <option value="u">Usuário</option>
-                                    <option value="a">Administrador</option>
+                                  
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -178,6 +192,10 @@ const Usuarios = () => {
                             <div class="mb-3">
                                 <label for="senhaInput" class="form-label">Senha</label>
                                 <input type="password" class="form-control w-20" id="senhaInput" onChange={(e) => { setSenhaUser(e.target.value) }} placeholder="Sua senha" autocomplete="off" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="senhaInput" class="form-label">Confimar Senha</label>
+                                <input type="password" class="form-control w-20" id="senhaReInput" onChange={(e) => { setReSenhaUser(e.target.value) }} placeholder="Confirmar senha" autocomplete="off" />
                             </div>
 
                         </div>

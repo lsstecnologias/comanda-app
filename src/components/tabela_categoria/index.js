@@ -23,7 +23,7 @@ const TabelaCategoria = () => {
 
    //PAGINACAO
    const [currentPage, setCurrentPage] = useState(1);
-   const [postsPerPage] = useState(6);
+   const [postsPerPage] = useState(10);
    const indexOfLastPost = currentPage * postsPerPage;
    const indexOfFirstPost = indexOfLastPost - postsPerPage;
    const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
@@ -71,29 +71,24 @@ const TabelaCategoria = () => {
       */
 
       const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
-     
+
       if (estabelecimento_id !== 'null') {
          const param_api_list_categ = `?api=getAllCategorias`;
 
          var obj = { 'id': estabelecimento_id };
 
          $.post(urlApi + nameApi + param_api_list_categ, obj, (res, status) => {
-          
-            var dataArr =  JSON.parse(res);
+
+            var dataArr = JSON.parse(res);
             if (Array.isArray(dataArr) && dataArr.length == 0) {
                setDisplayError("block");
                setMsgError("Adicione categoria para o seu item!");
-               
-               /* 
-                  setDisplaySuccess("none");
-                  setMsgSuccess(null);
-                  alert('Nenhuma categoria adicionada')
-                  */
-            
+
+
             } else {
                setData(dataArr);
-               
-            }            
+
+            }
 
          })
       } else {
@@ -104,70 +99,65 @@ const TabelaCategoria = () => {
    }, [setData]);
 
    return (
-      <div class="container-fluid m-0 p-0 ">
+      <div class="container-fluid m-0 p-0 mt-4 ">
          <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
             <i class="bi bi-check-circle p-2"></i>
             {msgSuccess !== null && msgSuccess}
 
          </div>
 
-         
-            <table class="table m-0 p-0  table-responsive   animate__animated animate__fadeIn">
-               <caption>Lista categorias</caption>
-               <thead>
-                  <tr>
 
-                     <th scope="col">Cod. </th>
-                     <th scope="col">Categoria</th>
-                     <th scope="col">Data</th>
-                     <th colSpan={2} class="text-end" scope="col">Ações</th>
-                  </tr>
-               </thead>
-               <tbody >
-                  {currentPosts && currentPosts.map((val) => {
-                     return (
-                        <tr key={val.id}>
-                           <th scope="row" className='fw-light'>{val.cod}</th>
-
-                           <td className='fw-light'>{val.categoria}</td>
-                           <td className='fw-light'>{val.data_post}</td>
-
-                           <td className='text-end'>
-                              {/*  <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
+         <table class="table m-0 p-0  table-responsive   animate__animated animate__fadeIn">
+            <caption>Lista categorias</caption>
+            <thead>
+               <tr>
+                  <th scope="col">Cod. </th>
+                  <th scope="col">Categorias</th>
+                  <th colSpan={2} class="text-end" scope="col">Ações</th>
+               </tr>
+            </thead>
+            <tbody >
+               {currentPosts && currentPosts.map((val) => {
+                  return (
+                     <tr key={val.id}>
+                        <th scope="row" className='fw-normal'>{val.cod}</th>
+                        <td className='fw-normal'>{val.categoria}</td>
+                        <td className='text-end'>
+                           {/*  <button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                               <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
-                              <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                 <button type="button" data-bs-toggle="modal" onClick={() => editCateg(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
-                                 <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary"> <i class="bi bi-x-lg"></i></button>
-                              </div>
-                           </td>
-                        </tr>
-                     )
-                  })}
+                           <div class="btn-group" role="group" aria-label="Basic outlined example">
+                              <button type="button" data-bs-toggle="modal" onClick={() => editCateg(val.id)} data-bs-target={"#editCategoria-" + id} class="btn text-white rounded btn-sm btn-outline-primary btn-edigit m-1"><i class="bi bi-pencil-square"></i></button>
+                              <button type="button" onClick={() => deleteItem(val.id)} class="btn text-white rounded btn-sm btn-outline-primary btn-edigit m-1"> <i class="bi bi-x-lg"></i></button>
+                           </div>
+                        </td>
+                     </tr>
+                  )
+               })}
 
-               </tbody>
-            </table>
-            {data.length == 0 &&
+            </tbody>
+         </table>
+         {data.length == 0 &&
 
-               <div class="d-flex align-items-center alert alert-light fade show" style={{ display: displayError }} role="alert">
-                
-                  <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
-                     <span class="visually-hidden">Loading...</span>
-                  </div>
+            <div class="d-flex align-items-center alert alert-light fade show" style={{ display: displayError }} role="alert">
 
-                  {msgError !== null && msgError}
-
+               <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
+                  <span class="visually-hidden">Loading...</span>
                </div>
-            }
-            <ModalEditCategorias data_id={id} />
-           
-            <Pagination
-               postsPerPage={postsPerPage}
-               totalPosts={data.length}
-               setCurrentPage={setCurrentPage}
-               currentPage={currentPage}
-            />
 
-         
+               {msgError !== null && msgError}
+
+            </div>
+         }
+         <ModalEditCategorias data_id={id} />
+
+         <Pagination
+            postsPerPage={postsPerPage}
+            totalPosts={data.length}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+         />
+
+
       </div>
 
    )

@@ -6,7 +6,7 @@ import Comanda from './components/comanda';
 import NovaComanda from './components/comanda';
 import Produto from './components/produtos';
 import Usuarios from './components/usuarios';
-import UploadImagens from './components/upload_imagens';
+
 import AppComponent from './AppComponent';
 import Acesso from './components/acesso';
 import Categorias from './components/categorias';
@@ -60,8 +60,7 @@ function App() {
             <Route path="agendamento-pedido" element={<AgendamentoPedido />} />
             <Route path="estabelecimento" element={<Estabelecimento />} />
             <Route path="listar-estabelecimento" element={<TabelaCliente />} />
-            <Route path="usuario" element={<Usuarios />} />
-            <Route path="imagens" element={<UploadImagens />} />
+            <Route path="usuario" element={<Usuarios />} />           
             <Route path="categoria" element={<Categorias />} />            
             <Route path="template-view" element={<Template />} />
             <Route path="pagamento" element={<Pagamento />} />

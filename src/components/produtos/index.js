@@ -1,28 +1,27 @@
-import TabelaProduto from "../tabela_produto";
-import Header from '../header';
-import './style.css';
 
+import TabelaProduto from "../tabela_produto";
+import './style.css';
 import { NumericFormat } from 'react-number-format';
 import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context';
-import axios from "axios";
 
 const $ = require("jquery");
 
 const Produto = () => {
 	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+	const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
 	sessionStorage.setItem('modal_notas', 'hide');
 	const { GetSession, sessao, Sair, status } = useContext(UserContext);
 
-	const [valorPreco, setPreco] 		= useState();
-	const [valorItem, setItem] 	 		= useState();
-	const [valorDesc, setDesc] 			= useState();
-	const [valorQt, setQuant] 			= useState();
-	const [valorCateg, setCategorias] 	= useState();
+	const [valorPreco, setPreco] = useState();
+	const [valorItem, setItem] = useState();
+	const [valorDesc, setDesc] = useState();
+	const [valorQt, setQuant] = useState();
+	const [valorCateg, setCategorias] = useState();
 
-	const [sessaoUser, setSessaoUser] 	= useState([]);
-	const [listCateg, setListCateg] 	= useState(null);
-	
+	const [sessaoUser, setSessaoUser] = useState([]);
+	const [listCateg, setListCateg] = useState(null);
+
 
 	//HOOK MSG ERROS
 	const [displayError, setDisplayError] = useState('none');
@@ -30,13 +29,6 @@ const Produto = () => {
 	const [msgError, setMsgError] = useState(null);
 	const [msgSuccess, setMsgSuccess] = useState(null);
 
-
-	const urlApi = 'http://10.10.10.6/';
-	const nameApi = 'api_comanda/';
-
-	const [selectedFileUser, setSelectedFileUser] = useState(null);
-	var data_atual = new Date();
-	//var data_image_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 	useEffect(() => {
 
 
@@ -46,7 +38,7 @@ const Produto = () => {
 			if (estabelecimento_id !== 'null') {
 				const param_api_list_categ = `?api=getAllCategorias`;
 				var obj = { 'id': estabelecimento_id };
-				$.post(urlApi + nameApi + param_api_list_categ, obj, (res, status) => {
+				$.post(apiUrl + param_api_list_categ, obj, (res, status) => {
 					var dataArr = JSON.parse(res);
 					if (Array.isArray(dataArr) && dataArr.length > 0) {
 						setListCateg(dataArr);
@@ -65,56 +57,7 @@ const Produto = () => {
 
 	}, [setListCateg, setSessaoUser]);
 
-	/*
-	
-		const carregarImagens = () => {
-	
-			const param_api_save_img = "?api=setUploadFile";
-			let inputFoto = $("#inputFoto");
-	
-	
-			if (selectedFileUser !== null) {
-	
-				const formData = new FormData();
-				formData.append("arquivo", selectedFileUser);
-				formData.append("usuario", JSON.stringify(sessaoUser));
-				formData.append("produto", JSON.stringify(listProduto))
-				
-				var xhr = new XMLHttpRequest();
-				xhr.onreadystatechange = function () {
-					if (xhr.readyState == 4) {
-						var res = xhr.responseText;
-						if (res) {
-							inputFoto.addClass("is-valid").removeClass("is-invalid").val(null);
-	
-							let data = JSON.parse(res)
-							if (data.status) {
-								inputFoto.addClass("is-valid").removeClass("is-invalid").val(null);
-	
-	
-							} else {
-								inputFoto.addClass("is-invalid").removeClass("is-valid");
-	
-							}
-							console.log(res)
-	
-						} else {
-							inputFoto.addClass("is-invalid").removeClass("is-valid");
-						}
-					}
-				}
-	
-				//fazer o envio do nosso request
-				xhr.open("POST", urlApi + nameApi + param_api_save_img);
-				xhr.send(formData);
-				// inputFoto.addClass("is-valid").removeClass("is-invalid");
-			} else {
-				inputFoto.addClass("is-invalid").removeClass("is-valid");
-	
-			}
-	
-	
-		}*/
+
 	const addNovoProduto = (e) => {
 		e.preventDefault();
 		//imgItemInput	
@@ -183,78 +126,42 @@ const Produto = () => {
 		//VERIFICA SE EXISTE O CODIGO DO ESTABELECIMENTO PARA REALIZAR A POSTAGEM
 
 		if (estabelecimento_id !== 'null') {
-			// var imgInpt = $("#imgItemInput");
-			/*const param_api_save_img = "?api=setUploadFileItem";
-			
-			if (selectedFileItem !== null) {
 
-				const formData = new FormData();
-
-				formData.append("arquivo", selectedFileItem);
-				formData.append("usuario", JSON.stringify(sessao));
-				formData.append("produto", JSON.stringify(objProduto));
-
-				var xhr = new XMLHttpRequest();
-				xhr.onreadystatechange = function () {
-					if (xhr.readyState == 4) {
-						var res = xhr.responseText;
-
-						if (res) {
-							let data = JSON.parse(res)
-							
-							if (data.status) {
-								imgInpt.addClass("is-valid").removeClass("is-invalid");
-								setSelectedFileItem("")
-							} else {
-								imgInpt.addClass("is-invalid").removeClass("is-valid");
-
-							}
-
-						}
-					}
-				}
-				xhr.open("POST", urlApi + nameApi + param_api_save_img);
-				xhr.send(formData);
-				imgInpt.addClass("is-valid").removeClass("is-invalid");
-
-			}else{
-				imgInpt.addClass("is-invalid").removeClass("is-valid");
-			}*/
 			//POST ITEM
 			const param_api_save_produto = '?api=setProdutos';
-			if(objProduto.item !== null  && objProduto.desc!== null  && objProduto.qtd !== null && objProduto.preco !== null  && objProduto.categoria_id !== null )
-			$.post(urlApi + nameApi + param_api_save_produto, objProduto, (res, status) => {
-				var btnAdicionar = $('#btnAdicionar');
-				console.log(res);
-				if (status == 'success') {
+			if (objProduto.item !== null && objProduto.desc !== null && objProduto.qtd !== null && objProduto.preco !== null && objProduto.categoria_id !== null)
+				$.post(apiUrl + param_api_save_produto, objProduto, (res, status) => {
 					var btnAdicionar = $('#btnAdicionar');
-					
-					if (res !== "1") {
-						setDisplayError("block");
-						setMsgError("Preencha os campos!");
+					console.log(res);
+					if (status == 'success') {
+						var btnAdicionar = $('#btnAdicionar');
 
-						setDisplaySuccess("none");
-						setMsgSuccess(null);
-						btnAdicionar.attr({ "disabled": false });
+						if (res !== "1") {
+							setDisplayError("block");
+							setMsgError("Preencha os campos!");
+
+							setDisplaySuccess("none");
+							setMsgSuccess(null);
+							btnAdicionar.attr({ "disabled": false });
+
+						} else {
+							setDisplaySuccess("block");
+							setMsgSuccess("Novo item adicionado!");
+							setDisplayError("none");
+							setMsgError(null);
+							btnAdicionar.attr({ "disabled": "disabled" });
+						}
 
 					} else {
-						setDisplaySuccess("block");
-						setMsgSuccess("Novo item adicionado!");
-						setDisplayError("none");
-						setMsgError(null);
-						btnAdicionar.attr({ "disabled": "disabled" });
+						setDisplayError("block");
+						setMsgError("Preencha os campos!");
+						btnAdicionar.attr({ "disabled": false });
+
 					}
 
-				} else {
-					setDisplayError("block");
-					setMsgError("Preencha os campos!");
-					btnAdicionar.attr({ "disabled": false });
-
-				}
 
 
-
-			})
+				})
 		} else {
 			alert("Nenhum cliente estabelecimento");
 			Sair();
@@ -272,7 +179,7 @@ const Produto = () => {
 		<div className="container-fluid mt-3 produtos">
 			<div className="container p-0 animate__animated  animate__fadeIn">
 				<div class="row d-flex align-items-center  justify-content-between">
-					<div class="col-sm-5"><h2> Produtos <i class="bi bi-box-fill"></i></h2></div>
+					<div class="col-sm-5"><h3> Produtos <i class="bi bi-box-fill"></i></h3></div>
 					<div class="col-sm-5 text-end">
 
 						<button type="button" class="btn btn-sm btn-primary btn-edigit" data-bs-toggle="modal" data-bs-target="#nvProduto">

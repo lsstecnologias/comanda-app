@@ -6,6 +6,7 @@ import 'animate.css';
 const Categorias = () => {
     //PERIMITE NÃO EXIBIR MODAL DE NOTAS
     sessionStorage.setItem('modal_notas', 'hide');
+    const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
     const { GetSession, sessao, Sair, status } = useContext(UserContext);
     const [acao, setAcao] = useState("");
 
@@ -21,8 +22,6 @@ const Categorias = () => {
     const [msgError, setMsgError] = useState(null);
     const [msgSuccess, setMsgSuccess] = useState(null);
 
-    const urlApi = 'http://10.10.10.6/';
-    const nameApi = 'api_comanda/';
     const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
     const fecharModal = () => {
@@ -33,7 +32,7 @@ const Categorias = () => {
         let categ_input = $("#inpt_acao");
 
         if (categ_input.val()) {
-            $.post(urlApi + nameApi + '?api=findCategorias', { estabelecimento_id: estabelecimento_id, buscar: categ_input.val() }).done((res) => {
+            $.post(apiUrl + '?api=findCategorias', { estabelecimento_id: estabelecimento_id, buscar: categ_input.val() }).done((res) => {
                 console.log(res)
                 if (res !== "false") {
                     var data = JSON.parse(res);
@@ -44,12 +43,12 @@ const Categorias = () => {
                     setDataFind(result.categoria)
                     categ_input.addClass('is-valid').removeClass('is-invalid')
 
-                }else{
-                     categ_input.addClass('is-invalid').removeClass('is-valid')
-                      setDataFind('Não encontrado!')
+                } else {
+                    categ_input.addClass('is-invalid').removeClass('is-valid')
+                    setDataFind('Não encontrado!')
                 }
             })
-            
+
         } else {
             categ_input.addClass('is-invalid').removeClass('is-valid')
             return
@@ -107,10 +106,8 @@ const Categorias = () => {
             if (estabelecimento_id !== 'null') {
                 const param_api_save_categoria = "?api=setCategorias";
                 obj_categoria.estabelecimento_id = estabelecimento_id;
-
-                $.post(urlApi + nameApi + param_api_save_categoria, obj_categoria, (res, status) => {
+                $.post(apiUrl + param_api_save_categoria, obj_categoria, (res, status) => {
                     window.location.reload()
-                    console.log(res)
 
                     if (status == 'success') {
                         setStatusFormAddCateg("none");
@@ -154,17 +151,11 @@ const Categorias = () => {
                     </div>
                     <div class="col-sm-6">
                         <div class="input-group">
-                            <button class="btn btn-primary btn-sm btn-edigit " onClick={(e) => { acao === 'text' ? addNvCategoria(e) : buscarCategoria(e) }} type="button" > {acao === 'text' ? <i class="bi bi-plus-circle"></i> : <i class="bi bi-search"></i>}  </button>
+
                             <input type={acao === 'text' ? 'text' : 'search'} list="lista-categorias" value={dataFind} onChange={(event) => { setDataFind(event.target.value) }} class="form-control animate__animated  animate__fadeIn " id="inpt_acao" autocomplete="off" placeholder={acao === 'text' ? 'Nova categoria' : 'Buscar'} aria-describedby="button-addon2" />
-
+                            <button class="btn btn-primary btn-sm btn-edigit " onClick={(e) => { acao === 'text' ? addNvCategoria(e) : buscarCategoria(e) }} type="button" > {acao === 'text' ? <i class="bi bi-plus-circle"></i> : <i class="bi bi-search"></i>}  </button>
                             <datalist id="lista-categorias">
-                                {resultBuscar.map((element) => {
-
-                                    return <option value={element.categoria}></option>
-
-                                })}
-
-
+                                {resultBuscar.map((element) => { return <option value={element.categoria}></option> })}
                             </datalist>
 
                         </div>

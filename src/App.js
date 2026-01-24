@@ -57,9 +57,7 @@ function App() {
           <Route path="/admin" element={<AppComponent />} >
 
             <Route path="produto" element={<Produto />} />
-            <Route path="agendamento-pedido" element={<AgendamentoPedido />} />
-            <Route path="estabelecimento" element={<Estabelecimento />} />
-            <Route path="listar-estabelecimento" element={<TabelaCliente />} />
+            <Route path="agendamento-pedido" element={<AgendamentoPedido />} />               
             <Route path="usuario" element={<Usuarios />} />           
             <Route path="categoria" element={<Categorias />} />            
             <Route path="template-view" element={<Template />} />

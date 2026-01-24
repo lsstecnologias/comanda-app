@@ -2,7 +2,7 @@ import ModalFormEstabelecimento from './modal_form_estabelecimento';
 import ModalIndex from './modal_index';
 
 const ModalPrincipal = () => {
-
+	
 	
 		//atualizar status do estabelecimento
 		//

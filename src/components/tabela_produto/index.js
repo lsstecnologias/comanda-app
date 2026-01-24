@@ -1,5 +1,5 @@
+ 
 import 'animate.css';
-
 import axios from 'axios';
 import { useEffect, useState, useContext } from 'react';
 import ModalEditProdutos from '../ModalEditProdutos';
@@ -12,6 +12,7 @@ import 'animate.css';
 const $ = require("jquery");
 
 const TabelaProduto = () => {
+	const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO; 
 	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
 	sessionStorage.setItem('modal_notas', 'hide');
 	const { GetSession, sessao, Sair, status } = useContext(UserContext);
@@ -34,10 +35,6 @@ const TabelaProduto = () => {
 	<ListPagina />
 
 
-	const urlApi = 'http://10.10.10.6/';
-	const nameApi = 'api_comanda/';
-
-
 	const deleteItem = (id) => {
 		/* if (id !== null || id !== undefined) {
 		 const paramApi_delete_item = '?api=deleteItem';
@@ -55,7 +52,7 @@ const TabelaProduto = () => {
 		if (id_estabelecimento !== 'null') {
 			const param_api_list_produto = `?api=getProdutos`;
 			var obj = { 'id': id_estabelecimento };
-			$.post(urlApi + nameApi + param_api_list_produto, obj, (res, status) => {
+			$.post(apiUrl + param_api_list_produto, obj, (res, status) => {
 				if (status == 'success') {
 					var data = JSON.parse(res);
 					setDataProdutos(data);

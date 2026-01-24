@@ -10,9 +10,9 @@ import Pagination from "../../ListPagina";
 
 const Tabelausuarios = () => {
 	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+	const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
 	sessionStorage.setItem('modal_notas', 'hide');
-	const urlApi = 'http://10.10.10.6/';
-	const nameApi = 'api_comanda/';
+	
 	//CONTINUA AQUI....
 	const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
@@ -34,8 +34,8 @@ const Tabelausuarios = () => {
 
 	const deleteUsuario = (id) => {
 		if (id !== null || id !== undefined) {
-			let objId = { "id": id };
-			$.post(urlApi + nameApi + paramApi_delete_item, objId, () => { window.location.reload() })
+			
+			$.post(apiUrl+ paramApi_delete_item, { "id": id }, () => { window.location.reload() })
 		}
 	}
 
@@ -43,26 +43,18 @@ const Tabelausuarios = () => {
 
 		const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
-
 		if (estabelecimento_id !== 'null') {
 			const param_api_list_usuario = `?api=getUsuarios`;
-			var obj = { 'id': estabelecimento_id };
-
-			$.post(urlApi + nameApi + param_api_list_usuario, obj, (res, status) => {
+			$.post(apiUrl+ param_api_list_usuario, { 'id': estabelecimento_id }, (res, status) => {
 				if (status == 'success') {
 					var data = JSON.parse(res);
 					setUsuarios(data);
 				}
-
-
 			})
 		} else {
 			alert("Nenhum cliente estabelecimento");
 			Sair();
 		}
-
-
-
 
 	}, [setCodUser, setUsuarios]);
 
@@ -70,14 +62,14 @@ const Tabelausuarios = () => {
 		<div class="table-responsive mt-3">
 
 			<table class="table caption-top animate__animated animate__fadeIn ">
-				
+
 				<thead>
 					<tr>
 
-						<th scope="col">Cod. </th>
+						<th scope="col">Cod.Est </th>
+						<th scope="col">Cod.Usr </th>
 						<th scope="col">Nome</th>
 						<th scope="col">Email</th>
-						
 						<th scope="col" class="text-end">Ações</th>
 					</tr>
 				</thead>
@@ -87,13 +79,14 @@ const Tabelausuarios = () => {
 						return (
 							<tr key={e.id}>
 								<th scope="row">{e.estabelecimento_id}</th>
+								<td className='fw-normal'>{e.cod}</td>
 								<td className='fw-normal'>{e.nome}</td>
 								<td className='fw-normal'>{e.email}</td>
-								
+
 								<td className="text-end">
 									<div class="btn-group" role="group" aria-label="Basic outlined example">
-										<button type="button" data-bs-toggle="modal" onClick={() => editItem(e.id)} data-bs-target={"#editUsuario-" + id}  class="btn text-white rounded btn-sm btn-outline-primary btn-edigit m-1"><i class="bi bi-pencil-square"></i></button>
-										<button type="button"  onClick={() => deleteUsuario(e.id)}  class="btn text-white rounded btn-sm btn-outline-primary btn-edigit m-1"> <i class="bi bi-x-lg"></i></button>
+										<button type="button" data-bs-toggle="modal" onClick={() => editItem(e.id)} data-bs-target={"#editUsuario-" + id} class="btn text-white rounded btn-sm btn-outline-primary btn-edigit m-1"><i class="bi bi-pencil-square"></i></button>
+										<button type="button" onClick={() => deleteUsuario(e.id)} class="btn text-white rounded btn-sm btn-outline-primary btn-edigit m-1"> <i class="bi bi-x-lg"></i></button>
 									</div>
 								</td>
 

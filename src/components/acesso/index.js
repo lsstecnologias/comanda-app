@@ -4,8 +4,10 @@ import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context';
 import 'animate.css';
 import md5 from 'md5';
+const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO; 
 const Acesso = () => {
     //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+   
     sessionStorage.setItem('modal_notas', 'hide');
     const [emailLogin, setEmailLogin] = useState(null);
     const [senha, setSenha] = useState(null);
@@ -15,11 +17,9 @@ const Acesso = () => {
     const [displaySuccess, setDisplaySuccess] = useState('none');
     const [msgError, setMsgError] = useState(null);
     const [msgSuccess, setMsgSuccess] = useState(null);
-
+   
     var ObjSessao = { email_login: "", senha: "" };
 
-    const urlApi = 'http://10.10.10.6/';
-    const nameApi = 'api_comanda/';
     const param_api_get_usuarios = "?api=getLoginUsuarios";
     useEffect(() => {
         // Registrar o cliente estabelecimento, qunando for liberar o acesso
@@ -58,7 +58,7 @@ const Acesso = () => {
 
         }
         //REQUISIÇAO - REALIZAR A REQUISIÇAO GET BACKEND SEM PASSAR O ID
-        fetch(urlApi + nameApi + param_api_get_usuarios)
+        fetch(apiUrl + param_api_get_usuarios)
             .then(async (e) => {
                 return await e.json();
             }).then(res => {

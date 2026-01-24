@@ -4,6 +4,7 @@ import { UserContext } from '../context';
 import Comanda from './comanda';
 import $ from 'jquery';
 const HeaderComanda = () => {
+   const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
    sessionStorage.setItem('modal_notas', 'hide');
    const { cod } = useParams();
 
@@ -12,15 +13,13 @@ const HeaderComanda = () => {
    const [exibirComanda,setExibirComanda] = useState(false);
 
    if (cod) {
-      const urlApi = 'http://10.10.10.6/';
-      const nameApi = 'api_comanda/';
-
+     
       const data_atual = new Date();
       const data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
 
       const listarComanda = () => {
          const obj = { estabelecimento_id: sessao.estabelecimento_id, cliente_id: cod, funcionario_id: sessao.cod, data_post: data_post }
-         $.post(urlApi + nameApi + '?api=setComandas', obj)
+         $.post(apiUrl + '?api=setComandas', obj)
          .done(() => {
             setExibirComanda(true);
             $('#btn-listarComanda').addClass('d-none');

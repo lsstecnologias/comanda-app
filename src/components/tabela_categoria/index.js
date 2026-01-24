@@ -10,6 +10,7 @@ const $ = require("jquery");
 
 const TabelaCategoria = () => {
    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
+   const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
    sessionStorage.setItem('modal_notas', 'hide');
    const { GetSession, sessao, Sair, status } = useContext(UserContext);
    const [data, setData] = useState([]);
@@ -29,14 +30,11 @@ const TabelaCategoria = () => {
    const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
    <ListPagina />
 
-   const urlApi = 'http://10.10.10.6/';
-   const nameApi = 'api_comanda/';
-
    const param_api_delete_categoria = '?api=deleteCategorias';
    const deleteItem = (id) => {
       if (id !== null || id !== undefined) {
-         let objId = { "id": id };
-         $.post(urlApi + nameApi + param_api_delete_categoria, objId, () => { window.location.reload() })
+        
+         $.post( apiUrl + param_api_delete_categoria,{ "id": id } , () => { window.location.reload() })
       }
    }
    const editCateg = (id) => { setId(id); }
@@ -73,11 +71,9 @@ const TabelaCategoria = () => {
       const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
       if (estabelecimento_id !== 'null') {
+         
          const param_api_list_categ = `?api=getAllCategorias`;
-
-         var obj = { 'id': estabelecimento_id };
-
-         $.post(urlApi + nameApi + param_api_list_categ, obj, (res, status) => {
+         $.post(apiUrl+ param_api_list_categ, { 'id': estabelecimento_id }, (res, status) => {
 
             var dataArr = JSON.parse(res);
             if (Array.isArray(dataArr) && dataArr.length == 0) {

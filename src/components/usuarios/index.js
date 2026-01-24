@@ -1,17 +1,14 @@
 import { useEffect, useState, useContext } from "react";
 import $ from 'jquery';
-
 import Tabelausuarios from "../tabela_usuario";
-
-
 import { UserContext } from '../context';
-var md5 = require('md5');
 
+var md5 = require('md5');
 
 const Usuarios = () => {
     //PERIMITE NÃO EXIBIR MODAL DE NOTAS
     sessionStorage.setItem('modal_notas', 'hide');
-
+    const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
     const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
     const [nomeUser, setNomeUser] = useState("");
@@ -21,9 +18,6 @@ const Usuarios = () => {
     const [perfilUser, setPerfilUser] = useState("");
     const [statusMsgErro, setStatusMsgErro] = useState("none");
     const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
-
-    const urlApi = 'http://10.10.10.6/';
-    const nameApi = 'api_comanda/';
 
     const addNovoUsuario = (e) => {
         e.preventDefault();
@@ -97,7 +91,7 @@ const Usuarios = () => {
 
          
            
-            $.post(urlApi + nameApi + param_api_list_usuario, objUsuario,(res, status) => {
+            $.post(apiUrl+ param_api_list_usuario, objUsuario,(res, status) => {
             
                 if (status === "success") {
                     if (res == "null" && res == null) {
@@ -145,7 +139,7 @@ const Usuarios = () => {
 
             <div className="container p-0 animate__animated  animate__fadeIn">
 				<div class="row d-flex align-items-center  justify-content-between">
-					<div class="col-sm-7 "> <h4 className="mb-2 mt-2 pb-2">Usuários  <i class="bi bi-person-fill"></i> </h4></div>
+					<div class="col-sm-7 "> <h3 className="mb-2 mt-2 pb-2">Usuários  <i class="bi bi-person-fill"></i> </h3></div>
 					<div class="col-sm-5 text-end">
 
 						<button type="button" class="btn btn-sm btn-primary btn-edigit mt-2" data-bs-toggle="modal" data-bs-target="#novoUsuario">

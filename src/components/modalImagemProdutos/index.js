@@ -5,6 +5,7 @@ const ImagemProdutos = (data_id) => {
 	var data = { data_id };
 	var id = data.data_id;
 	var idEdit = id.data_id;
+	const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
 	const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
 	const [images, setImages] = useState([]);
 	const [dataImagem, setDataImagem] = useState([]);
@@ -23,12 +24,11 @@ const ImagemProdutos = (data_id) => {
 			if (xhr.readyState == 4) {
 				var res = xhr.responseText;
 
-				console.log(res);
 			}
 		}
 
 		//fazer o envio do nosso request
-		xhr.open("POST", 'http://10.10.10.6/api_comanda/?api=uploadImagem');
+		xhr.open("POST", apiUrl+'?api=uploadImagem');
 		xhr.send(formData);
 		setImages(imageList);
 	};

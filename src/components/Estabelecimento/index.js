@@ -4,16 +4,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { useContext } from 'react';
 import { UserContext } from '../context';
 
-import TabelaUsuario from "../tabela_usuario";
-
-import Header from '../header';
-import TabelaCliente from "../tabela_estabelecimento";
-
 var md5 = require('md5');
 
 
 const Estabelecimento = () => {
 	//PERIMITE NÃO EXIBIR MODAL INICIAL DE NOTAS
+	const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
 	sessionStorage.setItem('modal_notas', 'hide');
 	const [nomeUser, setNomeUser] = useState("");
 	const [emailLoginUser, setEmailLoginUser] = useState("");
@@ -123,7 +119,7 @@ const Estabelecimento = () => {
 		const param_api_set_clientes = "?api=setUsuarios";
 		//REGISTRA OS DADOS NA TABELA DE ESTABELECIMENTO/CLIENTE
 		/**/
-		$.post(urlApi + nameApi + param_api_set_clientes, obj_cli, (res, status) => {
+		$.post(apiUrl + param_api_set_clientes, obj_cli, (res, status) => {
 			
 			if (status == "success") {
 				if (res == 1) {
@@ -164,40 +160,8 @@ const Estabelecimento = () => {
 	}
 
 
-
-	useEffect(() => {
-		//$('#cnpj').mask('00.000.000/0000-00')
-		/*$('#rg').mask('00.000.000-00');
-		$('#cep').mask('00000000');
-		$('#cpf').mask('000.000.000-00');
-
-		
-		const paramApi_save_usuario = "?api=setUsuarios";
-		$.post(urlApi + nameApi + paramApi_save_usuario, objUsuario, (res, status) => {
-			if (status === "success") {
-				if (res == "null" && res == null) {
-					setStatusMsgErro("block");
-					$('#btnAdicionar').attr({ "disabled": false });
-				} else {
-					setStatusMsgErro("none");
-				}
-				if (res == 1 || res == "true" || res == true) {
-					setStatusMsgSuccess("block");
-					$('#btnAdicionar').attr({ "disabled": "disabled" });
-				} else {
-					setStatusMsgSuccess("none");
-				}
-			} else {
-				alert("Error: parametros API")
-			}
-	
-		})*/
-
-	}, []);
-
 	const exibirSenha = (e) => {
 		e.preventDefault();
-
 		if (typeSenha == "password") {
 			setTypeSenha("text");
 

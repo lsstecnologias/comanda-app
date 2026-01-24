@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import bg_logo from '../bg_logo.png';
 import $ from 'jquery';
 const ModalFormEstabelecimento = () => {
-
+  
+    const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
     const estabelecimento_id = sessionStorage.getItem('estabelecimento_id');
     const status = sessionStorage.getItem('status');
-    const urlapi = 'http://10.10.10.6/';
-    const nameapi = 'api_comanda/';
     const param_api_set_estabelecimentos = "?api=setEstabelecimento";
 
     const fecharModal = () => {
@@ -103,7 +102,7 @@ const ModalFormEstabelecimento = () => {
             msg.removeClass('d-none').addClass('d-block alert-danger').text('Preencha todos os campo!');
         }
 
-        $.post(urlapi + nameapi + param_api_set_estabelecimentos, obj_est, (res, status) => {
+        $.post(apiUrl + param_api_set_estabelecimentos, obj_est, (res, status) => {
             if (status == 'success') {
                 if (res == "1") {
                      msg.addClass('d-block alert-success').text('Concluido, Obrigado!').removeClass("d-none alert-danger");

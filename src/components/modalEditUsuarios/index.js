@@ -8,7 +8,7 @@ const ModalEditUsuarios = (data_id) => {
 	var idEdit = id.data_id;
 	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
 	sessionStorage.setItem('modal_notas', 'hide');
-
+	const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
 	const [nomeUser, setNomeUser] = useState("");
 	const [emailLoginUser, setEmailLoginUser] = useState("");
 	const [senhaUser, setSenhaUser] = useState("");
@@ -23,12 +23,10 @@ const ModalEditUsuarios = (data_id) => {
 	const [dataFilter, setDataFilter] = useState([]);
 	const [edit, setEdit] = useState([]);
 
-	const urlApi = 'http://10.10.10.6/';
-	const nameApi = 'api_comanda/';
-	console.log(idEdit)
+	
 	const vlFilter = dataFilter.filter(e => { return e.id === idEdit });
 	const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
-	console.log(vlFilter)
+	
 	//nomeInput loginEmailInput perfilUser ,senhaInputs,reSenhaInput
 	const editUsuario = (e) => {
 		e.preventDefault();
@@ -103,15 +101,14 @@ const ModalEditUsuarios = (data_id) => {
 		if (objUsuario.data_post == "") {
 			objUsuario.data_post = data_post;
 		}
-		console.log(objUsuario)
+		
 
 		const param_api_update_usuario = "?api=updateUsuarios";
-
-		$.post(urlApi + nameApi + param_api_update_usuario, objUsuario, (res, status) => {
+		$.post(apiUrl + param_api_update_usuario, objUsuario, (res, status) => {
 
 			var editarUsuario = $('#btnEditarUsuario')
 			if (status === "success") {
-				
+
 				if (res == "1") {
 					setMsgSuccess("Usuário atualizado!");
 					setDisplaySuccess("block");
@@ -131,15 +128,11 @@ const ModalEditUsuarios = (data_id) => {
 	}
 	useEffect(() => {
 
-
 		const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
-
-
 		if (estabelecimento_id !== 'null') {
 			const param_api_list_usuario = `?api=getUsuarios`;
-			$.post(urlApi + nameApi + param_api_list_usuario, (res, status) => {
+			$.post(apiUrl + param_api_list_usuario, (res, status) => {
 				if (status == 'success') {
-
 					var data = JSON.parse(res);
 					setDataFilter(data);
 

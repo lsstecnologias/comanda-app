@@ -9,6 +9,7 @@ import 'jquery-mask-plugin';
 import $ from 'jquery';
 
 const Atendimento = () => {
+     const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
   const { sessao, status, redirect_login, Sair } = useContext(UserContext);
   //PERIMITE NÃO EXIBIR MODAL DE NOTAS
   sessionStorage.setItem('modal_notas', 'hide');
@@ -27,8 +28,6 @@ const Atendimento = () => {
 
   const [datacep, setDataCep] = useState("");
 
-  const urlApi = 'http://10.10.10.6/';
-  const nameApi = 'api_comanda/';
   const param_api_get_clientes = "?api=getClientes";
   const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
@@ -80,14 +79,13 @@ const Atendimento = () => {
     const param_api_find_clientes = "?api=findClientes";
 
     if (inptBuscar.val()) {
-      $.post(urlApi + nameApi + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente, estabelecimento_id: estabelecimento_id }, (res, status) => {
+      $.post(apiUrl + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente, estabelecimento_id: estabelecimento_id }, (res, status) => {
 
         if (status == 'success') {
-
           const data = JSON.parse(res);
           const { nome, cliente_id } = data[0] ?? false;
-          if (nome && cliente_id) {
 
+          if (nome && cliente_id) {
             inptBuscar.addClass("is-valid").removeClass("is-invalid");
             setBuscarCliente(nome);
             setCodCliente(cliente_id);
@@ -98,15 +96,18 @@ const Atendimento = () => {
             setCodCliente(cliente_id);
             setBuscarCliente(nome);
             inptBuscar.addClass("is-invalid").removeClass("is-valid");
+
           }
         } else {
           inptBuscar.addClass("is-invalid").removeClass("is-valid");
           setMessagem("Cliente não encontrado!")
+        
         }
 
       })
     }
   }
+  
   const validarAtendimento = (e) => {
     e.preventDefault();
     const data_atual = new Date();
@@ -176,12 +177,8 @@ const Atendimento = () => {
 
     }
 
-
     const param_api_save_atendimento = "?api=setAtendimentos";
-    const urlApi = 'http://10.10.10.6/';
-    const nameApi = 'api_comanda/';
-
-
+ 
     if (objAtendimento.cod_atendimento == null || objAtendimento.cod_atendente == null || objAtendimento.cod_cliente == null || objAtendimento.cliente == null || objAtendimento.data_endereco == null || objAtendimento.data_atendimento == null || objAtendimento.data_post == null) {
       setDisplaySuccess("none");
       setMsgSuccess(null);
@@ -193,7 +190,7 @@ const Atendimento = () => {
       if (estabelecimento_id !== 'null') {
 
         objAtendimento.estabelecimento_id = estabelecimento_id;
-        $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
+        $.post(apiUrl + param_api_save_atendimento, objAtendimento, (res, status) => {
          
           if (status == "success") {
             if (res == 1) {
@@ -285,7 +282,7 @@ const Atendimento = () => {
     data_cep.mask('00000000');
    
     const getCliente = () => {
-      $.post(urlApi + nameApi + param_api_get_clientes, { estabelecimento_id: estabelecimento_id }, (res, status) => {
+      $.post(apiUrl + param_api_get_clientes, { estabelecimento_id: estabelecimento_id }, (res, status) => {
         if (status == 'success') {
           var data_cliente = JSON.parse(res);
           setClientes(data_cliente);

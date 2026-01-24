@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Link,useParams } from 'react-router-dom';
 const $ = require("jquery");
+
 const AgendamentoPedido = () => {
+   const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;  
   //PERIMITE NÃO EXIBIR MODAL DE NOTAS
    sessionStorage.setItem('modal_notas', 'hide');
    
@@ -16,7 +16,7 @@ const AgendamentoPedido = () => {
    const deleteItem = (id) => {
       if (id !== null || id !== undefined) {
          let objId = { "id": id };
-         $.post(urlApi + nameApi + param_api_delete_categoria, objId, () => { window.location.reload() })
+         $.post(apiUrl + param_api_delete_categoria, objId, () => { window.location.reload() })
       }
    }
    const editItem = (id) => { setId(id); }
@@ -24,7 +24,7 @@ const AgendamentoPedido = () => {
    useEffect(() => {
       const param_api_lista_atendimentos = '?api=getAllAtendimentos';
           
-      $.get(urlApi+nameApi+param_api_lista_atendimentos ,(res,status)=>{
+      $.get(apiUrl+param_api_lista_atendimentos ,(res,status)=>{
          if(status == 'success'){
            const dataResult = JSON.parse(res);
            setData(dataResult)

@@ -7,10 +7,8 @@ import $ from 'jquery';
 import Pagination from "../../ListPagina";
 import axios from "axios";
 
-
 const TabelaCliente = () => {
-    const urlApi = 'http://10.10.10.6/';
-    const nameApi = 'api_comanda/';
+   	const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
     //PERIMITE NÃO EXIBIR MODAL INICIAL DE NOTAS
     sessionStorage.setItem('modal_notas', 'hide');
     const { sessao, status, redirect_login, Sair } = useContext(UserContext);
@@ -30,9 +28,7 @@ const TabelaCliente = () => {
 
     const param_api_delete_estabelecimentos = "?api=deleteEstabelecimentos";
     const param_api_list_estabelecimentos = "?api=getEstabelecimentos";
-    const param_api_get_lojaEstabelecimentos = "?api=getFileUser";
-    const param_api_update_thumb_img = "?api=setUpdateThumb";
-    const param_api_update_status_atendimento = "?api=mudarStatusAtendimento";
+   
     const editItem = (id) => { setId(id); }
 
 /*
@@ -116,7 +112,7 @@ const TabelaCliente = () => {
     const deleteEstabelecimento = (id) => {
         if (id !== null || id !== undefined) {
             let objId = { "id": id };
-            $.post(urlApi + nameApi + param_api_delete_estabelecimentos, objId, () => { window.location.reload() })
+            $.post(apiUrl+ param_api_delete_estabelecimentos, objId, () => { window.location.reload() })
         }
     }
 
@@ -132,7 +128,7 @@ const TabelaCliente = () => {
                 'mode': 'no-cors'
             }
         };
-        axios.get(urlApi + nameApi + param_api_list_estabelecimentos, config)
+        axios.get(apiUrl + param_api_list_estabelecimentos, config)
         .then((res) => {
 
             setClienteEstablecimento(res.data)
@@ -143,7 +139,7 @@ const TabelaCliente = () => {
 
     return (
         <div class="container table-responsive produtos mt-4">
-            <h4 className="mb-4 mt-2 pb-2 ">Estabelecimentos  <i class="bi bi-shop-window m-2"></i></h4>
+            <h3 className="mb-4 mt-2 pb-2 ">Estabelecimentos  <i class="bi bi-shop-window m-2"></i></h3>
             <table class="table caption-top animate__animated animate__fadeIn ">
 
                 <thead>

@@ -60,8 +60,8 @@ const Header = () => {
                               <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administrador</Link>
                               <ul class="dropdown-menu fw-light">
 
-                                 <li><Link class="dropdown-item fw-light nav-link" to="/admin/estabelecimento">Estabelecimento</Link></li>
-                                 <li><Link class="dropdown-item fw-light nav-link" to="/admin/listar-estabelecimento">Listar Estabelecimento</Link></li>
+                                 <li><Link class="dropdown-item fw-light  nav-link" to="/admin/usuario">  Usuários </Link></li>
+                                
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/pagamento">Pagamento</Link></li>
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/licenca">Licenças e chave</Link></li>
                               </ul>
@@ -81,11 +81,11 @@ const Header = () => {
                      <button class="btn btn-primary btn-sm w-100 btn-edigit">  <small>Acesso <i class="bi bi-lock-fill"></i> </small></button>
                   </a>
                   <ul class="dropdown-menu">
-                     <li><Link class="dropdown-item fw-light" to="/admin/usuario">  Usuários <i class="bi  fs-5 bi-person-fill"></i></Link></li>
+                    
                      <li><Link class="dropdown-item fw-light" to="/admin/sistema">  Sistema <i class="bi bi-gear-fill"></i></Link></li>
-                     <li><button class="btn btn-sm btn-primary dropdown-item" onClick={() => Sair()} >Sair <i class="bi fs-5 bi-box-arrow-left"></i></button></li>
+                     <li><button class="btn btn-sm btn-primary dropdown-item" onClick={() => Sair()} > Sair <i class="bi fs-5 bi-box-arrow-left"></i></button></li>
                      <hr class="dropdown-divider" />
-                     <li class="fw-light p-2 pb-0 pt-0 text-center "><small> {sessao.nome} {sessao.cod} </small></li>
+                     <li class="fw-light p-2 pb-0 pt-0 text-center "><small><i class="bi  fs-5 bi-person-fill"></i> {sessao.nome} {sessao.cod} </small></li>
                   </ul>
 
                </div>

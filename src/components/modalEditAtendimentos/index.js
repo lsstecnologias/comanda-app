@@ -11,7 +11,7 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 	//COD chave primaria
 	var id = data.data_id;
 	var idEdit = id.data_id;
-
+	const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
 	//COD usuario 
 	var codEdit = id.data_cod;
 	const fetchCodEdit = useMemo(() => { if (codEdit !== undefined) { return codEdit; } }, [codEdit]);
@@ -37,8 +37,7 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 	const [IDEdit, setEdit] = useState("");
 	const [statusTipoMsg, setStatusTipoMsg] = useState("");
 
-	const urlApi = 'http://10.10.10.6/';
-	const nameApi = 'api_comanda/';
+	
 	let data_atual = new Date();
 	const data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 
@@ -81,7 +80,7 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 
 		const statusAtendimento = () => {
 			const param_api_get_status_cod = "?api=getPosStatusAtendimentos";
-			$.post(urlApi + nameApi + param_api_get_status_cod, obj_status_atendimento, async(res, status) => {
+			$.post(apiUrl + param_api_get_status_cod, obj_status_atendimento, async(res, status) => {
 				if (status == 'success') {
 					let data_status = await JSON.parse(res);
 					setStatusPosAtendimento(data_status);
@@ -103,7 +102,7 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 
 			obj_status_atendimento.status_pos =statusAtendimento;
 			setStatusAtendimento()
-			$.post(urlApi + nameApi + param_api_update_status, obj_status_atendimento, (res, status) => {
+			$.post(apiUrl + param_api_update_status, obj_status_atendimento, (res, status) => {
 				if(status == 'success'){
 						if(res == "1"){
 							setStatusUpdate(statusAtendimento);

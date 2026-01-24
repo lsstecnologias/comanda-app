@@ -10,6 +10,7 @@ import Pagination from "../../ListPagina";
 import $ from 'jquery';
 
 const TabelaAtendimento = () => {
+   const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
    sessionStorage.setItem('modal_notas', 'hide');
    const [dataClientes, setDataClientes] = useState([]);
    const [codCliente, setCodCliente] = useState();
@@ -29,18 +30,15 @@ const TabelaAtendimento = () => {
     const currentPosts = dataClientes.slice(indexOfFirstPost, indexOfLastPost);
     <ListPagina />
 
-   const urlApi = 'http://10.10.10.6/';
-   const nameApi = 'api_comanda/';
-
    const param_api_delete_atendimentos = '?api=deleteAtendimentos';
    const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
 
    const deleteItem = (id) => {
       if (id !== null || id !== undefined) {
-         let objId = { "id": id };
+         
          setDisplayError("block");
          setMsgError("Cliente foi excluido!");
-         $.post(urlApi + nameApi + param_api_delete_atendimentos, objId, () => { window.location.reload() })
+         $.post(apiUrl + param_api_delete_atendimentos, { "id": id },  () => { window.location.reload() })
 
       } else {
          setDisplayError("none");
@@ -62,8 +60,7 @@ const TabelaAtendimento = () => {
       if (id_estabelecimento !== 'null') {
          const param_api_get_atendimento = "?api=getAtendimentos";
 
-         let obj = { id: id_estabelecimento }
-         $.post(urlApi + nameApi + param_api_get_atendimento, obj, (res, status) => {
+         $.post(apiUrl + param_api_get_atendimento, { id: id_estabelecimento }, (res, status) => {
 
             let data = JSON.parse(res)
             if (status == 'success') {
@@ -88,7 +85,7 @@ const TabelaAtendimento = () => {
    return (
       <div class="container-fluid m-0 p-0  categorias">
          <div class="container ">
-            <h4 className="mb-3">Atendimentos <i class="bi bi-people-fill"></i></h4>
+            <h3 className="mb-3">Atendimentos <i class="bi bi-people-fill"></i></h3>
             <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
                <i class="bi bi-check-circle-fill p-2"></i>
                {msgSuccess !== null && msgSuccess}
@@ -100,36 +97,33 @@ const TabelaAtendimento = () => {
 
             </div>
             <table class="table m-0 p-0 caption-top animate__animated animate__fadeIn mb-4">
-               <caption>Lista de clientes confirmados</caption>
-
                <thead>
                   <tr class="text-start">
-
                      <th scope="col">Cod.</th>
-                     <th scope="col">Nome</th>                   
-                     <th scope="col" colSpan={2} class="text-center">Ações</th>
+                     <th scope="col">Nome - cliente</th>                   
+                     <th scope="col" colSpan={2} class="text-end">Status</th>
                   </tr>
                </thead>
                <tbody>
                   {currentPosts && currentPosts.map((val) => {
                      return (
                         <tr key={val.id}>
-                           <td className='fw-light'><b>{val.cod_cliente}</b></td>
-                           <td className=' fw-light'> {val.cliente}</td>
-                           <td className='lh-1 fw-light text-end '>
+                           <td className='fw-normal'>{val.cod_cliente}</td>
+                           <td className='fw-normal'> {val.cliente}</td>
+                           <td className='fw-light text-end '>
                               {/* <Link class="btn btn-sm btn-primary" to="/admin/agendamento-pedido" >Comanda <i class="bi bi-card-list"></i> </Link>
                                <Link class="btn btn-sm btn-secondary" to="/admin/agendamento-pedido" >Agendamentos <i class="bi bi-clock-history"></i> </Link> */}
                               <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                 <Link type="button" class="btn btn-sm btn-outline-primary" to={`/admin/comanda/${val.cod_cliente}`}> <i class="bi bi-card-list"></i></Link>
-                                 <Link type="button" class="btn btn-sm btn-outline-primary" to="/admin/agendamento-pedido" > <i class="bi bi-clock-history"></i></Link>
+                                 <Link type="button" class="btn btn-sm btn-edigit-secondary text-white rounded m-1" to={`/admin/comanda/${val.cod_cliente}`}> <i class="bi bi-card-list"></i></Link>
+                                 <Link type="button" class="btn btn-sm btn-edigit-secondary text-white rounded m-1" to="/admin/agendamento-pedido" > <i class="bi bi-clock-history"></i></Link>
                               </div>
                            </td>
                            <td class="text-end">
                               {/*<button data-bs-toggle="modal" onClick={() => editItem(val.id)} data-bs-target={"#editCategoria-" + id} class="btn btn-sm btn-outline-secondary bi bi-pencil-square m-2"></button>
                               <button onClick={() => deleteItem(val.id)} class="btn btn-sm btn-outline-secondary bi bi-x-lg"></button> */}
                               <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                 <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id, val.cod_cliente)} data-bs-target={"#editAtendimento-" + id} class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
-                                 <button type="button" onClick={() => deleteItem(val.id)} class="btn  btn-sm  btn-outline-primary disable-link"> <i class="bi bi-x-lg"></i></button>
+                                 <button type="button" data-bs-toggle="modal" onClick={() => editItem(val.id, val.cod_cliente)} data-bs-target={"#editAtendimento-" + id} class="btn text-white rounded btn-sm btn-outline-primary btn-edigit m-1"><i class="bi bi-pencil-square"></i></button>
+                                 <button type="button" onClick={() => deleteItem(val.id)} class="btn text-white rounded btn-sm btn-outline-primary btn-edigit m-1"> <i class="bi bi-x-lg"></i></button>
                               </div>
 
                            </td>

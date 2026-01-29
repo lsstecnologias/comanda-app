@@ -9,7 +9,7 @@ import 'jquery-mask-plugin';
 import $ from 'jquery';
 
 const Atendimento = () => {
-     const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
+  const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
   const { sessao, status, redirect_login, Sair } = useContext(UserContext);
   //PERIMITE NÃO EXIBIR MODAL DE NOTAS
   sessionStorage.setItem('modal_notas', 'hide');
@@ -101,18 +101,18 @@ const Atendimento = () => {
         } else {
           inptBuscar.addClass("is-invalid").removeClass("is-valid");
           setMessagem("Cliente não encontrado!")
-        
+
         }
 
       })
     }
   }
-  
+
   const validarAtendimento = (e) => {
     e.preventDefault();
     const data_atual = new Date();
     let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
-    const objAtendimento = { estabelecimento_id: null, cod_atendimento: null, cod_atendente: null, cod_cliente: null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
+    const objAtendimento = { estabelecimento_id: null, cod_atendimento: null, cod_atendente: null, cod_cliente: null,observacao:null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
 
     objAtendimento.data_post = data_post;
     let atendente = $('#atendente');
@@ -121,6 +121,17 @@ const Atendimento = () => {
     let data_atendimento = $('#data_atendimento');
     let endereco = $('#data_endereco');
     let inpt_buscar = $('#inpt_buscar');
+    let inpt_observacao = $('#observacao');
+
+    
+    if (inpt_observacao.val()) {
+      inpt_observacao.addClass("is-valid").removeClass("is-invalid");
+      objAtendimento.observacao = inpt_observacao.val();
+
+    } else {
+      inpt_observacao.addClass("is-invalid").removeClass("is-valid");
+      objAtendimento.observacao = null;
+    }
 
     if (cod_atendimento.val()) {
       cod_atendimento.addClass("is-valid").removeClass("is-invalid");
@@ -178,7 +189,7 @@ const Atendimento = () => {
     }
 
     const param_api_save_atendimento = "?api=setAtendimentos";
- 
+
     if (objAtendimento.cod_atendimento == null || objAtendimento.cod_atendente == null || objAtendimento.cod_cliente == null || objAtendimento.cliente == null || objAtendimento.data_endereco == null || objAtendimento.data_atendimento == null || objAtendimento.data_post == null) {
       setDisplaySuccess("none");
       setMsgSuccess(null);
@@ -191,7 +202,7 @@ const Atendimento = () => {
 
         objAtendimento.estabelecimento_id = estabelecimento_id;
         $.post(apiUrl + param_api_save_atendimento, objAtendimento, (res, status) => {
-         
+
           if (status == "success") {
             if (res == 1) {
 
@@ -238,9 +249,9 @@ const Atendimento = () => {
   }
   //VALOR PARA DATA ATUAL, INPUT
   //const mostrarDataAtual = () => {
-   // let d = new Date();
-   // return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
- // }
+  // let d = new Date();
+  // return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+  // }
   const gerarCodAtendimento = () => {
     let cod_atendimento = $('#cod_atendimento');
     var cod = Math.floor(Math.random() * (777 + 0)) - 1;
@@ -280,7 +291,7 @@ const Atendimento = () => {
 
     let data_cep = $('#cep');
     data_cep.mask('00000000');
-   
+
     const getCliente = () => {
       $.post(apiUrl + param_api_get_clientes, { estabelecimento_id: estabelecimento_id }, (res, status) => {
         if (status == 'success') {
@@ -302,7 +313,7 @@ const Atendimento = () => {
       <div class="container animate__animated animate__fadeIn">
 
         <h4 className="mb-4 mt-4"> Novo Atendimento <i class="bi bi-clock"></i></h4>
-      
+
         <div class="container p-0 m-0">
           <div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
             <i class="bi bi-clock p-2"></i>
@@ -354,10 +365,26 @@ const Atendimento = () => {
                 <td colspan="2">
                   <td class="fw-medium">Data do Atendimento</td>
                   <div class="input-group mt-2 mb-2 ">
-                    <input type='date' class="form-control" id="data_atendimento"  min="1900-01-01" />
+                    <input type='date' class="form-control" id="data_atendimento" min="1900-01-01" />
                   </div>
                 </td>
               </tr>
+              <tr>
+                <td colspan="2">
+                  <td class="fw-medium">Observação</td>
+                  <div class="input-group mt-2 mb-2 ">
+
+
+                    <div class="form-floating">
+                      <textarea class="form-control" id="observacao" placeholder="Leave a comment here" style={{"Height": "200px"}} ></textarea>
+                      <label for="observacao">Observação</label>
+                    </div>
+
+
+                  </div>
+                </td>
+              </tr>
+
               <tr>
                 <td colspan="2">
                   <td class="fw-medium">CEP</td>

@@ -5,7 +5,7 @@ import { UserContext } from '../context';
 const $ = require("jquery");
 
 const ModalEditProdutos = (data_id) => {
-
+		const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO; 
 	var data = { data_id };
 	var id = data.data_id;
 	var idEdit = id.data_id;
@@ -34,14 +34,12 @@ const ModalEditProdutos = (data_id) => {
 		window.location.reload();
 	}
 
-	const urlApi = 'http://10.10.10.6/';
-	const nameApi = 'api_comanda/';
 
 	const data_filter = dataItem.filter(e => { return e.id == idEdit });
 
 	const paramApi_delete_item = '?api=deleteItem';
 	const deleteItemProduto = () => {
-		$.post(urlApi + nameApi + paramApi_delete_item, {"id":idEdit}, () => { window.location.reload()  })
+		$.post(apiUrl + paramApi_delete_item, {"id":idEdit}, () => { window.location.reload()  })
 		
 	}
 
@@ -160,7 +158,7 @@ const ModalEditProdutos = (data_id) => {
 		}
 
 		const param_api_edit_produto = "?api=updateItem";
-		$.post(urlApi + nameApi + param_api_edit_produto, obj_produto, (res, status) => {
+		$.post(apiUrl+ param_api_edit_produto, obj_produto, (res, status) => {
 			console.log(res)
 			var editarProduto = $('#btnEditarProduto');
 			if (status == "success") {
@@ -201,8 +199,8 @@ const ModalEditProdutos = (data_id) => {
 		const listarProdutos = (estabelecimento_id) => {
 			if (estabelecimento_id !== 'null') {
 				const param_api_list_produto = `?api=getProdutos`;
-				var obj = { 'id': estabelecimento_id };
-				$.post(urlApi + nameApi + param_api_list_produto, obj, (res, status) => {
+				
+				$.post(apiUrl+ param_api_list_produto, { 'id': estabelecimento_id }, (res, status) => {
 					if (status == 'success') {
 						var data = JSON.parse(res);
 						setDataItem(data);
@@ -224,8 +222,8 @@ const ModalEditProdutos = (data_id) => {
 		const listarCategorias = (estabelecimento_id) => {
 			if (estabelecimento_id !== 'null') {
 				const param_api_list_categ = `?api=getAllCategorias`;
-				var obj = { 'id': estabelecimento_id };
-				$.post(urlApi + nameApi + param_api_list_categ, obj, (res, status) => {
+			
+				$.post(apiUrl + param_api_list_categ,{ 'id': estabelecimento_id } , (res, status) => {
 					var dataArr = JSON.parse(res);
 					if (Array.isArray(dataArr) && dataArr.length > 0) {
 						setListCateg(dataArr);

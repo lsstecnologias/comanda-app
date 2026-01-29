@@ -29,13 +29,13 @@ const Estabelecimento = () => {
 
 	const addNovoClienteEstabelecimento = (e) => {
 		e.preventDefault();
-		const nome 		= $("#nome");
-		const sobrenome = $("#sobrenome");
-		const email 	= $("#email");		
-		const resenha 	= $("#re-senha");		
-		const senha 	= $("#senha");
-		const perfil    = $("#perfil");
-		const btnCadastrar = $("#btnCadastrar");
+		const nome 			= $("#nome");
+		const sobrenome 	= $("#sobrenome");
+		const email 		= $("#email");		
+		const resenha 		= $("#re-senha");		
+		const senha 		= $("#senha");
+		const perfil    	= $("#perfil");
+		const btnCadastrar  = $("#btnCadastrar");
 
 		const fullUuid = uuidv4();
 		let data_atual = new Date();
@@ -94,27 +94,21 @@ const Estabelecimento = () => {
 		}
 		
 		if (senha.val()) {
-
 			if (senha.val() == resenha.val()) {
 				obj_cli.senha_user = md5(senha.val());
 				senha.addClass("is-valid").removeClass("is-invalid");
 				resenha.addClass("is-valid").removeClass("is-invalid");
+
 			} else {
 				senha.addClass("is-invalid").removeClass("is-valid");
 				resenha.addClass("is-invalid").removeClass("is-valid");
 			}
-
-
 
 		} else {
 			obj_cli.senha_user = null;
 			senha.addClass("is-invalid").removeClass("is-valid");
 			resenha.addClass("is-invalid").removeClass("is-valid");
 		}
-
-
-		const urlApi = 'http://10.10.10.6/';
-		const nameApi = 'api_comanda/';
 
 		const param_api_set_clientes = "?api=setUsuarios";
 		//REGISTRA OS DADOS NA TABELA DE ESTABELECIMENTO/CLIENTE

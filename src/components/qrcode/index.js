@@ -72,8 +72,8 @@ const QRCode = () => {
 	}
 	//https://placehold.co/50x50
 	return (
-		<div class="container mt-2 produtos">
-			<div style={{ width: '800px', height: '600px' }} class="container text-center  card d-flex  align-self-center justify-content-around" >
+		<div class="container-fluid mt-2 produtos">
+			<div class="container text-center  card d-flex  align-self-center justify-content-around" >
 
 				<div class="container-fluid d-flex align-items-center justify-content-around" id="my-print" >
 					<div class="d-none flex-column ">
@@ -100,7 +100,7 @@ const QRCode = () => {
 
 					</div>
 
-					<div class="d-flex align-items-center justify-content-center flex-column">
+					<div class="container-fluid d-flex align-items-center justify-content-center flex-column">
 						<img src={thumb_logo} width={tamLogo} class="mb-4" />
 						<div class="qrcodeContent">
 							<img id="qrcode" className='card p-2 border' src={imagem} width={tamW ?? 340} />
@@ -150,7 +150,7 @@ const QRCode = () => {
 
 			</div>
 
-			<div class="container  card mt-4 " style={{ maxWidth: '800px' }}>
+			<div class="container-fluid card mt-4" style={{ position:'fixed !important' }} >
 
 
 

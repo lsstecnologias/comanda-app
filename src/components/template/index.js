@@ -4,7 +4,7 @@ import { useCallback, useEffect } from "react";
 
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
-const Template = () => {
+const Dashboard = () => {
     //PERIMITE NÃO EXIBIR MODAL DE NOTAS
     sessionStorage.setItem('modal_notas', 'hide');
 
@@ -106,4 +106,4 @@ const Template = () => {
     )
 
 }
-export default Template;
+export default Dashboard;

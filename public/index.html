@@ -81,9 +81,7 @@
   <script>
     const sts_modal = sessionStorage.getItem('modal_notas');
 
-    $(window).on('load', function () {
-      $('#myModal').modal(sts_modal);
-    });
+    $(window).on('load', ()=> { $('#myModal').modal(sts_modal); });
   </script>
 
 

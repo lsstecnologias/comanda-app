@@ -60,7 +60,7 @@ function App() {
             <Route path="agendamento-pedido" element={<AgendamentoPedido />} />               
             <Route path="usuario" element={<Usuarios />} />           
             <Route path="categoria" element={<Categorias />} />            
-            <Route path="template-view" element={<Template />} />
+            <Route path="indicadores" element={<Template />} />
             <Route path="pagamento" element={<Pagamento />} />
             <Route path="sistema" element={<Sistema />} />
             <Route path="comanda/:cod" element={<Comanda />} />

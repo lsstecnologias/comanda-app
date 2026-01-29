@@ -3,13 +3,13 @@ import 'animate.css';
 const $ = require("jquery");
 
 const DetalhesProdutos = (data_id) => {
+		const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO; 
 	var data = { data_id };
 	var id = data.data_id;
 	var idEdit = id.data_id;
 	sessionStorage.setItem('modal_notas', 'hide');
 
-	const urlApi = 'http://10.10.10.6/';
-	const nameApi = 'api_comanda/';
+	
 	const [dataProdutos, setDataProdutos] = useState([]);
 	useEffect(() => {
 
@@ -17,8 +17,8 @@ const DetalhesProdutos = (data_id) => {
 		const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
 		if (id_estabelecimento !== 'null') {
 			const param_api_list_produto = `?api=getProdutos`;
-			var obj = { 'id': id_estabelecimento };
-			$.post(urlApi + nameApi + param_api_list_produto, obj, (res, status) => {
+		
+			$.post(apiUrl + param_api_list_produto,{ 'id': id_estabelecimento } , (res, status) => {
 				if (status == 'success') {
 					var data = JSON.parse(res);
 					setDataProdutos(data);
@@ -35,7 +35,7 @@ const DetalhesProdutos = (data_id) => {
 
 	}, [setDataProdutos]);
 	const data_filter = dataProdutos.filter(e => { return e.id === idEdit });
-	console.log(data_filter)
+
 	return (
 		<div class="modal fade" id={"detalhesProduto-" + idEdit} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticeditProduto" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">

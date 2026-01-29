@@ -33,8 +33,7 @@ const Tabelausuarios = () => {
 	const paramApi_delete_item = '?api=deleteUsuarios';
 
 	const deleteUsuario = (id) => {
-		if (id !== null || id !== undefined) {
-			
+		if (id !== null || id !== undefined) {			
 			$.post(apiUrl+ paramApi_delete_item, { "id": id }, () => { window.location.reload() })
 		}
 	}
@@ -44,11 +43,12 @@ const Tabelausuarios = () => {
 		const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
 		if (estabelecimento_id !== 'null') {
-			const param_api_list_usuario = `?api=getUsuarios`;
-			$.post(apiUrl+ param_api_list_usuario, { 'id': estabelecimento_id }, (res, status) => {
+			const param_api_list_usuario = `?api=getAllUsuarios`;
+			$.post(apiUrl+ param_api_list_usuario, (res, status) => {
 				if (status == 'success') {
 					var data = JSON.parse(res);
 					setUsuarios(data);
+					
 				}
 			})
 		} else {
@@ -66,8 +66,8 @@ const Tabelausuarios = () => {
 				<thead>
 					<tr>
 
-						<th scope="col">Cod.Est </th>
-						<th scope="col">Cod.Usr </th>
+						<th scope="col">Cod. Est </th>
+						<th scope="col">Cod. Usr </th>
 						<th scope="col">Nome</th>
 						<th scope="col">Email</th>
 						<th scope="col" class="text-end">Ações</th>

@@ -11,7 +11,7 @@ const ModalPrincipal = () => {
 	return (
 		<div>
 			{//para exibir coloca n,
-			status == 'a' ?
+			status == 'n' ?
 				<div>
 					<ModalFormEstabelecimento />
 				</div>

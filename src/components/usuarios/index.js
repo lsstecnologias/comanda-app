@@ -1,43 +1,47 @@
 import { useEffect, useState, useContext } from "react";
 import $ from 'jquery';
+import { v4 as uuidv4 } from 'uuid';
 import Tabelausuarios from "../tabela_usuario";
 import { UserContext } from '../context';
 
 var md5 = require('md5');
 
 const Usuarios = () => {
-    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
-    sessionStorage.setItem('modal_notas', 'hide');
-    const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
-    const { sessao, status, redirect_login, Sair } = useContext(UserContext);
+	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+	sessionStorage.setItem('modal_notas', 'hide');
+	const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
+	const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
-    const [nomeUser, setNomeUser] = useState("");
-    const [emailLoginUser, setEmailLoginUser] = useState("");
-    const [senhaUser, setSenhaUser] = useState("");
-    const [senhaReUser, setReSenhaUser] = useState("");
-    const [perfilUser, setPerfilUser] = useState("");
-    const [statusMsgErro, setStatusMsgErro] = useState("none");
-    const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
-
-    const addNovoUsuario = (e) => {
-        e.preventDefault();
-
-        let nome        = $("#nomeInput");
-        let senha       = $("#senhaInput");
-        let loginEmail  = $("#loginEmailInput");
-        let perfil      = $("#perfilUser");
-        let re_senha    = $("#senhaReInput");
-        let cod         = Math.floor(Math.random() * (777 + 0)) - 1;
-
-        var objUsuario = { cod_user: cod,estabelecimento_id: "", nome_user: "", senha_user: "", login_email: "", perfil_user: "", data_post: "" };
-        
-       
-        if (senhaUser !== undefined && senhaUser !== "" && senhaReUser !== undefined && senhaReUser !== "") {
+	const [nomeUser, setNomeUser] = useState("");
+	const [emailLoginUser, setEmailLoginUser] = useState("");
+	const [senhaUser, setSenhaUser] = useState("");
+	const [senhaReUser, setReSenhaUser] = useState("");
+	const [perfilUser, setPerfilUser] = useState("");
+	const [statusMsgErro, setStatusMsgErro] = useState("none");
+	const [statusMsgSuccess, setStatusMsgSuccess] = useState("none");
+	const [usuarios, setUsuarios] = useState([]);
+	const [perfilEstabelecimento, setPerfilEstabelecimento] = useState("");
+	const fullUuid 	= uuidv4();
+	
+	const addNovoUsuario = (e) => {
+		e.preventDefault();
+		let perfilEst 	= $("#perfilEstabelecimento");
+		let nome 		= $("#nomeInput");
+		let senha 		= $("#senhaInput");
+		let loginEmail 	= $("#loginEmailInput");
+		let perfil 		= $("#perfilUser");
+		let re_senha 	= $("#senhaReInput");
+		let cod 		= Math.floor(Math.random() * (777 + 0)) - 1;
+			
+		var objUsuario = { cod_user: cod, estabelecimento_id: "", nome_user: "", senha_user: "", login_email: "", perfil_user: "",status:"", data_post: "" };
+		var estabelecimento_uid = fullUuid.substring(0, 7)
+		if (senhaUser !== undefined && senhaUser !== "" && senhaReUser !== undefined && senhaReUser !== "") {
 
 			if (senhaUser === senhaReUser) {
 				objUsuario.senha_user = md5(senhaUser);
 				senha.addClass("is-valid").removeClass("is-invalid");
 				re_senha.addClass("is-valid").removeClass("is-invalid");
+
 			} else {
 				senha.addClass("is-invalid").removeClass("is-valid");
 				re_senha.addClass("is-invalid").removeClass("is-valid");
@@ -47,165 +51,217 @@ const Usuarios = () => {
 			objUsuario.senha_user = null;
 			senha.addClass("is-invalid").removeClass("is-valid");
 			re_senha.addClass("is-invalid").removeClass("is-valid");
+
 		}
 
-        if (nomeUser !== undefined && nomeUser !== "") {
-            nome.addClass("is-valid").removeClass("is-invalid");
-            objUsuario.nome_user = nomeUser;
-        } else {
-            nome.addClass("is-invalid").removeClass("is-valid");
-            objUsuario.nome_user = null;
-        }
+		if (nomeUser !== undefined && nomeUser !== "") {
+			nome.addClass("is-valid").removeClass("is-invalid");
+			objUsuario.nome_user = nomeUser;
 
-        if (emailLoginUser !== undefined && emailLoginUser !== "") {
-            loginEmail.addClass("is-valid").removeClass("is-invalid");
-            objUsuario.login_email = emailLoginUser;
-        } else {
-            loginEmail.addClass("is-invalid").removeClass("is-valid");
-            objUsuario.login_email = null;
-        }
+		} else {
+			nome.addClass("is-invalid").removeClass("is-valid");
+			objUsuario.nome_user = null;
 
-        
-        if (perfilUser !== undefined && perfilUser !== "") {
-            perfil.addClass("is-valid").removeClass("is-invalid");
-            objUsuario.perfil_user = perfilUser;
+		}
 
-        } else {
-            perfil.addClass("is-invalid").removeClass("is-valid");
-            objUsuario.perfil_user = null;
+		if (emailLoginUser !== undefined && emailLoginUser !== "") {
+			loginEmail.addClass("is-valid").removeClass("is-invalid");
+			objUsuario.login_email = emailLoginUser;
 
-        }
+		} else {
+			loginEmail.addClass("is-invalid").removeClass("is-valid");
+			objUsuario.login_email = null;
 
-        let data_atual = new Date();
-        let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
+		}
+	
+		if (perfilUser !== undefined && perfilUser !== "null"  && perfilUser !== "") {
+			perfil.addClass("is-valid").removeClass("is-invalid");
+			objUsuario.perfil_user = perfilUser;
 
-        if (objUsuario.data_post == "") {
-            objUsuario.data_post = data_post;
-        }
+		} else {
+			perfil.addClass("is-invalid").removeClass("is-valid");
+			objUsuario.perfil_user = null;
 
-        const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
-       
-        if (estabelecimento_id  !== 'null' && estabelecimento_id == '75624fa') {
-            const param_api_list_usuario = `?api=setUsuarios`;
-            objUsuario.estabelecimento_id = estabelecimento_id ;
+		}
 
-         
-           
-            $.post(apiUrl+ param_api_list_usuario, objUsuario,(res, status) => {
-            
-                if (status === "success") {
-                    if (res == "null" && res == null) {
-                        setStatusMsgErro("block");
-                        $('#btnAdicionar').attr({ "disabled": false });
-                    } else {
-                        setStatusMsgErro("none");
-                    }
-                    if (res == 1 || res == "true" || res == true) {
-                        setStatusMsgSuccess("block");
-                        $('#btnAdicionar').attr({ "disabled": "disabled" });
-                    } else {
-                        setStatusMsgSuccess("none");
-                    }
-                } else {
-                    alert("Error: parametros API")
-                }
-            })
+		let data_atual = new Date();
+		let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 
+		if (objUsuario.data_post == "") {
+			objUsuario.data_post = data_post;
+		}
 
-            
-        } else {
-            alert("Nenhum cliente estabelecimento");
-            Sair();
-        }
+		const estabelecimento_id = sessionStorage.getItem('estabelecimento_id');
+
+		if (estabelecimento_id !== 'null') {
+			const param_api_list_usuario = `?api=setUsuarios`;
+			
+			if (perfilEstabelecimento == "null" || perfilEstabelecimento == "") {
+				perfilEst.addClass('is-invalid').removeClass('is-valid');
+				objUsuario.status = "a";
+
+			} else if(perfilEstabelecimento == "f") {
+				perfilEst.addClass('is-valid').removeClass('is-invalid');
+				objUsuario.estabelecimento_id = estabelecimento_id;
+				objUsuario.status = "a";
+
+			}else if(perfilEstabelecimento == "n"){
+				perfilEst.addClass('is-valid').removeClass('is-invalid');
+				//MUDA O STATUS
+				objUsuario.status = perfilEstabelecimento
+				objUsuario.estabelecimento_id =estabelecimento_uid;
+			}else{
+				perfilEst.addClass('is-valid').removeClass('is-invalid');
+				objUsuario.estabelecimento_id = perfilEstabelecimento;
+				objUsuario.status ="a";
+			}
 
 
-    }
-    const fecharModal = () => {
-        window.location.reload();
-    }
+			$.post(apiUrl + param_api_list_usuario, objUsuario, (res, status) => {
 
-    useEffect(() => {
-        // $('#rgInput').mask('00.000.000-00');
-        // $('#cepInput').mask('0000000');
-        //PERIMITE NÃO EXIBIR MODAL DE NOTAS
-        sessionStorage.setItem('modal_notas', 'hide');
+				if (status === "success") {
+					if (res == "null" && res == null) {
+						setStatusMsgErro("block");
+						$('#btnAdicionar').attr({ "disabled": false });
+					} else {
+						setStatusMsgErro("none");
+					}
+					if (res == 1 || res == "true" || res == true) {
+						setStatusMsgSuccess("block");
+						$('#btnAdicionar').attr({ "disabled": "disabled" });
+					} else {
+						setStatusMsgSuccess("none");
+					}
+				} else {
+					alert("Error: parametros API")
+				}
+			})
 
 
-    }, [])
+		} else {
+			alert("Nenhum cliente estabelecimento");
+			Sair();
+		}
 
 
-    return (
-        <div className="container mt-2 usuario">
+	}
+	const fecharModal = () => {
+		window.location.reload();
+	}
 
-            <div className="container p-0 animate__animated  animate__fadeIn">
+	useEffect(() => {
+		// $('#rgInput').mask('00.000.000-00');
+		// $('#cepInput').mask('0000000');
+		//PERIMITE NÃO EXIBIR MODAL DE NOTAS
+		sessionStorage.setItem('modal_notas', 'hide');
+		const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
+
+		if (estabelecimento_id !== 'null') {
+			const param_api_list_usuario = `?api=getAllUsuarios`;
+			$.post(apiUrl + param_api_list_usuario, (res, status) => {
+				if (status == 'success') {
+					var data = JSON.parse(res);
+					setUsuarios(data);
+
+				}
+			})
+		} else {
+			alert("Nenhum cliente estabelecimento");
+			Sair();
+		}
+
+
+	}, [setUsuarios])
+
+	
+	return (
+		<div className="container mt-2 usuario">
+
+			<div className="container p-0 animate__animated  animate__fadeIn">
 				<div class="row d-flex align-items-center  justify-content-between">
-					<div class="col-sm-7 "> <h3 className="mb-2 mt-2 pb-2">Usuários  <i class="bi bi-person-fill"></i> </h3></div>
+					<div class="col-sm-7 "> <h3 className="mb-2 mt-2 pb-2">Acesso  <i class="bi bi-person-fill"></i> </h3></div>
 					<div class="col-sm-5 text-end">
-
 						<button type="button" class="btn btn-sm btn-primary btn-edigit mt-2" data-bs-toggle="modal" data-bs-target="#novoUsuario">
-							Novo usuário <i class="bi bi-person-fill-add"></i>
+							Novo Funcionário <i class="bi bi-person-fill-add"></i>
 						</button>
 					</div>
 				</div>
 
 			</div>
 
-            <div class="modal fade" id="novoUsuario" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="novoUsuario" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="novoUsuario"><i class="bi bi-person-fill-add"></i> Novo usuário</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
-                        </div>
+			<div class="modal fade" id="novoUsuario" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="novoUsuario" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="novoUsuario"><i class="bi bi-person-fill-add"></i> Novo usuário</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => { fecharModal() }}></button>
+						</div>
 
-                        <div class="modal-body">
+						<div class="modal-body">
 
-                            <div class="alert alert-danger" style={{ display: statusMsgErro }} role="alert">
-                                Preencha os campo(s)!
-                            </div>
-                            <div class="alert alert-success" style={{ display: statusMsgSuccess }} role="alert">
-                                Usuário <strong> {nomeUser ?? nomeUser}  </strong> registrado!
-                            </div>
+							<div class="alert alert-danger" style={{ display: statusMsgErro }} role="alert">
+								Preencha os campo(s)!
+							</div>
+							<div class="alert alert-success" style={{ display: statusMsgSuccess }} role="alert">
+								Usuário <strong> {nomeUser ?? nomeUser}  </strong> registrado!
+							</div>
 
-                            <div class="mb-3">
-                                <label for="nomeInput" class="form-label">Nome</label>
-                                <input type="text" class="form-control" id="nomeInput" onChange={(e) => { setNomeUser(e.target.value) }} placeholder="Seu nome" autocomplete="off" />
-                            </div>
-                            <div class="mb-3">
-                                <label for="perfilUser" class="form-label">Perfil</label>
-                                <select id="perfilUser" onChange={(e) => { setPerfilUser(e.target.value) }} class="form-select">
-                                    <option>Selecione</option>
-                                    <option value="u">Usuário</option>
-                                  
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="loginEmailInput" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="loginEmailInput" onChange={(e) => { setEmailLoginUser(e.target.value) }} placeholder="Email" autocomplete="off" />
-                            </div>
-                            <div class="mb-3">
-                                <label for="senhaInput" class="form-label">Senha</label>
-                                <input type="password" class="form-control w-20" id="senhaInput" onChange={(e) => { setSenhaUser(e.target.value) }} placeholder="Sua senha" autocomplete="off" />
-                            </div>
-                            <div class="mb-3">
-                                <label for="senhaInput" class="form-label">Confimar Senha</label>
-                                <input type="password" class="form-control w-20" id="senhaReInput" onChange={(e) => { setReSenhaUser(e.target.value) }} placeholder="Confirmar senha" autocomplete="off" />
-                            </div>
+							<div class="mb-3">
+								<label for="nomeInput" class="form-label">Nome</label>
+								<input type="text" class="form-control" id="nomeInput" onChange={(e) => { setNomeUser(e.target.value) }} placeholder="Seu nome" autocomplete="off" />
+							</div>
+							<div class="mb-3">
+								<label for="perfilUser" class="form-label">Perfil</label>
+								<select id="perfilUser" onChange={(e) => { setPerfilUser(e.target.value) }} class="form-select">
+									<option selected value="null">Selecione</option>	
+									<option value="a">Atendente</option>
+									<option value="g">Gestor</option>
+								</select>
+							</div>
+							<div class="mb-3">
+								<label for="loginEmailInput" class="form-label">Email</label>
+								<input type="email" class="form-control" id="loginEmailInput" onChange={(e) => { setEmailLoginUser(e.target.value) }} placeholder="Email" autocomplete="off" />
+							</div>
+							<div class="mb-3">
+								<label for="senhaInput" class="form-label">Senha</label>
+								<input type="password" class="form-control w-20" id="senhaInput" onChange={(e) => { setSenhaUser(e.target.value) }} placeholder="Sua senha" autocomplete="off" />
+							</div>
+							<div class="mb-3">
+								<label for="senhaInput" class="form-label">Confimar Senha</label>
+								<input type="password" class="form-control w-20" id="senhaReInput" onChange={(e) => { setReSenhaUser(e.target.value) }} placeholder="Confirmar senha" autocomplete="off" />
+							</div>
 
-                        </div>
+							<div class="mb-3">
+								<label for="perfilEstabelecimento" class="form-label">Estabelecimento</label>
+								<select id="perfilEstabelecimento" onChange={(e) => { setPerfilEstabelecimento(e.target.value) }} class="form-select">
+									<option selected value="null">Selecione</option>
+									<option value="f">Funcionário</option>
+									<option value="n">Novo cliente</option>
+									{
+										usuarios.map(element => {
+											return (
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary w-100" id="btnAdicionar" onClick={(e) => { addNovoUsuario(e) }}>Salvar</button>
-                        </div>
+												<option key={element.id} value={element.estabelecimento_id}>{element.estabelecimento_id}{" - "}{element.nome}</option>
+											)
+										})
+									}
+								</select>
+							</div>
 
-                    </div>
-                </div>
-            </div>
-           
-             <Tabelausuarios />
-           
-        </div>
-    )
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary w-100 btn-edigit" id="btnAdicionar" onClick={(e) => { addNovoUsuario(e) }}>Salvar</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<Tabelausuarios />
+
+		</div>
+	)
 
 }
 export default Usuarios;

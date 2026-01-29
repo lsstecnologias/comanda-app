@@ -30,8 +30,8 @@ const Header = () => {
                      <li class="nav-item  dropdown">
                         <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Minha loja</Link>
                         <ul class="dropdown-menu fw-light">
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/template-view">Template</Link></li>
-                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/qr">Gerar QR-Code</Link></li>
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/indicadores">Indicadores</Link></li>
+
 
                         </ul>
                      </li>
@@ -50,7 +50,7 @@ const Header = () => {
                         <ul class="dropdown-menu fw-light">
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/produto">Adicionar Item</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/categoria">Adicionar Categoria</Link></li>
-
+                           <li><Link class="dropdown-item fw-light nav-link" to="/admin/qr">Gerar QR-Code</Link></li>
                            <li><Link class="dropdown-item fw-light nav-link" to="">Pesquisas</Link></li>
                         </ul>
                      </li>
@@ -61,7 +61,7 @@ const Header = () => {
                               <ul class="dropdown-menu fw-light">
 
                                  <li><Link class="dropdown-item fw-light  nav-link" to="/admin/usuario">  Usuários </Link></li>
-                                
+
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/pagamento">Pagamento</Link></li>
                                  <li><Link class="dropdown-item fw-light nav-link" to="/admin/licenca">Licenças e chave</Link></li>
                               </ul>
@@ -81,7 +81,7 @@ const Header = () => {
                      <button class="btn btn-primary btn-sm w-100 btn-edigit">  <small>Acesso <i class="bi bi-lock-fill"></i> </small></button>
                   </a>
                   <ul class="dropdown-menu">
-                    
+
                      <li><Link class="dropdown-item fw-light" to="/admin/sistema">  Sistema <i class="bi bi-gear-fill"></i></Link></li>
                      <li><button class="btn btn-sm btn-primary dropdown-item" onClick={() => Sair()} > Sair <i class="bi fs-5 bi-box-arrow-left"></i></button></li>
                      <hr class="dropdown-divider" />

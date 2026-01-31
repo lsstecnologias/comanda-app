@@ -13,18 +13,18 @@ const ModalFormEstabelecimento = () => {
 	}
 	const addNovoEstabelecimento = (e) => {
 		e.preventDefault();
-		const nome 			= $("#nome");
-		const sobrenome 	= $("#sobrenome");
-		const cpf 		 	= $("#cpf");
-		const msg 		 	= $("#msg");
-		const rg 		 	= $("#rg");
-		const cep 		 	= $("#cep");
-		const endereco 	= $("#endereco");
+		const nome = $("#nome");
+		const sobrenome = $("#sobrenome");
+		const cpf = $("#cpf");
+		const msg = $("#msg");
+		const rg = $("#rg");
+		const cep = $("#cep");
+		const endereco = $("#endereco");
 
 		const data_atual = new Date();
 		const data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
 
-		var obj_est = { estabelecimento_id: estabelecimento_id, nome: null, sobrenome: null, rg: null, cpf: null, cnpj: null, cep: null,status:'a', endereco: null, data_post: data_post };
+		var obj_est = { estabelecimento_id: estabelecimento_id, nome: null, sobrenome: null, rg: null, cpf: null, cnpj: null, cep: null, status: 'a', endereco: null, data_post: data_post };
 
 		if (nome.val()) {
 			obj_est.nome = nome.val();
@@ -100,24 +100,23 @@ const ModalFormEstabelecimento = () => {
 			endereco.addClass("is-invalid").removeClass("is-valid");
 			msg.removeClass('d-none').addClass('d-block alert-danger').text('Preencha todos os campo!');
 		}
-	//	console.log(obj_est)
-		
+
 		$.post(apiUrl + param_api_set_estabelecimentos, obj_est, (res, status) => {
-			 if (status == 'success') {
-				  if (res == "1") {
-						 msg.addClass('d-block alert-success').text('Concluído, Obrigado!').removeClass("d-none alert-danger");
-						 $('.btn-edigit').attr('disabled',true);
-						 const param_api_update_usuarios = "?api=setUpdateUsuarios";
-						$.post(apiUrl+ param_api_update_usuarios,{estabelecimento_id:estabelecimento_id,status:'a'},(res,status)=>{
-							if(status == 'success'){
-								console.log(res);
+			if (status == 'success') {
+				if (res == "1") {
 
-							}
-							
-						})
-				  }
+					const param_api_update_usuarios = "?api=setUpdateUsuarios";
+					$.post(apiUrl + param_api_update_usuarios, { estabelecimento_id: estabelecimento_id, status: 'a' }, (res, status) => {
+						if (status == 'success') {
+							console.log(res);
+							$('.btn-edigit').attr('disabled', true);
+							msg.addClass('d-block alert-success').text('Concluído, Obrigado!').removeClass("d-none alert-danger");
+						}
 
-			 }
+					})
+				}
+
+			}
 		})
 	}
 

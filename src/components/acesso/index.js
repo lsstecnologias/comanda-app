@@ -5,6 +5,7 @@ import { UserContext } from '../context';
 import 'animate.css';
 import md5 from 'md5';
 const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO; 
+alert(apiUrl)
 const Acesso = () => {
     //PERIMITE NÃO EXIBIR MODAL DE NOTAS
    

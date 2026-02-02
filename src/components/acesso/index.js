@@ -59,10 +59,11 @@ const Acesso = () => {
 
         }
         //REQUISIÇAO - REALIZAR A REQUISIÇAO GET BACKEND SEM PASSAR O ID
-        fetch(apiUrl + param_api_get_usuarios)
+        fetch(apiUrl + param_api_get_usuarios,{method:'GET',mode:'no-cors'})
             .then(async (e) => {
                 return await e.json();
             }).then(res => {
+                console.log(res);
                 var dataSession = res.filter((x) => { return x.senha === ObjSessao.senha && x.email === ObjSessao.email_login });
 
                 if (Array.isArray(dataSession) && dataSession.length === 0) {

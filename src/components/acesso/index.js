@@ -21,7 +21,7 @@ const Acesso = () => {
    
     var ObjSessao = { email_login: "", senha: "" };
 
-    const param_api_get_usuarios = "?api=getLoginUsuarios";
+    const param_api_get_usuarios = "?api=listardata";
     useEffect(() => {
         // Registrar o cliente estabelecimento, qunando for liberar o acesso
         // const param_api_list_perfil_usuarios ="?api=getPerfilUsuarios";

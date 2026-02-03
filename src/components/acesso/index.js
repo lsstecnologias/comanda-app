@@ -4,8 +4,9 @@ import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context';
 import 'animate.css';
 import md5 from 'md5';
+import $ from 'jquery'
 const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO; 
-alert(apiUrl)
+
 const Acesso = () => {
     //PERIMITE NÃO EXIBIR MODAL DE NOTAS
    
@@ -21,7 +22,7 @@ const Acesso = () => {
    
     var ObjSessao = { email_login: "", senha: "" };
 
-    const param_api_get_usuarios = "?api=listardata";
+    const get_usuarios = "?api=listardata";
     useEffect(() => {
         // Registrar o cliente estabelecimento, qunando for liberar o acesso
         // const param_api_list_perfil_usuarios ="?api=getPerfilUsuarios";
@@ -36,6 +37,11 @@ const Acesso = () => {
            
          })-*/
     }, [])
+    
+	
+		$.get(apiUrl+get_usuarios).done((res)=>{
+			console.log(res)
+		})
 
     const validarForm = (e) => {
         e.preventDefault();
@@ -58,8 +64,36 @@ const Acesso = () => {
             ObjSessao.senha = "";
 
         }
-        //REQUISIÇAO - REALIZAR A REQUISIÇAO GET BACKEND SEM PASSAR O ID
-        fetch(apiUrl + param_api_get_usuarios,{method:'GET',mode:'no-cors'})
+
+        $.get(apiUrl+get_usuarios).done((res)=>{
+			console.log(res);
+                var dataSession = res.filter((x) => { return x.senha === ObjSessao.senha && x.email === ObjSessao.email_login });
+
+                if (Array.isArray(dataSession) && dataSession.length === 0) {
+                    setDisplayError("block");
+                    setMsgError("Verifique email e senha!");
+                    setDisplaySuccess("none");
+                    setMsgSuccess(null);
+
+                } else {
+                    // let host = window.location.hostname;
+                    //let porta = window.location.port;
+                    //let protocolo = window.location.protocol;
+                    let pathDir = window.location.pathname;
+                    let url = pathDir + 'admin';
+                    const estabelecimento_id = (dataSession[0].estabelecimento_id);
+                    const status = (dataSession[0].status);
+                    sessionStorage.setItem("user_admin", JSON.stringify(dataSession));
+                    sessionStorage.setItem("status", status)
+                    sessionStorage.setItem('estabelecimento_id', estabelecimento_id);
+                    sessionStorage.setItem('modal_notas', 'show');
+                    window.location.href = url;
+
+                }
+
+		})
+        //REQUISIÇAO - REALIZAR A REQUISIÇAO GET BACKEND SEM PASSAR O IDhttps://edigitapi.infinityfreeapp.com/api/?api=listardata&i=1
+       /* fetch("http://leosenadeveloper.dx.am/api/?api=listardata",{method:'GET',mode:'no-cors',headers:{"Access-Control-Allow-Origin":"*","Content-Type":"application/json"}})
             .then(async (e) => {
                 return await e.json();
             }).then(res => {
@@ -91,7 +125,7 @@ const Acesso = () => {
 
             }).catch(error => {
                 alert("ERRO: verifique os serviços ou recursos do API -" + error)
-            });
+            });*/
     }
 
     /*

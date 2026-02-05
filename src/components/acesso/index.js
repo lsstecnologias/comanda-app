@@ -22,7 +22,7 @@ const Acesso = () => {
    
     var ObjSessao = { email_login: "", senha: "" };
 
-    const get_usuarios = "?api=listardata";
+  
     useEffect(() => {
         // Registrar o cliente estabelecimento, qunando for liberar o acesso
         // const param_api_list_perfil_usuarios ="?api=getPerfilUsuarios";
@@ -38,11 +38,7 @@ const Acesso = () => {
          })-*/
     }, [])
     
-	
-		$.get(apiUrl+get_usuarios).done((res)=>{
-			console.log(res)
-		})
-
+			
     const validarForm = (e) => {
         e.preventDefault();
 
@@ -65,8 +61,8 @@ const Acesso = () => {
 
         }
 
-        $.get(apiUrl+get_usuarios).done((res)=>{
-			console.log(res);
+        $.get(apiUrl+"/api/get").done((res)=>{
+           
                 var dataSession = res.filter((x) => { return x.senha === ObjSessao.senha && x.email === ObjSessao.email_login });
 
                 if (Array.isArray(dataSession) && dataSession.length === 0) {

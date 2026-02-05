@@ -50,12 +50,12 @@ const TabelaProduto = () => {
 		//REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
 		const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
 		if (id_estabelecimento !== 'null') {
-			const param_api_list_produto = `?api=getProdutos`;
-			var obj = { 'id': id_estabelecimento };
-			$.post(apiUrl + param_api_list_produto, obj, (res, status) => {
+			const param_api_list_produto = `/get/produtos/`;
+			
+			$.post(apiUrl + param_api_list_produto,  { 'id': id_estabelecimento }, (res, status) => {
 				if (status == 'success') {
-					var data = JSON.parse(res);
-					setDataProdutos(data);
+					
+					setDataProdutos(res);
 					
 					
 				} else {

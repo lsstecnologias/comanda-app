@@ -14,15 +14,16 @@ const DetalhesProdutos = (data_id) => {
 	useEffect(() => {
 
 		//REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
-		const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
+	const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
 		if (id_estabelecimento !== 'null') {
-			const param_api_list_produto = `?api=getProdutos`;
-		
-			$.post(apiUrl + param_api_list_produto,{ 'id': id_estabelecimento } , (res, status) => {
+			const param_api_list_produto = `/get/produtos/`;
+			
+			$.post(apiUrl + param_api_list_produto, { 'id': id_estabelecimento }, (res, status) => {
 				if (status == 'success') {
-					var data = JSON.parse(res);
-					setDataProdutos(data);
-
+					
+					setDataProdutos(res);
+					
+					
 				} else {
 					alert("Error: parametros API!")
 

@@ -13,6 +13,7 @@ const ModalEditProdutos = (data_id) => {
 	const { GetSession, sessao, Sair, status } = useContext(UserContext);
 	const [valorPreco, setPreco] = useState();
 	const [valorItem, setItem] = useState();
+	const [valorCod, setCod] = useState();
 	const [valorDesc, setDesc] = useState();
 	const [valorQt, setQuant] = useState();
 	const [valorCateg, setCategorias] = useState();
@@ -34,7 +35,7 @@ const ModalEditProdutos = (data_id) => {
 		window.location.reload();
 	}
 
-
+	console.log(dataItem)
 	const data_filter = dataItem.filter(e => { return e.id == idEdit });
 
 	const paramApi_delete_item = '?api=deleteItem';
@@ -50,9 +51,10 @@ const ModalEditProdutos = (data_id) => {
 		let qtd = $("#qtItemInputEdit");
 		let preco = $("#precoUnitInputEdit");
 		let categ = $("#categItemInputEdit");
+		let codItem = $("#codItem");
 		const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
-		var obj_produto = { id: idEdit, estabelecimento_id: "", desc: "", id_categoria: "", qtd: "", preco: "", data_post: "" };
+		var obj_produto = { id: idEdit, cod_item:codItem.val() , estabelecimento_id: "", desc: "", id_categoria: "", qtd: "", preco: "", data_post: "" };
 
 
 		if (estabelecimento_id !== undefined && estabelecimento_id !== "") {
@@ -157,8 +159,8 @@ const ModalEditProdutos = (data_id) => {
 			Sair();
 		}
 
-		const param_api_edit_produto = "?api=updateItem";
-		$.post(apiUrl+ param_api_edit_produto, obj_produto, (res, status) => {
+		
+		$.post(apiUrl+ '/get/updateItem', obj_produto, (res, status) => {
 			console.log(res)
 			var editarProduto = $('#btnEditarProduto');
 			if (status == "success") {
@@ -198,17 +200,16 @@ const ModalEditProdutos = (data_id) => {
 		//FUNCAO QUE LISTA PRODUTOS
 		const listarProdutos = (estabelecimento_id) => {
 			if (estabelecimento_id !== 'null') {
-				const param_api_list_produto = `?api=getProdutos`;
-				
-				$.post(apiUrl+ param_api_list_produto, { 'id': estabelecimento_id }, (res, status) => {
-					if (status == 'success') {
-						var data = JSON.parse(res);
-						setDataItem(data);
-
+				const param_api_list_produto = `/get/produtos/`;
+			
+				$.post(apiUrl + param_api_list_produto,  { 'id': estabelecimento_id}, (res, status) => {
+					if (status == 'success') {					
+						setDataItem(res);
+											
 					} else {
 						alert("Error: parametros API!")
-					}
 
+					}
 				})
 			} else {
 				alert("Nenhum cliente estabelecimento");
@@ -221,12 +222,13 @@ const ModalEditProdutos = (data_id) => {
 
 		const listarCategorias = (estabelecimento_id) => {
 			if (estabelecimento_id !== 'null') {
-				const param_api_list_categ = `?api=getAllCategorias`;
+				const param_api_list_categ = `/get/allCategorias`;
 			
 				$.post(apiUrl + param_api_list_categ,{ 'id': estabelecimento_id } , (res, status) => {
-					var dataArr = JSON.parse(res);
-					if (Array.isArray(dataArr) && dataArr.length > 0) {
-						setListCateg(dataArr);
+					
+					
+					if (Array.isArray(res) && res.length > 0) {
+						setListCateg(res);
 					} else {
 						setListCateg(null);
 					}
@@ -267,7 +269,10 @@ const ModalEditProdutos = (data_id) => {
 								
 								return (
 									<div key={e.id}>
-
+										<div class="mb-3">
+											<label for="codItem" class="form-label  text-secondary fw-normal">Cod item</label>
+											<input type="text" class="form-control text-secondary fw-normal" id="codItem" autocomplete="off" disabled value={e.cod_item} placeholder={e.cod_item} />
+										</div>
 										<div class="mb-3">
 											<label for="nomeItemInput" class="form-label  text-secondary fw-normal">Nome item</label>
 											<input type="text" class="form-control text-secondary fw-normal" id="nomeItemInputEdit" autocomplete="off" onChange={(e) => { setItem(e.target.value) }} placeholder={e.item} />

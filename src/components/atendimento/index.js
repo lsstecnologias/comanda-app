@@ -376,7 +376,7 @@ const Atendimento = () => {
                 <td colspan="2">
                   <td class="lh-3 fw-medium">Cliente</td>
                   <div class="input-group  mt-2 mb-2">
-                    <button class="btn btn-success " type="button" onClick={() => validarBusca()} id="button-addon2">Confirmar <i class="bi bi-check2-all"></i></button>
+                    <button class="btn btn-success " type="button" onClick={() => validarBusca()} id="button-addon2">Buscar <i class="bi bi-check2-all"></i></button>
                     <input list="clientes" class='form-select form-control' id="inpt_buscar" value={buscarCliente} onChange={(e) => setBuscarCliente(e.target.value)} placeholder='Encontrar cliente...' aria-describedby="button-addon2" />
                     <datalist id="clientes" className='p-4'>
                       {clientes && clientes.map((vl) => { return <option className='p-4' value={vl.nome} /> })}

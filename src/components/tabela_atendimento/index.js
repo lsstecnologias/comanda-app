@@ -58,13 +58,12 @@ const TabelaAtendimento = () => {
    useEffect(() => {
 
       if (id_estabelecimento !== 'null') {
-         const param_api_get_atendimento = "?api=getAtendimentos";
+         const param_api_get_atendimento = "/api/getAtendimentos/";
 
          $.post(apiUrl + param_api_get_atendimento, { id: id_estabelecimento }, (res, status) => {
-
-            let data = JSON.parse(res)
+           
             if (status == 'success') {
-               setDataClientes(data);
+               setDataClientes(res);
 
             } else {
                setDisplayError("block");

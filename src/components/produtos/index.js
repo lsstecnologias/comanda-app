@@ -133,9 +133,9 @@ const Produto = () => {
 			{	
 				
 				$.post(apiUrl + param_api_save_produto, objProduto, (res, status) => {
-										
+									
 						var btnAdicionar = $('#btnAdicionar');
-
+						
 						if (res == true) {
 							setDisplayError("block");
 							setMsgError("Preencha os campos!");

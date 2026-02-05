@@ -76,14 +76,14 @@ const Atendimento = () => {
 
   const validarBusca = () => {
     var inptBuscar = $('#inpt_buscar');
-    const param_api_find_clientes = "?api=findClientes";
+    const param_api_find_clientes = "/get/findClientes/";
 
     if (inptBuscar.val()) {
       $.post(apiUrl + param_api_find_clientes, { buscar: buscarCliente ?? buscarCliente, estabelecimento_id: estabelecimento_id }, (res, status) => {
 
         if (status == 'success') {
-          const data = JSON.parse(res);
-          const { nome, cliente_id } = data[0] ?? false;
+
+          const { nome, cliente_id } = res[0] ?? false;
 
           if (nome && cliente_id) {
             inptBuscar.addClass("is-valid").removeClass("is-invalid");
@@ -112,7 +112,7 @@ const Atendimento = () => {
     e.preventDefault();
     const data_atual = new Date();
     let data_post = data_atual.toLocaleTimeString() + "-" + data_atual.toLocaleDateString().toString();
-    const objAtendimento = { estabelecimento_id: null, cod_atendimento: null, cod_atendente: null, cod_cliente: null,observacao:null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
+    const objAtendimento = { estabelecimento_id: null, cod_atendimento: null, cod_atendente: null, cod_cliente: null, observacao: null, cliente: null, data_endereco: null, data_atendimento: null, data_post: null };
 
     objAtendimento.data_post = data_post;
     let atendente = $('#atendente');
@@ -123,7 +123,7 @@ const Atendimento = () => {
     let inpt_buscar = $('#inpt_buscar');
     let inpt_observacao = $('#observacao');
 
-    
+
     if (inpt_observacao.val()) {
       inpt_observacao.addClass("is-valid").removeClass("is-invalid");
       objAtendimento.observacao = inpt_observacao.val();
@@ -188,7 +188,7 @@ const Atendimento = () => {
 
     }
 
-    const param_api_save_atendimento = "?api=setAtendimentos";
+
 
     if (objAtendimento.cod_atendimento == null || objAtendimento.cod_atendente == null || objAtendimento.cod_cliente == null || objAtendimento.cliente == null || objAtendimento.data_endereco == null || objAtendimento.data_atendimento == null || objAtendimento.data_post == null) {
       setDisplaySuccess("none");
@@ -197,10 +197,32 @@ const Atendimento = () => {
       setMsgError("Preencha os campos!");
 
     } else {
+      objAtendimento.estabelecimento_id = estabelecimento_id;
 
+      $.post('http://10.10.10.6:8181' + "/get/setAtendimentos/", objAtendimento, (res, status) => {
+        if (status == "success") {
+          if (res == 1) {
+
+            setDisplaySuccess("block");
+            setMsgSuccess("Atendimento registrado!");
+            setDisplayError("none");
+            setMsgError(null);
+            window.location.href = '/admin/lista-atendimento';
+
+          } else {
+            setDisplaySuccess("none");
+            setMsgSuccess(null);
+            setDisplayError("block");
+            setMsgError("Preencha os campos!");
+          }
+        }
+      })
+      /*
       if (estabelecimento_id !== 'null') {
 
-        objAtendimento.estabelecimento_id = estabelecimento_id;
+        
+    
+    
         $.post(apiUrl + param_api_save_atendimento, objAtendimento, (res, status) => {
 
           if (status == "success") {
@@ -224,7 +246,9 @@ const Atendimento = () => {
       } else {
         alert("Nenhum cliente estabelecimento");
         Sair();
-      }
+      }*/
+
+
       /*
       $.post(urlApi + nameApi + param_api_save_atendimento, objAtendimento, (res, status) => {
         if (status == "success") {
@@ -376,7 +400,7 @@ const Atendimento = () => {
 
 
                     <div class="form-floating">
-                      <textarea class="form-control" id="observacao" placeholder="Leave a comment here" style={{"Height": "200px"}} ></textarea>
+                      <textarea class="form-control" id="observacao" placeholder="Leave a comment here" style={{ "Height": "200px" }} ></textarea>
                       <label for="observacao">Observação</label>
                     </div>
 

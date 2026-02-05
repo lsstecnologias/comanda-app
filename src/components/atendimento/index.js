@@ -199,7 +199,7 @@ const Atendimento = () => {
     } else {
       objAtendimento.estabelecimento_id = estabelecimento_id;
 
-      $.post('http://10.10.10.6:8181' + "/get/setAtendimentos/", objAtendimento, (res, status) => {
+      $.post(apiUrl + "/get/setAtendimentos/", objAtendimento, (res, status) => {
         if (status == "success") {
           if (res == 1) {
 

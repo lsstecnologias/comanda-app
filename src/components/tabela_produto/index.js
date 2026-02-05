@@ -50,17 +50,13 @@ const TabelaProduto = () => {
 		//REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
 		const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
 		if (id_estabelecimento !== 'null') {
-			const param_api_list_produto = `/get/produtos/`;
-			
+			const param_api_list_produto = `/get/produtos/`;			
 			$.post(apiUrl + param_api_list_produto,  { 'id': id_estabelecimento }, (res, status) => {
-				if (status == 'success') {
-					
-					setDataProdutos(res);
-					
+				if (status == 'success') {					
+					setDataProdutos(res);				
 					
 				} else {
-					alert("Error: parametros API!")
-
+					alert("Error: parametros API!");
 				}
 			})
 		} else {
@@ -76,7 +72,7 @@ const TabelaProduto = () => {
 				<table class="table caption-top  animate__animated  animate_fadeIn">		
 					<thead>
 						<tr>
-							<th scope="col" className='fw-bold'> <i class="bi bi-plus"></i>Detalhes</th>
+							<th scope="col" className='fw-bold'>Detalhes</th>
 							<th scope="col" className='fw-bold'>Produto - Item</th>
 							<th scope="col" className='fw-bold'>Thumb</th>							
 							<th class="text-end" scope="col">Ações</th>
@@ -115,7 +111,7 @@ const TabelaProduto = () => {
 						<div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
 							<span class="visually-hidden">Loading...</span>
 						</div>
-						<p className='mt-3'>Adicione um novo item a sua lista!</p>
+						<p className='mt-3'>Aguarde..</p>
 						{/*msgError !== null && msgError*/}
 					</div>
 				}

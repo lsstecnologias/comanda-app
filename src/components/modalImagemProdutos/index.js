@@ -10,6 +10,7 @@ const ImagemProdutos = (data_id) => {
 	const [images, setImages] = useState([]);
 	const [dataImagem, setDataImagem] = useState([]);
 	const maxNumber = 69;
+
 	const onChange = (imageList, addUpdateIndex) => {
 		// data for submit
 		// console.log(imageList, addUpdateIndex);
@@ -18,32 +19,45 @@ const ImagemProdutos = (data_id) => {
 		const formData = new FormData();
 		formData.append("thumb_img", data_url);
 		formData.append("id", idEdit);
-	
+
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState == 4) {
 				var res = xhr.responseText;
 
+				$('#msg_success').addClass("d-block").removeClass("d-none");
+				$('#msg_info').removeClass("d-block").addClass("d-none");
 			}
 		}
 
 		//fazer o envio do nosso request
-		xhr.open("POST", apiUrl+'?api=uploadImagem');
+		xhr.open("POST", "http://leosenadeveloper.dx.am/edigit_api/" + '?api=uploadImagem');
 		xhr.send(formData);
 		setImages(imageList);
 	};
-
+	const fecharModal = () => {
+		window.location.reload();
+	}
 	return (
 		<div class="modal fade" id={"imagemProduto-" + idEdit} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticeditProduto" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
+
 					<div class="modal-header">
 						<h5 className="">Imagens do produto - {idEdit} <i class="bi bi-image"></i></h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={()=>fecharModal()} ></button>
 					</div>
 
 					<div class="modal-body ">
-
+						<div class="alert alert-success d-none" role="alert" id="msg_success" >
+							<i class="bi bi-exclamation-triangle"></i> A imagen foi carregada!
+						</div>
+						<div class="alert alert-danger d-none" role="alert" id="msg_error" >
+							<i class="bi bi-exclamation-triangle"></i> Erro ao carregar a imagen!
+						</div>
+						<div class="alert alert-info d-block" role="alert" id="msg_info" >
+							Selecione uma imagem!
+						</div>
 						<ImageUploading
 
 							value={images}

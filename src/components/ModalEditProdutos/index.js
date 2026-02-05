@@ -30,17 +30,15 @@ const ModalEditProdutos = (data_id) => {
 	const [dataItem, setDataItem] = useState([]);
 	const [editProduto, setEditProduto] = useState([]);
 
-
 	const fecharModal = () => {
 		window.location.reload();
 	}
-
-	console.log(dataItem)
+	
 	const data_filter = dataItem.filter(e => { return e.id == idEdit });
 
-	const paramApi_delete_item = '?api=deleteItem';
+	
 	const deleteItemProduto = () => {
-		$.post(apiUrl + paramApi_delete_item, {"id":idEdit}, () => { window.location.reload()  })
+		$.post(apiUrl + '/get/deleteItem/', {"id":idEdit}, () => { window.location.reload()  })
 		
 	}
 
@@ -161,7 +159,7 @@ const ModalEditProdutos = (data_id) => {
 
 		
 		$.post(apiUrl+ '/get/updateItem', obj_produto, (res, status) => {
-			console.log(res)
+		
 			var editarProduto = $('#btnEditarProduto');
 			if (status == "success") {
 
@@ -342,7 +340,7 @@ const ModalEditProdutos = (data_id) => {
 						<div class="modal-body">
 
 							{data_filter && data_filter.map((element) => {
-								return (<p class="text-danger fw-bolder p-2 mb-0"><i class="bi bi-exclamation-triangle-fill fs-3"></i> Confirmar para excluir o item, <u> {element.item}.</u></p>);
+								return (<p class="text-secondary fw-bolder p-2 mb-0"><i class="bi bi-exclamation-triangle-fill text-danger fs-3"></i> Confirmar para excluir o item! <u><br></br><p class="text-center mb-0"> {element.item}.</p></u></p>);
 							})}
 						</div>
 

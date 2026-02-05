@@ -31,17 +31,17 @@ const Produto = () => {
 
 	useEffect(() => {
 
-
 		const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
 		const listarCategorias = (estabelecimento_id) => {
 			if (estabelecimento_id !== 'null') {
-				const param_api_list_categ = `?api=getAllCategorias`;
-				var obj = { 'id': estabelecimento_id };
-				$.post(apiUrl + param_api_list_categ, obj, (res, status) => {
-					var dataArr = JSON.parse(res);
-					if (Array.isArray(dataArr) && dataArr.length > 0) {
-						setListCateg(dataArr);
+				const param_api_list_categ = `/get/allCategorias`;
+			
+				$.post(apiUrl + param_api_list_categ,{ 'id': estabelecimento_id } , (res, status) => {
+					
+					
+					if (Array.isArray(res) && res.length > 0) {
+						setListCateg(res);
 					} else {
 						setListCateg(null);
 					}
@@ -128,15 +128,15 @@ const Produto = () => {
 		if (estabelecimento_id !== 'null') {
 
 			//POST ITEM
-			const param_api_save_produto = '?api=setProdutos';
+			const param_api_save_produto = '/get/setProdutos';
 			if (objProduto.item !== null && objProduto.desc !== null && objProduto.qtd !== null && objProduto.preco !== null && objProduto.categoria_id !== null)
-				$.post(apiUrl + param_api_save_produto, objProduto, (res, status) => {
-					var btnAdicionar = $('#btnAdicionar');
-					console.log(res);
-					if (status == 'success') {
+			{	
+				
+				$.post("http://10.10.10.6:8181" + param_api_save_produto, objProduto, (res, status) => {
+										
 						var btnAdicionar = $('#btnAdicionar');
 
-						if (res !== "1") {
+						if (res == true) {
 							setDisplayError("block");
 							setMsgError("Preencha os campos!");
 
@@ -152,16 +152,11 @@ const Produto = () => {
 							btnAdicionar.attr({ "disabled": "disabled" });
 						}
 
-					} else {
-						setDisplayError("block");
-						setMsgError("Preencha os campos!");
-						btnAdicionar.attr({ "disabled": false });
-
-					}
-
-
+					
 
 				})
+
+			}
 		} else {
 			alert("Nenhum cliente estabelecimento");
 			Sair();

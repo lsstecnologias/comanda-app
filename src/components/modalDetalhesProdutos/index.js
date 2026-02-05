@@ -14,19 +14,17 @@ const DetalhesProdutos = (data_id) => {
 	useEffect(() => {
 
 		//REALIZA O REGISTRO COM O COD DO ESTABELECIMENTO
-	const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
+		const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
+
 		if (id_estabelecimento !== 'null') {
 			const param_api_list_produto = `/get/produtos/`;
 			
 			$.post(apiUrl + param_api_list_produto, { 'id': id_estabelecimento }, (res, status) => {
-				if (status == 'success') {
-					
-					setDataProdutos(res);
-					
+				if (status == 'success') {					
+					setDataProdutos(res);					
 					
 				} else {
 					alert("Error: parametros API!")
-
 				}
 			})
 		} else {
@@ -73,7 +71,7 @@ const DetalhesProdutos = (data_id) => {
 										{e.quantidade}
 									</div>
 									<strong>Preço</strong>
-									<div class="border p-2 mt-2 lh-1">
+									<div class="border p-2 mb-4 mt-2 lh-1">
 										R$ {e.preco}
 									</div>
 								</div>

@@ -132,7 +132,7 @@ const Produto = () => {
 			if (objProduto.item !== null && objProduto.desc !== null && objProduto.qtd !== null && objProduto.preco !== null && objProduto.categoria_id !== null)
 			{	
 				
-				$.post("http://10.10.10.6:8181" + param_api_save_produto, objProduto, (res, status) => {
+				$.post(apiUrl + param_api_save_produto, objProduto, (res, status) => {
 										
 						var btnAdicionar = $('#btnAdicionar');
 

@@ -37,16 +37,16 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 	const [IDEdit, setEdit] = useState("");
 	const [statusTipoMsg, setStatusTipoMsg] = useState("");
 
-	
+
 	let data_atual = new Date();
 	const data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
 
-	const param_api_update_status = '?api=setUpdateStatusAtendimentos';
+	const param_api_update_status = '/api/setUpdateStatusAtendimentos/';
 	const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 	const { status_pos } = statusPosAtendimento[0] ?? [];
-	
-	
-	const obj_status_atendimento = { cliente_id: codEdit, estabelecimento_id: estabelecimento_id, data_post: data_post,status_pos:status_pos }
+
+
+	const obj_status_atendimento = { cliente_id: codEdit, estabelecimento_id: estabelecimento_id, data_post: data_post, status_pos: status_pos }
 	const call = useCallback((status_pos) => {
 
 		if (status_pos == "1" || statusUpdate == '1') {
@@ -56,13 +56,13 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 			return { "tipo": "success", "msg": "Em atendimento!" };
 
 		} else if (status_pos == "3" || statusUpdate == '3') {
-				$('#btnAtualizar').attr("disabled",true);
+			$('#btnAtualizar').attr("disabled", true);
 			return { "tipo": "danger", "msg": "Atendimento finalizado!" };
-			
-		}else{
-			if(statusUpdate){
-				$('#btnAtualizar').attr("disabled",true);
-			return { "tipo": "danger", "msg": "Atendimento finalizado!" };
+
+		} else {
+			if (statusUpdate) {
+				$('#btnAtualizar').attr("disabled", true);
+				return { "tipo": "danger", "msg": "Atendimento finalizado!" };
 			}
 		}
 
@@ -71,7 +71,7 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 	}, [statusTipoMsg]);
 
 	const status_msg = call(status_pos) !== undefined ? call(status_pos) : '';
-	
+
 	useEffect(() => {
 
 		if (status_msg.tipo !== undefined) {
@@ -79,11 +79,12 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 		}
 
 		const statusAtendimento = () => {
-			const param_api_get_status_cod = "?api=getPosStatusAtendimentos";
-			$.post(apiUrl + param_api_get_status_cod, obj_status_atendimento, async(res, status) => {
+			const param_api_get_status_cod = "/api/getPosStatusAtendimentos/";
+			$.post(apiUrl + param_api_get_status_cod, obj_status_atendimento, async (res, status) => {
 				if (status == 'success') {
-					let data_status = await JSON.parse(res);
-					setStatusPosAtendimento(data_status);
+
+
+					setStatusPosAtendimento(res);
 				} else {
 					alert("Error: parametros API ");
 				}
@@ -100,19 +101,19 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 
 		if (statusAtendimento !== null) {
 
-			obj_status_atendimento.status_pos =statusAtendimento;
+			obj_status_atendimento.status_pos = statusAtendimento;
 			setStatusAtendimento()
 			$.post(apiUrl + param_api_update_status, obj_status_atendimento, (res, status) => {
-				if(status == 'success'){
-						if(res == "1"){
-							setStatusUpdate(statusAtendimento);
-							//fecharModal()
-							setMsgSuccess("O Status do cliente mudou, feche a tela e abra novamente! ");
-							setDisplaySuccess("block")
-							$('#btnAtualizar').attr("disabled",true);
-						}
+				if (status == 'success') {
+					if (res == "1") {
+						setStatusUpdate(statusAtendimento);
+						//fecharModal()
+						setMsgSuccess("O Status do cliente mudou, feche a tela e abra novamente! ");
+						setDisplaySuccess("block")
+						$('#btnAtualizar').attr("disabled", true);
+					}
 				}
-		
+
 			})
 		} else {
 			alert("Selecione o status do atendimento!");
@@ -131,13 +132,13 @@ const ModalEditAtendimentos = (data_id, data_cliente) => {
 					<div class="modal-body">
 						<div class="alert alert-success alert-dismissible fade show" style={{ display: displaySuccess }} role="alert">
 							<i class="bi bi-check-circle p-2"></i>
-							  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 							{msgSuccess !== null && msgSuccess}
 
 						</div>
 						<div class=" alert alert-danger alert-dismissible fade show" style={{ display: displayError }} role="alert">
 							<i class="bi bi-exclamation-triangle p-2"></i>
-							  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 							{msgError !== null && msgError}
 
 						</div>

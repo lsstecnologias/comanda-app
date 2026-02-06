@@ -8,7 +8,7 @@ import HeaderComanda from './index.js';
 
 
 const Comanda = () => {
-      const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
+    const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
    //PERIMITE NÃO EXIBIR MODAL DE NOTAS
    sessionStorage.setItem('modal_notas', 'hide');
    const { cod } = useParams();
@@ -29,7 +29,7 @@ const Comanda = () => {
 
    const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
-   const param_api_get_produtos = "?api=getProdutos";
+   const param_api_get_produtos = "/api/getProdutos/";
 
 
    function getCarrinho() {
@@ -151,7 +151,7 @@ const Comanda = () => {
 
          $.post(apiUrl + param_api_get_produtos, { 'id': estabelecimento_id }, (res, status) => {
             if (status == 'success') {
-               var data = JSON.parse(res);
+               var data = res;
                for (var i = 0; i < data.length; i++) {
                   data[i].subtotal_comanda = 0;
 

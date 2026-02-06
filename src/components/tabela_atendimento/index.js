@@ -30,12 +30,13 @@ const TabelaAtendimento = () => {
     const currentPosts = dataClientes.slice(indexOfFirstPost, indexOfLastPost);
     <ListPagina />
 
-   const param_api_delete_atendimentos = '?api=deleteAtendimentos';
+  
    const id_estabelecimento = sessionStorage.getItem("estabelecimento_id");
 
    const deleteItem = (id) => {
+       const param_api_delete_atendimentos = '/api/deleteAtendimentos/';
       if (id !== null || id !== undefined) {
-         
+
          setDisplayError("block");
          setMsgError("Cliente foi excluido!");
          $.post(apiUrl + param_api_delete_atendimentos, { "id": id },  () => { window.location.reload() })
@@ -114,7 +115,7 @@ const TabelaAtendimento = () => {
                                <Link class="btn btn-sm btn-secondary" to="/admin/agendamento-pedido" >Agendamentos <i class="bi bi-clock-history"></i> </Link> */}
                               <div class="btn-group" role="group" aria-label="Basic outlined example">
                                  <Link type="button" class="btn btn-sm btn-edigit-secondary text-white rounded m-1" to={`/admin/comanda/${val.cod_cliente}`}> <i class="bi bi-card-list"></i></Link>
-                                 <Link type="button" class="btn btn-sm btn-edigit-secondary text-white rounded m-1" to="/admin/agendamento-pedido" > <i class="bi bi-clock-history"></i></Link>
+                                 <Link type="button" class="btn btn-sm btn-edigit-secondary text-white rounded m-1 disabled" to="/admin/agendamento-pedido" > <i class="bi bi-clock-history"></i></Link>
                               </div>
                            </td>
                            <td class="text-end">

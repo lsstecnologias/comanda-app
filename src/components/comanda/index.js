@@ -19,7 +19,7 @@ const HeaderComanda = () => {
 
       const listarComanda = () => {
          const obj = { estabelecimento_id: sessao.estabelecimento_id, cliente_id: cod, funcionario_id: sessao.cod, data_post: data_post }
-         $.post(apiUrl + '?api=setComandas', obj)
+         $.post('http://10.10.10.6:8181' + '/api/setComandas/', obj)
          .done(() => {
             setExibirComanda(true);
             $('#btn-listarComanda').addClass('d-none');

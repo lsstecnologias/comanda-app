@@ -30,11 +30,18 @@ const TabelaCategoria = () => {
    const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
    <ListPagina />
 
-   const param_api_delete_categoria = '?api=deleteCategorias';
+   const param_api_delete_categoria = '/api/deleteCategorias/';
    const deleteItem = (id) => {
       if (id !== null || id !== undefined) {
         
-         $.post( apiUrl + param_api_delete_categoria,{ "id": id } , () => { window.location.reload() })
+         $.post(apiUrl + param_api_delete_categoria,{ "id": id } , (res) => { 
+            if(res=="1"){
+               setDisplayError("block");
+               setMsgError("A categoria foi excluída!");
+               window.location.reload()
+            }
+            
+         })
       }
    }
    const editCateg = (id) => { setId(id); }
@@ -72,18 +79,17 @@ const TabelaCategoria = () => {
 
       if (estabelecimento_id !== 'null') {
          
-         const param_api_list_categ = `?api=getAllCategorias`;
+         const param_api_list_categ = `/api/getAllCategorias/`;
          $.post(apiUrl+ param_api_list_categ, { 'id': estabelecimento_id }, (res, status) => {
-
-            var dataArr = JSON.parse(res);
-            if (Array.isArray(dataArr) && dataArr.length == 0) {
+            
+           
+            if (Array.isArray(res) && res.length == 0) {
                setDisplayError("block");
-               setMsgError("Adicione categoria para o seu item!");
-
+               setMsgError(" Adicione categoria para o seu item!");
+               
 
             } else {
-               setData(dataArr);
-
+               setData(res);
             }
 
          })
@@ -102,9 +108,8 @@ const TabelaCategoria = () => {
 
          </div>
 
-
          <table class="table m-0 p-0  table-responsive   animate__animated animate__fadeIn">
-            <caption>Lista categorias</caption>
+            
             <thead>
                <tr>
                   <th scope="col">Cod. </th>
@@ -134,12 +139,12 @@ const TabelaCategoria = () => {
          </table>
          {data.length == 0 &&
 
-            <div class="d-flex align-items-center alert alert-light fade show" style={{ display: displayError }} role="alert">
+            <div class="d-flex align-items-center alert alert-light fade show mt-2" style={{ display: displayError }} role="alert">
 
                <div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
                   <span class="visually-hidden">Loading...</span>
                </div>
-
+               <p class="mb-0">Aguarde...</p>
                {msgError !== null && msgError}
 
             </div>

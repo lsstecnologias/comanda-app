@@ -57,7 +57,6 @@ const Categorias = () => {
     const addNvCategoria = (e) => {
 
         e.preventDefault();
-
         let categ_input = $("#inpt_acao");
         let data_atual = new Date();
         let data_post = data_atual.toLocaleTimeString() + " - " + data_atual.toLocaleDateString().toString();
@@ -104,7 +103,7 @@ const Categorias = () => {
 
         if (categ_input.val() && acao === 'text') {
             if (estabelecimento_id !== 'null') {
-                const param_api_save_categoria = "?api=setCategorias";
+                const param_api_save_categoria = "/api/setCategorias";
                 obj_categoria.estabelecimento_id = estabelecimento_id;
                 $.post(apiUrl + param_api_save_categoria, obj_categoria, (res, status) => {
                     window.location.reload()
@@ -142,8 +141,8 @@ const Categorias = () => {
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="input-group">
-                            <span class="input-group-text btn-edigit-secondary text-white" id="basic-addon1">Acão <i class="bi bi-chevron-down fw-bolder "></i></span>
-                            <select class="form-select" onChange={(event) => { setAcao(event.target.value) }}>
+                            <span class="input-group-text btn-edigit-secondary text-white" for="basic-addon1"><i class="bi bi-caret-down-fill fs-6"></i> Acão </span>
+                            <select id="basic-addon1" class="form-select" onChange={(event) => { setAcao(event.target.value) }}>
                                 <option value="search">BUSCAR </option>
                                 <option value="text">ADICIONAR </option>
                             </select>

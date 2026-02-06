@@ -154,7 +154,6 @@ const Comanda = () => {
                var data = res;
                for (var i = 0; i < data.length; i++) {
                   data[i].subtotal_comanda = 0;
-
                   $("#qtd-" + data[i].id).mask("00000000");
 
                }

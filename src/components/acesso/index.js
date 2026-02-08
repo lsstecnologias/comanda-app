@@ -24,8 +24,8 @@ const Acesso = () => {
 
   
     useEffect(() => {
-        // Registrar o cliente estabelecimento, qunando for liberar o acesso
-        // const param_api_list_perfil_usuarios ="?api=getPerfilUsuarios";
+        //Registrar o cliente estabelecimento, qunando for liberar o acesso
+        //const param_api_list_perfil_usuarios ="?api=getPerfilUsuarios";
 
         /* let id = "57541fc";
          let obj_cliente= {"cod_cliente_estabelecimento":id}
@@ -162,15 +162,11 @@ const Acesso = () => {
         )*/
     const exibirSenha = (e) => {
         e.preventDefault();
-
         if (typeSenha == "password") {
             setTypeSenha("text");
-
         } else {
             setTypeSenha("password");
-
         }
-
 
     }
     return (

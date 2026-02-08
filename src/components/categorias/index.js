@@ -152,7 +152,7 @@ const Categorias = () => {
                         <div class="input-group">
 
                             <input type={acao === 'text' ? 'text' : 'search'} list="lista-categorias" value={dataFind} onChange={(event) => { setDataFind(event.target.value) }} class="form-control animate__animated  animate__fadeIn " id="inpt_acao" autocomplete="off" placeholder={acao === 'text' ? 'Nova categoria' : 'Buscar'} aria-describedby="button-addon2" />
-                            <button class="btn btn-primary btn-sm btn-edigit " onClick={(e) => { acao === 'text' ? addNvCategoria(e) : buscarCategoria(e) }} type="button" > {acao === 'text' ? <i class="bi bi-plus-circle"></i> : <i class="bi bi-search"></i>}  </button>
+                            <button class="btn input-group-text btn-primary btn-sm btn-edigit " onClick={(e) => { acao === 'text' ? addNvCategoria(e) : buscarCategoria(e) }} type="button" > {acao === 'text' ? <i class="bi bi-plus-circle"></i> : <i class="bi bi-search"></i>}  </button>
                             <datalist id="lista-categorias">
                                 {resultBuscar.map((element) => { return <option value={element.categoria}></option> })}
                             </datalist>

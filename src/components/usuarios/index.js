@@ -34,7 +34,7 @@ const Usuarios = () => {
 		let cod 		= Math.floor(Math.random() * (777 + 0)) - 1;
 			
 		var objUsuario = { cod_user: cod, estabelecimento_id: "", nome_user: "", senha_user: "", login_email: "", perfil_user: "",status:"", data_post: "" };
-		var estabelecimento_uid = fullUuid.substring(0, 7)
+		var estabelecimento_uid = fullUuid.substring(0, 7);
 		if (senhaUser !== undefined && senhaUser !== "" && senhaReUser !== undefined && senhaReUser !== "") {
 
 			if (senhaUser === senhaReUser) {
@@ -94,7 +94,7 @@ const Usuarios = () => {
 		const estabelecimento_id = sessionStorage.getItem('estabelecimento_id');
 
 		if (estabelecimento_id !== 'null') {
-			const param_api_list_usuario = `?api=setUsuarios`;
+			const param_api_list_usuario = `/api/setUsuarios/`;
 			
 			if (perfilEstabelecimento == "null" || perfilEstabelecimento == "") {
 				perfilEst.addClass('is-invalid').removeClass('is-valid');
@@ -115,7 +115,6 @@ const Usuarios = () => {
 				objUsuario.estabelecimento_id = perfilEstabelecimento;
 				objUsuario.status ="a";
 			}
-
 
 			$.post(apiUrl + param_api_list_usuario, objUsuario, (res, status) => {
 
@@ -157,12 +156,10 @@ const Usuarios = () => {
 		const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
 		if (estabelecimento_id !== 'null') {
-			const param_api_list_usuario = `?api=getAllUsuarios`;
+			const param_api_list_usuario = `/api/getAllUsuarios`;
 			$.post(apiUrl + param_api_list_usuario, (res, status) => {
-				if (status == 'success') {
-					var data = JSON.parse(res);
-					setUsuarios(data);
-
+				if (status == 'success') {									
+					setUsuarios(res);
 				}
 			})
 		} else {
@@ -177,11 +174,11 @@ const Usuarios = () => {
 	return (
 		<div className="container mt-2 usuario">
 
-			<div className="container p-0 animate__animated  animate__fadeIn">
-				<div class="row d-flex align-items-center  justify-content-between">
-					<div class="col-sm-7 "> <h3 className="mb-2 mt-2 pb-2">Acesso  <i class="bi bi-person-fill"></i> </h3></div>
+			<div className="container  animate__animated  animate__fadeIn">
+				<div class="row d-flex align-items-center justify-content-between pb-3 pt-3">
+					<div class="col-sm-7 "> <h4 className="m-0 mt-0">Acesso <i class="bi bi-person-fill"></i> </h4></div>
 					<div class="col-sm-5 text-end">
-						<button type="button" class="btn btn-sm btn-primary btn-edigit mt-2" data-bs-toggle="modal" data-bs-target="#novoUsuario">
+						<button type="button" class="btn btn-sm btn-primary btn-edigit" data-bs-toggle="modal" data-bs-target="#novoUsuario">
 							Novo Funcionário <i class="bi bi-person-fill-add"></i>
 						</button>
 					</div>

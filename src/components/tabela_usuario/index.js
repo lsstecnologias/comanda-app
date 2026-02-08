@@ -12,7 +12,7 @@ const Tabelausuarios = () => {
 	//PERIMITE NÃO EXIBIR MODAL DE NOTAS
 	const apiUrl = process.env.REACT_APP_API_URL_PRODUCAO;
 	sessionStorage.setItem('modal_notas', 'hide');
-	
+
 	//CONTINUA AQUI....
 	const { sessao, status, redirect_login, Sair } = useContext(UserContext);
 
@@ -20,6 +20,11 @@ const Tabelausuarios = () => {
 
 	const [codUser, setCodUser] = useState("");
 	const [id, setId] = useState(null);
+	
+	
+	const [displaySuccess, setDisplaySuccess] = useState('none');
+	const [msgSuccess, setMsgSuccess] = useState(null);
+
 
 	//PAGINACAO
 	const [currentPage, setCurrentPage] = useState(1);
@@ -30,11 +35,20 @@ const Tabelausuarios = () => {
 	<ListPagina />
 
 	const editItem = (id) => { setId(id); }
-	const paramApi_delete_item = '?api=deleteUsuarios';
+	const paramApi_delete_item = '/api/deleteUsuarios/';
 
 	const deleteUsuario = (id) => {
-		if (id !== null || id !== undefined) {			
-			$.post(apiUrl+ paramApi_delete_item, { "id": id }, () => { window.location.reload() })
+		if (id !== null || id !== undefined) {
+			$.post(apiUrl + paramApi_delete_item, { "id": id }, (res,status) => {
+				if(status == "success"){
+					if(res == "1"){
+						setDisplaySuccess("block");
+						setMsgSuccess("Usuário excluido!")
+						window.location.reload()
+					}
+				}
+				
+			})
 		}
 	}
 
@@ -43,12 +57,11 @@ const Tabelausuarios = () => {
 		const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 
 		if (estabelecimento_id !== 'null') {
-			const param_api_list_usuario = `?api=getAllUsuarios`;
-			$.post(apiUrl+ param_api_list_usuario, (res, status) => {
+			const param_api_list_usuario = `/api/getAllUsuarios/`;
+			$.post(apiUrl + param_api_list_usuario, (res, status) => {
 				if (status == 'success') {
-					var data = JSON.parse(res);
-					setUsuarios(data);
-					
+					setUsuarios(res);
+
 				}
 			})
 		} else {
@@ -60,14 +73,16 @@ const Tabelausuarios = () => {
 
 	return (
 		<div class="table-responsive mt-3">
+			<div class="align-items-center alert alert-success fade show" style={{ display: displaySuccess }} role="alert">		
+				{msgSuccess !== null && msgSuccess}
 
+			</div>
 			<table class="table caption-top animate__animated animate__fadeIn ">
 
 				<thead>
 					<tr>
-
-						<th scope="col">Cod. Est </th>
-						<th scope="col">Cod. Usr </th>
+						<th scope="col">Cod. est </th>
+						<th scope="col">Cod. usr </th>
 						<th scope="col">Nome</th>
 						<th scope="col">Email</th>
 						<th scope="col" class="text-end">Ações</th>
@@ -99,11 +114,14 @@ const Tabelausuarios = () => {
 			</table>
 
 			{currentPosts.length == 0 &&
-				<div class="alert alert-light" role="alert">
-					<div class="spinner-border" role="status">
-						<span class="visually-hidden">Loading...</span>
 
+				<div class="d-flex align-items-center alert alert-light fade show mt-2" role="alert">
+
+					<div class="spinner-grow text-secondary" style={{ marginRight: '10px' }} role="status">
+						<span class="visually-hidden">Loading...</span>
 					</div>
+					<p class="mb-0">Aguarde...</p>
+
 
 				</div>
 			}

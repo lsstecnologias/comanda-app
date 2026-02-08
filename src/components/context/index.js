@@ -1,6 +1,6 @@
 
 import { useState, createContext, useEffect } from 'react';
-import thumb_logo from '../lss_tecnologias.png';
+import thumb_logo from '../bg_logo.png';
 export const UserContext = createContext({});
 
 function UserProvider({ children }) {

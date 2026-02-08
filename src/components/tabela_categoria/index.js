@@ -150,15 +150,8 @@ const TabelaCategoria = () => {
             </div>
          }
          <ModalEditCategorias data_id={id} />
-
-         <Pagination
-            postsPerPage={postsPerPage}
-            totalPosts={data.length}
-            setCurrentPage={setCurrentPage}
-            currentPage={currentPage}
-         />
-
-
+         <Pagination postsPerPage={postsPerPage} totalPosts={data.length} setCurrentPage={setCurrentPage} currentPage={currentPage} />
+         
       </div>
 
    )

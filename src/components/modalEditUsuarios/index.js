@@ -102,17 +102,18 @@ const ModalEditUsuarios = (data_id) => {
 			objUsuario.data_post = data_post;
 		}
 		
-
-		const param_api_update_usuario = "?api=updateUsuarios";
+		const param_api_update_usuario = "/api/updateUsuarios/";
 		$.post(apiUrl + param_api_update_usuario, objUsuario, (res, status) => {
-
-			var editarUsuario = $('#btnEditarUsuario')
+			
+			var editarUsuario = $('#btnEditarUsuario');
+			
 			if (status === "success") {
 
 				if (res == "1") {
 					setMsgSuccess("Usuário atualizado!");
 					setDisplaySuccess("block");
 					editarUsuario.attr({ "disabled": "disabled" });
+					
 				} else {
 					setDisplaySuccess("none");
 					setMsgSuccess(null);
@@ -130,12 +131,10 @@ const ModalEditUsuarios = (data_id) => {
 
 		const estabelecimento_id = sessionStorage.getItem("estabelecimento_id");
 		if (estabelecimento_id !== 'null') {
-			const param_api_list_usuario = `?api=getUsuarios`;
+			const param_api_list_usuario = `/api/getUsuarios/`;
 			$.post(apiUrl + param_api_list_usuario, (res, status) => {
-				if (status == 'success') {
-					var data = JSON.parse(res);
-					setDataFilter(data);
-
+				if (status == 'success') {					
+					setDataFilter(res);
 				}
 			})
 

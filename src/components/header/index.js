@@ -9,7 +9,6 @@ import $ from 'jquery';
 
 const Header = () => {
    //const [statusSessao,setStatusSessao] = useState("");
-
    //const [perfilSessao,setPerfilSessao] = useState("");
 
    const { sessao, Sair, thumb_logo } = useContext(UserContext);
@@ -22,7 +21,7 @@ const Header = () => {
                <button class="navbar-toggler btn-toogler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                </button>
-               <a class="navbar-brand  animate__animated animate__fadeIn" href="#"><img src={thumb_logo} width={100} /></a>
+               <a class="navbar-brand  animate__animated animate__fadeIn" href="#"><img src={thumb_logo} class="img-fluid" width={120} /></a>
 
                <div class="collapse navbar-collapse  animate__animated animate__fadeIn" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto mb-lg-0">
@@ -31,8 +30,6 @@ const Header = () => {
                         <Link class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Minha loja</Link>
                         <ul class="dropdown-menu fw-light">
                            <li><Link class="dropdown-item fw-light nav-link" to="/admin/indicadores">Indicadores</Link></li>
-
-
                         </ul>
                      </li>
 
